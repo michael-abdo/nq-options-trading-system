@@ -1,0 +1,14 @@
+{
+  "name": "nq-options-scraper",
+  "version": "1.0.0",
+  "description": "Puppeteer-based scraper for Barchart options data",
+  "scripts": {
+    "start-chrome": "google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug",
+    "start-chrome-mac": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0",
+    "puppeteer-core": "^21.0.0"
+  },
+  "devDependencies": {}
+}

@@ -6,8 +6,6 @@ Pulls data from Barchart and calculates EV for optimal TP/SL combinations
 
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-import numpy as np
 from datetime import datetime, timedelta
 import json
 import re

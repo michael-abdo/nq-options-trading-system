@@ -1,0 +1,1 @@
+- All tests created should be saved in /tests subdirectory

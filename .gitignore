@@ -37,3 +37,11 @@ data/html_snapshots/
 # Temporary files
 *.tmp
 *.bak
+
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Chrome debug
+/tmp/chrome-debug/
