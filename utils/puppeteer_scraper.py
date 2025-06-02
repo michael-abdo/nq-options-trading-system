@@ -63,11 +63,20 @@ class PuppeteerBarchartScraper:
         # First try to connect to existing Chrome
         if not await self.connect_to_chrome():
             # If that fails, launch new instance
+            logger.warning("No existing Chrome found, launching new instance")
             if not await self.launch_chrome():
                 return False
         
-        # Create new page
-        self.page = await self.browser.newPage()
+        # Get existing pages or create new one
+        pages = await self.browser.pages()
+        if pages:
+            # Use first available page
+            self.page = pages[0]
+            logger.info(f"Using existing page: {await self.page.url()}")
+        else:
+            # Create new page
+            self.page = await self.browser.newPage()
+            logger.info("Created new page")
         
         # Set viewport
         await self.page.setViewport({'width': 1920, 'height': 1080})
@@ -234,25 +243,178 @@ class PuppeteerBarchartScraper:
             return []
     
     async def close(self):
-        """Close browser connection"""
+        """Close page and disconnect from browser (but keep Chrome running)"""
+        if self.page:
+            await self.page.close()
+            logger.info("Page closed")
+        
         if self.browser:
-            await self.browser.close()
-            logger.info("Browser closed")
+            # Just disconnect, don't close the browser
+            await self.browser.disconnect()
+            logger.info("Disconnected from Chrome (browser still running)")
 
 
 async def scrape_barchart_with_puppeteer(url: str, remote_port: int = 9222) -> Tuple[Optional[float], List[Dict]]:
     """Main function to scrape Barchart using Puppeteer"""
-    scraper = PuppeteerBarchartScraper(remote_debugging_port=remote_port)
+    # Import here to avoid circular imports
+    from .chrome_connection_manager import get_chrome_page, close_chrome_page
     
+    page = None
     try:
-        if not await scraper.initialize():
-            raise Exception("Failed to initialize browser")
+        # Get a page from persistent Chrome connection
+        logger.info(f"Getting page from Chrome on port {remote_port}")
+        page = await get_chrome_page(remote_port)
         
-        current_price, options_data = await scraper.scrape_options_data(url)
+        logger.info(f"Navigating to {url}")
+        await page.goto(url, waitUntil='networkidle2', timeout=30000)
+        
+        # Wait for Angular to load
+        await page.waitFor(2000)
+        
+        # Check for reCAPTCHA
+        recaptcha_present = await page.evaluate('''() => {
+            return document.querySelector('iframe[src*="recaptcha"]') !== null;
+        }''')
+        
+        if recaptcha_present:
+            logger.warning("reCAPTCHA detected - manual intervention may be required")
+            logger.info("Waiting for manual captcha solution (60 seconds)...")
+            await asyncio.sleep(60)
+        
+        # Wait for options table to load
+        logger.info("Waiting for options data to load...")
+        try:
+            await page.waitForSelector('.bc-table-scrollable-inner, .options-table, table', 
+                                     timeout=30000)
+        except:
+            logger.warning("Table selector timeout, trying to extract data anyway")
+        
+        # Extract current price
+        current_price = await _extract_current_price_from_page(page)
+        
+        # Extract options data
+        options_data = await _extract_options_data_from_page(page)
+        
         return current_price, options_data
         
+    except Exception as e:
+        logger.error(f"Error in scrape_barchart_with_puppeteer: {e}")
+        return None, []
     finally:
-        await scraper.close()
+        if page:
+            await close_chrome_page(page)
+
+
+async def _extract_current_price_from_page(page) -> Optional[float]:
+    """Extract current price from page"""
+    try:
+        # Try multiple selectors
+        price_selectors = [
+            '.last-change',
+            '.last-price',
+            '.quote-price',
+            '[data-ng-bind*="lastPrice"]'
+        ]
+        
+        for selector in price_selectors:
+            try:
+                price_text = await page.evaluate(f'''() => {{
+                    const elem = document.querySelector('{selector}');
+                    return elem ? elem.innerText : null;
+                }}''')
+                
+                if price_text:
+                    price = float(re.sub(r'[^\d.-]', '', price_text))
+                    if 15000 < price < 30000:
+                        logger.info(f"Found current price: {price}")
+                        return price
+            except:
+                continue
+        
+        # Try to get from Angular scope
+        price = await page.evaluate('''() => {
+            try {
+                const scope = angular.element(document.querySelector('[data-ng-controller]')).scope();
+                return parseFloat(scope.item?.lastPrice?.replace(/,/g, ''));
+            } catch (e) {
+                return null;
+            }
+        }''')
+        
+        if price and 15000 < price < 30000:
+            logger.info(f"Found current price from Angular: {price}")
+            return price
+        
+        logger.warning("Could not extract current price")
+        return None
+        
+    except Exception as e:
+        logger.error(f"Error extracting price: {e}")
+        return None
+
+
+async def _extract_options_data_from_page(page) -> List[Dict]:
+    """Extract options data from page"""
+    try:
+        # Wait a bit for data to load
+        await page.waitFor(1000)
+        
+        # Extract data using JavaScript
+        options_data = await page.evaluate('''() => {
+            const data = [];
+            
+            // Try to find options table
+            const tables = document.querySelectorAll('table');
+            let optionsTable = null;
+            
+            for (const table of tables) {
+                const text = table.innerText.toLowerCase();
+                if (text.includes('strike') && text.includes('call') && text.includes('put')) {
+                    optionsTable = table;
+                    break;
+                }
+            }
+            
+            if (!optionsTable) {
+                // Try Angular data binding
+                try {
+                    const scope = angular.element(document.querySelector('[data-ng-controller]')).scope();
+                    if (scope.optionsData) {
+                        return scope.optionsData;
+                    }
+                } catch (e) {}
+                return [];
+            }
+            
+            // Parse table rows
+            const rows = optionsTable.querySelectorAll('tr');
+            for (let i = 1; i < rows.length; i++) {  // Skip header
+                const cells = rows[i].querySelectorAll('td');
+                if (cells.length >= 7) {
+                    const strike = parseFloat(cells[3]?.innerText.replace(/,/g, ''));
+                    if (strike && !isNaN(strike)) {
+                        data.push({
+                            strike: strike,
+                            call_volume: parseInt(cells[0]?.innerText.replace(/,/g, '') || '0'),
+                            call_oi: parseInt(cells[1]?.innerText.replace(/,/g, '') || '0'),
+                            call_premium: parseFloat(cells[2]?.innerText.replace(/,/g, '') || '0'),
+                            put_premium: parseFloat(cells[4]?.innerText.replace(/,/g, '') || '0'),
+                            put_oi: parseInt(cells[5]?.innerText.replace(/,/g, '') || '0'),
+                            put_volume: parseInt(cells[6]?.innerText.replace(/,/g, '') || '0')
+                        });
+                    }
+                }
+            }
+            
+            return data;
+        }''')
+        
+        logger.info(f"Extracted {len(options_data)} option strikes")
+        return options_data
+        
+    except Exception as e:
+        logger.error(f"Error extracting options data: {e}")
+        return []
 
 
 def run_puppeteer_scraper(url: str, remote_port: int = 9222) -> Tuple[Optional[float], List[Dict]]:
