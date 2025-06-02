@@ -1,0 +1,50 @@
+{
+  "total_options": 3,
+  "unique_strikes": 3,
+  "entries_with_call_data": 3,
+  "entries_with_put_data": 3,
+  "duplicates": {},
+  "strike_range": "$15,874 - $24,019",
+  "current_price": 21540.25,
+  "detailed_data": [
+    {
+      "strike": 15874,
+      "call_volume": 298497,
+      "call_oi": 298497,
+      "call_premium": 298496,
+      "put_premium": 298887,
+      "put_oi": 15875,
+      "put_volume": 129026,
+      "extraction_method": "complete_options_table_enhanced",
+      "element_type": "HTML",
+      "element_classes": "",
+      "total_numbers": 2480
+    },
+    {
+      "strike": 15875,
+      "call_volume": 298496,
+      "call_oi": 15874,
+      "call_premium": 298887,
+      "put_premium": 129026,
+      "put_oi": 298893,
+      "put_volume": 129016,
+      "extraction_method": "complete_options_table_enhanced",
+      "element_type": "HTML",
+      "element_classes": "",
+      "total_numbers": 2480
+    },
+    {
+      "strike": 24019,
+      "call_volume": 33155,
+      "call_oi": 33156,
+      "call_premium": 215135,
+      "put_premium": 33157,
+      "put_oi": 33159,
+      "put_volume": 33161,
+      "extraction_method": "complete_options_table_enhanced",
+      "element_type": "HTML",
+      "element_classes": "",
+      "total_numbers": 2480
+    }
+  ]
+}

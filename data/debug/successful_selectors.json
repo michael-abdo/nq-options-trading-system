@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-06-02T13:16:39.936905",
+  "selectors": {
+    "current_price": {
+      "method": "regex",
+      "selector": "\"lastPrice\":\\s*\"?([0-9,]+\\.?[0-9]*)\"?",
+      "extract": "json"
+    },
+    "options_table": {
+      "method": "complete_options_table",
+      "selector": "div.row",
+      "extract": "complete_chain",
+      "confidence": 0.98
+    }
+  },
+  "attempt": 1
+}

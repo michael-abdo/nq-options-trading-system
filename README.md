@@ -32,28 +32,70 @@ python nq_options_ev_algo.py
 
 ```
 EOD/
-├── .gitignore
-├── README.md
-├── requirements.txt
-├── nq_options_ev_simple.py    # Main algorithm using sample data
-├── nq_options_ev_algo.py      # Full version with Barchart scraping
-├── data/                      # Data storage
-│   └── html_snapshots/        # Saved HTML pages from Barchart
-├── docs/                      # Documentation
-│   └── nq_options_ev_system.md
-├── reports/                   # Generated trading reports
-│   └── nq_ev_report_*.txt
-├── utils/                     # Utility modules
-│   └── nq_options_scraper.py  # Enhanced scraping utilities
-└── venv/                      # Python virtual environment
+├── README.md                           # This file
+├── CLAUDE.md                           # Project-specific Claude instructions  
+├── requirements.txt                    # Python dependencies
+├── package.json                        # Node.js dependencies
+├── nq_options_ev_algo.py              # Main algorithm with live data scraping
+├── nq_options_ev_algo_puppeteer.py    # Puppeteer-based scraping version
+├── nq_options_ev_system.md            # Updated system specifications
+├── analysis_tools/                    # Data analysis and investigation tools
+│   ├── analyze_barchart_page.py       # Page structure analysis
+│   ├── capture_api_requests.py        # Network monitoring
+│   ├── hunt_live_api.py              # Live API endpoint discovery
+│   ├── extract_complete_options_table.py  # Complete table extraction
+│   └── investigate_professional_table.py  # Authentication analysis
+├── data/                              # Data storage and captures
+│   ├── api_responses/                 # Captured API responses
+│   ├── debug/                         # Debug files and screenshots
+│   ├── live_api/                      # Live API hunt results
+│   ├── screenshots/                   # Visual captures
+│   └── html_snapshots/               # Saved HTML pages
+├── docs/                              # Documentation
+│   ├── nq_options_ev_system.md       # System documentation
+│   ├── feedback_loop_system.md       # Feedback loop documentation
+│   └── logging_system.md             # Logging system docs
+├── logs/                              # Application logs
+│   └── YYYY-MM-DD_HH-MM-SS/          # Timestamped log directories
+├── reports/                           # Generated trading reports
+│   └── nq_ev_report_*.txt            # EV analysis reports
+├── scripts/                           # Test and demo scripts
+│   ├── test_*.py                      # Various testing scripts
+│   └── demo_feedback_loop.py          # Demonstration scripts
+├── tests/                             # Unit tests
+│   ├── test_barchart_scrape.py       # Scraping tests
+│   └── test_data_validation.py       # Data validation tests
+├── utils/                             # Core utility modules
+│   ├── nq_options_scraper.py         # Main scraping utilities
+│   ├── feedback_loop_scraper.py      # Closed-loop scraping system
+│   ├── puppeteer_scraper.py          # Puppeteer-based scraper
+│   ├── logging_config.py             # Logging configuration
+│   └── chrome_connection_manager.py  # Browser management
+└── venv/                              # Python virtual environment
 ```
 
-## Files
+## Key Files
 
-- `nq_options_ev_simple.py` - Main algorithm using sample data (works out of the box)
-- `nq_options_ev_algo.py` - Full version with Barchart scraping capability
-- `utils/nq_options_scraper.py` - Enhanced scraping utilities
-- `docs/nq_options_ev_system.md` - Detailed system documentation
+### Core Algorithms
+- `nq_options_ev_algo.py` - Main Expected Value trading algorithm with live data
+- `nq_options_ev_algo_puppeteer.py` - Puppeteer-based version with advanced scraping
+- `nq_options_ev_system.md` - Complete system specifications and success criteria
+
+### Scraping & Data Collection  
+- `utils/nq_options_scraper.py` - Primary scraping utilities
+- `utils/feedback_loop_scraper.py` - Self-improving closed-loop scraper
+- `analysis_tools/hunt_live_api.py` - Live API endpoint discovery system
+- `analysis_tools/capture_api_requests.py` - Network request monitoring
+
+### Analysis & Investigation
+- `analysis_tools/analyze_barchart_page.py` - Page structure analysis
+- `analysis_tools/investigate_professional_table.py` - Authentication analysis
+- `data/api_responses/options_data_*.json` - Captured live options data
+
+### Documentation
+- `docs/nq_options_ev_system.md` - System documentation  
+- `docs/feedback_loop_system.md` - Closed feedback loop documentation
+- `CLAUDE.md` - Project-specific instructions for Claude
 
 ## How It Works
 

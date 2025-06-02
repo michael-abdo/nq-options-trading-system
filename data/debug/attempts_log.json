@@ -1,0 +1,96 @@
+[
+  {
+    "attempt": 1,
+    "timestamp": "2025-06-02T13:16:39.933800",
+    "analysis_file": "data/debug/page_20250602_131625.html",
+    "test_results": {
+      "current_price": 21540.25,
+      "options_data": [
+        {
+          "strike": 15874,
+          "call_volume": 298497,
+          "call_oi": 298497,
+          "call_premium": 298496,
+          "put_premium": 298887,
+          "put_oi": 15875,
+          "put_volume": 129026,
+          "extraction_method": "complete_options_table_enhanced",
+          "element_type": "HTML",
+          "element_classes": "",
+          "total_numbers": 2480
+        },
+        {
+          "strike": 15875,
+          "call_volume": 298496,
+          "call_oi": 15874,
+          "call_premium": 298887,
+          "put_premium": 129026,
+          "put_oi": 298893,
+          "put_volume": 129016,
+          "extraction_method": "complete_options_table_enhanced",
+          "element_type": "HTML",
+          "element_classes": "",
+          "total_numbers": 2480
+        },
+        {
+          "strike": 24019,
+          "call_volume": 33155,
+          "call_oi": 33156,
+          "call_premium": 215135,
+          "put_premium": 33157,
+          "put_oi": 33159,
+          "put_volume": 33161,
+          "extraction_method": "complete_options_table_enhanced",
+          "element_type": "HTML",
+          "element_classes": "",
+          "total_numbers": 2480
+        }
+      ],
+      "successful_selectors": {
+        "current_price": {
+          "method": "regex",
+          "selector": "\"lastPrice\":\\s*\"?([0-9,]+\\.?[0-9]*)\"?",
+          "extract": "json"
+        },
+        "options_table": {
+          "method": "complete_options_table",
+          "selector": "div.row",
+          "extract": "complete_chain",
+          "confidence": 0.98
+        }
+      },
+      "failed_selectors": [
+        {
+          "type": "current_price",
+          "strategy": {
+            "method": "css",
+            "selector": "#bc-dynamic-config",
+            "extract": "text",
+            "confidence": 0.9
+          },
+          "error": "'ElementHandle' object has no attribute 'innerText'"
+        },
+        {
+          "type": "current_price",
+          "strategy": {
+            "method": "css",
+            "selector": "span.last-change.ng-binding",
+            "extract": "text"
+          },
+          "error": "'ElementHandle' object has no attribute 'innerText'"
+        },
+        {
+          "type": "current_price",
+          "strategy": {
+            "method": "css",
+            "selector": ".last-change",
+            "extract": "text"
+          },
+          "error": "'ElementHandle' object has no attribute 'innerText'"
+        }
+      ],
+      "success": true
+    },
+    "successful": true
+  }
+]

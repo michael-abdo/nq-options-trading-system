@@ -254,8 +254,8 @@ class PuppeteerBarchartScraper:
             logger.info("Disconnected from Chrome (browser still running)")
 
 
-async def scrape_barchart_with_puppeteer(url: str, remote_port: int = 9222) -> Tuple[Optional[float], List[Dict]]:
-    """Main function to scrape Barchart using Puppeteer"""
+async def scrape_barchart_with_puppeteer(url: str, remote_port: int = 9222, use_feedback_loop: bool = False) -> Tuple[Optional[float], List[Dict]]:
+    """Main function to scrape Barchart using Puppeteer with optional feedback loop"""
     # Import here to avoid circular imports
     from .chrome_connection_manager import get_chrome_page, close_chrome_page
     
@@ -289,11 +289,27 @@ async def scrape_barchart_with_puppeteer(url: str, remote_port: int = 9222) -> T
         except:
             logger.warning("Table selector timeout, trying to extract data anyway")
         
-        # Extract current price
+        # Try normal extraction first
         current_price = await _extract_current_price_from_page(page)
-        
-        # Extract options data
         options_data = await _extract_options_data_from_page(page)
+        
+        # If normal extraction fails and feedback loop is enabled, try feedback loop
+        if use_feedback_loop and (not current_price or not options_data):
+            logger.warning("Normal extraction failed, trying feedback loop scraper...")
+            
+            try:
+                from .feedback_loop_scraper import run_feedback_loop_scraper
+                
+                feedback_results = await run_feedback_loop_scraper(page, debug_dir="data/debug")
+                
+                if feedback_results.get("success"):
+                    logger.info("Feedback loop scraper succeeded!")
+                    current_price = feedback_results.get("current_price", current_price)
+                    options_data = feedback_results.get("options_data", options_data)
+                else:
+                    logger.error("Feedback loop scraper also failed")
+            except Exception as fe:
+                logger.error(f"Feedback loop scraper error: {fe}")
         
         return current_price, options_data
         
@@ -417,9 +433,9 @@ async def _extract_options_data_from_page(page) -> List[Dict]:
         return []
 
 
-def run_puppeteer_scraper(url: str, remote_port: int = 9222) -> Tuple[Optional[float], List[Dict]]:
+def run_puppeteer_scraper(url: str, remote_port: int = 9222, use_feedback_loop: bool = False) -> Tuple[Optional[float], List[Dict]]:
     """Synchronous wrapper for async scraper"""
-    return asyncio.run(scrape_barchart_with_puppeteer(url, remote_port))
+    return asyncio.run(scrape_barchart_with_puppeteer(url, remote_port, use_feedback_loop))
 
 
 if __name__ == "__main__":

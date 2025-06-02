@@ -1,0 +1,16 @@
+Feedback Loop Scraper Final Report
+============================================================
+Total Attempts: 1
+Success: Yes
+
+Attempt Summary:
+------------------------------------------------------------
+
+Attempt 1:
+  Timestamp: 2025-06-02T13:06:34.858676
+  Success: True
+  Price Found: 21514.5
+  Options Found: 2 strikes
+  Successful Selectors:
+    current_price: regex - "lastPrice":\s*"?([0-9,]+\.?[0-9]*)"?
+    options_table: complete_options_table - div.row
