@@ -28,6 +28,7 @@ Thumbs.db
 
 # Project specific
 *.log
+logs/
 reports/
 
 # HTML files (scraped data)
