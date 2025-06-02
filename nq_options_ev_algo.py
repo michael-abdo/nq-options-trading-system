@@ -239,21 +239,15 @@ def scrape_barchart_options(url: str) -> Tuple[float, List[OptionsStrike]]:
                         data_logger.debug(f"Failed to parse row {row_idx} in table {table_idx}: {e}")
                         continue
         
-        # If no data found from HTML, generate sample data based on the markdown example
+        # If no data found from HTML, exit with error
         if not options_data:
-            data_logger.warning("No options data found in HTML, using sample data")
-            sample_data = [
-                (21200, 250, 1500, 2.50, 800, 5200, 8.75),
-                (21250, 180, 1200, 4.25, 650, 4800, 12.50),
-                (21300, 320, 2100, 7.50, 920, 6500, 18.25),
-                (21350, 450, 3200, 12.75, 1100, 7200, 26.50),
-                (21400, 850, 5500, 22.50, 1350, 8900, 38.75),
-                (21450, 1200, 8200, 35.25, 1580, 9500, 55.50),
-                (21500, 980, 6800, 52.75, 1820, 8800, 78.25),
-            ]
-            
-            for data in sample_data:
-                options_data.append(OptionsStrike(*data))
+            data_logger.error("!!! ERROR: No options data found in HTML")
+            data_logger.error("Possible reasons:")
+            data_logger.error("1. Page requires authentication/login")
+            data_logger.error("2. Page structure has changed")
+            data_logger.error("3. Data loads dynamically (try --puppeteer flag)")
+            data_logger.error("4. Network/connection issues")
+            raise Exception("Failed to extract options data from Barchart")
         
         data_logger.info(f"Successfully scraped {len(options_data)} strikes")
         return current_price, options_data
@@ -569,9 +563,22 @@ def main():
         
     except Exception as e:
         logger.error(f"!!! ERROR in main execution: {type(e).__name__}: {str(e)}")
-        logger.exception("Full traceback:")
+        
+        if "Failed to extract options data" in str(e):
+            print("\n" + "="*80)
+            print("ERROR: No options data could be extracted from Barchart")
+            print("="*80)
+            print("\nPossible solutions:")
+            print("1. Make sure you're logged into Barchart.com")
+            print("2. Try using Puppeteer mode: python nq_options_ev_algo_puppeteer.py --puppeteer")
+            print("3. Check if the URL is correct and accessible")
+            print("4. Verify your internet connection")
+            print("\nExiting...")
+        else:
+            logger.exception("Full traceback:")
+        
         log_section("SYSTEM FAILED", logging.ERROR)
-        raise
+        sys.exit(1)
 
 
 if __name__ == "__main__":

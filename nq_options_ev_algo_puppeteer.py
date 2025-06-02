@@ -43,7 +43,13 @@ def scrape_barchart_options_puppeteer(url: str, use_puppeteer: bool = True, remo
                 
                 return current_price, strikes
             else:
-                data_logger.warning("Puppeteer scraping failed, falling back to BeautifulSoup")
+                data_logger.error("Puppeteer scraping failed - no data found")
+                logger.error("!!! ERROR: Unable to extract options data")
+                logger.error("Please check:")
+                logger.error("1. Chrome is running with remote debugging")
+                logger.error("2. You are logged into Barchart if required")
+                logger.error("3. The page has fully loaded")
+                raise Exception("Failed to extract options data with Puppeteer")
         except Exception as e:
             data_logger.error(f"Puppeteer error: {e}, falling back to BeautifulSoup")
     
@@ -112,9 +118,23 @@ def main():
         
     except Exception as e:
         logger.error(f"!!! ERROR in main execution: {type(e).__name__}: {str(e)}")
-        logger.exception("Full traceback:")
+        
+        if "Failed to extract options data" in str(e):
+            print("\n" + "="*80)
+            print("ERROR: No options data could be extracted from Barchart")
+            print("="*80)
+            print("\nTroubleshooting steps:")
+            print("1. Ensure Chrome is running with: /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222")
+            print("2. Navigate to Barchart and log in if required")
+            print("3. Check if reCAPTCHA needs to be solved")
+            print("4. Try refreshing the page manually in Chrome")
+            print("5. Verify the options page loads correctly")
+            print("\nExiting...")
+        else:
+            logger.exception("Full traceback:")
+        
         log_section("SYSTEM FAILED", logging.ERROR)
-        raise
+        sys.exit(1)
 
 
 if __name__ == "__main__":
