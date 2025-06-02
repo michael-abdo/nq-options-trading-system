@@ -1,9 +1,0 @@
-{
-  "screenshot_path": "data/debug/page_20250602_120950_screenshot.png",
-  "timestamp": "2025-06-02T12:09:52.594722",
-  "error": "No module named 'numpy'",
-  "analysis_notes": "Screenshot analysis failed - manual inspection required",
-  "suggested_actions": [
-    "Check screenshot file exists and is readable"
-  ]
-}
