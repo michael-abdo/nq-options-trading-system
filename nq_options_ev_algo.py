@@ -93,8 +93,12 @@ class TradeSetup:
 
 
 @log_function_call
-def get_current_contract_url() -> str:
-    """Generate the Barchart URL for the current NQ options contract"""
+def get_current_contract_url(week: int = 1) -> str:
+    """Generate the Barchart URL for the current NQ options contract
+    
+    Args:
+        week: Which week's expiration to use (1 or 2, default 1)
+    """
     log_section("URL Generation", logging.DEBUG)
     
     now = datetime.now()
@@ -131,8 +135,23 @@ def get_current_contract_url() -> str:
     logger.debug(f"Futures symbol: {futures_symbol}")
     
     # Options symbol (MC prefix for CME options)
-    options_symbol = f"MC{contract_month}{month_code}{year_suffix}"
+    # The pattern for Barchart NQ options appears to be:
+    # MC + expiration_identifier + month_code + year
+    # For June 2025: MC6M25 (week 1), MC7M25 (week 2)
+    # The identifier seems to increment for each weekly expiration
+    
+    # Map month and week to the identifier
+    # This may need adjustment based on Barchart's actual convention
+    if contract_month == 6:  # June
+        week_identifiers = {1: 6, 2: 7}
+    else:
+        # Default mapping - may need to be updated for other months
+        week_identifiers = {1: 6, 2: 7}
+    
+    expiration_id = week_identifiers.get(week, 6)
+    options_symbol = f"MC{expiration_id}{month_code}{year_suffix}"
     logger.debug(f"Options symbol: {options_symbol}")
+    logger.info(f"Using Week {week} expiration: {options_symbol}")
     
     url = f"https://www.barchart.com/futures/quotes/{futures_symbol}/options/{options_symbol}?futuresOptionsView=merged"
     

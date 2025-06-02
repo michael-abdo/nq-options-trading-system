@@ -63,6 +63,7 @@ def main():
     parser.add_argument('--puppeteer', action='store_true', help='Use Puppeteer for scraping')
     parser.add_argument('--port', type=int, default=9222, help='Chrome remote debugging port (default: 9222)')
     parser.add_argument('--headless', action='store_true', help='Run Chrome in headless mode')
+    parser.add_argument('--week', type=int, default=1, choices=[1, 2], help='Which week expiration to use (default: 1)')
     args = parser.parse_args()
     
     try:
@@ -74,7 +75,10 @@ def main():
             logger.info(f"Headless mode: {args.headless}")
         
         # Generate URL for current contract
-        url = get_current_contract_url()
+        url = get_current_contract_url(week=args.week)
+        
+        if args.week == 2:
+            logger.info("Using Week 2 expiration as requested")
         
         # Scrape data with Puppeteer option
         logger.info("Scraping options data...")
