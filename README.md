@@ -28,12 +28,32 @@ python nq_options_ev_simple.py
 python nq_options_ev_algo.py
 ```
 
+## Project Structure
+
+```
+EOD/
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── nq_options_ev_simple.py    # Main algorithm using sample data
+├── nq_options_ev_algo.py      # Full version with Barchart scraping
+├── data/                      # Data storage
+│   └── html_snapshots/        # Saved HTML pages from Barchart
+├── docs/                      # Documentation
+│   └── nq_options_ev_system.md
+├── reports/                   # Generated trading reports
+│   └── nq_ev_report_*.txt
+├── utils/                     # Utility modules
+│   └── nq_options_scraper.py  # Enhanced scraping utilities
+└── venv/                      # Python virtual environment
+```
+
 ## Files
 
 - `nq_options_ev_simple.py` - Main algorithm using sample data (works out of the box)
 - `nq_options_ev_algo.py` - Full version with Barchart scraping capability
-- `nq_options_scraper.py` - Enhanced scraping utilities
-- `nq_options_ev_system.md` - Detailed system documentation
+- `utils/nq_options_scraper.py` - Enhanced scraping utilities
+- `docs/nq_options_ev_system.md` - Detailed system documentation
 
 ## How It Works
 

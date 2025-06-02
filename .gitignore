@@ -28,11 +28,10 @@ Thumbs.db
 
 # Project specific
 *.log
-nq_ev_report_*.txt
+reports/
 
 # HTML files (scraped data)
-*.html
-*_files/
+data/html_snapshots/
 
 # Temporary files
 *.tmp
