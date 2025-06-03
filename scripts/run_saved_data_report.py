@@ -10,8 +10,8 @@ from typing import Dict, List, Tuple, Optional
 import sys
 import os
 
-# Add utils to path for logging
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add parent directory to path for utils access
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logging_config import setup_logging, get_logger
 
 # Set up logging
@@ -62,7 +62,9 @@ def load_saved_data() -> Dict:
     """Load the saved API data from our breakthrough discovery"""
     data_logger.info("📁 Loading saved API data from breakthrough discovery...")
     
-    data_file = "data/api_responses/options_data_20250602_141553.json"
+    # Get the project root directory
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_file = os.path.join(project_root, "data/api_responses/options_data_20250602_141553.json")
     
     try:
         with open(data_file, 'r') as f:
@@ -529,8 +531,10 @@ def main():
         print(report)
         
         # Save report to file
-        os.makedirs('reports', exist_ok=True)
-        filename = f"reports/nq_saved_data_ev_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        reports_dir = os.path.join(project_root, 'reports')
+        os.makedirs(reports_dir, exist_ok=True)
+        filename = os.path.join(reports_dir, f"nq_saved_data_ev_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt")
         with open(filename, 'w') as f:
             f.write(report)
         logger.info(f"📁 Report saved to {filename}")

@@ -23,60 +23,59 @@ pip install requests beautifulsoup4 lxml
 
 ## Usage
 
-### Run the EV Algorithm
+### Run the EV Report Generator
 ```bash
-python nq_options_ev_algo.py
+python scripts/run_saved_data_report.py
 ```
 
-## Project Structure (Streamlined)
+### Run Tests
+```bash
+python tests/test_saved_data_report.py
+```
+
+## Project Structure (Organized & Tested)
 
 ```
 EOD/
 ├── README.md                           # This file
-├── CLAUDE.md                           # Project-specific Claude instructions  
-├── requirements.txt                    # Python dependencies
-├── nq_options_ev_algo.py               # Main EV algorithm
-├── nq_options_ev_system.md             # System specifications
-├── analysis_tools/                     # Essential breakthrough tools
+├── CLAUDE.md                           # Project-specific Claude instructions
+├── .gitignore                          # Git ignore configuration
+├── analysis/                           # Analysis tools and exploratory scripts
 │   ├── capture_api_requests.py         # **BREAKTHROUGH**: API discovery script
 │   └── hunt_live_api.py                # Data quality verification
 ├── data/                               # Data storage
-│   ├── api_responses/                  # **WORKING DATA**: Captured API responses
-│   │   └── options_data_20250602_141553.json  # Volume & OI data source
-│   ├── debug/                          # Debug output (cleaned)
-│   ├── live_api/                       # API hunt results (cleaned)
-│   ├── screenshots/                    # Screenshots (cleaned)
-│   └── html_snapshots/                 # HTML captures (cleaned)
-├── docs/                               # Core documentation
-│   ├── logging_system.md              # Logging configuration docs
-│   └── nq_ev_pseudocode.txt           # Algorithm pseudocode
-├── logs/                               # Application logs
+│   └── api_responses/                  # Saved API responses
+│       └── options_data_20250602_141553.json  # **WORKING DATA**: Volume & OI source
+├── docs/                               # Documentation
+│   └── nq_options_ev_system.md         # Detailed system specifications
+├── logs/                               # Session-based logging
+│   └── YYYY-MM-DD_HH-MM-SS/            # Timestamped log directories
+│       ├── calculations.log            # EV calculation details
+│       ├── data.log                    # Data operations
+│       ├── errors.log                  # Error tracking
+│       └── main.log                    # Main execution log
 ├── reports/                            # Generated trading reports
-├── scripts/                            # Additional scripts (cleaned)
+│   └── nq_saved_data_ev_report_*.txt   # EV analysis reports
+├── scripts/                            # Executable scripts
+│   ├── run_api_report.py               # Generate report from API data
+│   └── run_saved_data_report.py        # **MAIN SCRIPT**: Generate report from saved data
 ├── tests/                              # Unit tests
-│   ├── test_barchart_scrape.py         # Scraping validation
-│   └── test_data_validation.py         # Data quality tests
-├── utils/                              # Core utilities
-│   ├── logging_config.py              # Logging setup
-│   └── nq_options_scraper.py          # Scraping utilities
-└── venv/                               # Python virtual environment
+│   └── test_saved_data_report.py       # Tests for report generation
+└── utils/                              # Utility modules
+    └── logging_config.py               # Logging configuration
 ```
 
-## Key Breakthrough Files
+## Key Components
 
 ### 🎯 Working Solution
-- `analysis_tools/capture_api_requests.py` - **THE BREAKTHROUGH SCRIPT** that discovered the working API endpoint
+- `scripts/run_saved_data_report.py` - **MAIN SCRIPT** that generates EV trading recommendations
 - `data/api_responses/options_data_20250602_141553.json` - **WORKING DATA SOURCE** with Volume & OI
-- `analysis_tools/hunt_live_api.py` - Confirmed data quality meets our needs
+- `analysis/capture_api_requests.py` - **THE BREAKTHROUGH SCRIPT** that discovered the working API endpoint
 
-### Core Algorithm
-- `nq_options_ev_algo.py` - Main Expected Value trading algorithm
-- `nq_options_ev_system.md` - Complete system specifications
-
-### Supporting Infrastructure
-- `utils/nq_options_scraper.py` - API integration utilities
-- `utils/logging_config.py` - Logging configuration
-- `tests/` - Data validation and quality tests
+### Core Infrastructure
+- `utils/logging_config.py` - Specialized logging configuration with data/calculations filters
+- `tests/test_saved_data_report.py` - Comprehensive unit tests
+- `docs/nq_options_ev_system.md` - Complete system specifications
 
 ## How It Works
 
