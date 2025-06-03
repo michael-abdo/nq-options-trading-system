@@ -17,6 +17,8 @@ from utils.logging_config import setup_logging, get_logger
 # Set up logging
 log_dir, session_id = setup_logging()
 logger = get_logger(__name__)
+data_logger = get_logger(f"{__name__}.data")
+calc_logger = get_logger(f"{__name__}.calculations")
 
 # Configuration
 WEIGHTS = {
@@ -58,7 +60,7 @@ class TradeSetup:
 
 def load_saved_data() -> Dict:
     """Load the saved API data from our breakthrough discovery"""
-    logger.info("📁 Loading saved API data from breakthrough discovery...")
+    data_logger.info("📁 Loading saved API data from breakthrough discovery...")
     
     data_file = "data/api_responses/options_data_20250602_141553.json"
     
@@ -66,11 +68,11 @@ def load_saved_data() -> Dict:
         with open(data_file, 'r') as f:
             data = json.load(f)
         
-        logger.info(f"✅ Loaded saved data: {len(data.get('data', {}).get('Call', []))} calls, {len(data.get('data', {}).get('Put', []))} puts")
+        data_logger.info(f"✅ Loaded saved data: {len(data.get('data', {}).get('Call', []))} calls, {len(data.get('data', {}).get('Put', []))} puts")
         return data
         
     except Exception as e:
-        logger.error(f"❌ Failed to load saved data: {e}")
+        data_logger.error(f"❌ Failed to load saved data: {e}")
         raise
 
 def analyze_data_quality(data: Dict) -> Dict:
@@ -238,19 +240,25 @@ def get_distance_weight(distance_pct: float) -> float:
     distance_pct = abs(distance_pct)
     
     if distance_pct <= 0.01:
-        return 1.0
+        weight = 1.0
     elif distance_pct <= 0.02:
-        return 0.8
+        weight = 0.8
     elif distance_pct <= 0.05:
-        return 0.5
+        weight = 0.5
     else:
-        return 0.2
+        weight = 0.2
+    
+    return weight
 
 def calculate_probability(current_price: float, tp: float, sl: float, 
                          strikes: List[OptionsStrike], direction: str) -> float:
     """Calculate probability of reaching TP before SL using Volume/OI data"""
     
+    calc_logger.info(f"=== Calculating Probability ===")
+    calc_logger.info(f"Current: ${current_price:,.2f}, TP: ${tp:,.2f}, SL: ${sl:,.2f}, Direction: {direction}")
+    
     if not strikes:
+        calc_logger.warning("No strikes data available, returning default 0.5")
         return 0.5  # Default if no data
     
     # Calculate factors
@@ -266,10 +274,17 @@ def calculate_probability(current_price: float, tp: float, sl: float,
     if max_vol == 0:
         max_vol = 1
     
+    calc_logger.debug(f"Max OI: {max_oi:,}, Max Volume: {max_vol:,}")
+    
     total_call_premium = sum([s.call_premium * s.call_oi for s in strikes])
     total_put_premium = sum([s.put_premium * s.put_oi for s in strikes])
     
-    for strike in strikes:
+    calc_logger.debug(f"Total call premium: ${total_call_premium:,.2f}")
+    calc_logger.debug(f"Total put premium: ${total_put_premium:,.2f}")
+    
+    # Process each strike
+    calculations_logged = 0  # Limit debug logging
+    for i, strike in enumerate(strikes):
         distance_pct = (strike.price - current_price) / current_price
         distance_weight = get_distance_weight(distance_pct)
         
@@ -288,21 +303,37 @@ def calculate_probability(current_price: float, tp: float, sl: float,
         strike_vol = strike.call_volume + strike.put_volume
         vol_contribution = (strike_vol * distance_weight * direction_modifier) / max_vol
         vol_factor += vol_contribution
+        
+        # Skip detailed strike logging to avoid huge log files
+        # Only log if this is a high-impact strike
+        if (strike_oi > 100 or strike_vol > 50) and calculations_logged < 10:
+            calc_logger.debug(f"Strike ${strike.price:,.0f}: distance={distance_pct:+.3%}, weight={distance_weight:.2f}, "
+                            f"modifier={direction_modifier:+.1f}, OI={strike_oi}, Vol={strike_vol}, "
+                            f"OI_contrib={oi_contribution:.4f}, Vol_contrib={vol_contribution:.4f}")
+            calculations_logged += 1
     
     # PCR Factor (25% weight)
     if total_call_premium + total_put_premium > 0:
         pcr_factor = (total_call_premium - total_put_premium) / (total_call_premium + total_put_premium)
         if direction == 'short':
             pcr_factor = -pcr_factor
+        calc_logger.debug(f"PCR factor (raw): {pcr_factor:.4f}")
     
     # Distance Factor (15% weight)
     distance_factor = 1 - (abs(current_price - tp) / current_price)
+    calc_logger.debug(f"Distance factor: {distance_factor:.4f}")
     
     # Normalize factors to [0, 1] range
     oi_factor = max(0, min(1, oi_factor))
     vol_factor = max(0, min(1, vol_factor))
     pcr_factor = (pcr_factor + 1) / 2  # Convert from [-1, 1] to [0, 1]
     distance_factor = max(0, min(1, distance_factor))
+    
+    calc_logger.info(f"Normalized factors:")
+    calc_logger.info(f"  OI Factor: {oi_factor:.4f} (weight: {WEIGHTS['oi_factor']:.0%})")
+    calc_logger.info(f"  Volume Factor: {vol_factor:.4f} (weight: {WEIGHTS['vol_factor']:.0%})")
+    calc_logger.info(f"  PCR Factor: {pcr_factor:.4f} (weight: {WEIGHTS['pcr_factor']:.0%})")
+    calc_logger.info(f"  Distance Factor: {distance_factor:.4f} (weight: {WEIGHTS['distance_factor']:.0%})")
     
     # Calculate weighted probability
     probability = (
@@ -312,15 +343,19 @@ def calculate_probability(current_price: float, tp: float, sl: float,
         WEIGHTS['distance_factor'] * distance_factor
     )
     
+    calc_logger.debug(f"Raw probability: {probability:.4f}")
+    
     # Clamp between 10% and 90% for realistic probability range
     probability = max(0.1, min(0.9, probability))
+    
+    calc_logger.info(f"Final probability: {probability:.2%}")
     
     return probability
 
 def calculate_ev_for_all_combinations(current_price: float, 
                                      strikes: List[OptionsStrike]) -> List[TradeSetup]:
     """Calculate EV for all valid TP/SL combinations"""
-    logger.info("🧮 Calculating EV for all TP/SL combinations...")
+    calc_logger.info("🧮 Calculating EV for all TP/SL combinations...")
     
     setups = []
     
@@ -342,6 +377,11 @@ def calculate_ev_for_all_combinations(current_price: float,
                     prob = calculate_probability(current_price, tp, sl, strikes, 'long')
                     ev = (prob * reward) - ((1 - prob) * risk)
                     
+                    if ev > 100:  # Log high-value setups
+                        calc_logger.info(f"HIGH EV LONG: TP=${tp:,.0f}, SL=${sl:,.0f}, "
+                                       f"Reward={reward:.0f}, Risk={risk:.0f}, RR={reward/risk:.2f}, "
+                                       f"Prob={prob:.2%}, EV={ev:+.1f}")
+                    
                     setup = TradeSetup(tp, sl, 'long', prob, reward, risk, ev)
                     setups.append(setup)
                     valid_combinations += 1
@@ -355,11 +395,16 @@ def calculate_ev_for_all_combinations(current_price: float,
                     prob = calculate_probability(current_price, tp, sl, strikes, 'short')
                     ev = (prob * reward) - ((1 - prob) * risk)
                     
+                    if ev > 100:  # Log high-value setups
+                        calc_logger.info(f"HIGH EV SHORT: TP=${tp:,.0f}, SL=${sl:,.0f}, "
+                                       f"Reward={reward:.0f}, Risk={risk:.0f}, RR={reward/risk:.2f}, "
+                                       f"Prob={prob:.2%}, EV={ev:+.1f}")
+                    
                     setup = TradeSetup(tp, sl, 'short', prob, reward, risk, ev)
                     setups.append(setup)
                     valid_combinations += 1
     
-    logger.info(f"📊 Tested {total_combinations} combinations, found {valid_combinations} valid setups")
+    calc_logger.info(f"📊 Tested {total_combinations} combinations, found {valid_combinations} valid setups")
     
     # Sort by EV (best first)
     setups.sort(key=lambda x: x.ev, reverse=True)
