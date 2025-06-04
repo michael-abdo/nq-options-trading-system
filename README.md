@@ -7,6 +7,7 @@ This system analyzes NQ (E-mini Nasdaq-100) futures options data to identify opt
 - **Working API Endpoint Discovered**: Captures Volume (51.9% coverage) and Open Interest (62.7% coverage)
 - **Sufficient Data Quality**: Volume and OI data meets requirements for EV calculations
 - **Streamlined Pipeline**: Removed experimental code, focused on working solution
+- **NEW: Tradovate Integration**: Added support for Tradovate API to access full options chain data
 
 ## Installation
 
@@ -18,7 +19,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 2. Install required packages:
 ```bash
-pip install requests beautifulsoup4 lxml
+pip install requests beautifulsoup4 lxml websocket-client
 ```
 
 ## Usage
@@ -32,6 +33,17 @@ python scripts/run_saved_data_report.py
 ```bash
 python tests/test_saved_data_report.py
 ```
+
+### Tradovate API Integration (NEW)
+```bash
+# Explore Tradovate API structure
+python scripts/tradovate_api_explorer.py
+
+# Get NQ options chain data
+python scripts/tradovate_options_client.py
+```
+
+See [Tradovate Integration Guide](docs/tradovate_integration.md) for detailed setup instructions.
 
 ## Project Structure (Organized & Tested)
 
@@ -47,7 +59,8 @@ EOD/
 │   └── api_responses/                  # Saved API responses
 │       └── options_data_20250602_141553.json  # **WORKING DATA**: Volume & OI source
 ├── docs/                               # Documentation
-│   └── nq_options_ev_system.md         # Detailed system specifications
+│   ├── nq_options_ev_system.md         # Detailed system specifications
+│   └── tradovate_integration.md        # Tradovate API integration guide
 ├── logs/                               # Session-based logging
 │   └── YYYY-MM-DD_HH-MM-SS/            # Timestamped log directories
 │       ├── calculations.log            # EV calculation details
@@ -58,7 +71,9 @@ EOD/
 │   └── nq_saved_data_ev_report_*.txt   # EV analysis reports
 ├── scripts/                            # Executable scripts
 │   ├── run_api_report.py               # Generate report from API data
-│   └── run_saved_data_report.py        # **MAIN SCRIPT**: Generate report from saved data
+│   ├── run_saved_data_report.py        # **MAIN SCRIPT**: Generate report from saved data
+│   ├── tradovate_api_explorer.py       # Explore Tradovate API endpoints
+│   └── tradovate_options_client.py     # Retrieve NQ options chain from Tradovate
 ├── tests/                              # Unit tests
 │   └── test_saved_data_report.py       # Tests for report generation
 └── utils/                              # Utility modules
