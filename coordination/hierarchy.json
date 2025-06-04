@@ -1,0 +1,93 @@
+{
+  "root_task": "options_trading_system",
+  "hierarchy": {
+    "options_trading_system": {
+      "type": "parent",
+      "status": "pending",
+      "subtasks": [
+        "data_ingestion",
+        "analysis_engine",
+        "output_generation"
+      ]
+    },
+    "data_ingestion": {
+      "type": "parent", 
+      "status": "pending",
+      "parent": "options_trading_system",
+      "subtasks": [
+        "barchart_saved_data",
+        "tradovate_api_data",
+        "data_normalizer"
+      ]
+    },
+    "barchart_saved_data": {
+      "type": "leaf",
+      "status": "validated",
+      "parent": "data_ingestion",
+      "description": "Load saved Barchart API data from JSON file",
+      "validated_at": "2025-06-04T14:31:06",
+      "evidence_path": "tasks/options_trading_system/subtasks/data_ingestion/subtasks/barchart_saved_data/evidence.json"
+    },
+    "tradovate_api_data": {
+      "type": "leaf",
+      "status": "pending", 
+      "parent": "data_ingestion",
+      "description": "Fetch data from Tradovate API"
+    },
+    "data_normalizer": {
+      "type": "leaf",
+      "status": "pending",
+      "parent": "data_ingestion",
+      "description": "Normalize data to standard format"
+    },
+    "analysis_engine": {
+      "type": "parent",
+      "status": "pending",
+      "parent": "options_trading_system",
+      "subtasks": [
+        "expected_value_analysis",
+        "momentum_analysis",
+        "volatility_analysis"
+      ]
+    },
+    "expected_value_analysis": {
+      "type": "leaf",
+      "status": "pending",
+      "parent": "analysis_engine",
+      "description": "Calculate expected value for trading opportunities"
+    },
+    "momentum_analysis": {
+      "type": "leaf",
+      "status": "pending",
+      "parent": "analysis_engine",
+      "description": "Analyze options momentum patterns"
+    },
+    "volatility_analysis": {
+      "type": "leaf",
+      "status": "pending",
+      "parent": "analysis_engine",
+      "description": "Analyze implied volatility patterns"
+    },
+    "output_generation": {
+      "type": "parent",
+      "status": "pending",
+      "parent": "options_trading_system",
+      "subtasks": [
+        "report_generator",
+        "json_exporter"
+      ]
+    },
+    "report_generator": {
+      "type": "leaf",
+      "status": "pending",
+      "parent": "output_generation",
+      "description": "Generate human-readable trading reports"
+    },
+    "json_exporter": {
+      "type": "leaf",
+      "status": "pending",
+      "parent": "output_generation",
+      "description": "Export analysis results as JSON"
+    }
+  }
+}

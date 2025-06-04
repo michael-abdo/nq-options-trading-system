@@ -1,0 +1,75 @@
+pipelines:
+  # Main analysis pipeline using saved data
+  main_analysis:
+    data_source: "barchart_saved"
+    strategies:
+      - "expected_value"
+    outputs:
+      - "summary"
+      - "detailed_report"
+  
+  # Conservative analysis
+  conservative_analysis:
+    data_source: "barchart_saved"
+    strategies:
+      - "expected_value_conservative"
+    outputs:
+      - "summary"
+  
+  # Aggressive analysis
+  aggressive_analysis:
+    data_source: "barchart_saved"
+    strategies:
+      - "expected_value_aggressive"
+    outputs:
+      - "summary"
+  
+  # Multi-strategy comparison
+  strategy_comparison:
+    data_source: "barchart_saved"
+    strategies:
+      - "expected_value"
+      - "expected_value_conservative"
+      - "expected_value_aggressive"
+    outputs:
+      - "comparison_report"
+  
+  # Quick EV check
+  quick_ev:
+    data_source: "latest_saved"
+    strategies:
+      - "expected_value"
+    outputs:
+      - "summary"
+
+# Future pipeline configurations:
+#
+# full_analysis:
+#   data_source: "tradovate"
+#   strategies:
+#     - "expected_value"
+#     - "momentum_analysis"
+#     - "gamma_exposure"
+#     - "flow_analysis"
+#   outputs:
+#     - "json_output"
+#     - "detailed_report"
+#     - "alerts"
+#
+# scalping_analysis:
+#   data_source: "barchart_live"
+#   strategies:
+#     - "momentum_analysis"
+#     - "flow_analysis"
+#   outputs:
+#     - "real_time_alerts"
+#
+# weekly_analysis:
+#   data_source: "tradovate"
+#   strategies:
+#     - "expected_value"
+#     - "volatility_analysis"
+#     - "gamma_exposure"
+#   outputs:
+#     - "weekly_report"
+#     - "csv_export"

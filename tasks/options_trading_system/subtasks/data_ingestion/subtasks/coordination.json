@@ -1,0 +1,26 @@
+{
+  "parent_task": "data_ingestion",
+  "total_subtasks": 3,
+  "validated_subtasks": 1,
+  "subtask_status": {
+    "barchart_saved_data": {
+      "status": "validated",
+      "validated_at": "2025-06-04T14:31:06",
+      "tests_passed": 6,
+      "tests_total": 6,
+      "quality_metrics": {
+        "volume_coverage": 0.519,
+        "oi_coverage": 0.627,
+        "total_contracts": 576
+      }
+    },
+    "tradovate_api_data": {
+      "status": "pending"
+    },
+    "data_normalizer": {
+      "status": "pending",
+      "depends_on": ["barchart_saved_data", "tradovate_api_data"]
+    }
+  },
+  "next_task": "tradovate_api_data"
+}
