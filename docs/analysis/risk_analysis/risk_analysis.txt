@@ -1,0 +1,223 @@
+// =====================================
+// SYSTEMATIC OPTIONS RISK ANALYSIS
+// "Who Has More Skin in the Game?"
+// =====================================
+
+FUNCTION analyzeOptionsRisk(currentPrice, optionsChain, multiplier):
+    
+    // Initialize risk containers
+    callsAtRisk = []
+    putsAtRisk = []
+    totalCallRisk = 0
+    totalPutRisk = 0
+    
+    // =====================================
+    // STEP 1: CLASSIFY RISK BY STRIKE
+    // =====================================
+    
+    FOR each strike in optionsChain:
+        callRisk = strike.callOpenInterest * strike.callPremium * multiplier
+        putRisk = strike.putOpenInterest * strike.putPremium * multiplier
+        distance = ABS(strike.level - currentPrice)
+        
+        // Calls at risk if OTM (strike > current price)
+        IF strike.level > currentPrice AND callRisk > 0:
+            callsAtRisk.ADD({
+                strike: strike.level,
+                openInterest: strike.callOpenInterest,
+                premium: strike.callPremium,
+                totalRisk: callRisk,
+                distance: strike.level - currentPrice
+            })
+            totalCallRisk += callRisk
+        
+        // Puts at risk if OTM (strike < current price)  
+        IF strike.level < currentPrice AND putRisk > 0:
+            putsAtRisk.ADD({
+                strike: strike.level,
+                openInterest: strike.putOpenInterest,
+                premium: strike.putPremium,
+                totalRisk: putRisk,
+                distance: currentPrice - strike.level
+            })
+            totalPutRisk += putRisk
+    END FOR
+    
+    // =====================================
+    // STEP 2: CALCULATE DOMINANCE METRICS
+    // =====================================
+    
+    riskRatio = totalCallRisk / totalPutRisk
+    
+    IF riskRatio > 2.0:
+        verdict = "STRONG CALL DOMINANCE - Bulls have much more to lose"
+        bias = "UPWARD PRESSURE EXPECTED"
+    ELSE IF riskRatio < 0.5:
+        verdict = "STRONG PUT DOMINANCE - Bears have much more to lose"  
+        bias = "DOWNWARD PRESSURE EXPECTED"
+    ELSE:
+        verdict = "BALANCED RISK - Contested territory"
+        bias = "SIDEWAYS/CHOPPY ACTION EXPECTED"
+    END IF
+    
+    // =====================================
+    // STEP 3: FIND CRITICAL BATTLE ZONES
+    // =====================================
+    
+    // Sort by proximity to current price
+    SORT callsAtRisk BY distance ASCENDING
+    SORT putsAtRisk BY distance ASCENDING
+    
+    // Find nearest major threats
+    nearestCallThreat = NULL
+    nearestPutThreat = NULL
+    
+    IF callsAtRisk.LENGTH > 0:
+        nearestCallThreat = callsAtRisk[0]  // Closest call defense
+    END IF
+    
+    IF putsAtRisk.LENGTH > 0:
+        nearestPutThreat = putsAtRisk[0]   // Closest put defense
+    END IF
+    
+    // =====================================
+    // STEP 4: VOLUME ANALYSIS (REINFORCEMENTS)
+    // =====================================
+    
+    FUNCTION calculateReinforcementStrength(strike):
+        IF strike.openInterest > 0:
+            activityRatio = strike.todayVolume / strike.openInterest
+            IF activityRatio > 1.0:
+                RETURN "HEAVY REINFORCEMENTS"
+            ELSE IF activityRatio > 0.5:
+                RETURN "MODERATE ACTIVITY" 
+            ELSE:
+                RETURN "EXISTING POSITIONS"
+            END IF
+        ELSE:
+            RETURN "NEW POSITIONS ONLY"
+        END IF
+    END FUNCTION
+    
+    // =====================================
+    // STEP 5: PROXIMITY DANGER SCORING
+    // =====================================
+    
+    FUNCTION calculateDangerScore(riskAmount, distance):
+        IF distance <= 10:
+            urgency = "IMMEDIATE"
+            multiplier = 3.0
+        ELSE IF distance <= 25:
+            urgency = "NEAR TERM" 
+            multiplier = 2.0
+        ELSE IF distance <= 50:
+            urgency = "MEDIUM TERM"
+            multiplier = 1.0
+        ELSE:
+            urgency = "DISTANT"
+            multiplier = 0.5
+        END IF
+        
+        RETURN riskAmount * multiplier, urgency
+    END FUNCTION
+    
+    // =====================================
+    // STEP 6: BATTLE ZONE MAPPING
+    // =====================================
+    
+    battleZones = []
+    
+    FOR each strike in (callsAtRisk + putsAtRisk):
+        dangerScore, urgency = calculateDangerScore(strike.totalRisk, strike.distance)
+        
+        battleZones.ADD({
+            strike: strike.strike,
+            type: IF strike in callsAtRisk THEN "CALL DEFENSE" ELSE "PUT DEFENSE",
+            riskAmount: strike.totalRisk,
+            distance: strike.distance,
+            dangerScore: dangerScore,
+            urgency: urgency
+        })
+    END FOR
+    
+    SORT battleZones BY dangerScore DESCENDING
+    
+    // =====================================
+    // STEP 7: GENERATE TRADING SIGNALS
+    // =====================================
+    
+    signals = []
+    
+    // Immediate threats (within 10 points)
+    FOR each zone in battleZones:
+        IF zone.urgency == "IMMEDIATE":
+            IF zone.type == "CALL DEFENSE":
+                signals.ADD("STRONG SUPPORT expected at " + zone.strike)
+            ELSE:
+                signals.ADD("STRONG RESISTANCE expected at " + zone.strike)
+            END IF
+        END IF
+    END FOR
+    
+    // Directional bias
+    IF nearestCallThreat AND nearestPutThreat:
+        IF nearestCallThreat.distance < nearestPutThreat.distance:
+            signals.ADD("UPWARD BIAS - Calls closer to danger")
+        ELSE:
+            signals.ADD("DOWNWARD BIAS - Puts closer to danger")
+        END IF
+    END IF
+    
+    // =====================================
+    // STEP 8: RETURN COMPREHENSIVE ANALYSIS
+    // =====================================
+    
+    RETURN {
+        summary: {
+            totalCallRisk: totalCallRisk,
+            totalPutRisk: totalPutRisk,
+            riskRatio: riskRatio,
+            verdict: verdict,
+            bias: bias
+        },
+        threats: {
+            nearestCallThreat: nearestCallThreat,
+            nearestPutThreat: nearestPutThreat
+        },
+        battleZones: battleZones[0:5],  // Top 5 critical zones
+        signals: signals
+    }
+
+END FUNCTION
+
+// =====================================
+// USAGE EXAMPLE
+// =====================================
+
+currentPrice = 21761.75
+multiplier = 20  // $20 per point for E-Mini Nasdaq
+
+optionsChain = [
+    {level: 21750, callOI: 545, callPremium: 12.75, putOI: 18, putPremium: 6.00, todayVolume: 916},
+    {level: 21760, callOI: 15, callPremium: 8.00, putOI: 1, putPremium: 10.75, todayVolume: 394},
+    {level: 21770, callOI: 60, callPremium: 4.05, putOI: 0, putPremium: 17.00, todayVolume: 392},
+    // ... more strikes
+]
+
+analysis = analyzeOptionsRisk(currentPrice, optionsChain, multiplier)
+
+PRINT "=== SKIN IN THE GAME ANALYSIS ==="
+PRINT "Total Call Risk: $" + analysis.summary.totalCallRisk
+PRINT "Total Put Risk: $" + analysis.summary.totalPutRisk  
+PRINT "Verdict: " + analysis.summary.verdict
+PRINT "Market Bias: " + analysis.summary.bias
+
+PRINT "\n=== CRITICAL BATTLE ZONES ==="
+FOR each zone in analysis.battleZones:
+    PRINT zone.strike + ": $" + zone.riskAmount + " (" + zone.urgency + ")"
+END FOR
+
+PRINT "\n=== TRADING SIGNALS ==="
+FOR each signal in analysis.signals:
+    PRINT "• " + signal
+END FOR

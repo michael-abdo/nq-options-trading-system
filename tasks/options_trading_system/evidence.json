@@ -1,0 +1,126 @@
+{
+  "task": "options_trading_system",
+  "type": "root",
+  "timestamp": "2025-06-04T16:26:11.834840",
+  "integration_tests": [
+    {
+      "name": "child_validations",
+      "passed": true,
+      "details": "All 3 children validated: True"
+    },
+    {
+      "name": "system_initialization",
+      "passed": true,
+      "details": "System initialized successfully: True"
+    },
+    {
+      "name": "configuration_validation",
+      "passed": true,
+      "details": {
+        "status": "valid",
+        "checks": {
+          "data_config_valid": true,
+          "analysis_config_valid": true,
+          "output_config_valid": true,
+          "save_config_valid": true
+        },
+        "missing_sections": []
+      }
+    },
+    {
+      "name": "individual_pipelines",
+      "passed": true,
+      "details": {
+        "data_pipeline": true,
+        "analysis_pipeline": true,
+        "output_pipeline": true,
+        "data_status": "success",
+        "analysis_status": "success",
+        "output_status": "success"
+      }
+    },
+    {
+      "name": "system_summary",
+      "passed": true,
+      "details": {
+        "system_health": "excellent",
+        "successful_pipelines": 3,
+        "has_trading_summary": true,
+        "has_primary_recommendation": true
+      }
+    },
+    {
+      "name": "complete_system_execution",
+      "passed": true,
+      "details": {
+        "status": "success",
+        "execution_time": 3.888245,
+        "system_health": "excellent",
+        "pipeline_success_rate": 1.0,
+        "has_trading_recommendation": true
+      }
+    }
+  ],
+  "status": "VALIDATED",
+  "evidence": {
+    "complete_system_result": {
+      "status": "success",
+      "execution_time": 3.888245,
+      "system_version": "1.0",
+      "system_health": {
+        "status": "excellent",
+        "pipeline_success_rate": 1.0,
+        "critical_systems_operational": true,
+        "data_quality_acceptable": true,
+        "output_generation_operational": true
+      },
+      "pipeline_success_rate": 1.0,
+      "trading_summary": {
+        "underlying_price": 21376.75,
+        "algorithm": "nq_options_ev",
+        "quality_setups": 5486,
+        "best_ev": 5964.357177141185,
+        "avg_probability": 0.864139252087953,
+        "primary_recommendation": {
+          "direction": "SHORT",
+          "entry": 21376.75,
+          "target": 14000.0,
+          "stop": 21380.0,
+          "expected_value": 5964.357177141185,
+          "probability": 0.8086188586912175,
+          "position_size": "LARGE (15-20%)"
+        }
+      },
+      "config_validation": {
+        "status": "valid",
+        "checks": {
+          "data_config_valid": true,
+          "analysis_config_valid": true,
+          "output_config_valid": true,
+          "save_config_valid": true
+        },
+        "missing_sections": []
+      }
+    }
+  },
+  "child_validations": [
+    {
+      "task": "data_ingestion",
+      "status": "validated",
+      "type": "parent",
+      "evidence_path": "tasks/options_trading_system/data_ingestion/evidence_rollup.json"
+    },
+    {
+      "task": "analysis_engine",
+      "status": "validated",
+      "type": "parent",
+      "evidence_path": "tasks/options_trading_system/analysis_engine/evidence_rollup.json"
+    },
+    {
+      "task": "output_generation",
+      "status": "validated",
+      "type": "parent",
+      "evidence_path": "tasks/options_trading_system/output_generation/evidence_rollup.json"
+    }
+  ]
+}

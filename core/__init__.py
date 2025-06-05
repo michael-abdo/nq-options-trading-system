@@ -1,1 +1,0 @@
-# Core framework for modular trading analysis system

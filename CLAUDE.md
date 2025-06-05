@@ -21,12 +21,11 @@ project_root/
 │   ├── evidence.json        # THE test results
 │   ├── integration.py       # THE child solution combiner (if has subtasks)
 │   ├── evidence_rollup.json # THE aggregated child evidence (if has subtasks)
-│   └── subtasks/           # Recursive task hierarchy
-│       ├── {child_id}/     # Same structure recursively
-│       │   ├── solution.py
-│       │   ├── test_validation.py
-│       │   └── evidence.json
-│       └── coordination.json # Local subtask coordination
+│   ├── {child_id}/         # Direct child tasks (no subtasks folder)
+│   │   ├── solution.py
+│   │   ├── test_validation.py
+│   │   └── evidence.json
+│   └── coordination.json    # Local subtask coordination
 └── coordination/
     ├── hierarchy.json      # Task tree structure
     └── global_status.json  # Top-level status only
