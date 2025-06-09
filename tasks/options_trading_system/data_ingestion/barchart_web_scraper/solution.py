@@ -91,6 +91,23 @@ class BarchartWebScraper:
             self.logger.error(f"Failed to setup Chrome driver: {e}")
             raise
     
+    def get_cookies_from_driver(self) -> Dict[str, str]:
+        """
+        Extract cookies from Selenium driver for API use
+        
+        Returns:
+            Dictionary of cookie names and values
+        """
+        if not self.driver:
+            return {}
+            
+        cookies = {}
+        for cookie in self.driver.get_cookies():
+            cookies[cookie['name']] = cookie['value']
+        
+        self.logger.info(f"Extracted {len(cookies)} cookies from browser")
+        return cookies
+    
     def scrape_barchart_options(self, url: str) -> OptionsChainData:
         """
         CORE SCRAPING FUNCTION: Extract options data from barchart.com
