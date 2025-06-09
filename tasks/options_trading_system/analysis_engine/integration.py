@@ -20,6 +20,7 @@ sys.path.insert(0, current_dir)
 # Import child task modules - using your actual NQ EV algorithm
 from expected_value_analysis.solution import analyze_expected_value
 from risk_analysis.solution import run_risk_analysis
+from volume_shock_analysis.solution import analyze_volume_shocks
 
 
 class AnalysisEngine:
@@ -111,6 +112,54 @@ class AnalysisEngine:
                 "timestamp": datetime.now().isoformat()
             }
     
+    def run_volume_shock_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
+        """Run volume shock analysis (The Egg Rush Strategy)"""
+        print("  Running Volume Shock Analysis (Front-Running Market Makers)...")
+        
+        volume_shock_config = self.config.get("volume_shock", {
+            "volume_ratio_threshold": 4.0,
+            "min_volume_threshold": 100,
+            "pressure_threshold": 50.0,
+            "high_delta_threshold": 2000,
+            "emergency_delta_threshold": 5000,
+            "validation_mode": True
+        })
+        
+        try:
+            result = analyze_volume_shocks(data_config, volume_shock_config)
+            
+            if result["status"] == "success":
+                alerts = result.get("alerts", [])
+                recommendations = result.get("execution_recommendations", [])
+                
+                print(f"    ✓ Volume Shock Analysis: {len(alerts)} alerts, {len(recommendations)} signals")
+                
+                if recommendations:
+                    primary_signal = recommendations[0]
+                    print(f"    ✓ Primary signal: {primary_signal['trade_direction']} "
+                          f"EV={primary_signal['expected_value']:+.1f} points "
+                          f"({primary_signal['flow_type']})")
+                
+                return {
+                    "status": "success",
+                    "result": result,
+                    "timestamp": datetime.now().isoformat()
+                }
+            else:
+                print(f"    ✗ Volume Shock Analysis failed: {result.get('error', 'Unknown error')}")
+                return {
+                    "status": "failed",
+                    "error": result.get('error', 'Unknown error'),
+                    "timestamp": datetime.now().isoformat()
+                }
+        except Exception as e:
+            print(f"    ✗ Volume Shock Analysis failed: {str(e)}")
+            return {
+                "status": "failed",
+                "error": str(e),
+                "timestamp": datetime.now().isoformat()
+            }
+    
     def synthesize_analysis_results(self) -> Dict[str, Any]:
         """Synthesize results prioritizing your NQ EV algorithm"""
         print("  Synthesizing Analysis Results (NQ EV Algorithm Priority)...")
@@ -175,6 +224,29 @@ class AnalysisEngine:
                         "reasoning": f"Your NQ EV algorithm setup #{i} with EV={opp['expected_value']:+.1f}"
                     })
         
+        # Volume Shock Analysis (High Priority - Time Sensitive)
+        if "volume_shock" in successful_analyses:
+            volume_result = self.analysis_results["volume_shock"]["result"]
+            volume_recommendations = volume_result.get("execution_recommendations", [])
+            
+            for i, rec in enumerate(volume_recommendations[:2]):  # Top 2 volume shock signals
+                primary_recommendations.append({
+                    "source": "volume_shock_analysis",
+                    "priority": "IMMEDIATE" if rec["priority"] == "PRIMARY" else "HIGH",
+                    "rank": i + 1,
+                    "trade_direction": rec["trade_direction"],
+                    "entry_price": rec["entry_price"],
+                    "target": rec["target_price"],
+                    "stop": rec["stop_price"],
+                    "expected_value": rec["expected_value"],
+                    "probability": rec["confidence"],
+                    "position_size": rec["position_size"],
+                    "confidence": rec["execution_urgency"],
+                    "max_hold_time": rec["max_hold_time_minutes"],
+                    "flow_type": rec["flow_type"],
+                    "reasoning": rec["reasoning"]
+                })
+        
         synthesis["trading_recommendations"] = primary_recommendations
         
         # Market context from analyses
@@ -192,6 +264,12 @@ class AnalysisEngine:
             market_context["nq_price"] = nq_result["underlying_price"]
             market_context["quality_setups"] = nq_result["quality_setups"]
             market_context["best_ev"] = nq_result["metrics"]["best_ev"]
+        
+        if "volume_shock" in successful_analyses:
+            volume_result = self.analysis_results["volume_shock"]["result"]
+            market_context["volume_shock_alerts"] = len(volume_result.get("alerts", []))
+            market_context["volume_shock_intensity"] = volume_result.get("market_context", {}).get("volume_shock_intensity", {})
+            market_context["execution_window"] = volume_result.get("market_context", {}).get("optimal_trading_window", {})
         
         synthesis["market_context"] = market_context
         
@@ -221,8 +299,8 @@ class AnalysisEngine:
         return synthesis
     
     def run_full_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
-        """Run complete analysis engine with your NQ EV algorithm as primary"""
-        print("EXECUTING ANALYSIS ENGINE (NQ EV + Risk Analysis)")
+        """Run complete analysis engine with NQ EV, Risk Analysis, and Volume Shock"""
+        print("EXECUTING ANALYSIS ENGINE (NQ EV + Risk + Volume Shock)")
         print("-" * 50)
         
         start_time = datetime.now()
@@ -230,11 +308,12 @@ class AnalysisEngine:
         # Run all analyses in parallel for speed
         print("  Running all analyses simultaneously...")
         
-        with ThreadPoolExecutor(max_workers=2) as executor:
-            # Submit both analyses to run concurrently
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            # Submit all analyses to run concurrently
             futures = {
                 executor.submit(self.run_nq_ev_analysis, data_config): "expected_value",
-                executor.submit(self.run_risk_analysis, data_config): "risk"
+                executor.submit(self.run_risk_analysis, data_config): "risk",
+                executor.submit(self.run_volume_shock_analysis, data_config): "volume_shock"
             }
             
             # Collect results as they complete
@@ -279,7 +358,7 @@ class AnalysisEngine:
         
         print(f"\nANALYSIS ENGINE COMPLETE")
         print(f"✓ Execution time: {execution_time:.2f}s")
-        print(f"✓ Successful analyses: {final_results['summary']['successful_analyses']}/2")
+        print(f"✓ Successful analyses: {final_results['summary']['successful_analyses']}/3")
         print(f"✓ Primary recommendations: {final_results['summary']['primary_recommendations']}")
         
         # Show best NQ EV recommendation
@@ -322,6 +401,14 @@ def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, 
                 "immediate_threat_distance": 10,
                 "near_term_distance": 25,
                 "medium_term_distance": 50
+            },
+            "volume_shock": {
+                "volume_ratio_threshold": 4.0,
+                "min_volume_threshold": 100,
+                "pressure_threshold": 50.0,
+                "high_delta_threshold": 2000,
+                "emergency_delta_threshold": 5000,
+                "validation_mode": True
             }
         }
     
