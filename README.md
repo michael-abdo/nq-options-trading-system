@@ -37,10 +37,25 @@ Final Results: Top-ranked trading opportunities
 ├── archive/                            # Legacy files (archived)
 ├── data/                               # Market data
 ├── docs/                               # Documentation
+├── outputs/                            # 📁 ORGANIZED OUTPUT STRUCTURE
+│   └── YYYYMMDD/                       # Date-based organization
+│       ├── analysis_exports/           # JSON analysis outputs
+│       ├── reports/                    # Trading reports
+│       ├── logs/                       # System logs
+│       └── samples/                    # Sample data files
+├── tests/                              # Test scripts
 └── tasks/options_trading_system/       # Active pipeline framework
     ├── analysis_engine/                # Analysis modules
-    ├── data_ingestion/                 # Data loading
-    └── output_generation/              # Results output
+    ├── data_ingestion/                 # Data loading modules
+    │   └── barchart_web_scraper/       # Barchart API integration
+    │       └── outputs/YYYYMMDD/       # Date-organized scraper outputs
+    │           ├── api_data/           # Live API responses
+    │           ├── web_data/           # Web scraped data
+    │           ├── comparisons/        # Data comparison results
+    │           ├── logs/               # Scraper logs
+    │           ├── screenshots/        # Debug screenshots
+    │           └── html_snapshots/     # Debug HTML captures
+    └── output_generation/              # Results output modules
 ```
 
 ## Configuration Strategies
@@ -54,15 +69,17 @@ The system supports multiple analysis strategies via configuration:
 
 Edit `tasks/options_trading_system/analysis_engine/pipeline_config.json` to switch strategies.
 
-## Manual Cleanup Required
+## File Organization
 
-**Remove these empty files manually:**
-```bash
-rm analyze_nearby_strikes.py analyze_strike.py fast_run.py performance_test.py 
-rm quick_risk_check.py run_trading_system.py simple_run.py cleanup_old_docs.sh
-rm CLEANUP_COMPLETE.md CLEANUP_STATUS.md MANUAL_CLEANUP_INSTRUCTIONS.md
-rm -rf coordination/ outputs/
-```
+**Automated Output Management**: All generated files are automatically organized by date and type:
+
+- **Analysis Results**: `outputs/YYYYMMDD/analysis_exports/` - JSON exports with trade recommendations  
+- **Trading Reports**: `outputs/YYYYMMDD/reports/` - Human-readable trading reports
+- **System Logs**: `outputs/YYYYMMDD/logs/` - Pipeline execution logs
+- **API Data**: `tasks/.../barchart_web_scraper/outputs/YYYYMMDD/api_data/` - Live market data
+- **Debug Data**: Screenshots, HTML snapshots, and comparison results organized by date
+
+**No manual file management required** - the system automatically creates organized directories and routes all outputs appropriately.
 
 ## Algorithm
 

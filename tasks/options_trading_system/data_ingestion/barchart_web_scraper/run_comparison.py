@@ -17,15 +17,28 @@ from solution import main
 
 def setup_logging(verbose: bool = False):
     """Setup logging configuration"""
+    import os
+    
     level = logging.DEBUG if verbose else logging.INFO
+    
+    # Create organized log directory
+    date_str = datetime.now().strftime("%Y%m%d")
+    log_dir = f"outputs/{date_str}/logs"
+    os.makedirs(log_dir, exist_ok=True)
+    
+    # Create log filename
+    log_file = os.path.join(log_dir, f'barchart_comparison_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
+    
     logging.basicConfig(
         level=level,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
             logging.StreamHandler(sys.stdout),
-            logging.FileHandler(f'barchart_comparison_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
+            logging.FileHandler(log_file)
         ]
     )
+    
+    logging.info(f"📄 Logging to: {log_file}")
 
 def check_dependencies():
     """Check if required dependencies are installed"""
@@ -221,13 +234,19 @@ def main_runner():
         print("🔍 Comparing data sources...")
         comparison_results = comparator.compare_data_sources(web_data, api_data)
         
-        # Save results with timestamp
+        # Save results to organized structure
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        base_path = os.path.dirname(os.path.abspath(__file__))
+        date_str = datetime.now().strftime("%Y%m%d")
         
-        web_file = os.path.join(base_path, f'web_data_{timestamp}.json')
-        api_file = os.path.join(base_path, f'api_data_{timestamp}.json')
-        comparison_file = os.path.join(base_path, f'comparison_{timestamp}.json')
+        # Create organized directories
+        outputs_dir = f"outputs/{date_str}"
+        os.makedirs(f"{outputs_dir}/web_data", exist_ok=True)
+        os.makedirs(f"{outputs_dir}/api_data", exist_ok=True)
+        os.makedirs(f"{outputs_dir}/comparisons", exist_ok=True)
+        
+        web_file = os.path.join(f"{outputs_dir}/web_data", f'web_data_{timestamp}.json')
+        api_file = os.path.join(f"{outputs_dir}/api_data", f'api_data_{timestamp}.json')
+        comparison_file = os.path.join(f"{outputs_dir}/comparisons", f'comparison_{timestamp}.json')
         
         # Save files
         with open(web_file, 'w') as f:

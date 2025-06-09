@@ -120,7 +120,7 @@ class BarchartAPIClient:
             self.logger.error(f"Error fetching options data: {e}")
             raise
     
-    def save_api_response(self, data: Dict[str, Any], symbol: str, output_dir: str = "api_data") -> str:
+    def save_api_response(self, data: Dict[str, Any], symbol: str, output_dir: str = None) -> str:
         """
         Save API response to file with metadata
         
@@ -134,14 +134,17 @@ class BarchartAPIClient:
         """
         import os
         
-        # Create directory structure
-        date_dir = os.path.join(output_dir, datetime.now().strftime('%Y%m%d'))
-        os.makedirs(date_dir, exist_ok=True)
+        # Create organized directory structure
+        if output_dir is None:
+            date_str = datetime.now().strftime('%Y%m%d')
+            output_dir = f"outputs/{date_str}/api_data"
+        
+        os.makedirs(output_dir, exist_ok=True)
         
         # Generate filename
         timestamp = datetime.now().strftime('%H%M%S')
         filename = f'barchart_api_{symbol}_{timestamp}.json'
-        filepath = os.path.join(date_dir, filename)
+        filepath = os.path.join(output_dir, filename)
         
         # Save data
         with open(filepath, 'w') as f:

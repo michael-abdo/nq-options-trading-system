@@ -977,19 +977,29 @@ def main():
         logger.info("Comparing data sources...")
         comparison_results = comparator.compare_data_sources(web_data, api_data)
         
-        # Save results
+        # Save results to organized directory structure
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        date_str = datetime.now().strftime("%Y%m%d")
+        
+        # Create organized directories
+        outputs_dir = f"outputs/{date_str}"
+        os.makedirs(f"{outputs_dir}/web_data", exist_ok=True)
+        os.makedirs(f"{outputs_dir}/api_data", exist_ok=True)
+        os.makedirs(f"{outputs_dir}/comparisons", exist_ok=True)
         
         # Save web data
-        with open(f'/Users/Mike/trading/algos/EOD/tasks/options_trading_system/data_ingestion/barchart_web_scraper/web_data_{timestamp}.json', 'w') as f:
+        web_file = f"{outputs_dir}/web_data/web_data_{timestamp}.json"
+        with open(web_file, 'w') as f:
             json.dump(asdict(web_data), f, indent=2, default=str)
         
-        # Save API data
-        with open(f'/Users/Mike/trading/algos/EOD/tasks/options_trading_system/data_ingestion/barchart_web_scraper/api_data_{timestamp}.json', 'w') as f:
+        # Save API data  
+        api_file = f"{outputs_dir}/api_data/api_data_{timestamp}.json"
+        with open(api_file, 'w') as f:
             json.dump(asdict(api_data), f, indent=2, default=str)
         
         # Save comparison
-        with open(f'/Users/Mike/trading/algos/EOD/tasks/options_trading_system/data_ingestion/barchart_web_scraper/comparison_{timestamp}.json', 'w') as f:
+        comparison_file = f"{outputs_dir}/comparisons/comparison_{timestamp}.json"
+        with open(comparison_file, 'w') as f:
             json.dump(comparison_results, f, indent=2, default=str)
         
         # Print summary
@@ -1006,7 +1016,10 @@ def main():
         else:
             logger.info("No significant price discrepancies found")
         
-        logger.info(f"Results saved with timestamp: {timestamp}")
+        logger.info(f"✅ Results saved to organized structure:")
+        logger.info(f"   📁 Web data: {web_file}")
+        logger.info(f"   📁 API data: {api_file}")
+        logger.info(f"   📁 Comparison: {comparison_file}")
         
     except Exception as e:
         logger.error(f"Error in main execution: {e}")

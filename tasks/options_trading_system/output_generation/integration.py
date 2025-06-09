@@ -121,11 +121,16 @@ class OutputGenerationEngine:
         }
         
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        output_dir = save_config.get("output_dir", "outputs")
+        date_str = datetime.now().strftime('%Y%m%d')
+        base_output_dir = save_config.get("output_dir", "outputs")
         
-        # Create output directory if it doesn't exist
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+        # Create organized output directories
+        output_dir = base_output_dir  # For backwards compatibility
+        reports_dir = os.path.join(base_output_dir, date_str, "reports")
+        exports_dir = os.path.join(base_output_dir, date_str, "analysis_exports")
+        
+        os.makedirs(reports_dir, exist_ok=True)
+        os.makedirs(exports_dir, exist_ok=True)
         
         # Save trading report
         if save_config.get("save_report", True) and "report" in self.generation_results:
@@ -137,7 +142,7 @@ class OutputGenerationEngine:
                     else:
                         filename = "nq_trading_report.txt"
                     
-                    filepath = os.path.join(output_dir, filename)
+                    filepath = os.path.join(reports_dir, filename)
                     
                     with open(filepath, 'w', encoding='utf-8') as f:
                         f.write(report_result["result"]["report_text"])
@@ -167,7 +172,7 @@ class OutputGenerationEngine:
                     else:
                         filename = "nq_analysis_export.json"
                     
-                    filepath = os.path.join(output_dir, filename)
+                    filepath = os.path.join(exports_dir, filename)
                     
                     with open(filepath, 'w', encoding='utf-8') as f:
                         f.write(json_result["result"]["json_string"])

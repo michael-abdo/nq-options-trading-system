@@ -19,6 +19,64 @@ from barchart_saved_data.solution import load_barchart_saved_data
 from tradovate_api_data.solution import load_tradovate_api_data
 from data_normalizer.solution import normalize_options_data
 
+# Import new live API client
+try:
+    from barchart_web_scraper.hybrid_scraper import HybridBarchartScraper
+    from barchart_web_scraper.solution import BarchartAPIComparator
+    LIVE_API_AVAILABLE = True
+except ImportError:
+    LIVE_API_AVAILABLE = False
+
+
+def load_barchart_live_data(futures_symbol: str = "NQM25", headless: bool = True) -> Dict[str, Any]:
+    """
+    Load live Barchart options data for today's EOD contract
+    
+    Args:
+        futures_symbol: Underlying futures symbol
+        headless: Run browser in headless mode
+        
+    Returns:
+        Dict with Barchart data in same format as saved data
+    """
+    if not LIVE_API_AVAILABLE:
+        raise ImportError("Live API components not available")
+    
+    try:
+        # Get today's EOD symbol
+        comparator = BarchartAPIComparator()
+        eod_symbol = comparator.get_eod_contract_symbol()
+        
+        # Use hybrid scraper to get live data
+        scraper = HybridBarchartScraper(headless=headless)
+        
+        # Authenticate and fetch data
+        if not scraper.authenticate(futures_symbol):
+            raise Exception("Failed to authenticate with Barchart")
+        
+        api_data = scraper.fetch_options_data(eod_symbol, futures_symbol)
+        
+        if not api_data or api_data.get('total', 0) == 0:
+            # Try monthly options as fallback
+            print(f"⚠️  EOD contract {eod_symbol} not available, trying monthly option MC6M25")
+            api_data = scraper.fetch_options_data("MC6M25", futures_symbol)
+            
+            if not api_data or api_data.get('total', 0) == 0:
+                raise Exception(f"❌ No live options data available for {eod_symbol} or MC6M25. Market may be closed or contracts not listed.")
+        
+        return {
+            "raw_data": api_data,
+            "source": "barchart_live_api",
+            "symbol": eod_symbol if api_data.get('total', 0) > 0 else "MC6M25",
+            "timestamp": datetime.now().isoformat(),
+            "total_contracts": api_data.get('total', 0)
+        }
+        
+    except Exception as e:
+        print(f"❌ Live API failed: {e}")
+        print("🛑 STOPPING: Cannot proceed without live data.")
+        raise e
+
 
 class DataIngestionPipeline:
     """Integrated data ingestion pipeline combining all data sources"""
@@ -46,20 +104,74 @@ class DataIngestionPipeline:
         # Load Barchart if configured
         if "barchart" in self.config:
             try:
-                barchart_data = load_barchart_saved_data(
-                    self.config["barchart"]["file_path"]
-                )
-                results["barchart"] = {
-                    "status": "success",
-                    "contracts": barchart_data["options_summary"]["total_contracts"],
-                    "quality": barchart_data["quality_metrics"],
-                    "data": barchart_data
-                }
+                # Try live API first, fallback to saved data
+                use_live_api = self.config["barchart"].get("use_live_api", True)
+                print(f"🔧 Live API config: use_live_api={use_live_api}, available={LIVE_API_AVAILABLE}")
+                
+                if use_live_api and LIVE_API_AVAILABLE:
+                    print("🌐 Fetching live Barchart options data...")
+                    barchart_data = load_barchart_live_data(
+                        futures_symbol=self.config["barchart"].get("futures_symbol", "NQM25"),
+                        headless=self.config["barchart"].get("headless", True)
+                    )
+                    print(f"✅ Got {barchart_data.get('total_contracts', 0)} contracts from live API")
+                    
+                    # Convert live data to expected format
+                    if "raw_data" in barchart_data:
+                        # Process live API data into expected format
+                        api_data = barchart_data["raw_data"]
+                        total_contracts = api_data.get('total', 0)
+                        results["barchart"] = {
+                            "status": "success",
+                            "contracts": total_contracts,
+                            "quality": {
+                                "live_api": True, 
+                                "symbol": barchart_data.get("symbol"),
+                                "volume_coverage": 1.0 if total_contracts > 0 else 0.0,
+                                "oi_coverage": 1.0 if total_contracts > 0 else 0.0
+                            },
+                            "data": {
+                                "source": "live_api",
+                                "raw_data": api_data,
+                                "options_summary": {"total_contracts": total_contracts},
+                                "quality_metrics": {
+                                    "data_source": "live", 
+                                    "total_contracts": total_contracts,
+                                    "volume_coverage": 1.0 if total_contracts > 0 else 0.0,
+                                    "oi_coverage": 1.0 if total_contracts > 0 else 0.0
+                                }
+                            }
+                        }
+                    else:
+                        # Fallback format from saved data
+                        results["barchart"] = {
+                            "status": "success", 
+                            "contracts": barchart_data["options_summary"]["total_contracts"],
+                            "quality": barchart_data["quality_metrics"],
+                            "data": barchart_data
+                        }
+                else:
+                    print("📁 Loading saved Barchart data...")
+                    barchart_data = load_barchart_saved_data(
+                        self.config["barchart"]["file_path"]
+                    )
+                    results["barchart"] = {
+                        "status": "success",
+                        "contracts": barchart_data["options_summary"]["total_contracts"],
+                        "quality": barchart_data["quality_metrics"],
+                        "data": barchart_data
+                    }
+                    
             except Exception as e:
-                results["barchart"] = {
-                    "status": "failed",
-                    "error": str(e)
-                }
+                # If live API is required and fails, stop the entire pipeline
+                if self.config["barchart"].get("use_live_api", True):
+                    print(f"🛑 PIPELINE STOPPED: Live API required but failed: {str(e)}")
+                    raise Exception(f"Live API required but failed: {str(e)}")
+                else:
+                    results["barchart"] = {
+                        "status": "failed",
+                        "error": str(e)
+                    }
         
         # Load Tradovate if configured
         if "tradovate" in self.config:

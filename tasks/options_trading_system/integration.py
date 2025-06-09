@@ -332,7 +332,10 @@ def run_complete_nq_trading_system(config: Dict[str, Any] = None) -> Dict[str, A
         config = {
             "data": {
                 "barchart": {
-                    "file_path": "data/api_responses/options_data_20250602_141553.json"
+                    "file_path": "data/api_responses/options_data_20250602_141553.json",
+                    "use_live_api": True,  # Enable live API by default
+                    "futures_symbol": "NQM25",
+                    "headless": True
                 },
                 "tradovate": {
                     "mode": "demo",

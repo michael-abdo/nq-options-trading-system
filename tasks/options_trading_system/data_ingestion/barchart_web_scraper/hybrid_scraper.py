@@ -8,8 +8,8 @@ import json
 from datetime import datetime
 from typing import Dict, Any, Optional
 
-from solution import BarchartWebScraper
-from barchart_api_client import BarchartAPIClient
+from .solution import BarchartWebScraper
+from .barchart_api_client import BarchartAPIClient
 
 class HybridBarchartScraper:
     """
@@ -104,6 +104,11 @@ class HybridBarchartScraper:
             self.logger.info(f"Fetching options data for {symbol} via API...")
             data = self.api_client.get_options_data(symbol, futures_symbol)
             
+            # Save the data to file
+            if data and data.get('total', 0) > 0:
+                saved_path = self.api_client.save_api_response(data, symbol)
+                self.logger.info(f"✅ Saved {data.get('total', 0)} contracts to {saved_path}")
+            
             return data
             
         except Exception as e:
@@ -176,12 +181,19 @@ def main():
             print(f"  Last: {first_call.get('lastPrice')}")
         
         if args.save:
-            # Save the data
+            # Save the data using organized structure
+            import os
+            date_str = datetime.now().strftime('%Y%m%d')
+            output_dir = f"outputs/{date_str}/api_data"
+            os.makedirs(output_dir, exist_ok=True)
+            
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
             filename = f"barchart_api_data_{timestamp}.json"
-            with open(filename, 'w') as f:
+            filepath = os.path.join(output_dir, filename)
+            
+            with open(filepath, 'w') as f:
                 json.dump(data, f, indent=2)
-            print(f"\n💾 Data saved to {filename}")
+            print(f"\n💾 Data saved to {filepath}")
     else:
         print("❌ Failed to fetch data")
         return 1
