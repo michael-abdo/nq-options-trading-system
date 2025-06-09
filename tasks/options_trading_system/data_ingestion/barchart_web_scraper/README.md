@@ -19,7 +19,15 @@ This tool automatically:
 ├── run_comparison.py     # CLI execution interface
 ├── requirements.txt      # Dependencies
 ├── evidence.json         # Implementation validation
-└── README.md            # This file
+├── README.md            # This file
+└── screenshots/         # Saved page screenshots (organized by date)
+    ├── 20250108/        # Daily folders
+    │   ├── barchart_NQM25_143052.png
+    │   ├── barchart_NQM25_143052_metadata.json
+    │   ├── barchart_NQM25_153052.png
+    │   └── barchart_NQM25_153052_metadata.json
+    └── 20250109/
+        └── ...
 ```
 
 **Location Rationale**: Placed in `data_ingestion` to follow existing pattern of separate directories per data source, enabling comparison with `barchart_saved_data`.
@@ -58,7 +66,9 @@ python3 run_comparison.py --url "https://www.barchart.com/futures/quotes/NQM25/o
 
 ### Web Scraping Capabilities
 - **Automated Browser Control**: Selenium WebDriver with Chrome
-- **10-Second Wait Time**: Ensures full page load as requested
+- **10-Second Page Load Timeout**: Handles SPAs that never stop loading
+- **Screenshot Capture**: Saves full-page screenshots for visual validation
+- **Organized Storage**: Daily folders for efficient file management
 - **Robust Parsing**: Multiple selector fallbacks for table detection
 - **Error Recovery**: Graceful handling of layout changes
 - **Data Extraction**: Strikes, bids, asks, volumes, open interest
@@ -80,6 +90,17 @@ Each run generates timestamped files:
 - `web_data_YYYYMMDD_HHMMSS.json` - Scraped web data
 - `api_data_YYYYMMDD_HHMMSS.json` - API response data  
 - `comparison_YYYYMMDD_HHMMSS.json` - Detailed comparison analysis
+
+### Screenshots
+- `screenshots/YYYYMMDD/barchart_SYMBOL_HHMMSS.png` - Full page screenshot
+- `screenshots/YYYYMMDD/barchart_SYMBOL_HHMMSS_metadata.json` - Screenshot metadata
+
+**Benefits of Screenshots**:
+- Visual validation of page content
+- Track website layout changes over time
+- Debug scraping issues with visual reference
+- Build historical dataset for UI analysis
+- Validate data extraction accuracy
 
 ## 🧪 Validation Framework
 

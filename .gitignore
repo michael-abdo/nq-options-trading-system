@@ -33,6 +33,8 @@ reports/
 
 # HTML files (scraped data)
 data/html_snapshots/
+tasks/options_trading_system/data_ingestion/barchart_web_scraper/html_snapshots/
+tasks/options_trading_system/data_ingestion/barchart_web_scraper/screenshots/
 
 # Temporary files
 *.tmp

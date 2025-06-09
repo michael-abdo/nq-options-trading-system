@@ -10,6 +10,8 @@ import os
 import json
 from datetime import datetime
 from typing import Dict, Any, List
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
 
 # Add current directory to path for child task imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -225,11 +227,32 @@ class AnalysisEngine:
         
         start_time = datetime.now()
         
-        # Run your NQ EV algorithm first (highest priority)
-        self.analysis_results["expected_value"] = self.run_nq_ev_analysis(data_config)
+        # Run all analyses in parallel for speed
+        print("  Running all analyses simultaneously...")
         
-        # Run supplementary analysis
-        self.analysis_results["risk"] = self.run_risk_analysis(data_config)
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            # Submit both analyses to run concurrently
+            futures = {
+                executor.submit(self.run_nq_ev_analysis, data_config): "expected_value",
+                executor.submit(self.run_risk_analysis, data_config): "risk"
+            }
+            
+            # Collect results as they complete
+            for future in as_completed(futures):
+                analysis_name = futures[future]
+                try:
+                    self.analysis_results[analysis_name] = future.result()
+                    if self.analysis_results[analysis_name]["status"] == "success":
+                        print(f"    ✓ {analysis_name.replace('_', ' ').title()} completed")
+                except Exception as e:
+                    print(f"    ✗ {analysis_name} failed: {str(e)}")
+                    self.analysis_results[analysis_name] = {
+                        "status": "failed",
+                        "error": str(e),
+                        "timestamp": datetime.now().isoformat()
+                    }
+        
+        print("  All analyses complete. Synthesizing results...")
         
         # Synthesize results with NQ EV priority
         synthesis = self.synthesize_analysis_results()

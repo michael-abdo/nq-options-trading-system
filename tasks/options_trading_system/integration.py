@@ -113,12 +113,16 @@ class NQOptionsTradingSystem:
                 "timestamp": datetime.now().isoformat()
             }
     
-    def run_output_pipeline(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
+    def run_output_pipeline(self, data_config: Dict[str, Any], analysis_results: Dict[str, Any] = None) -> Dict[str, Any]:
         """Execute output generation pipeline"""
         print("  Running Output Pipeline...")
         
         output_config = self.config.get("output", {})
         save_config = self.config.get("save", {})
+        
+        # Pass cached analysis results if available
+        if analysis_results:
+            data_config = {**data_config, "_cached_analysis_results": analysis_results}
         
         try:
             result = run_output_generation(data_config, output_config, save_config)
@@ -260,8 +264,9 @@ class NQOptionsTradingSystem:
             print("\n✗ SYSTEM FAILURE: Analysis pipeline failed")
             return self._create_failure_result("Analysis pipeline failure")
         
-        # Step 4: Output pipeline
-        self.system_results["output"] = self.run_output_pipeline(data_config)
+        # Step 4: Output pipeline (with cached analysis results to avoid re-running)
+        analysis_results = self.system_results["analysis"].get("result")
+        self.system_results["output"] = self.run_output_pipeline(data_config, analysis_results)
         
         # Output pipeline failure is not critical for system success
         

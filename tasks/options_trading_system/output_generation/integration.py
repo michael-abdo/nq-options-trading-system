@@ -10,6 +10,7 @@ import os
 import json
 from datetime import datetime
 from typing import Dict, Any, List
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Add current directory to path for child task imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -239,9 +240,30 @@ class OutputGenerationEngine:
         
         start_time = datetime.now()
         
-        # Generate both output formats
-        self.generation_results["report"] = self.generate_trading_report(data_config)
-        self.generation_results["json"] = self.generate_json_export(data_config)
+        # Generate both output formats in parallel
+        print("  Generating all outputs simultaneously...")
+        
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            # Submit both generation tasks concurrently
+            futures = {
+                executor.submit(self.generate_trading_report, data_config): "report",
+                executor.submit(self.generate_json_export, data_config): "json"
+            }
+            
+            # Collect results as they complete
+            for future in as_completed(futures):
+                output_type = futures[future]
+                try:
+                    self.generation_results[output_type] = future.result()
+                    if self.generation_results[output_type]["status"] == "success":
+                        print(f"    ✓ {output_type.title()} generation completed")
+                except Exception as e:
+                    print(f"    ✗ {output_type} generation failed: {str(e)}")
+                    self.generation_results[output_type] = {
+                        "status": "failed",
+                        "error": str(e),
+                        "timestamp": datetime.now().isoformat()
+                    }
         
         # Save outputs to files
         save_results = self.save_outputs(save_config)

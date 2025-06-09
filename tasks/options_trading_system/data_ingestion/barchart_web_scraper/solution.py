@@ -1,6 +1,7 @@
 import time
 import json
 import logging
+import os
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
@@ -107,12 +108,22 @@ class BarchartWebScraper:
             # Setup driver
             self.driver = self.setup_driver()
             
-            # Navigate to page
-            self.driver.get(url)
-            self.logger.info("Page loaded, waiting for content...")
+            # Set page load timeout to 10 seconds
+            self.driver.set_page_load_timeout(10)
             
-            # Wait for the page to load (10 seconds as requested)
-            time.sleep(self.wait_time)
+            # Navigate to page with timeout
+            try:
+                self.driver.get(url)
+                self.logger.info("Page loaded within 10 seconds")
+            except TimeoutException:
+                self.logger.info("Page load timed out after 10 seconds - continuing with current content")
+            
+            # Additional wait for dynamic content to render
+            self.logger.info("Waiting for dynamic content to render...")
+            time.sleep(2)  # Brief wait for JS execution
+            
+            # Save HTML snapshot
+            self._save_html_snapshot(url)
             
             # Wait for options table to be present
             wait = WebDriverWait(self.driver, 30)
@@ -280,6 +291,73 @@ class BarchartWebScraper:
             self.logger.debug(f"Error extracting underlying info: {e}")
         
         return info
+    
+    def _save_html_snapshot(self, url: str) -> str:
+        """
+        Save screenshot of the page to organized directory structure
+        
+        Directory structure:
+        screenshots/
+        ├── 20250108/
+        │   ├── barchart_NQM25_143052.png
+        │   └── barchart_NQM25_153052.png
+        
+        Returns:
+            Path to saved screenshot file
+        """
+        try:
+            # Extract symbol from URL (e.g., NQM25)
+            import re
+            symbol_match = re.search(r'/quotes/([^/]+)/options', url)
+            symbol = symbol_match.group(1) if symbol_match else 'unknown'
+            
+            # Create directory structure
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            screenshot_dir = os.path.join(base_dir, 'screenshots')
+            date_dir = os.path.join(screenshot_dir, datetime.now().strftime('%Y%m%d'))
+            
+            # Create directories if they don't exist
+            os.makedirs(date_dir, exist_ok=True)
+            
+            # Generate filename with timestamp
+            timestamp = datetime.now().strftime('%H%M%S')
+            filename = f'barchart_{symbol}_{timestamp}.png'
+            filepath = os.path.join(date_dir, filename)
+            
+            # Set window size for full page capture
+            self.driver.set_window_size(1920, 1080)
+            
+            # Scroll to capture full page height
+            total_height = self.driver.execute_script("return document.body.scrollHeight")
+            self.driver.set_window_size(1920, total_height)
+            
+            # Save screenshot
+            self.driver.save_screenshot(filepath)
+            
+            self.logger.info(f"Screenshot saved: {filepath}")
+            
+            # Also save a metadata file for this snapshot
+            metadata = {
+                'url': url,
+                'symbol': symbol,
+                'timestamp': datetime.now().isoformat(),
+                'page_title': self.driver.title,
+                'screenshot_path': filepath,
+                'window_size': {'width': 1920, 'height': total_height}
+            }
+            
+            metadata_file = filepath.replace('.png', '_metadata.json')
+            with open(metadata_file, 'w') as f:
+                json.dump(metadata, f, indent=2)
+            
+            # Reset window size
+            self.driver.set_window_size(1920, 1080)
+            
+            return filepath
+            
+        except Exception as e:
+            self.logger.error(f"Error saving screenshot: {e}")
+            return ""
     
     def _extract_options_contracts(self, table_element) -> List[OptionsContract]:
         """

@@ -223,8 +223,12 @@ class TradingReportGenerator:
     def generate_report(self, data_config: Dict[str, Any], analysis_config: Dict[str, Any] = None) -> str:
         """Generate complete trading report"""
         
-        # Run analysis engine to get results
-        analysis_results = run_analysis_engine(data_config, analysis_config)
+        # Check for cached analysis results first
+        if "_cached_analysis_results" in data_config:
+            analysis_results = data_config["_cached_analysis_results"]
+        else:
+            # Run analysis engine to get results
+            analysis_results = run_analysis_engine(data_config, analysis_config)
         
         # Generate report sections
         sections = []
