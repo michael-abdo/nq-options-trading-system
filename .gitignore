@@ -35,6 +35,7 @@ reports/
 data/html_snapshots/
 tasks/options_trading_system/data_ingestion/barchart_web_scraper/html_snapshots/
 tasks/options_trading_system/data_ingestion/barchart_web_scraper/screenshots/
+tasks/options_trading_system/data_ingestion/barchart_web_scraper/api_data/
 
 # Temporary files
 *.tmp

@@ -114,8 +114,12 @@ def main_runner():
     """Main runner function with command line interface"""
     
     parser = argparse.ArgumentParser(description='Barchart Data Comparison Tool')
-    parser.add_argument('--url', default="https://www.barchart.com/futures/quotes/NQM25/options/MC7M25?futuresOptionsView=merged",
-                       help='Barchart options URL to scrape')
+    parser.add_argument('--url', default=None,
+                       help='Barchart options URL to scrape (default: today\'s EOD contract)')
+    parser.add_argument('--symbol', default=None,
+                       help='Options symbol to use (e.g., MC1M25). If not specified, uses today\'s EOD')
+    parser.add_argument('--futures', default='NQM25',
+                       help='Underlying futures symbol (default: NQM25)')
     parser.add_argument('--headless', action='store_true', default=True,
                        help='Run browser in headless mode (default: True)')
     parser.add_argument('--no-headless', action='store_true',
@@ -159,28 +163,59 @@ def main_runner():
     # Configure headless mode
     headless_mode = args.headless and not args.no_headless
     
-    print(f"\n🌐 Starting Data Comparison...")
-    print(f"URL: {args.url}")
+    # Import modules
+    from solution import BarchartWebScraper, BarchartAPIComparator
+    import json
+    from dataclasses import asdict
+    
+    # Determine URL to use
+    if args.url:
+        # Use provided URL
+        url = args.url
+        print(f"\n🌐 Starting Data Comparison...")
+        print(f"Using provided URL: {url}")
+    else:
+        # Generate EOD URL
+        comparator = BarchartAPIComparator()
+        if args.symbol:
+            # Use provided symbol
+            url = f"https://www.barchart.com/futures/quotes/{args.futures}/options/{args.symbol}"
+            print(f"\n🌐 Starting Data Comparison...")
+            print(f"Using symbol: {args.symbol}")
+        else:
+            # Use today's EOD contract
+            url = comparator.get_eod_options_url(args.futures)
+            eod_symbol = comparator.get_eod_contract_symbol()
+            print(f"\n🌐 Starting Data Comparison...")
+            print(f"Using today's EOD contract: {eod_symbol}")
+    
+    print(f"URL: {url}")
     print(f"Headless mode: {headless_mode}")
     print(f"Browser wait time: 10 seconds")
     
     try:
-        # Modify the scraper to use command line arguments
-        from solution import BarchartWebScraper, BarchartAPIComparator
-        import json
-        from dataclasses import asdict
-        
         # Initialize scraper with headless setting
         scraper = BarchartWebScraper(headless=headless_mode)
         
         # Scrape web data
         print("\n📊 Scraping web data...")
-        web_data = scraper.scrape_barchart_options(args.url)
+        web_data = scraper.scrape_barchart_options(url)
         
         # Get API data
         print("📡 Fetching API data...")
-        comparator = BarchartAPIComparator()
-        api_data = comparator.fetch_api_data("NQM25")
+        if not args.symbol and not args.url:
+            # Use EOD contract for API data too
+            api_data = comparator.fetch_api_data()  # Will use EOD by default
+        else:
+            # Use the symbol from the URL or args
+            if args.symbol:
+                api_data = comparator.fetch_api_data(args.symbol)
+            else:
+                # Extract symbol from URL if provided
+                import re
+                symbol_match = re.search(r'/options/([^/?]+)', url)
+                symbol = symbol_match.group(1) if symbol_match else None
+                api_data = comparator.fetch_api_data(symbol)
         
         # Compare data sources
         print("🔍 Comparing data sources...")

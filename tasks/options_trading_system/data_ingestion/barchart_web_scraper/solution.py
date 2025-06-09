@@ -180,6 +180,22 @@ class BarchartWebScraper:
             if self.driver:
                 self.driver.quit()
     
+    def scrape_eod_options(self, futures_symbol: str = "NQM25") -> OptionsChainData:
+        """
+        Convenience method to scrape today's EOD (End of Day) options
+        
+        Args:
+            futures_symbol: The underlying futures symbol (default: "NQM25" for June 2025)
+            
+        Returns:
+            OptionsChainData object with scraped EOD options
+        """
+        comparator = BarchartAPIComparator()
+        eod_url = comparator.get_eod_options_url(futures_symbol)
+        
+        self.logger.info(f"Scraping EOD options for {futures_symbol}")
+        return self.scrape_barchart_options(eod_url)
+    
     def _parse_page_source_fallback(self) -> OptionsChainData:
         """
         Fallback method to parse page source when table selectors fail
@@ -478,13 +494,108 @@ class BarchartAPIComparator:
     
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+    
+    def get_eod_contract_symbol(self, base_symbol: str = "NQ") -> str:
+        """
+        Get the EOD (End of Day) options contract symbol for today
         
-    def fetch_api_data(self, symbol: str = "NQM25") -> OptionsChainData:
+        Barchart daily options symbols:
+        - Format: {BASE}{DAY_CODE}{MONTH}{YEAR}
+        - For NQ Micro daily options: MC{D}{M}{YY}
+        
+        Day codes for daily options:
+        - 1 = Monday (MC1)
+        - 2 = Tuesday (MC2)
+        - 3 = Wednesday (MC3)
+        - 4 = Thursday (MC4)
+        - 5 = Friday (MC5)
+        - Weekend: Use next Monday's contract (MC1)
+        
+        For weekly/monthly options:
+        - 6 = Standard monthly (3rd Friday)
+        - 7 = Weekly options
+        
+        Returns:
+            Symbol like "MC1M25" for Monday June 2025 daily options
+        """
+        from datetime import datetime, timedelta
+        
+        now = datetime.now()
+        
+        # Determine expiration date and day code
+        if now.weekday() < 5:  # Monday = 0, Friday = 4
+            # Weekday: use today's daily option
+            expiry_date = now
+            day_code = now.weekday() + 1  # 1-5 for Mon-Fri
+        else:
+            # Weekend: use next Monday's daily option
+            days_until_monday = (7 - now.weekday()) % 7
+            if days_until_monday == 0:  # Already Monday
+                days_until_monday = 7
+            expiry_date = now + timedelta(days=days_until_monday)
+            day_code = 1  # Monday
+        
+        # Get month letter code
+        month_codes = {
+            1: 'F',   # January
+            2: 'G',   # February
+            3: 'H',   # March
+            4: 'J',   # April
+            5: 'K',   # May
+            6: 'M',   # June
+            7: 'N',   # July
+            8: 'Q',   # August
+            9: 'U',   # September
+            10: 'V',  # October
+            11: 'X',  # November
+            12: 'Z'   # December
+        }
+        
+        month_code = month_codes[expiry_date.month]
+        year_code = str(expiry_date.year)[-2:]  # Last 2 digits of year
+        
+        # Construct symbol
+        eod_symbol = f"MC{day_code}{month_code}{year_code}"
+        
+        self.logger.info(f"Today's EOD contract: {eod_symbol} (expires {expiry_date.strftime('%Y-%m-%d')})")
+        
+        return eod_symbol
+    
+    def get_eod_options_url(self, futures_symbol: str = "NQM25") -> str:
+        """
+        Get the Barchart URL for today's EOD options
+        
+        Args:
+            futures_symbol: The underlying futures symbol (e.g., "NQM25" for June 2025)
+            
+        Returns:
+            URL like: https://www.barchart.com/futures/quotes/NQM25/options/MC7M25
+        """
+        eod_symbol = self.get_eod_contract_symbol()
+        url = f"https://www.barchart.com/futures/quotes/{futures_symbol}/options/{eod_symbol}"
+        
+        self.logger.info(f"EOD options URL: {url}")
+        return url
+        
+    def fetch_api_data(self, symbol: str = None, save_to_file: bool = True) -> OptionsChainData:
         """
         Fetch options data from existing barchart API data file
         
         Uses the actual barchart API response data from /data/api_responses/
+        Optionally saves a copy to api_data subfolder for record keeping
+        
+        Args:
+            symbol: Options symbol (e.g., "MC1M25"). If None, uses today's EOD contract
+            save_to_file: Whether to save a snapshot of the API data
+            
+        Returns:
+            OptionsChainData with the loaded contracts
         """
+        
+        # Use EOD contract if no symbol specified
+        if symbol is None:
+            symbol = self.get_eod_contract_symbol()
+            self.logger.info(f"Using today's EOD contract: {symbol}")
         
         self.logger.info(f"Loading existing barchart API data for {symbol}")
         
@@ -497,6 +608,10 @@ class BarchartAPIComparator:
         try:
             with open(api_file_path, 'r') as f:
                 barchart_response = json.load(f)
+            
+            # Save a copy to api_data subfolder if requested
+            if save_to_file:
+                self._save_api_data_snapshot(barchart_response, symbol)
             
             # Extract calls and puts from the API response structure
             calls_data = barchart_response.get('data', {}).get('Call', [])
@@ -602,6 +717,59 @@ class BarchartAPIComparator:
                 timestamp=datetime.now(),
                 total_contracts=1
             )
+    
+    def _save_api_data_snapshot(self, api_response: dict, symbol: str) -> str:
+        """
+        Save API data snapshot to organized directory structure
+        
+        Directory structure:
+        api_data/
+        ├── 20250108/
+        │   ├── barchart_api_NQM25_143052.json
+        │   └── barchart_api_NQM25_153052.json
+        
+        Returns:
+            Path to saved API data file
+        """
+        try:
+            # Create directory structure
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            api_data_dir = os.path.join(base_dir, 'api_data')
+            date_dir = os.path.join(api_data_dir, datetime.now().strftime('%Y%m%d'))
+            
+            # Create directories if they don't exist
+            os.makedirs(date_dir, exist_ok=True)
+            
+            # Generate filename with timestamp
+            timestamp = datetime.now().strftime('%H%M%S')
+            filename = f'barchart_api_{symbol}_{timestamp}.json'
+            filepath = os.path.join(date_dir, filename)
+            
+            # Save API response
+            with open(filepath, 'w') as f:
+                json.dump(api_response, f, indent=2)
+            
+            self.logger.info(f"API data snapshot saved: {filepath}")
+            
+            # Also save a metadata file
+            metadata = {
+                'symbol': symbol,
+                'timestamp': datetime.now().isoformat(),
+                'source_file': '/data/api_responses/options_data_20250602_141553.json',
+                'contracts_count': len(api_response.get('data', {}).get('Call', [])) + 
+                                 len(api_response.get('data', {}).get('Put', [])),
+                'file_path': filepath
+            }
+            
+            metadata_file = filepath.replace('.json', '_metadata.json')
+            with open(metadata_file, 'w') as f:
+                json.dump(metadata, f, indent=2)
+            
+            return filepath
+            
+        except Exception as e:
+            self.logger.error(f"Error saving API data snapshot: {e}")
+            return ""
     
     def _safe_float(self, value) -> Optional[float]:
         """Safely convert value to float"""

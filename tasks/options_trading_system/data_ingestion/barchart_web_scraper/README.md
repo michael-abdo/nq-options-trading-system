@@ -20,12 +20,16 @@ This tool automatically:
 ├── requirements.txt      # Dependencies
 ├── evidence.json         # Implementation validation
 ├── README.md            # This file
-└── screenshots/         # Saved page screenshots (organized by date)
+├── screenshots/         # Saved page screenshots (organized by date)
+│   ├── 20250108/        # Daily folders
+│   │   ├── barchart_NQM25_143052.png
+│   │   └── barchart_NQM25_143052_metadata.json
+│   └── 20250109/
+│       └── ...
+└── api_data/           # Saved API responses (organized by date)
     ├── 20250108/        # Daily folders
-    │   ├── barchart_NQM25_143052.png
-    │   ├── barchart_NQM25_143052_metadata.json
-    │   ├── barchart_NQM25_153052.png
-    │   └── barchart_NQM25_153052_metadata.json
+    │   ├── barchart_api_NQM25_143052.json
+    │   └── barchart_api_NQM25_143052_metadata.json
     └── 20250109/
         └── ...
 ```
@@ -49,7 +53,7 @@ brew install chromedriver
 
 ### 3. Run Comparison
 ```bash
-# Basic usage (headless mode)
+# Basic usage - automatically uses today's EOD contract
 python3 run_comparison.py
 
 # With visible browser (for debugging)
@@ -58,9 +62,28 @@ python3 run_comparison.py --no-headless
 # Test-only mode
 python3 run_comparison.py --test-only
 
-# Custom URL
-python3 run_comparison.py --url "https://www.barchart.com/futures/quotes/NQM25/options/MC7M25?futuresOptionsView=merged"
+# Specify a custom symbol
+python3 run_comparison.py --symbol MC5M25
+
+# Custom URL (overrides EOD default)
+python3 run_comparison.py --url "https://www.barchart.com/futures/quotes/NQM25/options/MC6M25?futuresOptionsView=merged"
+
+# Different futures contract
+python3 run_comparison.py --futures NQU25
 ```
+
+## 📅 EOD (End of Day) Options
+
+By default, this tool now scrapes **today's EOD options** that expire at 4:00 PM ET:
+
+- **Monday**: MC1M25 (expires same day)
+- **Tuesday**: MC2M25 (expires same day)
+- **Wednesday**: MC3M25 (expires same day)
+- **Thursday**: MC4M25 (expires same day)
+- **Friday**: MC5M25 (expires same day)
+- **Weekend**: MC1M25 (expires next Monday)
+
+The system automatically determines the correct EOD contract based on the current date.
 
 ## 🔧 Features
 
@@ -95,12 +118,17 @@ Each run generates timestamped files:
 - `screenshots/YYYYMMDD/barchart_SYMBOL_HHMMSS.png` - Full page screenshot
 - `screenshots/YYYYMMDD/barchart_SYMBOL_HHMMSS_metadata.json` - Screenshot metadata
 
-**Benefits of Screenshots**:
-- Visual validation of page content
+### API Data Snapshots
+- `api_data/YYYYMMDD/barchart_api_SYMBOL_HHMMSS.json` - Raw API response data
+- `api_data/YYYYMMDD/barchart_api_SYMBOL_HHMMSS_metadata.json` - API snapshot metadata
+
+**Benefits of Data Snapshots**:
+- Visual validation of page content (screenshots)
 - Track website layout changes over time
 - Debug scraping issues with visual reference
-- Build historical dataset for UI analysis
-- Validate data extraction accuracy
+- Build historical dataset for analysis
+- Maintain audit trail of API responses
+- Enable offline development and testing
 
 ## 🧪 Validation Framework
 
@@ -144,7 +172,9 @@ python3 test_validation.py
 
 ### CLI Arguments
 ```bash
---url           # Custom barchart URL to scrape
+--url           # Custom barchart URL to scrape (overrides EOD default)
+--symbol        # Options symbol to use (e.g., MC1M25)
+--futures       # Underlying futures symbol (default: NQM25)
 --headless      # Run browser in background (default)
 --no-headless   # Show browser window for debugging
 --test-only     # Run validation tests only
@@ -221,13 +251,18 @@ pip install -r requirements.txt
 ```python
 from solution import BarchartWebScraper, BarchartAPIComparator
 
-# Use in trading system pipeline
+# Method 1: Use EOD contracts automatically
 scraper = BarchartWebScraper(headless=True)
+web_data = scraper.scrape_eod_options("NQM25")  # Scrapes today's EOD
+
+# Method 2: Manual URL construction
+comparator = BarchartAPIComparator()
+eod_symbol = comparator.get_eod_contract_symbol()  # e.g., "MC1M25"
+url = comparator.get_eod_options_url("NQM25")
 web_data = scraper.scrape_barchart_options(url)
 
-# Validate against API
-comparator = BarchartAPIComparator()
-api_data = comparator.fetch_api_data("NQM25")
+# API data also defaults to EOD
+api_data = comparator.fetch_api_data()  # Uses today's EOD contract
 comparison = comparator.compare_data_sources(web_data, api_data)
 
 # Use comparison.data_quality.overall_similarity for validation
