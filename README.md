@@ -2,9 +2,23 @@
 
 ## Quick Start
 
-**Single Entry Point**: `python3 run_pipeline.py`
+**Single Entry Point with Flexible Usage**:
 
-This runs the complete Hierarchical Pipeline Analysis Framework with your actual NQ Options EV algorithm.
+```bash
+# Run with today's auto-calculated EOD contract  
+python3 run_pipeline.py
+
+# Run with specific contract (multiple syntax options)
+python3 run_pipeline.py MC7M25                    # Friday's EOD contract
+python3 run_pipeline.py MC1M25                    # Monday's EOD contract  
+python3 run_pipeline.py --contract MC2M25         # Tuesday's EOD contract
+python3 run_pipeline.py MC6M25                    # Monthly options
+
+# Show help with all examples
+python3 run_pipeline.py --help
+```
+
+This runs the complete Hierarchical Pipeline Analysis Framework with your actual NQ Options EV algorithm using **live market data** when available.
 
 ## System Overview
 

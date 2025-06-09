@@ -28,13 +28,14 @@ except ImportError:
     LIVE_API_AVAILABLE = False
 
 
-def load_barchart_live_data(futures_symbol: str = "NQM25", headless: bool = True) -> Dict[str, Any]:
+def load_barchart_live_data(futures_symbol: str = "NQM25", headless: bool = True, target_symbol: str = None) -> Dict[str, Any]:
     """
     Load live Barchart options data for today's EOD contract
     
     Args:
         futures_symbol: Underlying futures symbol
         headless: Run browser in headless mode
+        target_symbol: Specific contract symbol to fetch (overrides EOD calculation)
         
     Returns:
         Dict with Barchart data in same format as saved data
@@ -43,9 +44,14 @@ def load_barchart_live_data(futures_symbol: str = "NQM25", headless: bool = True
         raise ImportError("Live API components not available")
     
     try:
-        # Get today's EOD symbol
-        comparator = BarchartAPIComparator()
-        eod_symbol = comparator.get_eod_contract_symbol()
+        # Get target symbol (either specified or today's EOD)
+        if target_symbol:
+            eod_symbol = target_symbol
+            print(f"🎯 Using specified target symbol: {eod_symbol}")
+        else:
+            comparator = BarchartAPIComparator()
+            eod_symbol = comparator.get_eod_contract_symbol()
+            print(f"📅 Calculated EOD symbol: {eod_symbol}")
         
         # Use hybrid scraper to get live data
         scraper = HybridBarchartScraper(headless=headless)
@@ -112,7 +118,8 @@ class DataIngestionPipeline:
                     print("🌐 Fetching live Barchart options data...")
                     barchart_data = load_barchart_live_data(
                         futures_symbol=self.config["barchart"].get("futures_symbol", "NQM25"),
-                        headless=self.config["barchart"].get("headless", True)
+                        headless=self.config["barchart"].get("headless", True),
+                        target_symbol=self.config["barchart"].get("target_symbol")
                     )
                     print(f"✅ Got {barchart_data.get('total_contracts', 0)} contracts from live API")
                     
