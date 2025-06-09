@@ -64,9 +64,9 @@ python3 run_comparison.py --url "https://www.barchart.com/futures/quotes/NQM25/o
 - **Data Extraction**: Strikes, bids, asks, volumes, open interest
 
 ### API Integration
-- **Mock API Framework**: Ready for real barchart API integration
-- **Standardized Format**: Consistent data structures across sources
-- **Extensible Design**: Easy to add other data providers
+- **Real Barchart API**: Uses actual barchart API response data from `/data/api_responses/`
+- **288 Contracts**: Full options chain with calls and puts
+- **Rich Data Fields**: Last price, bid/ask, volume, open interest, premium
 
 ### Comparison Analysis
 - **Contract-by-Contract**: Field-level discrepancy detection

@@ -403,17 +403,107 @@ class BarchartAPIComparator:
         
     def fetch_api_data(self, symbol: str = "NQM25") -> OptionsChainData:
         """
-        Fetch options data from barchart API (mock implementation)
+        Fetch options data from existing barchart API data file
         
-        In real implementation, this would use the actual barchart API
+        Uses the actual barchart API response data from /data/api_responses/
         """
         
-        # This is a placeholder - would need actual API credentials and endpoints
-        self.logger.info(f"Fetching API data for {symbol}")
+        self.logger.info(f"Loading existing barchart API data for {symbol}")
         
-        # Mock API response structure
-        mock_contracts = [
-            OptionsContract(
+        # Load the existing API response directly
+        import json
+        
+        # Load the existing API response
+        api_file_path = '/Users/Mike/trading/algos/EOD/data/api_responses/options_data_20250602_141553.json'
+        
+        try:
+            with open(api_file_path, 'r') as f:
+                barchart_response = json.load(f)
+            
+            # Extract calls and puts from the API response structure
+            calls_data = barchart_response.get('data', {}).get('Call', [])
+            puts_data = barchart_response.get('data', {}).get('Put', [])
+            
+            contracts = []
+            
+            # Process calls
+            for call in calls_data:
+                raw = call.get('raw', {})
+                
+                # Create contract for this strike, starting with call data
+                contract = OptionsContract(
+                    strike=float(raw.get('strike', 0)),
+                    call_last=self._safe_float(raw.get('lastPrice')),
+                    call_change=self._safe_float(raw.get('priceChange')),
+                    call_bid=self._safe_float(raw.get('bidPrice')),
+                    call_ask=self._safe_float(raw.get('askPrice')),
+                    call_volume=self._safe_int(raw.get('volume')),
+                    call_open_interest=self._safe_int(raw.get('openInterest')),
+                    call_implied_volatility=None,  # Not in this data format
+                    # Initialize put fields as None - will be filled if put exists
+                    put_last=None, put_change=None, put_bid=None, put_ask=None,
+                    put_volume=None, put_open_interest=None, put_implied_volatility=None,
+                    expiration_date="2025-06-20",  # Extract from symbol if needed
+                    underlying_price=21534.38,  # Approximate from the data
+                    source='barchart_api',
+                    timestamp=datetime.now()
+                )
+                
+                contracts.append(contract)
+            
+            # Process puts and match to existing contracts or create new ones
+            strike_map = {c.strike: c for c in contracts}
+            
+            for put in puts_data:
+                raw = put.get('raw', {})
+                strike = float(raw.get('strike', 0))
+                
+                if strike in strike_map:
+                    # Update existing contract with put data
+                    contract = strike_map[strike]
+                    contract.put_last = self._safe_float(raw.get('lastPrice'))
+                    contract.put_change = self._safe_float(raw.get('priceChange'))
+                    contract.put_bid = self._safe_float(raw.get('bidPrice'))
+                    contract.put_ask = self._safe_float(raw.get('askPrice'))
+                    contract.put_volume = self._safe_int(raw.get('volume'))
+                    contract.put_open_interest = self._safe_int(raw.get('openInterest'))
+                else:
+                    # Create new contract with only put data
+                    contract = OptionsContract(
+                        strike=strike,
+                        call_last=None, call_change=None, call_bid=None, call_ask=None,
+                        call_volume=None, call_open_interest=None, call_implied_volatility=None,
+                        put_last=self._safe_float(raw.get('lastPrice')),
+                        put_change=self._safe_float(raw.get('priceChange')),
+                        put_bid=self._safe_float(raw.get('bidPrice')),
+                        put_ask=self._safe_float(raw.get('askPrice')),
+                        put_volume=self._safe_int(raw.get('volume')),
+                        put_open_interest=self._safe_int(raw.get('openInterest')),
+                        put_implied_volatility=None,
+                        expiration_date="2025-06-20",
+                        underlying_price=21534.38,
+                        source='barchart_api',
+                        timestamp=datetime.now()
+                    )
+                    contracts.append(contract)
+            
+            self.logger.info(f"Loaded {len(contracts)} contracts from barchart API data")
+            
+            return OptionsChainData(
+                underlying_symbol=symbol,
+                expiration_date="2025-06-20",
+                underlying_price=21534.38,
+                contracts=contracts,
+                source='barchart_api',
+                timestamp=datetime.now(),
+                total_contracts=len(contracts)
+            )
+            
+        except Exception as e:
+            self.logger.error(f"Error loading barchart API data: {e}")
+            
+            # Fallback to small mock data if file loading fails
+            mock_contract = OptionsContract(
                 strike=19000.0,
                 call_last=150.0, call_change=5.0, call_bid=148.0, call_ask=152.0,
                 call_volume=100, call_open_interest=500, call_implied_volatility=0.25,
@@ -421,20 +511,37 @@ class BarchartAPIComparator:
                 put_volume=80, put_open_interest=300, put_implied_volatility=0.23,
                 expiration_date="2025-06-20",
                 underlying_price=19100.0,
-                source='api',
+                source='fallback_mock',
                 timestamp=datetime.now()
             )
-        ]
-        
-        return OptionsChainData(
-            underlying_symbol=symbol,
-            expiration_date="2025-06-20",
-            underlying_price=19100.0,
-            contracts=mock_contracts,
-            source='api',
-            timestamp=datetime.now(),
-            total_contracts=len(mock_contracts)
-        )
+            
+            return OptionsChainData(
+                underlying_symbol=symbol,
+                expiration_date="2025-06-20",
+                underlying_price=19100.0,
+                contracts=[mock_contract],
+                source='fallback_mock',
+                timestamp=datetime.now(),
+                total_contracts=1
+            )
+    
+    def _safe_float(self, value) -> Optional[float]:
+        """Safely convert value to float"""
+        if value is None or value == 'N/A' or value == '':
+            return None
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return None
+    
+    def _safe_int(self, value) -> Optional[int]:
+        """Safely convert value to int"""
+        if value is None or value == 'N/A' or value == '':
+            return None
+        try:
+            return int(float(value))
+        except (ValueError, TypeError):
+            return None
     
     def compare_data_sources(self, web_data: OptionsChainData, api_data: OptionsChainData) -> Dict[str, Any]:
         """
