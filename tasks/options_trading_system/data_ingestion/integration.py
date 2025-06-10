@@ -18,6 +18,7 @@ sys.path.insert(0, current_dir)
 from barchart_saved_data.solution import load_barchart_saved_data
 from tradovate_api_data.solution import load_tradovate_api_data
 from data_normalizer.solution import normalize_options_data
+from polygon_api.solution import load_polygon_api_data
 
 # Import new live API client
 try:
@@ -197,6 +198,27 @@ class DataIngestionPipeline:
                     "status": "failed",
                     "error": str(e)
                 }
+        
+        # Load Polygon.io if configured
+        if "polygon" in self.config:
+            try:
+                print("📡 Fetching Polygon.io Nasdaq-100 options data...")
+                polygon_data = load_polygon_api_data(
+                    self.config["polygon"]
+                )
+                results["polygon"] = {
+                    "status": "success",
+                    "contracts": polygon_data["options_summary"]["total_contracts"],
+                    "quality": polygon_data["quality_metrics"],
+                    "data": polygon_data
+                }
+                print(f"✅ Got {polygon_data['options_summary']['total_contracts']} contracts from Polygon.io")
+            except Exception as e:
+                results["polygon"] = {
+                    "status": "failed",
+                    "error": str(e)
+                }
+                print(f"❌ Polygon.io failed: {str(e)}")
         
         self.sources = results
         return results

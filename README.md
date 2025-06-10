@@ -61,14 +61,17 @@ Final Results: Top-ranked trading opportunities
 └── tasks/options_trading_system/       # Active pipeline framework
     ├── analysis_engine/                # Analysis modules
     ├── data_ingestion/                 # Data loading modules
-    │   └── barchart_web_scraper/       # Barchart API integration
-    │       └── outputs/YYYYMMDD/       # Date-organized scraper outputs
-    │           ├── api_data/           # Live API responses
-    │           ├── web_data/           # Web scraped data
-    │           ├── comparisons/        # Data comparison results
-    │           ├── logs/               # Scraper logs
-    │           ├── screenshots/        # Debug screenshots
-    │           └── html_snapshots/     # Debug HTML captures
+    │   ├── barchart_web_scraper/       # Barchart API integration
+    │   ├── polygon_api/                # Polygon.io Nasdaq-100 options
+    │   ├── interactive_brokers_api/    # Interactive Brokers integration
+    │   ├── tradovate_api_data/         # Tradovate integration
+    │   └── outputs/YYYYMMDD/           # Date-organized data outputs
+    │       ├── api_data/               # Live API responses
+    │       ├── web_data/               # Web scraped data
+    │       ├── comparisons/            # Data comparison results
+    │       ├── logs/                   # Data ingestion logs
+    │       ├── screenshots/            # Debug screenshots
+    │       └── html_snapshots/         # Debug HTML captures
     └── output_generation/              # Results output modules
 ```
 
