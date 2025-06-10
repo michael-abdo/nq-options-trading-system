@@ -21,7 +21,11 @@ sys.path.insert(0, current_dir)
 from expected_value_analysis.solution import analyze_expected_value
 from risk_analysis.solution import run_risk_analysis
 from volume_shock_analysis.solution import analyze_volume_shocks
-from volume_spike_dead_simple.solution import DeadSimpleVolumeSpike
+from volume_spike_dead_simple.solution import (
+    DeadSimpleVolumeSpike, 
+    create_enhanced_dead_simple_analyzer,
+    create_configured_analyzer
+)
 
 
 class AnalysisEngine:
@@ -162,13 +166,16 @@ class AnalysisEngine:
             }
     
     def run_dead_simple_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
-        """Run DEAD Simple institutional flow detection"""
-        print("  Running DEAD Simple Analysis (Following Institutional Money)...")
+        """Enhanced DEAD Simple institutional flow detection with comprehensive logging"""
+        print("  Running Enhanced DEAD Simple Analysis (Institutional Flow with Relative Thresholds)...")
         
         dead_simple_config = self.config.get("dead_simple", {
-            "min_vol_oi_ratio": 10,
-            "min_volume": 500,
-            "min_dollar_size": 100000,
+            "threshold_mode": "relative",  # Enable enhanced mode by default
+            "enable_cross_strike": True,
+            "enable_premium_velocity": True,
+            "min_vol_oi_ratio": 8,  # Slightly more sensitive for relative mode
+            "min_volume": 400,
+            "min_dollar_size": 75000,
             "max_distance_percent": 2.0,
             "confidence_thresholds": {
                 "extreme": 50,
@@ -208,59 +215,130 @@ class AnalysisEngine:
             # Estimate underlying price from contracts
             current_price = self._estimate_underlying_price(contracts)
             
-            # Convert normalized contracts to DEAD Simple format
+            # Convert normalized contracts to enhanced format
             options_data = self._convert_to_dead_simple_format(contracts)
             
-            print(f"    ✓ Loaded {len(contracts)} contracts, underlying price: ${current_price:,.2f}")
+            # Extract contract identifier for enhanced analysis
+            contract = self._extract_contract_identifier(contracts)
             
-            # Initialize the DEAD Simple analyzer
-            analyzer = DeadSimpleVolumeSpike(dead_simple_config)
+            print(f"    ✓ Loaded {len(contracts)} contracts for {contract}, underlying price: ${current_price:,.2f}")
             
-            # Find institutional flow
-            signals = analyzer.find_institutional_flow(options_data, current_price)
+            # Initialize enhanced analyzer based on configuration
+            if dead_simple_config.get("threshold_mode") == "relative":
+                print(f"    ✓ Using enhanced relative analysis mode")
+                analyzer = create_enhanced_dead_simple_analyzer(dead_simple_config)
+            elif dead_simple_config.get("template"):
+                template_name = dead_simple_config["template"]
+                print(f"    ✓ Using configuration template: {template_name}")
+                analyzer = create_configured_analyzer(template_name, dead_simple_config)
+            else:
+                print(f"    ✓ Using traditional absolute threshold mode")
+                analyzer = DeadSimpleVolumeSpike(dead_simple_config)
+            
+            # Enhanced institutional flow analysis
+            analysis_result = analyzer.find_institutional_flow(options_data, current_price, contract)
+            
+            # Handle both old and new result formats
+            if isinstance(analysis_result, dict):
+                # New enhanced format
+                signals = analysis_result.get('signals', [])
+                cross_strike_analysis = analysis_result.get('cross_strike_analysis', {})
+                summary = analysis_result.get('summary', {})
+                metadata = analysis_result.get('metadata', {})
+                
+                print(f"    ✓ Enhanced analysis mode: {metadata.get('analysis_mode', 'unknown')}")
+                print(f"    ✓ Cross-strike analysis: {metadata.get('cross_strike_enabled', False)}")
+                print(f"    ✓ Filter pass rate: {metadata.get('filter_pass_rate', 0):.1f}%")
+                
+                if cross_strike_analysis:
+                    institutional_pressure = cross_strike_analysis.get('institutional_pressure', 'NEUTRAL')
+                    print(f"    ✓ Institutional pressure: {institutional_pressure}")
+                    
+                    if cross_strike_analysis.get('coordinated_flow_detected'):
+                        print(f"    ⚠️  Coordinated institutional flow detected!")
+            else:
+                # Old format (list of signals) - convert for compatibility
+                signals = analysis_result if isinstance(analysis_result, list) else []
+                cross_strike_analysis = {}
+                summary = analyzer.summarize_institutional_activity(signals) if signals else {}
+                metadata = {
+                    'analysis_mode': 'absolute',
+                    'signals_detected': len(signals),
+                    'cross_strike_enabled': False
+                }
             
             # Filter for actionable signals
-            actionable_signals = analyzer.filter_actionable_signals(
-                signals, 
-                current_price,
-                dead_simple_config.get("max_distance_percent", 2.0)
-            )
+            actionable_signals = []
+            max_distance = dead_simple_config.get("max_distance_percent", 2.0)
             
-            # Generate trade plans for top signals
+            for signal in signals:
+                distance_pct = abs(signal.strike - current_price) / current_price * 100
+                if distance_pct <= max_distance:
+                    actionable_signals.append(signal)
+            
+            # Generate enhanced trade plans for top signals
             trade_plans = []
             for signal in actionable_signals[:3]:  # Top 3 actionable signals
                 trade_plan = analyzer.generate_trade_plan(signal, current_price)
+                
+                # Enhance trade plan with relative analysis data if available
+                if signal.is_enhanced_analysis():
+                    trade_plan["enhanced_metrics"] = {
+                        "relative_volume_ratio": signal.relative_volume_ratio,
+                        "volume_percentile_rank": signal.volume_percentile_rank,
+                        "dynamic_confidence_score": signal.dynamic_confidence_score,
+                        "baseline_data_source": signal.baseline_data_source,
+                        "enhanced_confidence_description": signal.get_enhanced_confidence_description()
+                    }
+                
                 trade_plans.append(trade_plan)
             
-            # Generate summary
-            summary = analyzer.summarize_institutional_activity(signals)
-            
-            print(f"    ✓ DEAD Simple Analysis: {len(signals)} institutional signals found")
+            print(f"    ✓ Enhanced DEAD Simple Analysis: {len(signals)} institutional signals found")
+            print(f"    ✓ Actionable signals (within {max_distance}%): {len(actionable_signals)}")
             
             if signals:
                 top_signal = signals[0]
+                enhanced_desc = (top_signal.get_enhanced_confidence_description() 
+                               if top_signal.is_enhanced_analysis() else top_signal.confidence)
                 print(f"    ✓ Top signal: {top_signal.strike}{top_signal.option_type[0]} "
                       f"Vol/OI={top_signal.vol_oi_ratio:.1f}x ${top_signal.dollar_size:,.0f} "
-                      f"({top_signal.confidence})")
+                      f"({enhanced_desc})")
+                
+                # Log enhanced metrics if available
+                if top_signal.is_enhanced_analysis():
+                    print(f"    ✓ Enhanced metrics: {top_signal.relative_volume_ratio:.1f}x historical avg, "
+                          f"{top_signal.volume_percentile_rank:.0f}th percentile")
+            
+            # Enhanced result structure
+            enhanced_result = {
+                "signals": [s.to_dict() for s in signals],
+                "actionable_signals": [s.to_dict() for s in actionable_signals],
+                "trade_plans": trade_plans,
+                "summary": summary,
+                "cross_strike_analysis": cross_strike_analysis,
+                "metadata": metadata,
+                "total_signals": len(signals),
+                "actionable_signals_count": len(actionable_signals),
+                "extreme_signals": len([s for s in signals if s.confidence == "EXTREME"]),
+                "enhanced_signals": len([s for s in signals if s.is_enhanced_analysis()]),
+                "contract_analyzed": contract
+            }
             
             return {
                 "status": "success",
-                "result": {
-                    "signals": [s.to_dict() for s in signals],
-                    "actionable_signals": [s.to_dict() for s in actionable_signals],
-                    "trade_plans": trade_plans,
-                    "summary": summary,
-                    "total_signals": len(signals),
-                    "extreme_signals": len([s for s in signals if s.confidence == "EXTREME"])
-                },
+                "result": enhanced_result,
                 "timestamp": datetime.now().isoformat()
             }
             
         except Exception as e:
-            print(f"    ✗ DEAD Simple Analysis failed: {str(e)}")
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"    ✗ Enhanced DEAD Simple Analysis failed: {str(e)}")
+            print(f"    ✗ Error details: {error_details}")
             return {
                 "status": "failed",
                 "error": str(e),
+                "error_details": error_details,
                 "timestamp": datetime.now().isoformat()
             }
     
@@ -280,6 +358,32 @@ class AnalysisEngine:
             return sum(strikes) / len(strikes)
         
         return 21376.75  # Final fallback
+    
+    def _extract_contract_identifier(self, contracts: List[Dict]) -> str:
+        """Extract contract identifier for enhanced analysis"""
+        if not contracts:
+            return "MC7M25"  # Default fallback
+        
+        # Try to extract from contract metadata
+        for contract in contracts[:10]:  # Check first 10 contracts
+            if contract.get('symbol'):
+                symbol = str(contract['symbol'])
+                # Extract contract root (e.g., MC7M25 from various formats)
+                if len(symbol) >= 5:
+                    return symbol[:6] if symbol[5:6].isdigit() else symbol[:5]
+            
+            if contract.get('expiration'):
+                # Try to construct from expiration date
+                exp_str = str(contract['expiration'])
+                if '2025' in exp_str:
+                    if '07' in exp_str or 'Jul' in exp_str:
+                        return "MC7M25"  # July 2025
+                    elif '01' in exp_str or 'Jan' in exp_str:
+                        return "MC1M25"  # January 2025
+                    elif '03' in exp_str or 'Mar' in exp_str:
+                        return "MC3M25"  # March 2025
+        
+        return "MC7M25"  # Default fallback
     
     def _convert_to_dead_simple_format(self, contracts: List[Dict]) -> List[Dict]:
         """Convert normalized contracts to DEAD Simple expected format"""
@@ -371,27 +475,53 @@ class AnalysisEngine:
                         "reasoning": f"Your NQ EV algorithm setup #{i} with EV={opp['expected_value']:+.1f}"
                     })
         
-        # DEAD Simple Analysis (HIGHEST PRIORITY for EXTREME signals)
+        # Enhanced DEAD Simple Analysis (HIGHEST PRIORITY for EXTREME signals)
         if "dead_simple" in successful_analyses:
             dead_simple_result = self.analysis_results["dead_simple"]["result"]
             dead_simple_plans = dead_simple_result.get("trade_plans", [])
+            cross_strike_analysis = dead_simple_result.get("cross_strike_analysis", {})
             
             for i, plan in enumerate(dead_simple_plans[:3]):  # Top 3 institutional signals
                 signal = plan["signal"]
+                enhanced_metrics = plan.get("enhanced_metrics", {})
                 
-                # EXTREME signals get IMMEDIATE priority
+                # Enhanced priority calculation
                 if signal["confidence"] == "EXTREME":
                     priority = "IMMEDIATE"
                     confidence = "EXTREME"
+                    probability = 0.80  # Higher confidence for enhanced analysis
                 elif signal["confidence"] == "VERY_HIGH":
                     priority = "PRIMARY"
                     confidence = "VERY_HIGH"
+                    probability = 0.70
                 else:
                     priority = "HIGH"
                     confidence = signal["confidence"]
+                    probability = 0.65
                 
-                primary_recommendations.append({
-                    "source": "dead_simple_analysis",
+                # Boost confidence and probability for enhanced signals
+                if enhanced_metrics.get("dynamic_confidence_score"):
+                    dynamic_score = enhanced_metrics["dynamic_confidence_score"]
+                    if dynamic_score > 80:
+                        priority = "IMMEDIATE"
+                        probability = min(0.85, probability + 0.05)
+                
+                # Enhanced reasoning with relative metrics
+                reasoning_parts = [f"Institutional ${signal['dollar_size']:,.0f} flow at {signal['strike']}{signal['option_type'][0]}"]
+                reasoning_parts.append(f"({signal['vol_oi_ratio']:.1f}x Vol/OI)")
+                
+                if enhanced_metrics.get("relative_volume_ratio"):
+                    reasoning_parts.append(f"{enhanced_metrics['relative_volume_ratio']:.1f}x historical avg")
+                
+                if enhanced_metrics.get("volume_percentile_rank"):
+                    reasoning_parts.append(f"{enhanced_metrics['volume_percentile_rank']:.0f}th percentile")
+                
+                if cross_strike_analysis.get('coordinated_flow_detected'):
+                    reasoning_parts.append("COORDINATED FLOW")
+                    priority = "IMMEDIATE"  # Coordinated flow gets immediate priority
+                
+                rec = {
+                    "source": "enhanced_dead_simple_analysis",
                     "priority": priority,
                     "rank": i + 1,
                     "trade_direction": signal["direction"],
@@ -399,15 +529,27 @@ class AnalysisEngine:
                     "target": plan["take_profit"],
                     "stop": plan["stop_loss"],
                     "expected_value": (plan["take_profit"] - plan["entry_price"]) * (1 if signal["direction"] == "LONG" else -1),
-                    "probability": 0.75 if signal["confidence"] == "EXTREME" else 0.65,  # High probability for institutional flow
+                    "probability": probability,
                     "position_size": plan["size_multiplier"],
                     "confidence": confidence,
                     "vol_oi_ratio": signal["vol_oi_ratio"],
                     "dollar_size": signal["dollar_size"],
                     "strike": signal["strike"],
                     "option_type": signal["option_type"],
-                    "reasoning": f"Institutional ${signal['dollar_size']:,.0f} flow at {signal['strike']}{signal['option_type'][0]} ({signal['vol_oi_ratio']:.1f}x Vol/OI)"
-                })
+                    "reasoning": " - ".join(reasoning_parts)
+                }
+                
+                # Add enhanced metrics to recommendation if available
+                if enhanced_metrics:
+                    rec["enhanced_metrics"] = enhanced_metrics
+                    rec["analysis_mode"] = "relative" if enhanced_metrics.get("baseline_data_source") != "absolute_thresholds" else "absolute"
+                
+                # Add cross-strike context if available
+                if cross_strike_analysis:
+                    rec["institutional_pressure"] = cross_strike_analysis.get("institutional_pressure", "NEUTRAL")
+                    rec["coordinated_flow"] = cross_strike_analysis.get("coordinated_flow_detected", False)
+                
+                primary_recommendations.append(rec)
         
         # Volume Shock Analysis (High Priority - Time Sensitive)
         if "volume_shock" in successful_analyses:
@@ -464,9 +606,35 @@ class AnalysisEngine:
             dead_simple_result = self.analysis_results["dead_simple"]["result"]
             market_context["institutional_signals"] = dead_simple_result["total_signals"]
             market_context["extreme_institutional_signals"] = dead_simple_result["extreme_signals"]
-            market_context["institutional_positioning"] = dead_simple_result["summary"]["net_positioning"]
-            market_context["institutional_dollar_volume"] = dead_simple_result["summary"]["total_dollar_volume"]
-            market_context["top_institutional_strikes"] = dead_simple_result["summary"]["top_strikes"][:3]
+            market_context["actionable_signals"] = dead_simple_result.get("actionable_signals_count", 0)
+            market_context["enhanced_signals"] = dead_simple_result.get("enhanced_signals", 0)
+            market_context["contract_analyzed"] = dead_simple_result.get("contract_analyzed", "unknown")
+            
+            # Enhanced institutional context
+            if dead_simple_result.get("summary"):
+                market_context["institutional_positioning"] = dead_simple_result["summary"].get("net_positioning", "NEUTRAL")
+                market_context["institutional_dollar_volume"] = dead_simple_result["summary"].get("total_dollar_volume", 0)
+                market_context["top_institutional_strikes"] = dead_simple_result["summary"].get("top_strikes", [])[:3]
+            
+            # Cross-strike analysis context
+            if dead_simple_result.get("cross_strike_analysis"):
+                cross_strike = dead_simple_result["cross_strike_analysis"]
+                market_context["institutional_pressure"] = cross_strike.get("institutional_pressure", "NEUTRAL")
+                market_context["coordinated_flow_detected"] = cross_strike.get("coordinated_flow_detected", False)
+                market_context["volume_weighted_skew"] = cross_strike.get("volume_weighted_skew", 0.0)
+                
+                if cross_strike.get("call_correlation"):
+                    market_context["call_correlation_strength"] = cross_strike["call_correlation"].get("correlation_strength", 0.0)
+                
+                if cross_strike.get("put_correlation"):
+                    market_context["put_correlation_strength"] = cross_strike["put_correlation"].get("correlation_strength", 0.0)
+            
+            # Enhanced metadata
+            if dead_simple_result.get("metadata"):
+                metadata = dead_simple_result["metadata"]
+                market_context["analysis_mode"] = metadata.get("analysis_mode", "unknown")
+                market_context["filter_pass_rate"] = metadata.get("filter_pass_rate", 0)
+                market_context["analysis_duration"] = metadata.get("analysis_duration_seconds", 0)
         
         synthesis["market_context"] = market_context
         
@@ -609,9 +777,12 @@ def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, 
                 "validation_mode": True
             },
             "dead_simple": {
-                "min_vol_oi_ratio": 10,
-                "min_volume": 500,
-                "min_dollar_size": 100000,
+                "threshold_mode": "relative",  # Enhanced mode by default
+                "enable_cross_strike": True,
+                "enable_premium_velocity": True,
+                "min_vol_oi_ratio": 8,  # More sensitive for relative mode
+                "min_volume": 400,
+                "min_dollar_size": 75000,
                 "max_distance_percent": 2.0,
                 "confidence_thresholds": {
                     "extreme": 50,
