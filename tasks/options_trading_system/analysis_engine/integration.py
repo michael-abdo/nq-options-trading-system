@@ -21,6 +21,7 @@ sys.path.insert(0, current_dir)
 from expected_value_analysis.solution import analyze_expected_value
 from risk_analysis.solution import run_risk_analysis
 from volume_shock_analysis.solution import analyze_volume_shocks
+from volume_spike_dead_simple.solution import DeadSimpleVolumeSpike
 
 
 class AnalysisEngine:
@@ -160,6 +161,152 @@ class AnalysisEngine:
                 "timestamp": datetime.now().isoformat()
             }
     
+    def run_dead_simple_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
+        """Run DEAD Simple institutional flow detection"""
+        print("  Running DEAD Simple Analysis (Following Institutional Money)...")
+        
+        dead_simple_config = self.config.get("dead_simple", {
+            "min_vol_oi_ratio": 10,
+            "min_volume": 500,
+            "min_dollar_size": 100000,
+            "max_distance_percent": 2.0,
+            "confidence_thresholds": {
+                "extreme": 50,
+                "very_high": 30,
+                "high": 20,
+                "moderate": 10
+            }
+        })
+        
+        try:
+            # Import data ingestion pipeline (following pattern of other analyses)
+            from data_ingestion.integration import run_data_ingestion
+            
+            # Load normalized data like other analyses do
+            print("    Fetching options data via data ingestion pipeline...")
+            pipeline_result = run_data_ingestion(data_config)
+            
+            if pipeline_result["pipeline_status"] != "success":
+                print("    ✗ Data ingestion pipeline failed")
+                return {
+                    "status": "failed",
+                    "error": "Data ingestion pipeline failed",
+                    "timestamp": datetime.now().isoformat()
+                }
+            
+            # Extract normalized contracts
+            contracts = pipeline_result["normalized_data"]["contracts"]
+            
+            if not contracts:
+                print("    ✗ No options contracts available")
+                return {
+                    "status": "failed",
+                    "error": "No options contracts available",
+                    "timestamp": datetime.now().isoformat()
+                }
+            
+            # Estimate underlying price from contracts
+            current_price = self._estimate_underlying_price(contracts)
+            
+            # Convert normalized contracts to DEAD Simple format
+            options_data = self._convert_to_dead_simple_format(contracts)
+            
+            print(f"    ✓ Loaded {len(contracts)} contracts, underlying price: ${current_price:,.2f}")
+            
+            # Initialize the DEAD Simple analyzer
+            analyzer = DeadSimpleVolumeSpike(dead_simple_config)
+            
+            # Find institutional flow
+            signals = analyzer.find_institutional_flow(options_data, current_price)
+            
+            # Filter for actionable signals
+            actionable_signals = analyzer.filter_actionable_signals(
+                signals, 
+                current_price,
+                dead_simple_config.get("max_distance_percent", 2.0)
+            )
+            
+            # Generate trade plans for top signals
+            trade_plans = []
+            for signal in actionable_signals[:3]:  # Top 3 actionable signals
+                trade_plan = analyzer.generate_trade_plan(signal, current_price)
+                trade_plans.append(trade_plan)
+            
+            # Generate summary
+            summary = analyzer.summarize_institutional_activity(signals)
+            
+            print(f"    ✓ DEAD Simple Analysis: {len(signals)} institutional signals found")
+            
+            if signals:
+                top_signal = signals[0]
+                print(f"    ✓ Top signal: {top_signal.strike}{top_signal.option_type[0]} "
+                      f"Vol/OI={top_signal.vol_oi_ratio:.1f}x ${top_signal.dollar_size:,.0f} "
+                      f"({top_signal.confidence})")
+            
+            return {
+                "status": "success",
+                "result": {
+                    "signals": [s.to_dict() for s in signals],
+                    "actionable_signals": [s.to_dict() for s in actionable_signals],
+                    "trade_plans": trade_plans,
+                    "summary": summary,
+                    "total_signals": len(signals),
+                    "extreme_signals": len([s for s in signals if s.confidence == "EXTREME"])
+                },
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            print(f"    ✗ DEAD Simple Analysis failed: {str(e)}")
+            return {
+                "status": "failed",
+                "error": str(e),
+                "timestamp": datetime.now().isoformat()
+            }
+    
+    def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
+        """Estimate underlying price from contracts (following pattern of other analyses)"""
+        if not contracts:
+            return 21376.75  # Default NQ price
+        
+        # Try to get from contract metadata first
+        for contract in contracts[:10]:  # Check first 10 contracts
+            if contract.get('underlying_price'):
+                return float(contract['underlying_price'])
+        
+        # Fallback: estimate from strike distribution
+        strikes = [float(c.get('strike', 0)) for c in contracts if c.get('strike')]
+        if strikes:
+            return sum(strikes) / len(strikes)
+        
+        return 21376.75  # Final fallback
+    
+    def _convert_to_dead_simple_format(self, contracts: List[Dict]) -> List[Dict]:
+        """Convert normalized contracts to DEAD Simple expected format"""
+        options_data = []
+        
+        for contract in contracts:
+            # Convert normalized contract to DEAD Simple format with proper null handling
+            option_data = {
+                'strike': contract.get('strike') or 0,
+                'optionType': (contract.get('type') or '').upper(),  # 'call' -> 'CALL', 'put' -> 'PUT'
+                'volume': contract.get('volume') or 0,
+                'openInterest': contract.get('open_interest') or 0,
+                'lastPrice': contract.get('last_price') or 0,
+                'expirationDate': contract.get('expiration') or '',
+                'bid': contract.get('bid') or 0,
+                'ask': contract.get('ask') or 0
+            }
+            
+            # Only include if we have the required fields
+            if (option_data['strike'] > 0 and 
+                option_data['optionType'] in ['CALL', 'PUT'] and
+                option_data['volume'] >= 0 and
+                option_data['openInterest'] >= 0):
+                options_data.append(option_data)
+        
+        return options_data
+    
     def synthesize_analysis_results(self) -> Dict[str, Any]:
         """Synthesize results prioritizing your NQ EV algorithm"""
         print("  Synthesizing Analysis Results (NQ EV Algorithm Priority)...")
@@ -224,6 +371,44 @@ class AnalysisEngine:
                         "reasoning": f"Your NQ EV algorithm setup #{i} with EV={opp['expected_value']:+.1f}"
                     })
         
+        # DEAD Simple Analysis (HIGHEST PRIORITY for EXTREME signals)
+        if "dead_simple" in successful_analyses:
+            dead_simple_result = self.analysis_results["dead_simple"]["result"]
+            dead_simple_plans = dead_simple_result.get("trade_plans", [])
+            
+            for i, plan in enumerate(dead_simple_plans[:3]):  # Top 3 institutional signals
+                signal = plan["signal"]
+                
+                # EXTREME signals get IMMEDIATE priority
+                if signal["confidence"] == "EXTREME":
+                    priority = "IMMEDIATE"
+                    confidence = "EXTREME"
+                elif signal["confidence"] == "VERY_HIGH":
+                    priority = "PRIMARY"
+                    confidence = "VERY_HIGH"
+                else:
+                    priority = "HIGH"
+                    confidence = signal["confidence"]
+                
+                primary_recommendations.append({
+                    "source": "dead_simple_analysis",
+                    "priority": priority,
+                    "rank": i + 1,
+                    "trade_direction": signal["direction"],
+                    "entry_price": plan["entry_price"],
+                    "target": plan["take_profit"],
+                    "stop": plan["stop_loss"],
+                    "expected_value": (plan["take_profit"] - plan["entry_price"]) * (1 if signal["direction"] == "LONG" else -1),
+                    "probability": 0.75 if signal["confidence"] == "EXTREME" else 0.65,  # High probability for institutional flow
+                    "position_size": plan["size_multiplier"],
+                    "confidence": confidence,
+                    "vol_oi_ratio": signal["vol_oi_ratio"],
+                    "dollar_size": signal["dollar_size"],
+                    "strike": signal["strike"],
+                    "option_type": signal["option_type"],
+                    "reasoning": f"Institutional ${signal['dollar_size']:,.0f} flow at {signal['strike']}{signal['option_type'][0]} ({signal['vol_oi_ratio']:.1f}x Vol/OI)"
+                })
+        
         # Volume Shock Analysis (High Priority - Time Sensitive)
         if "volume_shock" in successful_analyses:
             volume_result = self.analysis_results["volume_shock"]["result"]
@@ -246,6 +431,10 @@ class AnalysisEngine:
                     "flow_type": rec["flow_type"],
                     "reasoning": rec["reasoning"]
                 })
+        
+        # Sort all recommendations by priority
+        priority_order = {"IMMEDIATE": 0, "PRIMARY": 1, "SECONDARY": 2, "HIGH": 3, "MEDIUM": 4}
+        primary_recommendations.sort(key=lambda x: (priority_order.get(x["priority"], 999), -x.get("dollar_size", 0)))
         
         synthesis["trading_recommendations"] = primary_recommendations
         
@@ -270,6 +459,14 @@ class AnalysisEngine:
             market_context["volume_shock_alerts"] = len(volume_result.get("alerts", []))
             market_context["volume_shock_intensity"] = volume_result.get("market_context", {}).get("volume_shock_intensity", {})
             market_context["execution_window"] = volume_result.get("market_context", {}).get("optimal_trading_window", {})
+        
+        if "dead_simple" in successful_analyses:
+            dead_simple_result = self.analysis_results["dead_simple"]["result"]
+            market_context["institutional_signals"] = dead_simple_result["total_signals"]
+            market_context["extreme_institutional_signals"] = dead_simple_result["extreme_signals"]
+            market_context["institutional_positioning"] = dead_simple_result["summary"]["net_positioning"]
+            market_context["institutional_dollar_volume"] = dead_simple_result["summary"]["total_dollar_volume"]
+            market_context["top_institutional_strikes"] = dead_simple_result["summary"]["top_strikes"][:3]
         
         synthesis["market_context"] = market_context
         
@@ -299,8 +496,8 @@ class AnalysisEngine:
         return synthesis
     
     def run_full_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
-        """Run complete analysis engine with NQ EV, Risk Analysis, and Volume Shock"""
-        print("EXECUTING ANALYSIS ENGINE (NQ EV + Risk + Volume Shock)")
+        """Run complete analysis engine with NQ EV, Risk Analysis, Volume Shock, and DEAD Simple"""
+        print("EXECUTING ANALYSIS ENGINE (NQ EV + Risk + Volume Shock + DEAD Simple)")
         print("-" * 50)
         
         start_time = datetime.now()
@@ -308,12 +505,13 @@ class AnalysisEngine:
         # Run all analyses in parallel for speed
         print("  Running all analyses simultaneously...")
         
-        with ThreadPoolExecutor(max_workers=3) as executor:
+        with ThreadPoolExecutor(max_workers=4) as executor:
             # Submit all analyses to run concurrently
             futures = {
                 executor.submit(self.run_nq_ev_analysis, data_config): "expected_value",
                 executor.submit(self.run_risk_analysis, data_config): "risk",
-                executor.submit(self.run_volume_shock_analysis, data_config): "volume_shock"
+                executor.submit(self.run_volume_shock_analysis, data_config): "volume_shock",
+                executor.submit(self.run_dead_simple_analysis, data_config): "dead_simple"
             }
             
             # Collect results as they complete
@@ -358,7 +556,7 @@ class AnalysisEngine:
         
         print(f"\nANALYSIS ENGINE COMPLETE")
         print(f"✓ Execution time: {execution_time:.2f}s")
-        print(f"✓ Successful analyses: {final_results['summary']['successful_analyses']}/3")
+        print(f"✓ Successful analyses: {final_results['summary']['successful_analyses']}/4")
         print(f"✓ Primary recommendations: {final_results['summary']['primary_recommendations']}")
         
         # Show best NQ EV recommendation
@@ -409,6 +607,18 @@ def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, 
                 "high_delta_threshold": 2000,
                 "emergency_delta_threshold": 5000,
                 "validation_mode": True
+            },
+            "dead_simple": {
+                "min_vol_oi_ratio": 10,
+                "min_volume": 500,
+                "min_dollar_size": 100000,
+                "max_distance_percent": 2.0,
+                "confidence_thresholds": {
+                    "extreme": 50,
+                    "very_high": 30,
+                    "high": 20,
+                    "moderate": 10
+                }
             }
         }
     
