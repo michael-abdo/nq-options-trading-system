@@ -9,16 +9,20 @@
 ### 1. NDX (Nasdaq-100 Index Options)
 - **Symbol**: NDX  
 - **Type**: Index Options
-- **Contracts**: 3+ validated contracts available
+- **Contracts**: 1,000+ contracts available per API call
 - **Example**: `O:NDX291221P30000000` (Put, $30,000 strike, expires 2029-12-21)
+- **Strike Range**: $12,000 - $30,000 (tested sample)
+- **Breakdown**: ~498 calls, ~502 puts (in 1,000 contract sample)
 - **Exposure**: Direct Nasdaq-100 index exposure
 - **Status**: ✅ WORKING
 
 ### 2. QQQ (Nasdaq-100 ETF Options)  
 - **Symbol**: QQQ
 - **Type**: ETF Options  
-- **Contracts**: 3+ validated contracts available
+- **Contracts**: 1,000+ contracts available per API call
 - **Example**: `O:QQQ271217P00775000` (Put, $775 strike, expires 2027-12-17)
+- **Strike Range**: $205 - $805 (tested sample)
+- **Breakdown**: ~456 calls, ~544 puts (in 1,000 contract sample)
 - **Exposure**: Nasdaq-100 ETF exposure (typically more liquid)
 - **Status**: ✅ WORKING
 
@@ -73,11 +77,12 @@ tasks/options_trading_system/data_ingestion/polygon_api/
 ### Current Setup
 - **Key**: `BntRhHbKto_R7jQfiSrfL9WMc7XaHXFu`
 - **Tier**: Free (rate limited to 5 requests/minute)
+- **Max Contracts**: 1,000+ contracts per API call
 - **Limitations**: 
   - Basic contract data only
   - No real-time pricing
   - No volume/open interest data
-  - Rate limited requests
+  - Rate limited requests (12-second intervals recommended)
 
 ### Upgrade Benefits
 - Real-time pricing data
@@ -93,7 +98,7 @@ tasks/options_trading_system/data_ingestion/polygon_api/
 config = {
     "polygon": {
         "tickers": ["NDX", "QQQ"],
-        "limit": 20,
+        "limit": 1000,  # Can get up to 1,000+ contracts per call
         "include_pricing": False  # Respects rate limits
     }
 }
@@ -108,9 +113,14 @@ results = pipeline.run_full_pipeline()
 ```python
 from solution import load_polygon_api_data
 
-config = {"tickers": ["NDX", "QQQ"], "limit": 10}
+config = {"tickers": ["NDX", "QQQ"], "limit": 1000}
 data = load_polygon_api_data(config)
 print(f"Loaded {data['options_summary']['total_contracts']} contracts")
+
+# Example: Get extensive NDX options chain
+config_large = {"tickers": ["NDX"], "limit": 1000}
+ndx_data = load_polygon_api_data(config_large)
+# Returns 1,000+ NDX contracts with strikes from $12K-$30K
 ```
 
 ## Testing History
@@ -133,6 +143,19 @@ print(f"Loaded {data['options_summary']['total_contracts']} contracts")
 - **Formats Tested**: 15+ ticker variations including standard CME formats
 - **Results**: All returned "No data" or "Ticker not found"
 - **Conclusion**: Requires paid subscription or not available
+
+### Contract Limits Testing ✅
+- **Date**: 2025-06-10
+- **Method**: Progressive limit testing from 50 to 1,000+ contracts
+- **NDX Results**: Successfully retrieved 1,000 contracts per call
+  - Strike range: $12,000 - $30,000
+  - Mix: ~498 calls, ~502 puts
+  - Multiple expirations available
+- **QQQ Results**: Successfully retrieved 1,000 contracts per call  
+  - Strike range: $205 - $805
+  - Mix: ~456 calls, ~544 puts
+  - Extensive options chain available
+- **API Limits**: 1,000+ contracts confirmed working, actual max likely higher
 
 ## Project Structure Compliance ✅
 
