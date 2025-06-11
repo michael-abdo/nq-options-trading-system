@@ -47,4 +47,5 @@ package-lock.json
 npm-debug.log*
 
 # Chrome debug
-/tmp/chrome-debug/
+/tmp/chrome-debug/.env
+venv/

@@ -1,0 +1,18 @@
+{
+  "test_time": "2025-06-10T17:32:18.368128",
+  "load_results": {
+    "barchart": {
+      "status": "failed",
+      "error": "Data file not found: tasks/options_trading_system/data_ingestion/barchart_saved_data/sample_data/options_data_20250602_141553.json"
+    },
+    "databento": {
+      "status": "success",
+      "contracts": 0,
+      "quality": {
+        "total_contracts": 0,
+        "volume_coverage": 0.0,
+        "oi_coverage": 0.0,
+        "data_source": "databento"
+      },
+      "data": {
+        "loader": 

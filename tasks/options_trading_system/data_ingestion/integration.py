@@ -17,8 +17,9 @@ sys.path.insert(0, current_dir)
 # Import validated child solutions
 from barchart_saved_data.solution import load_barchart_saved_data
 from tradovate_api_data.solution import load_tradovate_api_data
-from data_normalizer.solution import normalize_options_data
+from data_normalizer.solution import normalize_options_data, normalize_loaded_data
 from polygon_api.solution import load_polygon_api_data
+from databento_api.solution import load_databento_api_data
 
 # Import new live API client
 try:
@@ -220,6 +221,27 @@ class DataIngestionPipeline:
                 }
                 print(f"❌ Polygon.io failed: {str(e)}")
         
+        # Load Databento if configured
+        if "databento" in self.config:
+            try:
+                print("🔷 Fetching Databento NQ options data...")
+                databento_data = load_databento_api_data(
+                    self.config["databento"]
+                )
+                results["databento"] = {
+                    "status": "success",
+                    "contracts": databento_data["options_summary"]["total_contracts"],
+                    "quality": databento_data["quality_metrics"],
+                    "data": databento_data
+                }
+                print(f"✅ Got {databento_data['options_summary']['total_contracts']} contracts from Databento")
+            except Exception as e:
+                results["databento"] = {
+                    "status": "failed",
+                    "error": str(e)
+                }
+                print(f"❌ Databento failed: {str(e)}")
+        
         self.sources = results
         return results
     
@@ -228,8 +250,8 @@ class DataIngestionPipeline:
         if not self.sources:
             raise ValueError("No data sources loaded. Call load_all_sources() first.")
         
-        # Use the data_normalizer to normalize all sources
-        normalized_result = normalize_options_data(self.config)
+        # Use the data_normalizer to normalize already loaded sources
+        normalized_result = normalize_loaded_data(self.sources)
         
         self.normalized_data = normalized_result
         return normalized_result

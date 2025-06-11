@@ -44,7 +44,17 @@ class DataNormalizer:
         self.sources['tradovate'] = result
         return result
     
-    def normalize_contract(self, contract_data: Dict, source: str, contract_type: str) -> Dict[str, Any]:
+    def add_loaded_source(self, source_name: str, source_data: Dict[str, Any]) -> None:
+        """
+        Add already loaded source data
+        
+        Args:
+            source_name: Name of the source
+            source_data: Already loaded data from that source
+        """
+        self.sources[source_name] = source_data
+    
+    def normalize_contract(self, contract_data: Dict, source: str, contract_type: str, underlying_price: Optional[float] = None) -> Dict[str, Any]:
         """
         Normalize a single contract to standard format
         
@@ -52,6 +62,7 @@ class DataNormalizer:
             contract_data: Raw contract data
             source: Data source name
             contract_type: 'call' or 'put'
+            underlying_price: Price of underlying asset
             
         Returns:
             Normalized contract dict
@@ -67,7 +78,7 @@ class DataNormalizer:
             "last_price": None,
             "bid": None,
             "ask": None,
-            "underlying_price": None,
+            "underlying_price": underlying_price,
             "timestamp": datetime.now().isoformat()
         }
         
@@ -81,7 +92,7 @@ class DataNormalizer:
                 "volume": raw.get('volume'),
                 "open_interest": raw.get('openInterest'),
                 "last_price": raw.get('lastPrice'),
-                "underlying_price": 21376.75  # From saved data
+                "underlying_price": underlying_price or 21376.75  # From saved data
             })
             
         elif source == "tradovate":
@@ -95,6 +106,46 @@ class DataNormalizer:
                 "last_price": contract_data.get('lastPrice'),
                 "bid": contract_data.get('bid'),
                 "ask": contract_data.get('ask')
+            })
+            
+        elif source == "polygon":
+            # Extract from Polygon format
+            normalized.update({
+                "symbol": contract_data.get('contract_symbol', ''),
+                "strike": contract_data.get('strike_price', 0),
+                "expiration": contract_data.get('expiration_date', ''),
+                "volume": contract_data.get('volume', 0),
+                "open_interest": contract_data.get('open_interest', 0),
+                "last_price": contract_data.get('close', contract_data.get('last_quote', {}).get('last', 0)),
+                "bid": contract_data.get('last_quote', {}).get('bid', 0),
+                "ask": contract_data.get('last_quote', {}).get('ask', 0)
+            })
+            
+        elif source == "databento":
+            # Extract from Databento format
+            normalized.update({
+                "symbol": contract_data.get('symbol', ''),
+                "strike": contract_data.get('strike', 0),
+                "expiration": contract_data.get('expiration', ''),
+                "volume": contract_data.get('volume', 0),
+                "open_interest": contract_data.get('open_interest', 0),
+                "last_price": contract_data.get('avg_price', contract_data.get('last_price', 0)),
+                "bid": contract_data.get('bid', 0),
+                "ask": contract_data.get('ask', 0)
+            })
+        
+        else:
+            # Generic extraction for unknown sources
+            # Try common field names
+            normalized.update({
+                "symbol": contract_data.get('symbol', contract_data.get('contract_symbol', '')),
+                "strike": float(contract_data.get('strike', contract_data.get('strike_price', 0))),
+                "expiration": contract_data.get('expiration', contract_data.get('expiration_date', '')),
+                "volume": contract_data.get('volume', 0),
+                "open_interest": contract_data.get('open_interest', contract_data.get('openInterest', 0)),
+                "last_price": contract_data.get('last_price', contract_data.get('lastPrice', 0)),
+                "bid": contract_data.get('bid', contract_data.get('bid_price', 0)),
+                "ask": contract_data.get('ask', contract_data.get('ask_price', 0))
             })
         
         return normalized
@@ -123,39 +174,42 @@ class DataNormalizer:
         for source_name, source_data in self.sources.items():
             normalized["sources"].append(source_name)
             
-            if source_name == "barchart":
-                # Get the loader from result
-                loader = source_data['loader']
-                options = loader.get_options_data()
-                
-                # Normalize calls
-                for call in options['calls']:
-                    norm_contract = self.normalize_contract(call, "barchart", "call")
-                    if norm_contract['strike'] > 0:  # Valid contract
-                        normalized["contracts"].append(norm_contract)
-                
-                # Normalize puts
-                for put in options['puts']:
-                    norm_contract = self.normalize_contract(put, "barchart", "put")
-                    if norm_contract['strike'] > 0:  # Valid contract
-                        normalized["contracts"].append(norm_contract)
-                        
-            elif source_name == "tradovate":
-                # Get the loader from result
-                loader = source_data['loader']
-                options = loader.get_options_data()
-                
-                # Normalize calls
-                for call in options['calls']:
-                    norm_contract = self.normalize_contract(call, "tradovate", "call")
-                    if norm_contract['strike'] > 0:  # Valid contract
-                        normalized["contracts"].append(norm_contract)
-                
-                # Normalize puts
-                for put in options['puts']:
-                    norm_contract = self.normalize_contract(put, "tradovate", "put")
-                    if norm_contract['strike'] > 0:  # Valid contract
-                        normalized["contracts"].append(norm_contract)
+            # Get options data from various possible locations
+            options_data = None
+            
+            if source_name in ["barchart", "tradovate"]:
+                # Legacy sources with loader pattern
+                loader = source_data.get('loader')
+                if loader and hasattr(loader, 'get_options_data'):
+                    options_data = loader.get_options_data()
+                else:
+                    # Try direct options_summary
+                    options_data = source_data.get('options_summary', {})
+            else:
+                # New sources (polygon, databento) use options_summary directly
+                options_data = source_data.get('options_summary', {})
+            
+            if not options_data:
+                continue
+            
+            # Get underlying price if available
+            underlying_price = None
+            if 'metadata' in source_data:
+                underlying_price = source_data['metadata'].get('underlying_price')
+            
+            # Process calls
+            calls = options_data.get('calls', [])
+            for call in calls:
+                norm_contract = self.normalize_contract(call, source_name, "call", underlying_price)
+                if norm_contract['strike'] > 0:  # Valid contract
+                    normalized["contracts"].append(norm_contract)
+            
+            # Process puts
+            puts = options_data.get('puts', [])
+            for put in puts:
+                norm_contract = self.normalize_contract(put, source_name, "put", underlying_price)
+                if norm_contract['strike'] > 0:  # Valid contract
+                    normalized["contracts"].append(norm_contract)
         
         # Update summary
         normalized["summary"]["total_contracts"] = len(normalized["contracts"])
@@ -237,6 +291,37 @@ def normalize_options_data(sources_config: Dict[str, Any]) -> Dict[str, Any]:
     
     if "tradovate" in sources_config:
         normalizer.load_tradovate_data(sources_config["tradovate"])
+    
+    # Normalize all data
+    normalized = normalizer.normalize_all_sources()
+    
+    # Get quality metrics
+    quality_metrics = normalizer.get_quality_metrics()
+    
+    return {
+        "normalizer": normalizer,
+        "normalized_data": normalized,
+        "quality_metrics": quality_metrics,
+        "metadata": normalizer.metadata
+    }
+
+def normalize_loaded_data(loaded_sources: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Normalize already loaded options data from multiple sources
+    
+    Args:
+        loaded_sources: Dict with already loaded source data from integration.py
+                       Format: {source_name: {"data": source_data, "status": "success"}}
+        
+    Returns:
+        Dict with normalized data and metrics
+    """
+    normalizer = DataNormalizer()
+    
+    # Add each loaded source to normalizer
+    for source_name, source_result in loaded_sources.items():
+        if source_result.get("status") == "success" and "data" in source_result:
+            normalizer.add_loaded_source(source_name, source_result["data"])
     
     # Normalize all data
     normalized = normalizer.normalize_all_sources()

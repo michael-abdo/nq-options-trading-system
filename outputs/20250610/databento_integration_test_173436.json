@@ -1,0 +1,44 @@
+{
+  "test_time": "2025-06-10T17:34:36.141800",
+  "load_results": {
+    "databento": {
+      "status": "success",
+      "contracts": 0,
+      "quality": {
+        "total_contracts": 0,
+        "volume_coverage": 0.0,
+        "oi_coverage": 0.0,
+        "data_source": "databento"
+      }
+    }
+  },
+  "summary": {
+    "pipeline_metadata": {
+      "pipeline_version": "1.0",
+      "created_at": "2025-06-10T17:34:34.435838",
+      "sources_configured": [
+        "databento"
+      ]
+    },
+    "sources_loaded": 1,
+    "sources_failed": 0,
+    "total_contracts": 0,
+    "data_quality": {
+      "total_contracts": 0,
+      "overall_volume_coverage": 0,
+      "overall_oi_coverage": 0,
+      "overall_price_coverage": 0,
+      "by_source": {},
+      "sources": []
+    },
+    "timestamp": "2025-06-10T17:34:36.141477",
+    "source_details": {
+      "databento": {
+        "contracts": 0,
+        "volume_coverage": 0.0,
+        "oi_coverage": 0.0
+      }
+    }
+  },
+  "sample_contracts": []
+}
