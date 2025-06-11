@@ -4,9 +4,10 @@ Single Entry Point for Hierarchical Pipeline Analysis Framework
 Clean, simple interface to the new NQ Options Trading System
 
 Usage:
-  python3 run_pipeline.py                    # Run with today's EOD contract
-  python3 run_pipeline.py MC7M25             # Run with specific contract
-  python3 run_pipeline.py --contract MC2M25  # Run with specific contract (alternative syntax)
+  python3 run_pipeline.py                    # Run with Databento NQ options data
+  python3 run_pipeline.py [DEPRECATED]       # Contract args no longer used (Databento auto-fetches)
+  
+Note: Now uses Databento for Standard E-mini NQ options (20x multiplier)
 """
 
 import sys
@@ -27,11 +28,10 @@ def parse_arguments():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python3 run_pipeline.py                    # Run with today's EOD contract (auto-calculated)
-  python3 run_pipeline.py MC7M25             # Run with Friday's EOD contract
-  python3 run_pipeline.py MC1M25             # Run with Monday's EOD contract
-  python3 run_pipeline.py --contract MC2M25  # Run with Tuesday's EOD contract
-  python3 run_pipeline.py MC6M25             # Run with monthly options
+  python3 run_pipeline.py                    # Run with Databento NQ options (Standard E-mini)
+  
+Note: Contract arguments are deprecated. Databento automatically fetches
+      current Standard E-mini NQ options data ($20 per point).
         """
     )
     
@@ -68,79 +68,41 @@ def main():
     print("=" * 60)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
-    if target_contract:
-        print(f"Target Contract: {target_contract} (user specified)")
-    else:
-        print("Target Contract: Auto-calculated EOD contract for today")
-    
+    print("Primary Data Source: Databento (Standard E-mini NQ Options)")
     print()
     
     try:
-        # Create configuration with optional target contract
-        config = None
-        if target_contract:
-            config = {
-                "data": {
-                    "barchart": {
-                        "file_path": "data/api_responses/options_data_20250602_141553.json",
-                        "use_live_api": True,
-                        "futures_symbol": "NQM25",
-                        "headless": True,
-                        "target_symbol": target_contract
-                    },
-                    "tradovate": {
-                        "mode": "demo",
-                        "cid": "6540",
-                        "secret": "f7a2b8f5-8348-424f-8ffa-047ab7502b7c",
-                        "use_mock": True
-                    }
-                },
-                "analysis": {
-                    "expected_value": {
-                        "weights": {
-                            "oi_factor": 0.35,
-                            "vol_factor": 0.25,
-                            "pcr_factor": 0.25,
-                            "distance_factor": 0.15
-                        },
-                        "min_ev": 15,
-                        "min_probability": 0.60,
-                        "max_risk": 150,
-                        "min_risk_reward": 1.0
-                    },
-                    "momentum": {
-                        "volume_threshold": 100,
-                        "price_change_threshold": 0.05,
-                        "momentum_window": 5,
-                        "min_momentum_score": 0.6
-                    },
-                    "volatility": {
-                        "iv_percentile_threshold": 75,
-                        "iv_skew_threshold": 0.05,
-                        "term_structure_slope_threshold": 0.02,
-                        "min_volume_for_iv": 10
-                    }
-                },
-                "output": {
-                    "report": {
-                        "style": "professional",
-                        "include_details": True,
-                        "include_market_context": True
-                    },
-                    "json": {
-                        "include_raw_data": False,
-                        "include_metadata": True,
-                        "format_pretty": True,
-                        "include_analysis_details": True
-                    }
-                },
-                "save": {
-                    "save_report": True,
-                    "save_json": True,
-                    "output_dir": "outputs",
-                    "timestamp_suffix": True
-                }
-            }
+        # Import configuration manager
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'tasks', 'options_trading_system'))
+        from config_manager import get_config_manager
+        
+        # Use configuration manager with databento_only profile
+        config_manager = get_config_manager()
+        
+        # Create standard profiles if they don't exist
+        try:
+            config = config_manager.load_profile("databento_only")
+            print("📋 Loaded 'databento_only' configuration profile")
+        except FileNotFoundError:
+            print("📋 Creating standard configuration profiles...")
+            config_manager.create_standard_profiles()
+            config = config_manager.load_profile("databento_only")
+            print("📋 Created and loaded 'databento_only' configuration profile")
+        
+        # Validate configuration
+        validation_issues = config_manager.validate_config(config)
+        if validation_issues:
+            print("⚠️ Configuration validation issues:")
+            for issue in validation_issues:
+                print(f"   - {issue}")
+        
+        # Show configuration summary
+        summary = config_manager.get_config_summary(config)
+        print(f"📊 Configuration: {len(summary['enabled_sources'])} sources enabled")
+        for source in summary['enabled_sources']:
+            print(f"   ✓ {source}")
+        
+        # The config is already complete from config_manager
         
         # Run the complete pipeline system
         result = run_complete_nq_trading_system(config)

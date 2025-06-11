@@ -5,16 +5,11 @@
 **Single Entry Point with Flexible Usage**:
 
 ```bash
-# Run with today's auto-calculated EOD contract  
+# Run with Databento (Standard E-mini NQ Options - $20 per point)
 python3 run_pipeline.py
 
-# Run with specific contract (multiple syntax options)
-python3 run_pipeline.py MC7M25                    # Friday's EOD contract
-python3 run_pipeline.py MC1M25                    # Monday's EOD contract  
-python3 run_pipeline.py --contract MC2M25         # Tuesday's EOD contract
-python3 run_pipeline.py MC6M25                    # Monthly options
-
-# Show help with all examples
+# Note: Contract arguments are deprecated. Databento automatically fetches
+# current Standard E-mini NQ options data. For configuration options:
 python3 run_pipeline.py --help
 ```
 
@@ -48,36 +43,78 @@ Final Results: Top-ranked trading opportunities
 ├── CLAUDE.md                           # Project instructions
 ├── README.md                           # This file
 ├── run_pipeline.py                     # 🚀 MAIN ENTRY POINT
+├── .env                                # Environment variables (API keys)
+├── .gitignore                          # Git ignore patterns
+├── config/                             # 📋 CONFIGURATION PROFILES
+│   ├── databento_only.json            # Databento-only configuration (default)
+│   ├── barchart_only.json             # Barchart-only configuration  
+│   ├── all_sources.json               # All data sources enabled
+│   └── testing.json                   # Testing configuration
+├── scripts/                            # 🔧 UTILITY SCRIPTS
+│   ├── compare_barchart_databento.py  # Data source comparison
+│   ├── requirements_databento.txt     # Databento dependencies
+│   └── setup_databento.sh             # Databento setup script
+├── tests/                              # 🧪 TEST SUITE
+│   ├── test_config_system.py          # Configuration system tests
+│   ├── test_pipeline_config.py        # Pipeline configuration tests
+│   ├── test_pipeline_with_config.py   # Full pipeline tests
+│   ├── test_databento_integration.py  # Databento integration tests
+│   ├── test_barchart_api_only.py      # Barchart API tests
+│   ├── test_databento_api.py          # Databento API tests
+│   ├── test_databento_nq_options.py   # NQ options specific tests
+│   └── test_web_scrape_simple.py      # Web scraping tests
 ├── archive/                            # Legacy files (archived)
-├── data/                               # Market data
-├── docs/                               # Documentation
+├── docs/                               # 📚 DOCUMENTATION
+│   ├── analysis/                       # Strategy documentation
+│   ├── data_sources/                   # Data source guides
+│   └── *.md                           # System documentation
 ├── outputs/                            # 📁 ORGANIZED OUTPUT STRUCTURE
-│   └── YYYYMMDD/                       # Date-based organization
-│       ├── analysis_exports/           # JSON analysis outputs
-│       ├── reports/                    # Trading reports
-│       ├── logs/                       # System logs
-│       └── samples/                    # Sample data files
-├── tests/                              # Test scripts
-└── tasks/options_trading_system/       # Active pipeline framework
-    ├── analysis_engine/                # Analysis modules
-    ├── data_ingestion/                 # Data loading modules
-    │   ├── barchart_web_scraper/       # Barchart API integration
-    │   ├── databento_api/              # Databento CME Globex live data ($179/mo)
-    │   ├── polygon_api/                # Polygon.io Nasdaq-100 options
-    │   ├── interactive_brokers_api/    # Interactive Brokers integration
-    │   ├── tradovate_api_data/         # Tradovate integration
-    │   └── outputs/YYYYMMDD/           # Date-organized data outputs
-    │       ├── api_data/               # Live API responses
-    │       ├── web_data/               # Web scraped data
-    │       ├── comparisons/            # Data comparison results
-    │       ├── logs/                   # Data ingestion logs
-    │       ├── screenshots/            # Debug screenshots
-    │       └── html_snapshots/         # Debug HTML captures
-    └── output_generation/              # Results output modules
+│   ├── YYYYMMDD/                       # Date-based organization
+│   │   ├── analysis_exports/           # JSON analysis outputs
+│   │   ├── api_data/                   # API responses
+│   │   ├── reports/                    # Trading reports
+│   │   └── polygon_api_results/        # Polygon.io results
+│   ├── config_tests/                   # Configuration test results
+│   └── databento_cache/                # Databento cache
+├── tasks/options_trading_system/       # 🏗️ ACTIVE PIPELINE FRAMEWORK
+│   ├── config_manager.py               # Configuration management
+│   ├── analysis_engine/                # Analysis modules
+│   ├── data_ingestion/                 # Data loading modules
+│   │   ├── sources_registry.py        # Data source registry
+│   │   ├── integration.py             # Pipeline integration
+│   │   ├── barchart_web_scraper/      # Barchart API integration
+│   │   ├── databento_api/             # Databento CME Globex live data
+│   │   ├── polygon_api/               # Polygon.io Nasdaq-100 options
+│   │   ├── interactive_brokers_api/   # Interactive Brokers integration
+│   │   └── tradovate_api_data/        # Tradovate integration
+│   └── output_generation/              # Results output modules
+├── venv/                               # Python virtual environment
+└── worktrees/                          # Git worktrees for branch work
 ```
 
-## Configuration Strategies
+## Configurable Data Sources
 
+The system now supports **easy configuration switching** between data sources:
+
+### Available Configurations
+- **`databento_only.json`** - Standard E-mini NQ options (default, $20 per point)
+- **`barchart_only.json`** - Micro E-mini NQ options ($2 per point)  
+- **`all_sources.json`** - All data sources enabled
+- **`testing.json`** - Test configuration with saved data
+
+### Switching Data Sources
+```bash
+# Use different configuration profile
+# Edit config/databento_only.json to enable/disable sources
+# Or load different profile in run_pipeline.py
+
+# Example: Switch from Databento to Barchart
+# In config/databento_only.json, change:
+# "databento": {"enabled": false}
+# "barchart": {"enabled": true}
+```
+
+### Analysis Strategies
 The system supports multiple analysis strategies via configuration:
 
 - **Conservative**: Risk-first filtering with strict thresholds
@@ -85,7 +122,7 @@ The system supports multiple analysis strategies via configuration:
 - **Technical**: Pattern-first filtering for technical traders
 - **Scalping**: Fast execution for intraday trading
 
-Edit `tasks/options_trading_system/analysis_engine/pipeline_config.json` to switch strategies.
+Edit configuration files in `config/` directory to switch strategies and data sources.
 
 ## File Organization
 
@@ -113,13 +150,16 @@ The system supports multiple data sources for comprehensive market coverage:
 ### Setup Instructions
 ```bash
 # Install Databento dependencies
-pip install -r requirements_databento.txt
+pip install -r scripts/requirements_databento.txt
 
 # Configure API keys (see docs/data_sources/databento.md)
 export DATABENTO_API_KEY=your-key-here
 
 # Test integration
-python test_databento_integration.py
+python tests/test_databento_integration.py
+
+# Test configuration system
+python tests/test_config_system.py
 ```
 
 See [Data Sources Documentation](docs/data_sources/) for detailed setup guides.

@@ -25,6 +25,9 @@ try:
     DATABENTO_AVAILABLE = True
 except ImportError:
     DATABENTO_AVAILABLE = False
+    # Create dummy objects for type hints
+    pd = None
+    db = None
     logger.warning("Databento package not available. Install with: pip install databento")
 
 class DatabentoAPIClient:
@@ -166,7 +169,7 @@ class DatabentoAPIClient:
             logger.error(f"Error fetching options chain: {e}")
             return {"error": str(e)}
     
-    def _process_options_chain(self, df: pd.DataFrame, date_str: str) -> Dict[str, Any]:
+    def _process_options_chain(self, df: "pd.DataFrame", date_str: str) -> Dict[str, Any]:
         """Process raw definition data into structured options chain"""
         if df.empty:
             return {"calls": [], "puts": [], "total_contracts": 0}
@@ -258,7 +261,7 @@ class DatabentoAPIClient:
             logger.error(f"Error fetching trades: {e}")
             return {"error": str(e)}
     
-    def _process_trades(self, df: pd.DataFrame, date_str: str) -> Dict[str, Any]:
+    def _process_trades(self, df: "pd.DataFrame", date_str: str) -> Dict[str, Any]:
         """Process trade data into volume summary"""
         if df.empty:
             return {"trades": [], "total_volume": 0, "date": date_str}

@@ -14,76 +14,8 @@ from typing import Dict, Any, List, Optional
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
-# Import validated child solutions
-from barchart_saved_data.solution import load_barchart_saved_data
-from tradovate_api_data.solution import load_tradovate_api_data
-from data_normalizer.solution import normalize_options_data, normalize_loaded_data
-from polygon_api.solution import load_polygon_api_data
-from databento_api.solution import load_databento_api_data
-
-# Import new live API client
-try:
-    from barchart_web_scraper.hybrid_scraper import HybridBarchartScraper
-    from barchart_web_scraper.solution import BarchartAPIComparator
-    LIVE_API_AVAILABLE = True
-except ImportError:
-    LIVE_API_AVAILABLE = False
-
-
-def load_barchart_live_data(futures_symbol: str = "NQM25", headless: bool = True, target_symbol: str = None) -> Dict[str, Any]:
-    """
-    Load live Barchart options data for today's EOD contract
-    
-    Args:
-        futures_symbol: Underlying futures symbol
-        headless: Run browser in headless mode
-        target_symbol: Specific contract symbol to fetch (overrides EOD calculation)
-        
-    Returns:
-        Dict with Barchart data in same format as saved data
-    """
-    if not LIVE_API_AVAILABLE:
-        raise ImportError("Live API components not available")
-    
-    try:
-        # Get target symbol (either specified or today's EOD)
-        if target_symbol:
-            eod_symbol = target_symbol
-            print(f"🎯 Using specified target symbol: {eod_symbol}")
-        else:
-            comparator = BarchartAPIComparator()
-            eod_symbol = comparator.get_eod_contract_symbol()
-            print(f"📅 Calculated EOD symbol: {eod_symbol}")
-        
-        # Use hybrid scraper to get live data
-        scraper = HybridBarchartScraper(headless=headless)
-        
-        # Authenticate and fetch data
-        if not scraper.authenticate(futures_symbol):
-            raise Exception("Failed to authenticate with Barchart")
-        
-        api_data = scraper.fetch_options_data(eod_symbol, futures_symbol)
-        
-        if not api_data or api_data.get('total', 0) == 0:
-            # Try monthly options as fallback
-            print(f"⚠️  EOD contract {eod_symbol} not available, trying monthly option MC6M25")
-            api_data = scraper.fetch_options_data("MC6M25", futures_symbol)
-            
-            if not api_data or api_data.get('total', 0) == 0:
-                raise Exception(f"❌ No live options data available for {eod_symbol} or MC6M25. Market may be closed or contracts not listed.")
-        
-        return {
-            "raw_data": api_data,
-            "source": "barchart_live_api",
-            "symbol": eod_symbol if api_data.get('total', 0) > 0 else "MC6M25",
-            "timestamp": datetime.now().isoformat(),
-            "total_contracts": api_data.get('total', 0)
-        }
-        
-    except Exception as e:
-        print(f"❌ Live API failed: {e}")
-        print("🛑 STOPPING: Cannot proceed without live data.")
-        raise e
+# Import data normalizer (still needed for pipeline)
+from data_normalizer.solution import normalize_loaded_data
 
 
 class DataIngestionPipeline:
@@ -106,144 +38,122 @@ class DataIngestionPipeline:
         }
     
     def load_all_sources(self) -> Dict[str, Any]:
-        """Load data from all configured sources"""
+        """Load data from all configured sources using registry-driven approach"""
         results = {}
         
-        # Load Barchart if configured
-        if "barchart" in self.config:
-            try:
-                # Try live API first, fallback to saved data
-                use_live_api = self.config["barchart"].get("use_live_api", True)
-                print(f"🔧 Live API config: use_live_api={use_live_api}, available={LIVE_API_AVAILABLE}")
-                
-                if use_live_api and LIVE_API_AVAILABLE:
-                    print("🌐 Fetching live Barchart options data...")
-                    barchart_data = load_barchart_live_data(
-                        futures_symbol=self.config["barchart"].get("futures_symbol", "NQM25"),
-                        headless=self.config["barchart"].get("headless", True),
-                        target_symbol=self.config["barchart"].get("target_symbol")
-                    )
-                    print(f"✅ Got {barchart_data.get('total_contracts', 0)} contracts from live API")
-                    
-                    # Convert live data to expected format
-                    if "raw_data" in barchart_data:
-                        # Process live API data into expected format
-                        api_data = barchart_data["raw_data"]
-                        total_contracts = api_data.get('total', 0)
-                        results["barchart"] = {
-                            "status": "success",
-                            "contracts": total_contracts,
-                            "quality": {
-                                "live_api": True, 
-                                "symbol": barchart_data.get("symbol"),
-                                "volume_coverage": 1.0 if total_contracts > 0 else 0.0,
-                                "oi_coverage": 1.0 if total_contracts > 0 else 0.0
-                            },
-                            "data": {
-                                "source": "live_api",
-                                "raw_data": api_data,
-                                "options_summary": {"total_contracts": total_contracts},
-                                "quality_metrics": {
-                                    "data_source": "live", 
-                                    "total_contracts": total_contracts,
-                                    "volume_coverage": 1.0 if total_contracts > 0 else 0.0,
-                                    "oi_coverage": 1.0 if total_contracts > 0 else 0.0
-                                }
-                            }
+        # Import registry for dynamic source loading
+        from sources_registry import get_sources_registry
+        registry = get_sources_registry()
+        
+        # Handle both old-style config and new-style config
+        if "data_sources" in self.config:
+            # New configuration format with enabled/disabled sources
+            from ..config_manager import get_config_manager
+            config_manager = get_config_manager()
+            
+            enabled_sources = config_manager.get_enabled_sources(self.config)
+            print(f"🔧 Enabled sources: {enabled_sources}")
+            
+            for source_name in enabled_sources:
+                try:
+                    # Validate source is available
+                    if not registry.is_source_available(source_name):
+                        results[source_name] = {
+                            "status": "failed",
+                            "error": f"Source not available: {source_name}"
                         }
-                    else:
-                        # Fallback format from saved data
-                        results["barchart"] = {
-                            "status": "success", 
-                            "contracts": barchart_data["options_summary"]["total_contracts"],
-                            "quality": barchart_data["quality_metrics"],
-                            "data": barchart_data
-                        }
-                else:
-                    print("📁 Loading saved Barchart data...")
-                    barchart_data = load_barchart_saved_data(
-                        self.config["barchart"]["file_path"]
-                    )
-                    results["barchart"] = {
-                        "status": "success",
-                        "contracts": barchart_data["options_summary"]["total_contracts"],
-                        "quality": barchart_data["quality_metrics"],
-                        "data": barchart_data
-                    }
+                        continue
                     
-            except Exception as e:
-                # If live API is required and fails, stop the entire pipeline
-                if self.config["barchart"].get("use_live_api", True):
-                    print(f"🛑 PIPELINE STOPPED: Live API required but failed: {str(e)}")
-                    raise Exception(f"Live API required but failed: {str(e)}")
-                else:
-                    results["barchart"] = {
+                    # Get source configuration
+                    source_config = config_manager.get_source_config(self.config, source_name)
+                    
+                    # Load data using registry
+                    source_data = registry.load_source(source_name, source_config)
+                    
+                    # Process the result into standard pipeline format
+                    results[source_name] = self._process_source_result(source_name, source_data)
+                    
+                except Exception as e:
+                    print(f"❌ Failed to load {source_name}: {e}")
+                    results[source_name] = {
                         "status": "failed",
                         "error": str(e)
                     }
-        
-        # Load Tradovate if configured
-        if "tradovate" in self.config:
-            try:
-                tradovate_data = load_tradovate_api_data(
-                    self.config["tradovate"]
-                )
-                results["tradovate"] = {
-                    "status": "success",
-                    "contracts": tradovate_data["options_summary"]["total_contracts"],
-                    "quality": tradovate_data["quality_metrics"],
-                    "data": tradovate_data
-                }
-            except Exception as e:
-                results["tradovate"] = {
-                    "status": "failed",
-                    "error": str(e)
-                }
-        
-        # Load Polygon.io if configured
-        if "polygon" in self.config:
-            try:
-                print("📡 Fetching Polygon.io Nasdaq-100 options data...")
-                polygon_data = load_polygon_api_data(
-                    self.config["polygon"]
-                )
-                results["polygon"] = {
-                    "status": "success",
-                    "contracts": polygon_data["options_summary"]["total_contracts"],
-                    "quality": polygon_data["quality_metrics"],
-                    "data": polygon_data
-                }
-                print(f"✅ Got {polygon_data['options_summary']['total_contracts']} contracts from Polygon.io")
-            except Exception as e:
-                results["polygon"] = {
-                    "status": "failed",
-                    "error": str(e)
-                }
-                print(f"❌ Polygon.io failed: {str(e)}")
-        
-        # Load Databento if configured
-        if "databento" in self.config:
-            try:
-                print("🔷 Fetching Databento NQ options data...")
-                databento_data = load_databento_api_data(
-                    self.config["databento"]
-                )
-                results["databento"] = {
-                    "status": "success",
-                    "contracts": databento_data["options_summary"]["total_contracts"],
-                    "quality": databento_data["quality_metrics"],
-                    "data": databento_data
-                }
-                print(f"✅ Got {databento_data['options_summary']['total_contracts']} contracts from Databento")
-            except Exception as e:
-                results["databento"] = {
-                    "status": "failed",
-                    "error": str(e)
-                }
-                print(f"❌ Databento failed: {str(e)}")
+        else:
+            # Legacy configuration format - maintain backward compatibility
+            self._load_sources_legacy_format(results, registry)
         
         self.sources = results
         return results
+    
+    def _process_source_result(self, source_name: str, source_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Process raw source data into standard pipeline format"""
+        
+        # Handle different source data formats
+        if "options_summary" in source_data:
+            # Standard format
+            total_contracts = source_data["options_summary"]["total_contracts"]
+            quality_metrics = source_data.get("quality_metrics", {})
+        elif "raw_data" in source_data:
+            # Live API format  
+            total_contracts = source_data.get("total_contracts", 0)
+            quality_metrics = {
+                "data_source": "live",
+                "total_contracts": total_contracts,
+                "volume_coverage": 1.0 if total_contracts > 0 else 0.0,
+                "oi_coverage": 1.0 if total_contracts > 0 else 0.0
+            }
+            # Convert to standard format
+            source_data = {
+                "source": source_data.get("source", source_name),
+                "raw_data": source_data["raw_data"],
+                "options_summary": {"total_contracts": total_contracts},
+                "quality_metrics": quality_metrics
+            }
+        else:
+            # Minimal format
+            total_contracts = 0
+            quality_metrics = {
+                "data_source": source_name,
+                "total_contracts": 0,
+                "volume_coverage": 0.0,
+                "oi_coverage": 0.0
+            }
+        
+        return {
+            "status": "success",
+            "contracts": total_contracts,
+            "quality": quality_metrics,
+            "data": source_data
+        }
+    
+    def _load_sources_legacy_format(self, results: Dict[str, Any], registry):
+        """Load sources using legacy configuration format for backward compatibility"""
+        
+        # Legacy format: check for each source individually using registry
+        legacy_source_map = {
+            "barchart": "barchart",
+            "tradovate": "tradovate", 
+            "polygon": "polygon",
+            "databento": "databento"
+        }
+        
+        for config_key, source_name in legacy_source_map.items():
+            if config_key in self.config:
+                try:
+                    if registry.is_source_available(source_name):
+                        source_data = registry.load_source(source_name, self.config[config_key])
+                        results[source_name] = self._process_source_result(source_name, source_data)
+                    else:
+                        results[source_name] = {
+                            "status": "failed",
+                            "error": f"Source not available: {source_name}"
+                        }
+                except Exception as e:
+                    results[source_name] = {
+                        "status": "failed",
+                        "error": str(e)
+                    }
     
     def normalize_pipeline_data(self) -> Dict[str, Any]:
         """Normalize all loaded data into standard format"""

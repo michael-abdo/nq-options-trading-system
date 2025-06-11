@@ -1,0 +1,79 @@
+{
+  "test_results": {
+    "test_backward_compatibility": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_enhanced_signal_fields": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_baseline_data_manager": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_relative_threshold_calculator": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_cross_strike_analyzer": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_enhanced_analysis_modes": {
+      "status": "FAILED",
+      "details": {
+        "passed": false
+      }
+    },
+    "test_configuration_templates": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_factory_functions": {
+      "status": "FAILED",
+      "details": {
+        "passed": false
+      }
+    },
+    "test_integration_compatibility": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_error_handling_and_fallbacks": {
+      "status": "PASSED",
+      "details": {
+        "passed": true
+      }
+    },
+    "test_performance_and_logging": {
+      "status": "PASSED",
+      "details": {
+        "performance_acceptable": false,
+        "logging_comprehensive": false,
+        "memory_usage_reasonable": false,
+        "error": "No module named 'psutil'"
+      }
+    }
+  },
+  "summary": {
+    "total_tests": 11,
+    "passed_tests": 9,
+    "failed_tests": 2,
+    "pass_rate_percent": 81.81818181818183
+  }
+}
