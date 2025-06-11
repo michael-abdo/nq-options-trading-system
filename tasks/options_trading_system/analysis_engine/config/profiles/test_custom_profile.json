@@ -1,0 +1,12 @@
+{
+  "name": "test_custom_profile",
+  "description": "Test custom profile",
+  "algorithm_version": "v3.0",
+  "data_mode": "simulation",
+  "testing_mode": "validation",
+  "config": {
+    "test": true
+  },
+  "created_at": "2025-06-10T22:10:24.179811",
+  "last_modified": "2025-06-10T22:10:24.179819"
+}

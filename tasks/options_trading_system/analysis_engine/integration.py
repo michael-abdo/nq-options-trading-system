@@ -9,7 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
@@ -860,17 +860,35 @@ class AnalysisEngine:
 
 
 # Module-level function for easy integration
-def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, Any] = None) -> Dict[str, Any]:
+def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, Any] = None, 
+                       profile_name: Optional[str] = None) -> Dict[str, Any]:
     """
     Run the complete analysis engine with your NQ EV algorithm as primary
     
     Args:
         data_config: Configuration for data sources
         analysis_config: Configuration for analysis strategies (optional)
+        profile_name: Configuration profile name (for v1.0/v3.0/A/B testing)
         
     Returns:
         Dict with comprehensive analysis results prioritizing your NQ EV algorithm
     """
+    # If profile name provided, load configuration from profile
+    if profile_name:
+        try:
+            from config_manager import get_config_manager
+            config_manager = get_config_manager()
+            analysis_config = config_manager.get_analysis_config(profile_name)
+            
+            # Also update data config if profile specifies it
+            profile_data_config = config_manager.get_data_config(profile_name)
+            if profile_data_config:
+                data_config.update(profile_data_config)
+                
+        except Exception as e:
+            print(f"Warning: Failed to load profile '{profile_name}': {e}")
+            # Fall back to default config
+    
     if analysis_config is None:
         analysis_config = {
             "expected_value": {
@@ -930,3 +948,130 @@ def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, 
     
     engine = AnalysisEngine(analysis_config)
     return engine.run_full_analysis(data_config)
+
+
+def run_ab_testing_analysis(v1_profile: str = "ifd_v1_production", 
+                           v3_profile: str = "ifd_v3_production",
+                           duration_hours: float = 1.0,
+                           data_config: Dict[str, Any] = None) -> Dict[str, Any]:
+    """
+    Run A/B testing analysis comparing v1.0 and v3.0 algorithms
+    
+    Args:
+        v1_profile: Configuration profile for v1.0 algorithm
+        v3_profile: Configuration profile for v3.0 algorithm
+        duration_hours: Duration for A/B testing
+        data_config: Data configuration (optional)
+        
+    Returns:
+        A/B testing results with comparison metrics
+    """
+    try:
+        from ab_testing_coordinator import create_ab_coordinator
+        from config_manager import get_config_manager
+        
+        # Create A/B testing coordinator
+        coordinator = create_ab_coordinator(get_config_manager())
+        
+        # Start A/B test
+        session_id = coordinator.start_ab_test(
+            v1_profile, v3_profile, duration_hours, data_config
+        )
+        
+        print(f"A/B test started: {session_id}")
+        print(f"Duration: {duration_hours} hours")
+        
+        # Wait for test completion
+        import time
+        wait_time = min(duration_hours * 3600, 300)  # Max 5 minute wait for demo
+        time.sleep(wait_time)
+        
+        # Get results
+        if coordinator.test_active:
+            results = coordinator.stop_ab_test()
+            
+            return {
+                "ab_test_results": results,
+                "recommendation": results.recommended_algorithm,
+                "confidence": results.confidence_in_recommendation,
+                "reasoning": results.reasoning,
+                "performance_comparison": {
+                    "v1.0": results.v1_metrics,
+                    "v3.0": results.v3_metrics
+                }
+            }
+        else:
+            return {"error": "A/B test not active"}
+            
+    except Exception as e:
+        return {"error": f"A/B testing failed: {str(e)}"}
+
+
+def run_specific_algorithm(algorithm_version: str, data_config: Dict[str, Any] = None) -> Dict[str, Any]:
+    """
+    Run a specific algorithm version (v1.0 or v3.0)
+    
+    Args:
+        algorithm_version: "v1.0" or "v3.0"
+        data_config: Data configuration
+        
+    Returns:
+        Analysis results for the specific algorithm
+    """
+    if algorithm_version == "v1.0":
+        profile_name = "ifd_v1_production"
+    elif algorithm_version == "v3.0":
+        profile_name = "ifd_v3_production"
+    else:
+        raise ValueError(f"Invalid algorithm version: {algorithm_version}")
+    
+    return run_analysis_engine(data_config, profile_name=profile_name)
+
+
+def compare_algorithm_performance(duration_hours: float = 0.1) -> Dict[str, Any]:
+    """
+    Quick performance comparison between v1.0 and v3.0
+    
+    Args:
+        duration_hours: Test duration (default 0.1 = 6 minutes)
+        
+    Returns:
+        Performance comparison results
+    """
+    try:
+        from performance_tracker import create_performance_tracker
+        
+        # Create performance tracker
+        tracker = create_performance_tracker()
+        
+        # Start tracking both algorithms
+        tracker.start_tracking(["v1.0", "v3.0"])
+        
+        # Run some test signals
+        data_config = {"mode": "simulation"}
+        
+        # Run v1.0
+        v1_result = run_specific_algorithm("v1.0", data_config)
+        
+        # Run v3.0 
+        v3_result = run_specific_algorithm("v3.0", data_config)
+        
+        # Wait for duration
+        import time
+        time.sleep(duration_hours * 3600)
+        
+        # Stop tracking
+        final_performance = tracker.stop_tracking()
+        
+        # Get comparison
+        comparison = tracker.compare_algorithms("v1.0", "v3.0")
+        
+        return {
+            "comparison": comparison,
+            "v1_performance": tracker.get_performance_summary("v1.0"),
+            "v3_performance": tracker.get_performance_summary("v3.0"),
+            "overall_winner": comparison.get("overall_winner", "tie")
+        }
+        
+    except Exception as e:
+        return {"error": f"Performance comparison failed: {str(e)}"}

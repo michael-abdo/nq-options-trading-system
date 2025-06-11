@@ -1,0 +1,17 @@
+{
+  "name": "test_mode_switch",
+  "description": "Test mode switching",
+  "algorithm_version": "v3.0",
+  "data_mode": "simulation",
+  "testing_mode": "validation",
+  "config": {
+    "data_sources": {
+      "mode": "simulation",
+      "primary": [
+        "test"
+      ]
+    }
+  },
+  "created_at": "2025-06-10T22:11:05.178089",
+  "last_modified": "2025-06-10T22:11:05.178092"
+}
