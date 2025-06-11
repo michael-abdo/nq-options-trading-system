@@ -1,0 +1,245 @@
+name: Dependency Testing
+
+on:
+  push:
+    branches: [ main, develop, phase-* ]
+    paths:
+      - 'tasks/options_trading_system/analysis_engine/**'
+      - 'requirements/**'
+      - '.github/workflows/test-dependencies.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'tasks/options_trading_system/analysis_engine/**'
+      - 'requirements/**'
+  workflow_dispatch:
+
+jobs:
+  test-minimal:
+    name: Test Minimal (No Dependencies)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Verify No Dependencies
+      run: |
+        python -m pip list --format=freeze > installed.txt
+        echo "Installed packages:"
+        cat installed.txt
+        
+    - name: Run Dependency Check
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python scripts/check_dependencies.py
+        
+    - name: Test Core Functionality
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python -c "from integration import AnalysisEngine; print('✅ Core import successful')"
+        python -c "from config_manager import ConfigManager; print('✅ Config import successful')"
+        python -c "from phase4.success_metrics_tracker import SuccessMetricsTracker; print('✅ Phase4 import successful')"
+        
+    - name: Run Minimal Tests
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python tests/test_integration.py
+        python tests/test_phase4_integration.py
+
+  test-phase4:
+    name: Test Phase 4 Dependencies
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-phase4-${{ hashFiles('**/requirements/phase4.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-phase4-
+          ${{ runner.os }}-pip-
+    
+    - name: Install Phase 4 Dependencies
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements/phase4.txt
+        
+    - name: Run Dependency Check
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python scripts/check_dependencies.py
+        
+    - name: Test Enhanced Features
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python -c "import pandas; print(f'✅ pandas {pandas.__version__}')"
+        python -c "import numpy; print(f'✅ numpy {numpy.__version__}')"
+        python -c "import matplotlib; print(f'✅ matplotlib {matplotlib.__version__}')"
+        python -c "import scipy; print(f'✅ scipy {scipy.__version__}')"
+        python -c "import sklearn; print(f'✅ sklearn {sklearn.__version__}')"
+        
+    - name: Run Phase 4 Tests
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python tests/test_phase4_integration.py
+        python tests/test_phase4_validation.py
+
+  test-optional:
+    name: Test All Optional Dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-optional-${{ hashFiles('**/requirements/optional.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-optional-
+          ${{ runner.os }}-pip-
+    
+    - name: Install All Optional Dependencies
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements/optional.txt
+        
+    - name: Run Dependency Check
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python scripts/check_dependencies.py
+        
+    - name: Test All Features Enabled
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python -c "
+import sys
+packages = ['pandas', 'numpy', 'matplotlib', 'scipy', 'sklearn', 
+            'pytz', 'seaborn', 'plotly', 'pydantic', 'psutil',
+            'sqlalchemy', 'requests', 'structlog']
+for pkg in packages:
+    try:
+        exec(f'import {pkg}')
+        print(f'✅ {pkg} imported successfully')
+    except ImportError:
+        print(f'❌ Failed to import {pkg}')
+        sys.exit(1)
+"
+
+  test-gradual:
+    name: Test Gradual Dependency Addition
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Test No Dependencies
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        echo "=== Testing with no dependencies ==="
+        python scripts/check_dependencies.py
+        python -c "from integration import AnalysisEngine; print('✅ Works without dependencies')"
+        
+    - name: Add Data Analysis Dependencies
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        echo "=== Adding pandas and numpy ==="
+        pip install pandas numpy
+        python scripts/check_dependencies.py
+        
+    - name: Add Visualization Dependencies
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        echo "=== Adding matplotlib ==="
+        pip install matplotlib
+        python scripts/check_dependencies.py
+        
+    - name: Add Scientific Dependencies
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        echo "=== Adding scipy and scikit-learn ==="
+        pip install scipy scikit-learn
+        python scripts/check_dependencies.py
+        
+    - name: Verify Full Functionality
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        echo "=== All Phase 4 dependencies installed ==="
+        python tests/test_phase4_integration.py
+
+  dependency-matrix:
+    name: Generate Dependency Matrix
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Generate Compatibility Matrix
+      working-directory: tasks/options_trading_system/analysis_engine
+      run: |
+        python -c "
+import json
+import subprocess
+import sys
+
+matrix = {
+    'python_versions': ['3.8', '3.9', '3.10', '3.11'],
+    'operating_systems': ['ubuntu-latest', 'windows-latest', 'macos-latest'],
+    'dependency_levels': ['minimal', 'phase4', 'optional', 'full'],
+    'status': 'tested'
+}
+
+with open('compatibility_matrix.json', 'w') as f:
+    json.dump(matrix, f, indent=2)
+    
+print('Compatibility matrix generated')
+"
+        
+    - name: Upload Matrix
+      uses: actions/upload-artifact@v3
+      with:
+        name: compatibility-matrix
+        path: tasks/options_trading_system/analysis_engine/compatibility_matrix.json

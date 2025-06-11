@@ -1,0 +1,72 @@
+# Development Dependencies
+# These are tools for developers contributing to the codebase
+# Install with: pip install -r requirements/dev.txt
+
+# Testing Framework
+pytest>=6.2.0           # Test discovery and execution
+pytest-cov>=2.12.0      # Code coverage reporting
+pytest-asyncio>=0.15.0  # Async test support
+pytest-mock>=3.6.0      # Mocking utilities
+pytest-timeout>=1.4.0   # Test timeout handling
+pytest-xdist>=2.3.0     # Parallel test execution
+
+# Code Quality & Formatting
+black>=21.6b0           # Code formatter
+isort>=5.9.0            # Import sorting
+flake8>=3.9.0           # Linting
+flake8-docstrings>=1.6.0 # Docstring linting
+flake8-comprehensions>=3.5.0 # Comprehension linting
+autopep8>=1.5.0         # Alternative formatter
+
+# Type Checking
+mypy>=0.910             # Static type checking
+types-requests>=2.25.0  # Type stubs for requests
+types-python-dateutil>=2.8.0 # Type stubs for dateutil
+
+# Documentation
+sphinx>=4.0.0           # Documentation generator
+sphinx-rtd-theme>=0.5.0 # ReadTheDocs theme
+sphinx-autodoc-typehints>=1.12.0 # Type hint documentation
+myst-parser>=0.15.0     # Markdown support for Sphinx
+
+# Development Tools
+ipython>=7.25.0         # Enhanced Python shell
+ipykernel>=6.0.0        # Jupyter kernel
+notebook>=6.4.0         # Jupyter notebooks
+jupyterlab>=3.0.0       # JupyterLab IDE
+
+# Code Analysis
+pylint>=2.9.0           # Advanced linting
+bandit>=1.7.0           # Security linting
+safety>=1.10.0          # Dependency security check
+radon>=5.0.0            # Code complexity metrics
+
+# Pre-commit Hooks
+pre-commit>=2.13.0      # Git hook management
+
+# Performance Profiling
+line-profiler>=3.3.0    # Line-by-line profiling
+memory-profiler>=0.58.0 # Memory usage profiling
+py-spy>=0.3.0           # Sampling profiler
+
+# Debugging
+pudb>=2021.1            # Terminal debugger
+icecream>=2.1.0         # Debug print statements
+
+# Build & Packaging
+build>=0.5.0            # PEP 517 package builder
+twine>=3.4.0            # PyPI upload tool
+wheel>=0.36.0           # Wheel packaging
+setuptools>=57.0.0      # Package setup
+
+# Continuous Integration
+tox>=3.24.0             # Test automation
+nox>=2021.6.12          # Task automation
+invoke>=1.6.0           # Task execution
+
+# Version Control
+gitpython>=3.1.0        # Git integration
+bump2version>=1.0.0     # Version bumping
+
+# Note: These are development-only dependencies.
+# The analysis engine runs perfectly without any of these!

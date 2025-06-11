@@ -1,0 +1,19 @@
+# Full Installation - All Dependencies
+# This includes all optional and development dependencies
+# Install with: pip install -r requirements/full.txt
+
+# Include base requirements (though it's empty since we use stdlib only)
+-r base.txt
+
+# Include Phase 4 specific requirements
+-r phase4.txt
+
+# Include all optional dependencies
+-r optional.txt
+
+# Include development dependencies
+-r dev.txt
+
+# This file provides a one-command installation for developers who want
+# the complete feature set including all enhancements, testing tools,
+# and development utilities.

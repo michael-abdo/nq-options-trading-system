@@ -31,7 +31,8 @@ def main():
                 'DataFrame operations', 
                 'Efficient data aggregation'
             ],
-            'fallback': 'Basic dict/list operations'
+            'fallback': 'Basic dict/list operations',
+            'category': 'Phase 4 Core'
         },
         'numpy': {
             'features': [
@@ -39,7 +40,8 @@ def main():
                 'Statistical calculations',
                 'Array operations'
             ],
-            'fallback': 'Python built-in math operations'
+            'fallback': 'Python built-in math operations',
+            'category': 'Phase 4 Core'
         },
         'matplotlib': {
             'features': [
@@ -47,7 +49,8 @@ def main():
                 'Performance charts',
                 'Real-time monitoring plots'
             ],
-            'fallback': 'Text-based logging only'
+            'fallback': 'Text-based logging only',
+            'category': 'Phase 4 Core'
         },
         'scipy': {
             'features': [
@@ -55,7 +58,8 @@ def main():
                 'A/B test p-value calculations',
                 'Advanced statistical functions'
             ],
-            'fallback': 'Basic statistical calculations'
+            'fallback': 'Basic statistical calculations',
+            'category': 'Phase 4 Core'
         },
         'sklearn': {
             'features': [
@@ -63,7 +67,8 @@ def main():
                 'Adaptive learning algorithms',
                 'Multi-objective optimization'
             ],
-            'fallback': 'Rule-based threshold adjustments'
+            'fallback': 'Rule-based threshold adjustments',
+            'category': 'Phase 4 Core'
         },
         'pytz': {
             'features': [
@@ -71,30 +76,147 @@ def main():
                 'Market hours handling',
                 'DST awareness'
             ],
-            'fallback': 'Basic UTC operations'
+            'fallback': 'Basic UTC operations',
+            'category': 'Phase 4 Core'
+        },
+        'seaborn': {
+            'features': [
+                'Statistical visualizations',
+                'A/B testing result plots',
+                'Correlation heatmaps'
+            ],
+            'fallback': 'Basic matplotlib or text output',
+            'category': 'Enhanced Visualization'
+        },
+        'plotly': {
+            'features': [
+                'Interactive web dashboards',
+                'Real-time streaming plots',
+                '3D volatility surfaces'
+            ],
+            'fallback': 'Static plots or text output',
+            'category': 'Enhanced Visualization'
+        },
+        'pydantic': {
+            'features': [
+                'Runtime type validation',
+                'Configuration validation',
+                'Better error messages'
+            ],
+            'fallback': 'Manual validation with dataclasses',
+            'category': 'Data Validation'
+        },
+        'psutil': {
+            'features': [
+                'System resource monitoring',
+                'Process performance metrics',
+                'Network I/O statistics'
+            ],
+            'fallback': 'Basic os module tracking',
+            'category': 'Performance Monitoring'
+        },
+        'sqlalchemy': {
+            'features': [
+                'Advanced database ORM',
+                'Connection pooling',
+                'Database migrations'
+            ],
+            'fallback': 'Direct sqlite3 operations',
+            'category': 'Database Enhancement'
+        },
+        'requests': {
+            'features': [
+                'Robust HTTP client',
+                'Connection pooling',
+                'Retry logic'
+            ],
+            'fallback': 'urllib for basic HTTP',
+            'category': 'API Enhancement'
+        },
+        'websocket-client': {
+            'features': [
+                'Enhanced WebSocket management',
+                'Auto-reconnection',
+                'Better error handling'
+            ],
+            'fallback': 'Basic WebSocket implementation',
+            'category': 'API Enhancement'
+        },
+        'structlog': {
+            'features': [
+                'Structured JSON logging',
+                'Context-aware logs',
+                'Better log aggregation'
+            ],
+            'fallback': 'Standard logging module',
+            'category': 'Logging Enhancement'
+        },
+        'pytest': {
+            'features': [
+                'Advanced test discovery',
+                'Parallel test execution',
+                'Better test reporting'
+            ],
+            'fallback': 'unittest module',
+            'category': 'Testing'
+        },
+        'black': {
+            'features': [
+                'Automatic code formatting',
+                'Consistent code style'
+            ],
+            'fallback': 'Manual formatting',
+            'category': 'Development'
+        },
+        'mypy': {
+            'features': [
+                'Static type checking',
+                'Early bug detection'
+            ],
+            'fallback': 'Runtime type checking only',
+            'category': 'Development'
         }
     }
     
     # Check each dependency
     installed = []
     missing = []
+    categories = {}
     
     print("\nChecking dependencies...\n")
     
+    # Group by category
     for module, info in dependencies.items():
-        installed_status, version = check_module(module)
+        category = info.get('category', 'Other')
+        if category not in categories:
+            categories[category] = []
+        categories[category].append((module, info))
+    
+    # Display by category
+    for category in ['Phase 4 Core', 'Enhanced Visualization', 'Data Validation', 
+                     'Performance Monitoring', 'Database Enhancement', 'API Enhancement',
+                     'Logging Enhancement', 'Testing', 'Development']:
+        if category not in categories:
+            continue
+            
+        print(f"\n{'='*60}")
+        print(f"{category.upper()}")
+        print(f"{'='*60}")
         
-        if installed_status:
-            installed.append(module)
-            print(f"✅ {module:<12} {version:<10} - INSTALLED")
-            print(f"   Features enabled:")
-            for feature in info['features']:
-                print(f"   • {feature}")
-        else:
-            missing.append(module)
-            print(f"❌ {module:<12} {'N/A':<10} - NOT INSTALLED")
-            print(f"   Fallback: {info['fallback']}")
-        print()
+        for module, info in categories[category]:
+            installed_status, version = check_module(module)
+            
+            if installed_status:
+                installed.append(module)
+                print(f"✅ {module:<20} {version:<10} - INSTALLED")
+                print(f"   Features enabled:")
+                for feature in info['features']:
+                    print(f"   • {feature}")
+            else:
+                missing.append(module)
+                print(f"❌ {module:<20} {'N/A':<10} - NOT INSTALLED")
+                print(f"   Fallback: {info['fallback']}")
+            print()
     
     # Summary
     print("=" * 60)
@@ -117,14 +239,36 @@ def main():
     
     # Installation instructions
     if missing:
-        print("\n📦 TO ENABLE ALL FEATURES:")
-        print("pip install -r requirements/phase4.txt")
-        print("\nOr install specific packages:")
-        for module in missing:
-            print(f"pip install {module}")
+        print("\n📦 INSTALLATION OPTIONS:")
+        
+        # Check which are Phase 4 core
+        phase4_missing = [m for m in missing if any(
+            mod == m and info.get('category') == 'Phase 4 Core' 
+            for mod, info in dependencies.items()
+        )]
+        
+        if phase4_missing:
+            print("\n1. Install Phase 4 core dependencies:")
+            print("   pip install -r requirements/phase4.txt")
+        
+        print("\n2. Install ALL optional dependencies:")
+        print("   pip install -r requirements/optional.txt")
+        
+        print("\n3. Install specific packages:")
+        for module in missing[:5]:  # Show first 5
+            print(f"   pip install {module}")
+        if len(missing) > 5:
+            print(f"   ... and {len(missing)-5} more")
     
     print("\n✨ NOTE: The system works perfectly without optional dependencies!")
     print("Optional packages only enhance functionality, not core operations.")
+    
+    # Detailed status
+    print("\n📊 DEPENDENCY CATEGORIES:")
+    for category in ['Phase 4 Core', 'Enhanced Visualization', 'Testing', 'Development']:
+        cat_mods = [m for m, i in dependencies.items() if i.get('category') == category]
+        cat_installed = [m for m in cat_mods if m in installed]
+        print(f"   {category}: {len(cat_installed)}/{len(cat_mods)} installed")
     
     return 0 if len(installed) >= len(dependencies) // 2 else 1
 

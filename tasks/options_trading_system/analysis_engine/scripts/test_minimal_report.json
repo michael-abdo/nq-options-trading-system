@@ -1,0 +1,37 @@
+{
+  "test_mode": "MINIMAL (No Dependencies)",
+  "total_tests": 21,
+  "passed": 9,
+  "failed": 12,
+  "pass_rate": "42.9%",
+  "warnings": [
+    "External packages found: ['pandas', 'numpy', 'pytz', 'pydantic', 'requests', 'websocket']"
+  ],
+  "details": {
+    "passed_tests": [
+      "Import: integration.AnalysisEngine",
+      "Import: pipeline.opportunity.TradingOpportunity",
+      "Import: expected_value_analysis.solution.ExpectedValueAnalyzer",
+      "Import: risk_analysis.solution.RiskAnalyzer",
+      "Import: phase4.success_metrics_tracker.SuccessMetricsTracker",
+      "Import: phase4.adaptive_threshold_manager.AdaptiveThresholdManager",
+      "Import: phase4.latency_monitor.LatencyMonitor",
+      "Import: phase4.uptime_monitor.UptimeMonitor",
+      "Statistics fallback"
+    ],
+    "failed_tests": [
+      "Import: config_manager.ConfigManager - module 'config_manager' has no attribute 'ConfigManager'",
+      "Import: institutional_flow_v3.solution.InstitutionalFlowDetectorV3 - module 'institutional_flow_v3.solution' has no attribute 'InstitutionalFlowDetectorV3'",
+      "Import: volume_shock_analysis.solution.VolumeShockAnalyzer - module 'volume_shock_analysis.solution' has no attribute 'VolumeShockAnalyzer'",
+      "Import: phase4.websocket_backfill_manager.WebSocketBackfillManager - 'NoneType' object has no attribute 'DataFrame'",
+      "Import: phase4.monthly_budget_dashboard.MonthlyBudgetDashboard - 'NoneType' object has no attribute 'DataFrame'",
+      "Import: phase4.staged_rollout_framework.StagedRolloutFramework - module 'phase4.staged_rollout_framework' has no attribute 'StagedRolloutFramework'",
+      "ConfigManager fallback: cannot import name 'ConfigManager' from 'config_manager' (/Users/Mike/trading/algos/EOD/tasks/options_trading_system/config_manager.py)",
+      "Budget Dashboard fallback: 'NoneType' object has no attribute 'DataFrame'",
+      "Adaptive Threshold fallback: 'AdaptiveThresholdManager' object has no attribute 'optimize_thresholds'",
+      "Database operations: 'SuccessMetricsTracker' object has no attribute 'record_signal'",
+      "Integration pipeline: cannot import name 'ConfigManager' from 'config_manager' (/Users/Mike/trading/algos/EOD/tasks/options_trading_system/config_manager.py)",
+      "Performance monitoring: LatencyMonitor.__init__() missing 1 required positional argument: 'config'"
+    ]
+  }
+}

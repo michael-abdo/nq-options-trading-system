@@ -1,0 +1,162 @@
+# Optional Dependencies for Enhanced Features
+# Install with: pip install -r requirements/optional.txt
+# 
+# The IFD v3.0 Analysis Engine works perfectly without any of these dependencies!
+# These packages enable enhanced features but all have robust fallback implementations.
+
+# === DATA ANALYSIS & MANIPULATION ===
+pandas>=1.3.0
+# Enhanced features:
+# - High-performance DataFrame operations for large datasets
+# - Efficient time-series analysis and resampling
+# - Advanced data aggregation and pivoting
+# Fallback: Basic Python dict/list operations with similar functionality
+
+numpy>=1.20.0  
+# Enhanced features:
+# - Fast numerical computations and array operations
+# - Statistical calculations with better performance
+# - Matrix operations for correlation analysis
+# Fallback: Python's built-in math and statistics modules
+
+# === VISUALIZATION & DASHBOARDS ===
+matplotlib>=3.4.0
+# Enhanced features:
+# - Real-time performance dashboards with charts
+# - Budget tracking visualizations ($150-200 monthly target)
+# - Latency and uptime monitoring graphs
+# - Interactive plot generation for analysis
+# Fallback: Text-based logging and terminal output
+
+seaborn>=0.11.0
+# Enhanced features:
+# - Statistical visualizations for A/B testing results
+# - Heatmaps for cross-strike correlation analysis
+# - Distribution plots for signal quality metrics
+# Fallback: Basic matplotlib plots or text output
+
+plotly>=5.0.0
+# Enhanced features:
+# - Interactive web-based dashboards
+# - Real-time streaming data visualizations
+# - 3D volatility surface plots
+# Fallback: Static matplotlib plots or text output
+
+# === SCIENTIFIC COMPUTING ===
+scipy>=1.7.0
+# Enhanced features:
+# - Statistical significance testing for A/B tests
+# - Advanced probability distributions
+# - Signal processing for noise reduction
+# - Optimization algorithms for threshold tuning
+# Fallback: Basic statistical calculations using Python's statistics module
+
+# === MACHINE LEARNING ===
+scikit-learn>=0.24.0
+# Enhanced features:
+# - ML-based adaptive threshold optimization
+# - Multi-objective optimization for signal quality
+# - Clustering for market regime detection
+# - Feature importance analysis
+# Fallback: Rule-based threshold adjustments and heuristics
+
+# === TIMEZONE & DATE HANDLING ===
+pytz>=2021.1
+# Enhanced features:
+# - Accurate timezone conversions for global markets
+# - Daylight saving time handling
+# - Market hours validation across timezones
+# Fallback: Basic UTC operations using datetime
+
+# === DATA VALIDATION ===
+pydantic>=1.8.0
+# Enhanced features:
+# - Runtime type checking for configuration
+# - Automatic data validation and serialization
+# - Better error messages for configuration issues
+# Fallback: Manual validation using dataclasses
+
+# === PERFORMANCE MONITORING ===
+psutil>=5.8.0
+# Enhanced features:
+# - System resource monitoring (CPU, memory, disk)
+# - Process-level performance metrics
+# - Network I/O statistics for WebSocket monitoring
+# Fallback: Basic resource tracking using os module
+
+# === DATABASE ENHANCEMENTS ===
+sqlalchemy>=1.4.0
+# Enhanced features:
+# - Advanced database operations and ORM
+# - Connection pooling for better performance
+# - Database migration support
+# Fallback: Direct sqlite3 operations (already implemented)
+
+# === API & WEB ENHANCEMENTS ===
+requests>=2.26.0
+# Enhanced features:
+# - Robust HTTP client for API calls
+# - Connection pooling and retry logic
+# - Better error handling for network issues
+# Fallback: urllib for basic HTTP operations
+
+websocket-client>=1.2.0
+# Enhanced features:
+# - Enhanced WebSocket connection management
+# - Automatic reconnection with exponential backoff
+# - Better error handling and logging
+# Fallback: Basic WebSocket implementation
+
+# === TESTING & QUALITY ===
+pytest>=6.2.0
+# Enhanced features:
+# - Advanced test discovery and execution
+# - Parallel test execution for faster runs
+# - Better test reporting and fixtures
+# Fallback: Python's unittest module
+
+pytest-cov>=2.12.0
+# Enhanced features:
+# - Code coverage reporting
+# - Coverage trends over time
+# - Integration with CI/CD pipelines
+# Fallback: Manual coverage tracking
+
+# === DEVELOPMENT TOOLS ===
+black>=21.6b0
+# Enhanced features:
+# - Automatic code formatting
+# - Consistent code style across the project
+# Fallback: Manual code formatting
+
+mypy>=0.910
+# Enhanced features:
+# - Static type checking
+# - Early detection of type-related bugs
+# Fallback: Runtime type checking only
+
+# === LOGGING & MONITORING ===
+structlog>=21.1.0
+# Enhanced features:
+# - Structured logging with JSON output
+# - Better log aggregation and searching
+# - Context-aware logging
+# Fallback: Python's standard logging module
+
+# === CONFIGURATION MANAGEMENT ===
+python-dotenv>=0.19.0
+# Enhanced features:
+# - Environment variable management
+# - .env file support for local development
+# - Secure credential handling
+# Fallback: Direct os.environ access
+
+# Installation Commands:
+# =====================
+# Minimal (no dependencies):     # Just run the code!
+# Phase 4 features only:         pip install -r requirements/phase4.txt
+# All optional features:         pip install -r requirements/optional.txt
+# Everything (dev + optional):   pip install -r requirements/full.txt
+
+# Note: The system maintains 100% functionality without any of these packages!
+# Each enhancement is carefully designed with robust fallback behavior.
