@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-06-10T21:30:51.412234",
+  "implementation": "institutional_flow_detection_v3",
+  "version": "3.0",
+  "test_results": {
+    "status": "PASSED",
+    "total_tests": 24,
+    "passed": 24,
+    "failed": 0,
+    "errors": 0,
+    "success_rate": 100.0
+  },
+  "components_tested": [
+    "IFDv3Engine main coordination",
+    "HistoricalBaselineManager 20-day analysis",
+    "PressureRatioAnalyzer real-time patterns",
+    "MarketMakingDetector false positive filtering",
+    "EnhancedConfidenceScorer multi-factor validation",
+    "Pipeline integration and signal generation"
+  ],
+  "key_features_validated": [
+    "Real-time pressure analysis with historical context",
+    "20-day baseline statistical calculations",
+    "Market making pattern detection and filtering",
+    "Multi-factor confidence scoring system",
+    "Cross-strike coordination analysis",
+    "Risk-adjusted signal classification",
+    "Integration with MBO streaming data",
+    "JSON serialization and pipeline compatibility"
+  ],
+  "analysis_capabilities": [
+    "Pressure ratio significance scoring",
+    "Trend strength calculation across windows",
+    "Volume concentration analysis",
+    "Time persistence measurement",
+    "Straddle coordination detection",
+    "Volatility crush pattern recognition",
+    "Statistical anomaly detection",
+    "Risk assessment and position sizing"
+  ],
+  "status": "VALIDATED"
+}
