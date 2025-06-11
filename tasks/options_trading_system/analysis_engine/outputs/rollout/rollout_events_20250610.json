@@ -1,0 +1,42 @@
+[
+  {
+    "event_id": "evt_20250610_230716_178295",
+    "timestamp": "2025-06-10T23:07:16.178310",
+    "event_type": "ROLLOUT_STARTED",
+    "phase": "RolloutPhase.PREPARATION",
+    "description": "Production rollout initiated",
+    "metrics": null,
+    "decision": "RolloutDecision.CONTINUE",
+    "context": {}
+  },
+  {
+    "event_id": "evt_20250610_230716_178940",
+    "timestamp": "2025-06-10T23:07:16.178954",
+    "event_type": "PHASE_TRANSITION",
+    "phase": "RolloutPhase.CANARY",
+    "description": "Transitioned from PREPARATION to CANARY",
+    "metrics": null,
+    "decision": "RolloutDecision.CONTINUE",
+    "context": {}
+  },
+  {
+    "event_id": "evt_20250610_231056_471092",
+    "timestamp": "2025-06-10T23:10:56.471116",
+    "event_type": "ROLLOUT_STARTED",
+    "phase": "RolloutPhase.PREPARATION",
+    "description": "Production rollout initiated",
+    "metrics": null,
+    "decision": "RolloutDecision.CONTINUE",
+    "context": {}
+  },
+  {
+    "event_id": "evt_20250610_231056_472144",
+    "timestamp": "2025-06-10T23:10:56.472160",
+    "event_type": "PHASE_TRANSITION",
+    "phase": "RolloutPhase.CANARY",
+    "description": "Transitioned from PREPARATION to CANARY",
+    "metrics": null,
+    "decision": "RolloutDecision.CONTINUE",
+    "context": {}
+  }
+]

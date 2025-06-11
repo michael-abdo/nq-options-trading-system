@@ -1,0 +1,20 @@
+# Base Requirements - Core Dependencies Only
+# These are the minimal requirements to run the analysis engine
+# Install with: pip install -r requirements/base.txt
+
+# Core Python - No external dependencies required!
+# The analysis engine is designed to work with Python 3.8+ standard library only
+
+# All analysis modules use only Python built-ins:
+# - json (data serialization)
+# - sqlite3 (database operations)
+# - datetime (time handling)
+# - threading (concurrent operations)
+# - logging (system logs)
+# - dataclasses (data structures)
+# - enum (type definitions)
+# - collections (data containers)
+# - statistics (basic calculations)
+# - pathlib (file operations)
+
+# Optional dependencies are listed in phase4.txt for enhanced features

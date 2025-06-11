@@ -1,4 +1,4 @@
-from solution import ExpirationPressureCalculator
+from expiration_pressure_calculator.solution import ExpirationPressureCalculator
 from datetime import datetime, timedelta
 import logging
 

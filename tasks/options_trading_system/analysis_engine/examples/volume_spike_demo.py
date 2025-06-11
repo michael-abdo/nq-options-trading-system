@@ -4,7 +4,7 @@ DEAD Simple Strategy Demo
 Shows the strategy in action with realistic market data
 """
 
-from solution import DeadSimpleVolumeSpike
+from volume_spike_dead_simple.solution import DeadSimpleVolumeSpike
 from datetime import datetime
 
 def run_demo():

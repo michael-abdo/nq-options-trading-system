@@ -1,0 +1,21 @@
+[
+  {
+    "timestamp": "2025-06-10 22:07:47.964696",
+    "symbol": "NQM25",
+    "strike": 21350.0,
+    "v1_signal_detected": false,
+    "v1_confidence": 0.0,
+    "v1_direction": "NONE",
+    "v1_volume_metrics": {},
+    "v3_signal_detected": false,
+    "v3_confidence": 0.0,
+    "v3_direction": "NONE",
+    "v3_pressure_metrics": {},
+    "v3_baseline_context": {},
+    "signal_agreement": false,
+    "direction_agreement": false,
+    "confidence_correlation": 0.0,
+    "processing_time_v1": 1.3696610927581787,
+    "processing_time_v3": 1.3903310298919678
+  }
+]

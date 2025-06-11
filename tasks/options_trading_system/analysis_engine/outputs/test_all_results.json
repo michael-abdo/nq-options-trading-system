@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-06-11T08:43:06.599668",
+  "total_tests": 7,
+  "passed": 3,
+  "failed": 4,
+  "success_rate": 0.42857142857142855,
+  "results": [
+    {
+      "test": "Core Imports",
+      "status": "FAILED",
+      "detail": "cannot import name 'Opportunity' from 'pipeline.opportunity' (/Users/Mike/trading/algos/EOD/tasks/options_trading_system/analysis_engine/pipeline/opportunity.py)"
+    },
+    {
+      "test": "Analysis Modules",
+      "status": "PASSED",
+      "detail": null
+    },
+    {
+      "test": "Phase 4 Components",
+      "status": "FAILED",
+      "detail": "'NoneType' object has no attribute 'DataFrame'"
+    },
+    {
+      "test": "Strategy Modules",
+      "status": "FAILED",
+      "detail": "cannot import name 'ConfigManager' from 'config_manager' (/Users/Mike/trading/algos/EOD/tasks/options_trading_system/config_manager.py)"
+    },
+    {
+      "test": "Configuration Management",
+      "status": "FAILED",
+      "detail": "cannot import name 'ConfigManager' from 'config_manager' (/Users/Mike/trading/algos/EOD/tasks/options_trading_system/config_manager.py)"
+    },
+    {
+      "test": "Integration Engine",
+      "status": "PASSED",
+      "detail": null
+    },
+    {
+      "test": "Evidence Files",
+      "status": "PASSED",
+      "detail": "5/5 found"
+    }
+  ]
+}

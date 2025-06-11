@@ -1,0 +1,39 @@
+{
+  "stop_time": "2025-06-10T22:37:23.957730",
+  "sessions": {
+    "v1.0": {
+      "session_id": "paper_v1.0_20250610_223643",
+      "algorithm_version": "v1.0",
+      "duration_hours": 0.011116952777777779,
+      "starting_capital": 100000.0,
+      "current_capital": 100000.0,
+      "total_pnl": 0.0,
+      "realized_pnl": 0.0,
+      "unrealized_pnl": 0,
+      "total_trades": 0,
+      "winning_trades": 0,
+      "losing_trades": 0,
+      "win_rate": 0.0,
+      "max_drawdown": 0.0,
+      "current_positions": 0,
+      "position_details": []
+    },
+    "v3.0": {
+      "session_id": "paper_v3.0_20250610_223643",
+      "algorithm_version": "v3.0",
+      "duration_hours": 0.01111695138888889,
+      "starting_capital": 100000.0,
+      "current_capital": 100000.0,
+      "total_pnl": 0.0,
+      "realized_pnl": 0.0,
+      "unrealized_pnl": 0,
+      "total_trades": 0,
+      "winning_trades": 0,
+      "losing_trades": 0,
+      "win_rate": 0.0,
+      "max_drawdown": 0.0,
+      "current_positions": 0,
+      "position_details": []
+    }
+  }
+}

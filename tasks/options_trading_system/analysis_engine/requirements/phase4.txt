@@ -1,0 +1,26 @@
+# Phase 4 Optional Dependencies
+# These enhance functionality but are not required - the system has fallbacks
+# Install with: pip install -r requirements/phase4.txt
+
+# Data Analysis & Manipulation
+pandas>=1.3.0          # DataFrame operations for data analysis
+numpy>=1.20.0          # Numerical computations
+
+# Visualization
+matplotlib>=3.4.0      # Charts and dashboards for budget/performance monitoring
+
+# Scientific Computing
+scipy>=1.7.0           # Statistical significance testing for A/B tests
+
+# Machine Learning (for adaptive thresholds)
+scikit-learn>=0.24.0   # ML optimization for adaptive threshold manager
+
+# Timezone handling
+pytz>=2021.1           # Timezone conversions for market hours
+
+# Note: All these dependencies are optional. The system includes fallback
+# implementations that work without them, though with reduced functionality:
+# - pandas: Falls back to basic dict/list operations
+# - matplotlib: Disables visual dashboards, logs data instead
+# - scipy: Uses basic statistical calculations
+# - scikit-learn: Uses rule-based threshold adjustments
