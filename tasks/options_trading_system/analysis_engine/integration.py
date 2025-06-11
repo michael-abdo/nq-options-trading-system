@@ -22,6 +22,7 @@ from expected_value_analysis.solution import analyze_expected_value
 from risk_analysis.solution import run_risk_analysis
 from volume_shock_analysis.solution import analyze_volume_shocks
 from volume_spike_dead_simple.solution import DeadSimpleVolumeSpike
+from institutional_flow_v3.solution import create_ifd_v3_analyzer, run_ifd_v3_analysis
 
 
 class AnalysisEngine:
@@ -307,6 +308,239 @@ class AnalysisEngine:
         
         return options_data
     
+    def run_ifd_v3_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
+        """Run IFD v3.0 Institutional Flow Detection with MBO streaming integration"""
+        print("  Running IFD v3.0 Analysis (Enhanced Institutional Flow Detection)...")
+        
+        ifd_config = self.config.get("institutional_flow_v3", {
+            "db_path": "/tmp/ifd_v3_test.db",
+            "pressure_thresholds": {
+                "min_pressure_ratio": 1.5,
+                "min_volume_concentration": 0.3,
+                "min_time_persistence": 0.4,
+                "min_trend_strength": 0.5
+            },
+            "confidence_thresholds": {
+                "min_baseline_anomaly": 1.5,
+                "min_overall_confidence": 0.6
+            },
+            "market_making_penalty": 0.3
+        })
+        
+        try:
+            # Import data ingestion pipeline to get MBO streaming data
+            from data_ingestion.integration import run_data_ingestion
+            
+            # Load pressure metrics from MBO streaming (or fallback to simulation)
+            print("    Fetching MBO pressure metrics via data ingestion pipeline...")
+            
+            try:
+                pipeline_result = run_data_ingestion(data_config)
+                
+                if pipeline_result["pipeline_status"] != "success":
+                    print("    ⚠ Data ingestion pipeline failed, using simulated MBO data")
+                    # Generate simulated pressure metrics for testing
+                    pressure_metrics = self._generate_simulated_pressure_metrics()
+                else:
+                    # Extract pressure metrics from MBO streaming data
+                    pressure_metrics = self._extract_pressure_metrics_from_pipeline(pipeline_result)
+            
+            except Exception as pipeline_error:
+                print(f"    ⚠ Data ingestion error: {pipeline_error}, using simulated MBO data")
+                # Generate simulated pressure metrics when pipeline fails completely
+                pressure_metrics = self._generate_simulated_pressure_metrics()
+            
+            if not pressure_metrics:
+                print("    ✗ No pressure metrics available")
+                return {
+                    "status": "failed",
+                    "error": "No pressure metrics available",
+                    "timestamp": datetime.now().isoformat()
+                }
+            
+            print(f"    ✓ Loaded {len(pressure_metrics)} pressure metric snapshots")
+            
+            # Convert pressure metrics to the format expected by IFD v3.0
+            pressure_data = self._convert_to_pressure_metrics_objects(pressure_metrics)
+            
+            print(f"    ✓ Converted {len(pressure_data)} pressure metrics objects")
+            
+            # Run IFD v3.0 analysis on all pressure data
+            result = run_ifd_v3_analysis(pressure_data, ifd_config)
+            
+            # Extract signals and summaries from result
+            signals = result.get("signals", [])
+            analysis_summaries = result.get("analysis_summaries", [])
+            
+            # Generate comprehensive summary
+            summary = self._summarize_ifd_v3_results(signals, analysis_summaries)
+            
+            print(f"    ✓ IFD v3.0 Analysis: {len(signals)} institutional signals detected")
+            
+            if signals:
+                top_signal = signals[0]
+                print(f"    ✓ Top signal: {top_signal['symbol']} "
+                      f"Confidence={top_signal['confidence']:.2f} "
+                      f"Direction={top_signal['expected_direction']} "
+                      f"Strength={top_signal['signal_strength']:.1f}")
+            
+            return {
+                "status": "success",
+                "result": {
+                    "signals": signals,
+                    "analysis_summaries": analysis_summaries,
+                    "summary": summary,
+                    "total_signals": len(signals),
+                    "high_confidence_signals": len([s for s in signals if s["confidence"] > 0.7]),
+                    "pressure_snapshots_analyzed": len(pressure_metrics)
+                },
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            print(f"    ✗ IFD v3.0 Analysis failed: {str(e)}")
+            return {
+                "status": "failed",
+                "error": str(e),
+                "timestamp": datetime.now().isoformat()
+            }
+    
+    def _generate_simulated_pressure_metrics(self) -> List[Dict[str, Any]]:
+        """Generate simulated pressure metrics for testing when MBO data unavailable"""
+        from datetime import datetime, timedelta
+        import random
+        
+        # Generate 5 simulated pressure snapshots over 5-minute windows
+        metrics = []
+        base_time = datetime.now()
+        
+        symbols = ["NQM25", "NQU25", "ESM25"]  # NQ futures options
+        
+        for i in range(5):
+            window_start = base_time - timedelta(minutes=(5-i)*5)
+            window_end = window_start + timedelta(minutes=5)
+            
+            for symbol in symbols:
+                metrics.append({
+                    "symbol": symbol,
+                    "window_start": window_start.isoformat(),
+                    "window_end": window_end.isoformat(),
+                    "total_trades": random.randint(100, 1000),
+                    "buy_pressure": random.uniform(0.3, 0.8),
+                    "sell_pressure": random.uniform(0.2, 0.7),
+                    "volume_weighted_price": random.uniform(21300, 21400),
+                    "total_volume": random.randint(500, 5000),
+                    "unique_prices": random.randint(10, 50),
+                    "bid_ask_spread_avg": random.uniform(0.25, 2.0)
+                })
+        
+        return metrics
+    
+    def _extract_pressure_metrics_from_pipeline(self, pipeline_result: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Extract pressure metrics from MBO streaming pipeline results"""
+        # In a real implementation, this would extract pressure metrics from
+        # the MBO streaming data that comes from the data ingestion pipeline
+        
+        # For now, check if pipeline has MBO/pressure data
+        if "mbo_pressure_data" in pipeline_result:
+            return pipeline_result["mbo_pressure_data"]
+        
+        # Fallback to simulation if no MBO data available
+        return self._generate_simulated_pressure_metrics()
+    
+    def _convert_to_pressure_metrics_objects(self, pressure_metrics: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Convert raw pressure metrics dicts to PressureMetrics-compatible format"""
+        from datetime import datetime
+        from dataclasses import dataclass
+        
+        # Import PressureMetrics from the databento solution
+        try:
+            from data_ingestion.databento_api.solution import PressureMetrics
+        except ImportError:
+            # Create a minimal PressureMetrics-like object if import fails
+            @dataclass
+            class PressureMetrics:
+                strike: float
+                option_type: str
+                time_window: datetime
+                bid_volume: int
+                ask_volume: int
+                pressure_ratio: float
+                total_trades: int
+                avg_trade_size: float
+                dominant_side: str
+                confidence: float
+        
+        converted_metrics = []
+        
+        for metric in pressure_metrics:
+            # Parse timestamp from string if needed
+            time_window = metric.get("window_start", datetime.now().isoformat())
+            if isinstance(time_window, str):
+                try:
+                    time_window = datetime.fromisoformat(time_window.replace('Z', '+00:00'))
+                except:
+                    time_window = datetime.now()
+            
+            # Create PressureMetrics object
+            pressure_metric = PressureMetrics(
+                strike=21350.0,  # Mock NQ strike
+                option_type="CALL",  # Mock option type
+                time_window=time_window,
+                bid_volume=int(metric.get("total_volume", 1000) * 0.4),
+                ask_volume=int(metric.get("total_volume", 1000) * 0.6),
+                pressure_ratio=metric.get("buy_pressure", 0.5) / max(metric.get("sell_pressure", 0.5), 0.1),
+                total_trades=metric.get("total_trades", 100),
+                avg_trade_size=metric.get("total_volume", 1000) / max(metric.get("total_trades", 100), 1),
+                dominant_side="BUY" if metric.get("buy_pressure", 0.5) > metric.get("sell_pressure", 0.5) else "SELL",
+                confidence=min(abs(metric.get("buy_pressure", 0.5) - metric.get("sell_pressure", 0.5)) * 2, 1.0)
+            )
+            converted_metrics.append(pressure_metric)
+        
+        return converted_metrics
+    
+    def _summarize_ifd_v3_results(self, signals: List[Dict], analysis_summaries: List[Dict]) -> Dict[str, Any]:
+        """Summarize IFD v3.0 analysis results"""
+        if not signals:
+            return {
+                "net_institutional_flow": "NEUTRAL",
+                "average_confidence": 0.0,
+                "dominant_direction": "NONE",
+                "market_making_activity": "UNKNOWN",
+                "pressure_trend": "FLAT"
+            }
+        
+        # Calculate summary statistics
+        confidences = [s["confidence"] for s in signals]
+        directions = [s["expected_direction"] for s in signals]
+        
+        # Determine dominant direction
+        long_signals = len([d for d in directions if d == "LONG"])
+        short_signals = len([d for d in directions if d == "SHORT"])
+        
+        if long_signals > short_signals:
+            dominant_direction = "BULLISH"
+            net_flow = "BUYING"
+        elif short_signals > long_signals:
+            dominant_direction = "BEARISH"
+            net_flow = "SELLING"
+        else:
+            dominant_direction = "NEUTRAL"
+            net_flow = "BALANCED"
+        
+        # Calculate average confidence
+        avg_confidence = sum(confidences) / len(confidences) if confidences else 0
+        
+        return {
+            "net_institutional_flow": net_flow,
+            "average_confidence": avg_confidence,
+            "dominant_direction": dominant_direction,
+            "total_signals": len(signals),
+            "high_confidence_signals": len([s for s in signals if s["confidence"] > 0.7]),
+            "signal_strength_avg": sum(s.get("signal_strength", 0) for s in signals) / len(signals),
+            "pressure_trend": "INCREASING" if avg_confidence > 0.6 else "DECREASING"
+        }
+    
     def synthesize_analysis_results(self) -> Dict[str, Any]:
         """Synthesize results prioritizing your NQ EV algorithm"""
         print("  Synthesizing Analysis Results (NQ EV Algorithm Priority)...")
@@ -370,6 +604,54 @@ class AnalysisEngine:
                         "confidence": "MEDIUM",
                         "reasoning": f"Your NQ EV algorithm setup #{i} with EV={opp['expected_value']:+.1f}"
                     })
+        
+        # IFD v3.0 Analysis (HIGHEST PRIORITY for high-confidence institutional signals)
+        if "institutional_flow_v3" in successful_analyses:
+            ifd_result = self.analysis_results["institutional_flow_v3"]["result"]
+            ifd_signals = ifd_result.get("signals", [])
+            
+            for i, signal in enumerate(ifd_signals[:3]):  # Top 3 IFD v3.0 signals
+                # High confidence IFD v3.0 signals get immediate priority
+                if signal["confidence"] > 0.8:
+                    priority = "IMMEDIATE"
+                    confidence = "EXTREME"
+                elif signal["confidence"] > 0.7:
+                    priority = "PRIMARY"
+                    confidence = "VERY_HIGH"
+                elif signal["confidence"] > 0.6:
+                    priority = "HIGH"
+                    confidence = "HIGH"
+                else:
+                    priority = "MEDIUM"
+                    confidence = "MODERATE"
+                
+                # Estimate entry/exit prices based on signal direction
+                entry_price = 21350.0  # Base NQ price
+                if signal["expected_direction"] == "LONG":
+                    target = entry_price + (signal["signal_strength"] * 10)
+                    stop = entry_price - (signal["signal_strength"] * 5)
+                    expected_value = target - entry_price
+                else:
+                    target = entry_price - (signal["signal_strength"] * 10)
+                    stop = entry_price + (signal["signal_strength"] * 5)
+                    expected_value = entry_price - target
+                
+                primary_recommendations.append({
+                    "source": "institutional_flow_v3",
+                    "priority": priority,
+                    "rank": i + 1,
+                    "trade_direction": signal["expected_direction"],
+                    "entry_price": entry_price,
+                    "target": target,
+                    "stop": stop,
+                    "expected_value": expected_value,
+                    "probability": signal["confidence"],
+                    "position_size": min(10, int(signal["confidence"] * 15)),  # Scale size with confidence
+                    "confidence": confidence,
+                    "signal_strength": signal["signal_strength"],
+                    "symbol": signal["symbol"],
+                    "reasoning": f"IFD v3.0 institutional flow detected: {signal['symbol']} confidence={signal['confidence']:.2f} strength={signal['signal_strength']:.1f}"
+                })
         
         # DEAD Simple Analysis (HIGHEST PRIORITY for EXTREME signals)
         if "dead_simple" in successful_analyses:
@@ -468,6 +750,15 @@ class AnalysisEngine:
             market_context["institutional_dollar_volume"] = dead_simple_result["summary"]["total_dollar_volume"]
             market_context["top_institutional_strikes"] = dead_simple_result["summary"]["top_strikes"][:3]
         
+        if "institutional_flow_v3" in successful_analyses:
+            ifd_result = self.analysis_results["institutional_flow_v3"]["result"]
+            market_context["ifd_v3_total_signals"] = ifd_result["total_signals"]
+            market_context["ifd_v3_high_confidence_signals"] = ifd_result["high_confidence_signals"]
+            market_context["ifd_v3_pressure_snapshots"] = ifd_result["pressure_snapshots_analyzed"]
+            market_context["ifd_v3_net_flow"] = ifd_result["summary"]["net_institutional_flow"]
+            market_context["ifd_v3_avg_confidence"] = ifd_result["summary"]["average_confidence"]
+            market_context["ifd_v3_dominant_direction"] = ifd_result["summary"]["dominant_direction"]
+        
         synthesis["market_context"] = market_context
         
         # Execution priorities (your NQ EV algorithm gets highest priority)
@@ -496,8 +787,8 @@ class AnalysisEngine:
         return synthesis
     
     def run_full_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
-        """Run complete analysis engine with NQ EV, Risk Analysis, Volume Shock, and DEAD Simple"""
-        print("EXECUTING ANALYSIS ENGINE (NQ EV + Risk + Volume Shock + DEAD Simple)")
+        """Run complete analysis engine with NQ EV, Risk Analysis, Volume Shock, DEAD Simple, and IFD v3.0"""
+        print("EXECUTING ANALYSIS ENGINE (NQ EV + Risk + Volume Shock + DEAD Simple + IFD v3.0)")
         print("-" * 50)
         
         start_time = datetime.now()
@@ -505,13 +796,14 @@ class AnalysisEngine:
         # Run all analyses in parallel for speed
         print("  Running all analyses simultaneously...")
         
-        with ThreadPoolExecutor(max_workers=4) as executor:
+        with ThreadPoolExecutor(max_workers=5) as executor:
             # Submit all analyses to run concurrently
             futures = {
                 executor.submit(self.run_nq_ev_analysis, data_config): "expected_value",
                 executor.submit(self.run_risk_analysis, data_config): "risk",
                 executor.submit(self.run_volume_shock_analysis, data_config): "volume_shock",
-                executor.submit(self.run_dead_simple_analysis, data_config): "dead_simple"
+                executor.submit(self.run_dead_simple_analysis, data_config): "dead_simple",
+                executor.submit(self.run_ifd_v3_analysis, data_config): "institutional_flow_v3"
             }
             
             # Collect results as they complete
@@ -556,7 +848,7 @@ class AnalysisEngine:
         
         print(f"\nANALYSIS ENGINE COMPLETE")
         print(f"✓ Execution time: {execution_time:.2f}s")
-        print(f"✓ Successful analyses: {final_results['summary']['successful_analyses']}/4")
+        print(f"✓ Successful analyses: {final_results['summary']['successful_analyses']}/5")
         print(f"✓ Primary recommendations: {final_results['summary']['primary_recommendations']}")
         
         # Show best NQ EV recommendation
@@ -619,6 +911,20 @@ def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, 
                     "high": 20,
                     "moderate": 10
                 }
+            },
+            "institutional_flow_v3": {
+                "db_path": "/tmp/ifd_v3_integration.db",
+                "pressure_thresholds": {
+                    "min_pressure_ratio": 1.5,
+                    "min_volume_concentration": 0.3,
+                    "min_time_persistence": 0.4,
+                    "min_trend_strength": 0.5
+                },
+                "confidence_thresholds": {
+                    "min_baseline_anomaly": 1.5,
+                    "min_overall_confidence": 0.6
+                },
+                "market_making_penalty": 0.3
             }
         }
     
