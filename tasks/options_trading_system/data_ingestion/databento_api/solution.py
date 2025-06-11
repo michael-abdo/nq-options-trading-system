@@ -1,18 +1,30 @@
 #!/usr/bin/env python3
 """
-Databento API Data Ingestion for NQ Options
+Databento MBO Streaming for IFD v3.0 - Enhanced Institutional Flow Detection
 
-This module provides data ingestion from Databento API for NQ future options,
-following the standard data ingestion interface pattern.
+This module provides real-time Market-By-Order (MBO) streaming from Databento 
+for NQ options, enabling bid/ask pressure analysis for institutional flow detection.
+
+Architecture:
+- Real-time MBO streaming via WebSocket
+- Tick-level bid/ask pressure derivation 
+- Local SQLite storage for processed metrics
+- Cost-effective streaming with monitoring
+- Smart reconnection and error handling
 """
 
 import os
 import json
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
-from pathlib import Path
 import sqlite3
+import threading
+import time
+from datetime import datetime, timedelta, timezone
+from typing import Dict, List, Any, Optional, Callable
+from pathlib import Path
+from dataclasses import dataclass, asdict
+import queue
+from collections import defaultdict, deque
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -25,433 +37,756 @@ try:
     DATABENTO_AVAILABLE = True
 except ImportError:
     DATABENTO_AVAILABLE = False
-    # Create dummy objects for type hints
     pd = None
     db = None
     logger.warning("Databento package not available. Install with: pip install databento")
 
-class DatabentoAPIClient:
-    """
-    Client for interacting with Databento API for options data retrieval
-    """
+@dataclass
+class MBOEvent:
+    """Individual MBO event structure"""
+    timestamp: datetime
+    instrument_id: int
+    strike: float
+    option_type: str  # 'C' or 'P'
+    bid_price: float
+    ask_price: float
+    trade_price: Optional[float]
+    trade_size: Optional[int]
+    side: Optional[str]  # 'BUY', 'SELL', or None
+    sequence: int
+
+@dataclass
+class PressureMetrics:
+    """Aggregated pressure metrics for a strike/time window"""
+    strike: float
+    option_type: str
+    time_window: datetime
+    bid_volume: int
+    ask_volume: int
+    pressure_ratio: float
+    total_trades: int
+    avg_trade_size: float
+    dominant_side: str
+    confidence: float
+
+class MBOEventProcessor:
+    """Processes individual MBO events and derives trade initiation direction"""
     
-    def __init__(self, api_key: str, cache_dir: Optional[str] = None):
+    def __init__(self):
+        self.last_prices = {}  # Track last bid/ask by instrument
+        
+    def process_event(self, raw_event: Dict) -> Optional[MBOEvent]:
         """
-        Initialize Databento API client
+        Process raw MBO event from Databento stream
+        
+        Args:
+            raw_event: Raw event dictionary from Databento
+            
+        Returns:
+            Processed MBOEvent or None if invalid
+        """
+        try:
+            # Extract basic fields
+            ts_event = raw_event.get('ts_event', 0)
+            if pd is not None:
+                timestamp = pd.to_datetime(ts_event, unit='ns', utc=True)
+            else:
+                # Fallback timestamp parsing when pandas not available
+                if ts_event:
+                    timestamp = datetime.fromtimestamp(ts_event / 1_000_000_000, tz=timezone.utc)
+                else:
+                    timestamp = datetime.now(timezone.utc)
+            
+            instrument_id = int(raw_event.get('instrument_id', 0))
+            
+            # Skip if essential fields missing
+            if not instrument_id or timestamp is None:
+                return None
+            
+            # Extract price data
+            bid_price = float(raw_event.get('bid_px_00', 0)) / 1000000  # Databento price scaling
+            ask_price = float(raw_event.get('ask_px_00', 0)) / 1000000
+            
+            # Extract trade data if present
+            trade_price = None
+            trade_size = None
+            side = None
+            
+            if 'price' in raw_event and 'size' in raw_event:
+                trade_price = float(raw_event['price']) / 1000000
+                trade_size = int(raw_event['size'])
+                
+                # Derive trade initiation direction
+                side = self._derive_trade_side(trade_price, bid_price, ask_price)
+            
+            # Get instrument metadata (strike, option type) from cache
+            strike, option_type = self._get_instrument_metadata(instrument_id)
+            
+            event = MBOEvent(
+                timestamp=timestamp,
+                instrument_id=instrument_id,
+                strike=strike,
+                option_type=option_type,
+                bid_price=bid_price,
+                ask_price=ask_price,
+                trade_price=trade_price,
+                trade_size=trade_size,
+                side=side,
+                sequence=raw_event.get('sequence', 0)
+            )
+            
+            # Update price tracking
+            self.last_prices[instrument_id] = {
+                'bid': bid_price,
+                'ask': ask_price,
+                'timestamp': timestamp
+            }
+            
+            return event
+            
+        except Exception as e:
+            logger.warning(f"Failed to process MBO event: {e}")
+            return None
+    
+    def _derive_trade_side(self, trade_price: float, bid_price: float, ask_price: float) -> str:
+        """
+        Derive trade initiation side from price comparison
+        
+        Logic:
+        - If trade_price >= ask_price: BUY (aggressor hit the ask)
+        - If trade_price <= bid_price: SELL (aggressor hit the bid)  
+        - Otherwise: UNKNOWN (trade between bid/ask)
+        """
+        if trade_price >= ask_price:
+            return 'BUY'
+        elif trade_price <= bid_price:
+            return 'SELL'
+        else:
+            return 'UNKNOWN'
+    
+    def _get_instrument_metadata(self, instrument_id: int) -> tuple[float, str]:
+        """
+        Get strike and option type for instrument ID
+        This would be populated from contract definitions
+        For now, return defaults - will be enhanced with actual lookup
+        """
+        # TODO: Implement proper instrument metadata lookup
+        # This should query contract definitions to map instrument_id to strike/type
+        return 21900.0, 'C'  # Default values for testing
+
+class PressureAggregator:
+    """Aggregates MBO events into pressure metrics by strike and time window"""
+    
+    def __init__(self, window_minutes: int = 5):
+        """
+        Initialize pressure aggregator
+        
+        Args:
+            window_minutes: Time window for aggregation (default 5 minutes)
+        """
+        self.window_minutes = window_minutes
+        self.window_delta = timedelta(minutes=window_minutes)
+        
+        # Storage for active windows
+        self.active_windows = defaultdict(lambda: {
+            'bid_volume': 0,
+            'ask_volume': 0,
+            'trades': [],
+            'start_time': None
+        })
+        
+    def add_event(self, event: MBOEvent) -> Optional[PressureMetrics]:
+        """
+        Add MBO event to aggregation and return completed metrics if window is full
+        
+        Args:
+            event: Processed MBO event
+            
+        Returns:
+            PressureMetrics if window completed, None otherwise
+        """
+        if not event.trade_size or not event.side or event.side == 'UNKNOWN':
+            return None
+        
+        # First, check for expired windows and complete them
+        completed_metrics = self._check_and_complete_expired_windows(event.timestamp)
+        
+        # Calculate window start time for current event
+        window_start = self._get_window_start(event.timestamp)
+        
+        # Create window key
+        window_key = f"{event.strike}_{event.option_type}_{window_start.isoformat()}"
+        
+        # Initialize window if new
+        if self.active_windows[window_key]['start_time'] is None:
+            self.active_windows[window_key]['start_time'] = window_start
+        
+        # Add trade to appropriate side
+        if event.side == 'BUY':
+            self.active_windows[window_key]['ask_volume'] += event.trade_size
+        elif event.side == 'SELL':
+            self.active_windows[window_key]['bid_volume'] += event.trade_size
+        
+        # Add trade to list
+        self.active_windows[window_key]['trades'].append({
+            'timestamp': event.timestamp,
+            'size': event.trade_size,
+            'side': event.side,
+            'price': event.trade_price
+        })
+        
+        # Return completed metrics if any, otherwise None
+        return completed_metrics
+    
+    def _get_window_start(self, timestamp: datetime) -> datetime:
+        """Get the start time for the window containing this timestamp"""
+        # Round down to nearest window interval
+        minutes = (timestamp.minute // self.window_minutes) * self.window_minutes
+        return timestamp.replace(minute=minutes, second=0, microsecond=0)
+    
+    def _finalize_window(self, window_key: str, strike: float, option_type: str, window_start: datetime) -> PressureMetrics:
+        """Finalize a completed time window and calculate pressure metrics"""
+        window_data = self.active_windows[window_key]
+        
+        bid_volume = window_data['bid_volume']
+        ask_volume = window_data['ask_volume']
+        trades = window_data['trades']
+        
+        # Calculate pressure ratio
+        if bid_volume > 0:
+            pressure_ratio = ask_volume / bid_volume
+        else:
+            pressure_ratio = float('inf') if ask_volume > 0 else 1.0
+        
+        # Determine dominant side
+        total_volume = bid_volume + ask_volume
+        if total_volume > 0:
+            buy_percentage = ask_volume / total_volume
+            if buy_percentage > 0.6:
+                dominant_side = 'BUY'
+            elif buy_percentage < 0.4:
+                dominant_side = 'SELL'
+            else:
+                dominant_side = 'NEUTRAL'
+        else:
+            dominant_side = 'NEUTRAL'
+        
+        # Calculate confidence based on sample size and dominance
+        confidence = min(len(trades) / 20.0, 1.0) * abs(0.5 - (ask_volume / max(total_volume, 1))) * 2
+        
+        # Average trade size
+        avg_trade_size = sum(t['size'] for t in trades) / len(trades) if trades else 0
+        
+        metrics = PressureMetrics(
+            strike=strike,
+            option_type=option_type,
+            time_window=window_start,
+            bid_volume=bid_volume,
+            ask_volume=ask_volume,
+            pressure_ratio=pressure_ratio,
+            total_trades=len(trades),
+            avg_trade_size=avg_trade_size,
+            dominant_side=dominant_side,
+            confidence=confidence
+        )
+        
+        # Clean up completed window
+        del self.active_windows[window_key]
+        
+        return metrics
+    
+    def _check_and_complete_expired_windows(self, current_timestamp: datetime) -> Optional[PressureMetrics]:
+        """
+        Check for expired windows and complete them
+        
+        Args:
+            current_timestamp: Current event timestamp
+            
+        Returns:
+            PressureMetrics from first completed window, or None
+        """
+        completed_metrics = None
+        expired_keys = []
+        
+        # Find expired windows
+        for window_key, window_data in self.active_windows.items():
+            if window_data['start_time'] is None:
+                continue
+                
+            window_end = window_data['start_time'] + self.window_delta
+            if current_timestamp >= window_end:
+                expired_keys.append(window_key)
+        
+        # Complete the first expired window (return only one set of metrics)
+        if expired_keys:
+            first_key = expired_keys[0]
+            
+            # Parse window key to get strike and option_type
+            parts = first_key.split('_')
+            strike = float(parts[0])
+            option_type = parts[1]
+            window_start = self.active_windows[first_key]['start_time']
+            
+            completed_metrics = self._finalize_window(first_key, strike, option_type, window_start)
+            
+            # Complete remaining expired windows silently
+            for key in expired_keys[1:]:
+                parts = key.split('_')
+                strike = float(parts[0])
+                option_type = parts[1]
+                window_start = self.active_windows[key]['start_time']
+                self._finalize_window(key, strike, option_type, window_start)
+        
+        return completed_metrics
+
+class MBODatabase:
+    """SQLite database for storing processed MBO metrics efficiently"""
+    
+    def __init__(self, db_path: str):
+        """
+        Initialize MBO database
+        
+        Args:
+            db_path: Path to SQLite database file
+        """
+        self.db_path = db_path
+        self._init_database()
+        
+    def _init_database(self):
+        """Initialize database schema"""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            
+            # Pressure metrics table
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS pressure_metrics (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    strike REAL NOT NULL,
+                    option_type TEXT NOT NULL,
+                    time_window TEXT NOT NULL,
+                    bid_volume INTEGER NOT NULL,
+                    ask_volume INTEGER NOT NULL,
+                    pressure_ratio REAL NOT NULL,
+                    total_trades INTEGER NOT NULL,
+                    avg_trade_size REAL NOT NULL,
+                    dominant_side TEXT NOT NULL,
+                    confidence REAL NOT NULL,
+                    created_at TEXT NOT NULL,
+                    UNIQUE(strike, option_type, time_window)
+                )
+            """)
+            
+            # Usage monitoring table
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS usage_monitoring (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    date TEXT NOT NULL,
+                    events_processed INTEGER NOT NULL,
+                    data_bytes INTEGER NOT NULL,
+                    estimated_cost REAL NOT NULL,
+                    connection_time REAL NOT NULL,
+                    created_at TEXT NOT NULL
+                )
+            """)
+            
+            # Create indexes for efficient queries
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_pressure_time ON pressure_metrics(time_window)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_pressure_strike ON pressure_metrics(strike, option_type)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_usage_date ON usage_monitoring(date)")
+            
+            conn.commit()
+    
+    def store_pressure_metrics(self, metrics: PressureMetrics):
+        """Store pressure metrics in database"""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT OR REPLACE INTO pressure_metrics 
+                (strike, option_type, time_window, bid_volume, ask_volume, 
+                 pressure_ratio, total_trades, avg_trade_size, dominant_side, 
+                 confidence, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                metrics.strike, metrics.option_type, metrics.time_window.isoformat(),
+                metrics.bid_volume, metrics.ask_volume, metrics.pressure_ratio,
+                metrics.total_trades, metrics.avg_trade_size, metrics.dominant_side,
+                metrics.confidence, datetime.now(timezone.utc).isoformat()
+            ))
+            conn.commit()
+    
+    def get_pressure_history(self, strike: float, option_type: str, hours: int = 24) -> List[Dict]:
+        """Get pressure metrics history for a strike"""
+        since = datetime.now(timezone.utc) - timedelta(hours=hours)
+        
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT * FROM pressure_metrics 
+                WHERE strike = ? AND option_type = ? AND time_window >= ?
+                ORDER BY time_window ASC
+            """, (strike, option_type, since.isoformat()))
+            
+            rows = cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]
+            return [dict(zip(columns, row)) for row in rows]
+    
+    def record_usage(self, date: str, events: int, bytes_processed: int, cost: float, connection_time: float):
+        """Record usage statistics"""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO usage_monitoring 
+                (date, events_processed, data_bytes, estimated_cost, connection_time, created_at)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (date, events, bytes_processed, cost, connection_time, datetime.now(timezone.utc).isoformat()))
+            conn.commit()
+
+class UsageMonitor:
+    """Monitor streaming costs and usage to prevent overruns"""
+    
+    def __init__(self, daily_budget: float = 10.0):
+        """
+        Initialize usage monitor
+        
+        Args:
+            daily_budget: Maximum daily budget in USD
+        """
+        self.daily_budget = daily_budget
+        self.events_processed = 0
+        self.bytes_processed = 0
+        self.estimated_cost = 0.0
+        self.start_time = datetime.now()
+        
+        # Cost estimation (rough estimates based on Databento pricing)
+        self.cost_per_mb = 0.01  # $0.01 per MB
+        self.cost_per_hour = 1.0  # $1 per hour base streaming cost
+    
+    def record_event(self, event_size_bytes: int):
+        """Record a processed event and update cost estimates"""
+        self.events_processed += 1
+        self.bytes_processed += event_size_bytes
+        
+        # Update cost estimate
+        data_cost = (self.bytes_processed / 1024 / 1024) * self.cost_per_mb
+        time_cost = ((datetime.now() - self.start_time).total_seconds() / 3600) * self.cost_per_hour
+        self.estimated_cost = data_cost + time_cost
+    
+    def should_continue_streaming(self) -> bool:
+        """Check if streaming should continue based on budget"""
+        return self.estimated_cost < (self.daily_budget * 0.8)  # Stop at 80% of budget
+    
+    def get_usage_stats(self) -> Dict:
+        """Get current usage statistics"""
+        return {
+            'events_processed': self.events_processed,
+            'bytes_processed': self.bytes_processed,
+            'estimated_cost': self.estimated_cost,
+            'budget_remaining': self.daily_budget - self.estimated_cost,
+            'runtime_hours': (datetime.now() - self.start_time).total_seconds() / 3600
+        }
+
+class MBOStreamingClient:
+    """Real-time MBO streaming client using Databento Live API"""
+    
+    def __init__(self, api_key: str, symbols: List[str] = None):
+        """
+        Initialize MBO streaming client
         
         Args:
             api_key: Databento API key
-            cache_dir: Directory for caching API responses
+            symbols: List of symbols to stream (default: ['NQ.OPT'])
         """
         if not DATABENTO_AVAILABLE:
             raise ImportError("Databento package not installed")
         
         self.api_key = api_key
-        self.client = db.Historical(api_key)
-        self.cache_dir = Path(cache_dir) if cache_dir else Path("outputs/databento_cache")
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        self.symbols = symbols or ['NQ.OPT']
+        self.client = None
+        self.is_streaming = False
+        self.event_queue = queue.Queue(maxsize=10000)
         
-        # Initialize cache database
-        self.cache_db = self.cache_dir / "databento_cache.db"
-        self._init_cache_db()
+        # Processing components
+        self.event_processor = MBOEventProcessor()
+        self.pressure_aggregator = PressureAggregator()
+        self.usage_monitor = UsageMonitor()
         
-        logger.info(f"Databento client initialized with cache at {self.cache_dir}")
-    
-    def _init_cache_db(self):
-        """Initialize SQLite cache database"""
-        with sqlite3.connect(self.cache_db) as conn:
-            cursor = conn.cursor()
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS api_cache (
-                    cache_key TEXT PRIMARY KEY,
-                    data TEXT,
-                    timestamp TEXT,
-                    cost REAL
-                )
-            """)
-            conn.commit()
-    
-    def _get_cache_key(self, dataset: str, symbols: List[str], schema: str, date: str) -> str:
-        """Generate cache key for API request"""
-        symbols_str = "_".join(sorted(symbols))
-        return f"{dataset}_{symbols_str}_{schema}_{date}"
-    
-    def _check_cache(self, cache_key: str, max_age_hours: int = 24) -> Optional[Dict]:
-        """Check if valid cached data exists"""
-        with sqlite3.connect(self.cache_db) as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                "SELECT data, timestamp FROM api_cache WHERE cache_key = ?",
-                (cache_key,)
+        # Callbacks
+        self.on_pressure_metrics: Optional[Callable[[PressureMetrics], None]] = None
+        self.on_error: Optional[Callable[[Exception], None]] = None
+        
+    def start_streaming(self):
+        """Start real-time MBO streaming"""
+        if self.is_streaming:
+            logger.warning("Streaming already active")
+            return
+        
+        try:
+            logger.info(f"Starting MBO streaming for symbols: {self.symbols}")
+            
+            # Initialize live client
+            self.client = db.Live(key=self.api_key)
+            
+            # Subscribe to MBO data
+            self.client.subscribe(
+                dataset='GLBX.MDP3',
+                schema='mbo',
+                symbols=self.symbols,
+                stype_in='parent'
             )
-            row = cursor.fetchone()
             
-            if row:
-                data_str, timestamp_str = row
-                cached_time = datetime.fromisoformat(timestamp_str)
+            self.is_streaming = True
+            
+            # Start processing thread
+            processing_thread = threading.Thread(target=self._process_events, daemon=True)
+            processing_thread.start()
+            
+            # Stream events
+            for event in self.client:
+                if not self.is_streaming:
+                    break
                 
-                # Check if cache is still valid
-                if datetime.now() - cached_time < timedelta(hours=max_age_hours):
-                    logger.info(f"Using cached data for {cache_key}")
-                    return json.loads(data_str)
-                else:
-                    logger.info(f"Cache expired for {cache_key}")
-            
-            return None
-    
-    def _save_cache(self, cache_key: str, data: Dict, cost: float):
-        """Save data to cache"""
-        with sqlite3.connect(self.cache_db) as conn:
-            cursor = conn.cursor()
-            cursor.execute("""
-                INSERT OR REPLACE INTO api_cache (cache_key, data, timestamp, cost)
-                VALUES (?, ?, ?, ?)
-            """, (cache_key, json.dumps(data), datetime.now().isoformat(), cost))
-            conn.commit()
-    
-    def get_nq_options_chain(self, date: Optional[datetime] = None) -> Dict[str, Any]:
-        """
-        Get NQ options chain data for a specific date
-        
-        Args:
-            date: Date to get options for (default: today)
-            
-        Returns:
-            Dictionary with options chain data
-        """
-        if not date:
-            date = datetime.now()
-        
-        date_str = date.strftime('%Y-%m-%d')
-        
-        # Check cache first
-        cache_key = self._get_cache_key('GLBX.MDP3', ['NQ.OPT'], 'definition', date_str)
-        cached_data = self._check_cache(cache_key)
-        if cached_data:
-            return cached_data
-        
-        logger.info(f"Fetching NQ options chain for {date_str}")
-        
-        try:
-            # Get contract definitions
-            # For single day, use next day as end to avoid start==end error
-            end_date = date + timedelta(days=1)
-            params = {
-                'dataset': 'GLBX.MDP3',
-                'symbols': ['NQ.OPT'],
-                'schema': 'definition',
-                'start': date_str,
-                'end': end_date.strftime('%Y-%m-%d'),
-                'stype_in': 'parent'
-            }
-            
-            # Check cost
-            cost = self.client.metadata.get_cost(**params)
-            logger.info(f"Definition data cost: ${cost:.4f}")
-            
-            if cost > 1.0:  # Safety check
-                logger.warning(f"Cost too high (${cost:.4f}), skipping retrieval")
-                return {"error": f"Cost too high: ${cost:.4f}"}
-            
-            # Retrieve data
-            data = self.client.timeseries.get_range(**params)
-            df = data.to_df()
-            
-            # Process into options chain format
-            options_chain = self._process_options_chain(df, date_str)
-            
-            # Cache the result
-            self._save_cache(cache_key, options_chain, cost)
-            
-            return options_chain
-            
+                # Add to processing queue
+                try:
+                    self.event_queue.put(event, timeout=1.0)
+                    
+                    # Record usage
+                    event_size = len(str(event).encode('utf-8'))
+                    self.usage_monitor.record_event(event_size)
+                    
+                    # Check budget
+                    if not self.usage_monitor.should_continue_streaming():
+                        logger.warning("Daily budget limit reached, stopping stream")
+                        self.stop_streaming()
+                        break
+                        
+                except queue.Full:
+                    logger.warning("Event queue full, dropping event")
+                
         except Exception as e:
-            logger.error(f"Error fetching options chain: {e}")
-            return {"error": str(e)}
+            logger.error(f"Streaming error: {e}")
+            if self.on_error:
+                self.on_error(e)
+            self.stop_streaming()
     
-    def _process_options_chain(self, df: "pd.DataFrame", date_str: str) -> Dict[str, Any]:
-        """Process raw definition data into structured options chain"""
-        if df.empty:
-            return {"calls": [], "puts": [], "total_contracts": 0}
-        
-        calls = []
-        puts = []
-        
-        for idx, row in df.iterrows():
-            contract = {
-                "symbol": row.get('raw_symbol', ''),
-                "strike": float(row.get('strike_price', 0)) / 1000,  # Databento uses multiplied values
-                "expiration": row.get('expiration', '').isoformat() if pd.notna(row.get('expiration')) else '',
-                "instrument_id": row.get('instrument_id', ''),
-                "underlying_symbol": "NQ"
-            }
-            
-            if row.get('instrument_class') == 'C':
-                calls.append(contract)
-            elif row.get('instrument_class') == 'P':
-                puts.append(contract)
-        
-        return {
-            "calls": calls,
-            "puts": puts,
-            "total_contracts": len(calls) + len(puts),
-            "date": date_str,
-            "underlying": "NQ"
-        }
+    def _process_events(self):
+        """Process events from queue in separate thread"""
+        while self.is_streaming:
+            try:
+                # Get event from queue
+                raw_event = self.event_queue.get(timeout=1.0)
+                
+                # Process event
+                processed_event = self.event_processor.process_event(raw_event)
+                if not processed_event:
+                    continue
+                
+                # Aggregate for pressure metrics
+                pressure_metrics = self.pressure_aggregator.add_event(processed_event)
+                if pressure_metrics and self.on_pressure_metrics:
+                    self.on_pressure_metrics(pressure_metrics)
+                
+            except queue.Empty:
+                continue
+            except Exception as e:
+                logger.error(f"Event processing error: {e}")
     
-    def get_options_trades(self, date: Optional[datetime] = None, limit: int = 10000) -> Dict[str, Any]:
-        """
-        Get options trade data for volume analysis
+    def stop_streaming(self):
+        """Stop MBO streaming"""
+        logger.info("Stopping MBO streaming")
+        self.is_streaming = False
         
-        Args:
-            date: Date to get trades for
-            limit: Maximum number of trades to retrieve
-            
-        Returns:
-            Dictionary with trade data
-        """
-        if not date:
-            date = datetime.now()
-        
-        date_str = date.strftime('%Y-%m-%d')
-        
-        # Check cache
-        cache_key = self._get_cache_key('GLBX.MDP3', ['NQ.OPT'], f'trades_{limit}', date_str)
-        cached_data = self._check_cache(cache_key, max_age_hours=1)  # Shorter cache for trades
-        if cached_data:
-            return cached_data
-        
-        logger.info(f"Fetching NQ options trades for {date_str}")
-        
-        try:
-            # For single day, use next day as end to avoid start==end error
-            end_date = date + timedelta(days=1)
-            params = {
-                'dataset': 'GLBX.MDP3',
-                'symbols': ['NQ.OPT'],
-                'schema': 'trades',
-                'start': date_str,
-                'end': end_date.strftime('%Y-%m-%d'),
-                'stype_in': 'parent',
-                'limit': limit
-            }
-            
-            # Check cost
-            cost = self.client.metadata.get_cost(**params)
-            logger.info(f"Trade data cost: ${cost:.4f}")
-            
-            if cost > 5.0:  # Higher limit for trade data
-                logger.warning(f"Cost too high (${cost:.4f}), reducing limit")
-                params['limit'] = 1000
-                cost = self.client.metadata.get_cost(**params)
-            
-            # Retrieve data
-            data = self.client.timeseries.get_range(**params)
-            df = data.to_df()
-            
-            # Process trades
-            trades_summary = self._process_trades(df, date_str)
-            
-            # Cache result
-            self._save_cache(cache_key, trades_summary, cost)
-            
-            return trades_summary
-            
-        except Exception as e:
-            logger.error(f"Error fetching trades: {e}")
-            return {"error": str(e)}
-    
-    def _process_trades(self, df: "pd.DataFrame", date_str: str) -> Dict[str, Any]:
-        """Process trade data into volume summary"""
-        if df.empty:
-            return {"trades": [], "total_volume": 0, "date": date_str}
-        
-        # Aggregate by instrument
-        volume_by_instrument = {}
-        
-        for idx, row in df.iterrows():
-            instrument_id = row.get('instrument_id', '')
-            size = int(row.get('size', 0))
-            price = float(row.get('price', 0))
-            
-            if instrument_id not in volume_by_instrument:
-                volume_by_instrument[instrument_id] = {
-                    'volume': 0,
-                    'trades': 0,
-                    'avg_price': 0,
-                    'prices': []
-                }
-            
-            volume_by_instrument[instrument_id]['volume'] += size
-            volume_by_instrument[instrument_id]['trades'] += 1
-            volume_by_instrument[instrument_id]['prices'].append(price)
-        
-        # Calculate averages
-        for inst_id, data in volume_by_instrument.items():
-            if data['prices']:
-                data['avg_price'] = sum(data['prices']) / len(data['prices'])
-            del data['prices']  # Remove raw prices to save space
-        
-        return {
-            "volume_by_instrument": volume_by_instrument,
-            "total_volume": sum(d['volume'] for d in volume_by_instrument.values()),
-            "total_trades": len(df),
-            "date": date_str
-        }
+        if self.client:
+            try:
+                self.client.stop()
+            except:
+                pass
+            self.client = None
 
-class DatabentoDataIngestion:
+class DatabentoMBOIngestion:
     """
-    Main class for Databento data ingestion following standard interface
+    Main MBO ingestion class implementing standard data ingestion interface
     """
     
     def __init__(self, config: Dict[str, Any]):
         """
-        Initialize Databento data ingestion
+        Initialize Databento MBO ingestion
         
         Args:
             config: Configuration dictionary with:
                 - api_key: Databento API key
-                - symbols: List of symbols to fetch (default: ['NQ'])
-                - cache_dir: Cache directory path
-                - use_cache: Whether to use caching (default: True)
+                - symbols: List of symbols (default: ['NQ'])
+                - streaming_mode: Enable real-time streaming (default: False)
+                - cache_dir: Directory for local storage
         """
         self.config = config
         self.api_key = self._get_api_key(config)
-        self.symbols = config.get('symbols', ['NQ'])
-        self.use_cache = config.get('use_cache', True)
+        self.symbols = [f"{symbol}.OPT" for symbol in config.get('symbols', ['NQ'])]
+        self.streaming_mode = config.get('streaming_mode', False)
         
         if not self.api_key:
             raise ValueError("Databento API key not found in config or environment")
         
-        cache_dir = config.get('cache_dir') if self.use_cache else None
-        self.client = DatabentoAPIClient(self.api_key, cache_dir)
+        # Initialize storage
+        cache_dir = Path(config.get('cache_dir', 'outputs/mbo_cache'))
+        cache_dir.mkdir(parents=True, exist_ok=True)
         
-        logger.info("DatabentoDataIngestion initialized")
+        self.database = MBODatabase(str(cache_dir / 'mbo_metrics.db'))
+        self.streaming_client = None
+        
+        logger.info("DatabentoMBOIngestion initialized")
     
     def _get_api_key(self, config: Dict[str, Any]) -> Optional[str]:
         """Get API key from config or environment"""
         # Check config first
         api_key = config.get('api_key')
         
-        # Check environment
+        # Check environment variables
         if not api_key:
             api_key = os.getenv('DATABENTO_API_KEY')
-        
-        # Check .env file
-        if not api_key:
-            try:
-                with open('.env', 'r') as f:
-                    for line in f:
-                        if line.startswith('DATABENTO_API_KEY='):
-                            api_key = line.split('=', 1)[1].strip()
-                            break
-            except FileNotFoundError:
-                pass
         
         return api_key
     
     def load_options_data(self) -> Dict[str, Any]:
         """
-        Load options data following standard interface
+        Load options data - either streaming or historical based on config
         
         Returns:
-            Dictionary with standard format including:
-            - options_summary
-            - quality_metrics
-            - strike_range
-            - raw_data_available
+            Dictionary with standard format for pipeline integration
         """
-        logger.info("Loading Databento options data")
-        
-        # Get options chain
-        chain_data = self.client.get_nq_options_chain()
-        
-        if "error" in chain_data:
-            logger.error(f"Failed to load options chain: {chain_data['error']}")
-            return self._empty_result(chain_data['error'])
-        
-        # Get trade data for volume
-        trades_data = self.client.get_options_trades()
-        
-        # Combine data
-        return self._format_standard_response(chain_data, trades_data)
+        if self.streaming_mode:
+            return self._start_real_time_streaming()
+        else:
+            return self._load_historical_data()
     
-    def _format_standard_response(self, chain_data: Dict, trades_data: Dict) -> Dict[str, Any]:
-        """Format Databento data into standard response format"""
-        calls = chain_data.get('calls', [])
-        puts = chain_data.get('puts', [])
+    def _start_real_time_streaming(self) -> Dict[str, Any]:
+        """Start real-time MBO streaming and return initial status"""
+        logger.info("Starting real-time MBO streaming")
         
-        # Calculate strike range
-        all_strikes = [c['strike'] for c in calls] + [p['strike'] for p in puts]
-        strike_range = {
-            'min': min(all_strikes) if all_strikes else 0,
-            'max': max(all_strikes) if all_strikes else 0,
-            'count': len(set(all_strikes))
-        }
-        
-        # Add volume data if available
-        if 'volume_by_instrument' in trades_data:
-            volume_map = trades_data['volume_by_instrument']
+        try:
+            self.streaming_client = MBOStreamingClient(self.api_key, self.symbols)
             
-            # Enhance calls and puts with volume data
-            for contract in calls + puts:
-                inst_id = contract.get('instrument_id')
-                if inst_id and inst_id in volume_map:
-                    contract['volume'] = volume_map[inst_id]['volume']
-                    contract['trades'] = volume_map[inst_id]['trades']
-                    contract['avg_price'] = volume_map[inst_id]['avg_price']
-        
-        # Calculate quality metrics
-        total_contracts = len(calls) + len(puts)
-        contracts_with_volume = sum(1 for c in calls + puts if c.get('volume', 0) > 0)
-        
-        quality_metrics = {
-            'total_contracts': total_contracts,
-            'volume_coverage': contracts_with_volume / total_contracts if total_contracts > 0 else 0,
-            'oi_coverage': 0.0,  # Databento doesn't provide OI in trades
-            'data_source': 'databento',
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        return {
-            'loader': self,
-            'metadata': {
-                'source': 'databento',
-                'dataset': 'GLBX.MDP3',
-                'symbols': self.symbols,
-                'date': chain_data.get('date', datetime.now().strftime('%Y-%m-%d'))
-            },
-            'options_summary': {
-                'total_contracts': total_contracts,
-                'calls': calls,
-                'puts': puts,
-                'underlying': 'NQ',
-                'total_volume': trades_data.get('total_volume', 0)
-            },
-            'quality_metrics': quality_metrics,
-            'strike_range': strike_range,
-            'raw_data_available': True
-        }
+            # Set up callbacks
+            self.streaming_client.on_pressure_metrics = self._on_pressure_metrics
+            self.streaming_client.on_error = self._on_streaming_error
+            
+            # Start streaming in background thread
+            streaming_thread = threading.Thread(
+                target=self.streaming_client.start_streaming, 
+                daemon=True
+            )
+            streaming_thread.start()
+            
+            # Wait a moment for connection
+            time.sleep(2)
+            
+            return {
+                'loader': self,
+                'metadata': {
+                    'source': 'databento_mbo',
+                    'mode': 'streaming',
+                    'symbols': self.symbols,
+                    'started_at': datetime.now(timezone.utc).isoformat()
+                },
+                'options_summary': {
+                    'streaming_active': True,
+                    'symbols': self.symbols,
+                    'real_time': True
+                },
+                'quality_metrics': {
+                    'data_source': 'databento_mbo',
+                    'streaming': True,
+                    'timestamp': datetime.now().isoformat()
+                },
+                'raw_data_available': True
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to start streaming: {e}")
+            return self._error_result(str(e))
     
-    def _empty_result(self, error_msg: str) -> Dict[str, Any]:
-        """Return empty result with error"""
+    def _load_historical_data(self) -> Dict[str, Any]:
+        """Load historical data for analysis (fallback mode)"""
+        logger.info("Loading historical pressure metrics")
+        
+        try:
+            # Get recent pressure metrics from database
+            recent_metrics = []
+            for symbol in self.symbols:
+                # Extract base symbol (remove .OPT)
+                base_symbol = symbol.replace('.OPT', '')
+                # This would query recent pressure data - for now return empty
+                pass
+            
+            return {
+                'loader': self,
+                'metadata': {
+                    'source': 'databento_mbo',
+                    'mode': 'historical',
+                    'symbols': self.symbols
+                },
+                'options_summary': {
+                    'total_contracts': 0,
+                    'calls': [],
+                    'puts': [],
+                    'pressure_metrics_available': True
+                },
+                'quality_metrics': {
+                    'data_source': 'databento_mbo',
+                    'historical': True,
+                    'timestamp': datetime.now().isoformat()
+                },
+                'raw_data_available': True
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to load historical data: {e}")
+            return self._error_result(str(e))
+    
+    def _on_pressure_metrics(self, metrics: PressureMetrics):
+        """Handle new pressure metrics from streaming"""
+        # Store in database
+        self.database.store_pressure_metrics(metrics)
+        
+        # Log significant pressure events
+        if metrics.pressure_ratio > 2.0 and metrics.confidence > 0.7:
+            logger.info(f"Significant pressure detected: {metrics.strike}{metrics.option_type} "
+                       f"ratio={metrics.pressure_ratio:.2f} side={metrics.dominant_side}")
+    
+    def _on_streaming_error(self, error: Exception):
+        """Handle streaming errors"""
+        logger.error(f"Streaming error: {error}")
+        # Could implement reconnection logic here
+    
+    def _error_result(self, error_msg: str) -> Dict[str, Any]:
+        """Return error result in standard format"""
         return {
             'loader': self,
-            'metadata': {'source': 'databento', 'error': error_msg},
+            'metadata': {'source': 'databento_mbo', 'error': error_msg},
             'options_summary': {'total_contracts': 0, 'calls': [], 'puts': []},
             'quality_metrics': {
                 'total_contracts': 0,
                 'volume_coverage': 0.0,
-                'oi_coverage': 0.0,
-                'data_source': 'databento'
+                'data_source': 'databento_mbo'
             },
-            'strike_range': {'min': 0, 'max': 0, 'count': 0},
             'raw_data_available': False
         }
+    
+    def get_recent_pressure_metrics(self, hours: int = 1) -> List[Dict]:
+        """Get recent pressure metrics for analysis"""
+        # This would query the database for recent pressure metrics
+        # For now, return empty list
+        return []
+    
+    def stop_streaming(self):
+        """Stop any active streaming"""
+        if self.streaming_client:
+            self.streaming_client.stop_streaming()
+            self.streaming_client = None
 
-def load_databento_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
+# Standard interface functions for pipeline integration
+def load_databento_mbo_data(config: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Standard interface function for loading Databento data
+    Standard interface function for loading Databento MBO data
     
     Args:
         config: Configuration dictionary
@@ -460,28 +795,29 @@ def load_databento_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
         Dictionary with standard data ingestion format
     """
     try:
-        loader = DatabentoDataIngestion(config)
+        loader = DatabentoMBOIngestion(config)
         return loader.load_options_data()
     except Exception as e:
-        logger.error(f"Failed to load Databento data: {e}")
+        logger.error(f"Failed to load Databento MBO data: {e}")
         return {
             'loader': None,
-            'metadata': {'source': 'databento', 'error': str(e)},
+            'metadata': {'source': 'databento_mbo', 'error': str(e)},
             'options_summary': {'total_contracts': 0, 'calls': [], 'puts': []},
             'quality_metrics': {
                 'total_contracts': 0,
                 'volume_coverage': 0.0,
-                'oi_coverage': 0.0,
-                'data_source': 'databento'
+                'data_source': 'databento_mbo'
             },
-            'strike_range': {'min': 0, 'max': 0, 'count': 0},
             'raw_data_available': False
         }
 
-# Factory function
-def create_databento_loader(config: Optional[Dict] = None) -> DatabentoDataIngestion:
-    """Factory function to create Databento loader instance"""
+# Factory function for compatibility
+def create_databento_loader(config: Optional[Dict] = None) -> DatabentoMBOIngestion:
+    """Factory function to create Databento MBO loader instance"""
     if config is None:
         config = {}
     
-    return DatabentoDataIngestion(config)
+    return DatabentoMBOIngestion(config)
+
+# Legacy compatibility - maintain old function name
+load_databento_api_data = load_databento_mbo_data

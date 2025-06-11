@@ -1,0 +1,114 @@
+IFD v3.0 Implementation Plan - Databento MBO Integration
+  Phase 1: Enhanced Databento Client (Week 1)
+    Create MBO streaming capability in databento_api/solution.py
+      Replace current definition/trades approach with real-time WebSocket
+      Implement bid/ask pressure derivation from tick data
+      Add cost-effective streaming strategy (not polling)
+    Add MBO data caching and storage
+      Local SQLite database for processed MBO events
+      Smart reconnection logic for stream interruptions
+      Usage monitoring to avoid cost overruns
+    Test MBO data quality and completeness
+      Verify bid/ask volume breakdown accuracy
+      Validate trade initiation direction detection
+      Measure data latency and completeness rates
+  Phase 2: IFD v3.0 Analysis Engine (Week 2-3)
+    Create institutional_flow_v3 directory structure
+      tasks/options_trading_system/analysis_engine/institutional_flow_v3/
+      solution.py - Main v3.0 detection logic
+      test_validation.py - Comprehensive testing
+      evidence.json - Performance validation
+    Implement pressure ratio calculations
+      Real-time bid/ask volume aggregation by strike
+      Historical baseline calculations (20-day lookback)
+      Statistical confidence scoring for pressure signals
+    Build market making detection system
+      Straddle coordination pattern recognition
+      Volatility crush detection algorithms
+      Cross-strike timing analysis
+    Add enhanced signal confidence scoring
+      Multi-factor validation (pressure + velocity + coordination)
+      False positive filtering using market making flags
+      Risk-adjusted confidence levels
+  Phase 3: Integration and Testing (Week 4)
+    Update analysis_engine/integration.py
+      Add IFD v3.0 as optional algorithm alongside v1.0
+      Implement A/B testing capability
+      Maintain backward compatibility with existing pipeline
+    Enhance configuration system
+      Add v3.0 specific thresholds and parameters
+      Create separate config profiles for v1.0 vs v3.0
+      Add real-time vs historical data mode selection
+    Comprehensive validation testing
+      Paper trading comparison: v1.0 vs v3.0 performance
+      Signal accuracy measurement over 2-week period
+      Cost analysis and optimization verification
+  Phase 4: Production Deployment (Week 5-6)
+    Implement robust error handling
+      Stream disconnection recovery protocols
+      Data quality monitoring and alerts
+      Automatic fallback to v1.0 on v3.0 failures
+    Add performance monitoring
+      Signal accuracy tracking dashboard
+      Cost consumption monitoring
+      System performance metrics
+    Production rollout strategy
+      Gradual transition from v1.0 to v3.0
+      Real-time performance comparison
+      Emergency rollback procedures
+  Key Technical Requirements
+    Databento MBO Schema Implementation
+      Real-time WebSocket connection to GLBX.MDP3
+      Parent symbol subscription (NQ.OPT) for all strikes
+      Microsecond timestamp precision for coordination detection
+    Bid/Ask Pressure Derivation Logic
+      trade_price == ask_price → BUY initiation
+      trade_price == bid_price → SELL initiation
+      Aggregate by strike for pressure ratios
+    Historical Baseline System
+      Daily morning routine: fetch 20-day lookback data
+      Cache statistical baselines (mean, std, percentiles)
+      Incremental updates to avoid redundant API calls
+    Market Making Pattern Recognition
+      Simultaneous call/put activity detection
+      Price decline coordination (volatility crush)
+      Time window analysis (5-minute coordination windows)
+  Cost Management Strategy
+    Smart Data Usage
+      One-time historical download: ~$20
+      Daily streaming during market hours: $5-10/day
+      Monthly budget target: $150-200
+    Optimization Techniques
+      Local caching of all processed metrics
+      Stream only during market hours (9:30-4:00 ET)
+      Use parent symbols to reduce individual strike requests
+    Usage Monitoring
+      Daily cost tracking dashboard
+      Automatic alerts at 80% of monthly budget
+      Emergency throttling at budget limits
+  Risk Mitigation
+    Technical Risks
+      Stream disconnection → Automatic reconnection with backfill
+      Data quality issues → Real-time validation checks
+      API rate limits → Smart request batching and caching
+    Financial Risks
+      Cost overruns → Daily monitoring with automatic cutoffs
+      Poor signal quality → A/B testing with v1.0 fallback
+      Market condition changes → Adaptive threshold adjustment
+    Operational Risks
+      System failures → Comprehensive logging and alerting
+      Configuration errors → Validation checks and staged rollouts
+      Performance degradation → Real-time monitoring and optimization
+  Success Metrics
+    Signal Quality Targets
+      Accuracy improvement: >75% (vs 65% for v1.0)
+      False positive reduction: >50% via market making filters
+      Win/loss ratio: >1.8 (vs 1.5 for v1.0)
+    Technical Performance
+      Data completeness: >95% tick coverage
+      System latency: <100ms for signal detection
+      Uptime: >99.9% during market hours
+    Cost Efficiency
+      Monthly data costs: <$200
+      Cost per signal: <$5
+      ROI improvement: >25% vs current v1.0 system
