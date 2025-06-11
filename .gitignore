@@ -47,5 +47,28 @@ package-lock.json
 npm-debug.log*
 
 # Chrome debug
-/tmp/chrome-debug/.env
+/tmp/chrome-debug/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Cache files
+outputs/databento_cache/
+**/databento_cache/
+*.db
+*.cache
+
+# Test outputs
+outputs/*/databento_integration_test_*.json
+test_databento_*.py
+
+# Virtual environments
 venv/
+.venv/
+
+# Worktrees
+worktrees/

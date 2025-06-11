@@ -62,6 +62,7 @@ Final Results: Top-ranked trading opportunities
     ├── analysis_engine/                # Analysis modules
     ├── data_ingestion/                 # Data loading modules
     │   ├── barchart_web_scraper/       # Barchart API integration
+    │   ├── databento_api/              # Databento CME Globex live data ($179/mo)
     │   ├── polygon_api/                # Polygon.io Nasdaq-100 options
     │   ├── interactive_brokers_api/    # Interactive Brokers integration
     │   ├── tradovate_api_data/         # Tradovate integration
@@ -97,6 +98,31 @@ Edit `tasks/options_trading_system/analysis_engine/pipeline_config.json` to swit
 - **Debug Data**: Screenshots, HTML snapshots, and comparison results organized by date
 
 **No manual file management required** - the system automatically creates organized directories and routes all outputs appropriately.
+
+## Data Sources
+
+The system supports multiple data sources for comprehensive market coverage:
+
+### Live Data Sources
+- **Databento** - CME Globex live futures and options data ($179/month subscription)
+- **Barchart** - Web API for options chains and pricing
+- **Polygon.io** - Nasdaq-100 options and market data
+- **Interactive Brokers** - Real-time trading data
+- **Tradovate** - Futures trading platform integration
+
+### Setup Instructions
+```bash
+# Install Databento dependencies
+pip install -r requirements_databento.txt
+
+# Configure API keys (see docs/data_sources/databento.md)
+export DATABENTO_API_KEY=your-key-here
+
+# Test integration
+python test_databento_integration.py
+```
+
+See [Data Sources Documentation](docs/data_sources/) for detailed setup guides.
 
 ## Algorithm
 
