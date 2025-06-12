@@ -1,0 +1,217 @@
+Live Trading Operation Test Plan - IFD v3.0 NQ Options Trading System
+  Pre-Live Deployment Testing (Critical - Must Pass Before Going Live)
+    Core Trading Pipeline Validation
+      Main Entry Point Testing (run_pipeline.py)
+        Test configuration loading with all profiles (databento_only, barchart_only, all_sources, testing)
+        Validate command-line argument parsing and parameter validation
+        Test pipeline orchestration timing - complete execution under 2 minutes
+        Verify error propagation and failure reporting mechanisms
+        Test memory management during continuous operation (no leaks)
+      System Integration Testing (integration.py)
+        Test NQOptionsTradingSystem initialization with production configuration
+        Validate data flow coordination between all pipeline stages
+        Test result synthesis and trading recommendation prioritization
+        Verify system summary generation with market context
+        Test graceful degradation when individual components fail
+    Data Ingestion Real-Time Feed Testing
+      Databento API Live Connection (databento_api/)
+        Test API authentication with production API key
+        Validate MBO streaming connectivity to GLBX.MDP3 during market hours
+        Test data quality validation and contract completeness
+        Verify cache management efficiency and hit/miss ratios
+        Test automatic reconnection with backfill capabilities
+        Monitor API usage costs against $150-200/month budget
+      Barchart Integration Testing (barchart_web_scraper/)
+        Test authentication flow with live credentials
+        Validate hybrid scraper fallback from API to saved data
+        Test rate limiting to avoid service restrictions
+        Verify options chain parsing accuracy against known data
+        Test screenshot and HTML capture for debugging
+      Data Sources Registry Testing (sources_registry.py)
+        Test dynamic source loading and availability checking
+        Validate configuration parameter enforcement (required vs optional)
+        Test source failure handling and fallback mechanisms
+        Verify load balancing across multiple data sources
+    Algorithm Accuracy Validation
+      Expected Value Analysis Testing (expected_value_analysis/)
+        Backtest weight configurations against 6 months historical data
+        Validate threshold enforcement (min_ev=15, min_probability=0.60, max_risk=150)
+        Test quality setup identification and scoring accuracy
+        Verify risk-reward calculations and position sizing logic
+        Test edge case handling with sparse data and extreme conditions
+      IFD v3.0 Algorithm Testing (institutional_flow_v3/)
+        Test MBO pressure analysis derivation from live market data
+        Validate 20-day historical baseline system accuracy >75%
+        Test market making vs institutional flow pattern recognition
+        Verify statistical confidence calculations and signal prioritization
+        Test IMMEDIATE priority assignment for high-confidence signals
+      Volume Analysis Testing (volume_shock_analysis/ and volume_spike_dead_simple/)
+        Test volume ratio thresholds (4.0x, 10x, 30x, 50x) detection accuracy
+        Validate emergency detection with 5000 delta threshold
+        Test institutional size filtering ($100k minimum)
+        Verify distance calculations (2% maximum from current price)
+        Test confidence classification (EXTREME, VERY_HIGH, HIGH, MODERATE)
+      Risk Analysis Testing (risk_analysis/)
+        Test institutional positioning bias detection accuracy
+        Validate battle zone identification for support/resistance levels
+        Test risk exposure quantification with 20x multiplier
+        Verify total portfolio risk exposure calculations
+    Configuration and Security Testing
+      Configuration Manager Testing (config_manager.py)
+        Test profile switching between production and testing environments
+        Validate environment variable resolution for API keys
+        Test source enablement/disablement without system restart
+        Verify configuration validation logic and parameter checking
+      Security and Credential Testing
+        Test API key encryption and secure storage mechanisms
+        Validate credential refresh and backup authentication
+        Test access control and file permission security
+        Verify audit trail logging for all configuration changes
+  Initial Live Trading Phase (Cautious Real-Money Testing)
+    Shadow Trading Mode (No Real Positions)
+      Signal Generation Validation
+        Run live algorithm against real market data for 1 week
+        Compare generated signals to historical backtesting results
+        Monitor signal timing and market relevance window
+        Track false positive rate and signal quality metrics
+        Validate signal prioritization and confidence scoring
+      Performance Baseline Establishment
+        Establish baseline metrics for accuracy, latency, and cost
+        Monitor system resource usage patterns during live operation
+        Track data feed quality and completeness scores
+        Establish performance benchmarks for each algorithm component
+        Document system behavior across different market conditions
+    Limited Live Trading (Small Position Sizes)
+      Risk-Controlled Position Testing
+        Start with 1-contract positions maximum
+        Test actual order placement and execution
+        Monitor real P&L against predicted outcomes
+        Track slippage and execution quality
+        Verify stop-loss and risk management execution
+      Cost Monitoring and Budget Control
+        Monitor real-time data costs against daily $8 target
+        Track API usage and enforce monthly $200 budget limit
+        Test automatic data feed shutoffs at budget thresholds
+        Monitor cost per signal and maintain <$5 target
+        Track total operational costs including infrastructure
+    System Reliability Under Live Conditions
+      Error Handling and Recovery Testing
+        Test system behavior during market volatility spikes
+        Validate error handling during data feed interruptions
+        Test automatic recovery from network connectivity issues
+        Verify graceful degradation when external APIs fail
+        Test manual recovery procedures and documentation
+      Performance Under Load Testing
+        Monitor system performance during high-volume market periods
+        Test memory and CPU usage during continuous operation
+        Validate processing latency stays <100ms during peak loads
+        Test database performance and query optimization
+        Monitor disk space and log file management
+  Ongoing Live Operations (Full Production Mode)
+    Full-Scale Trading Operations
+      Position Scaling and Risk Management
+        Gradually increase position sizes based on performance validation
+        Test portfolio-level risk management and exposure limits
+        Monitor correlation risk across multiple positions
+        Validate position sizing algorithms with larger capital
+        Test maximum daily loss limits and circuit breakers
+      Algorithm Performance Optimization
+        A/B test algorithm improvements against live baseline
+        Monitor win/loss ratios and maintain >1.8 target
+        Track signal accuracy and maintain >75% target
+        Test parameter optimization based on live performance data
+        Validate ROI improvement >25% vs v1.0 baseline
+    Advanced Testing and Validation
+      Market Condition Adaptation Testing
+        Test performance across different volatility regimes
+        Validate algorithm behavior during earnings announcements
+        Test performance during options expiration cycles
+        Monitor behavior during unusual market events
+        Adapt thresholds and parameters based on market conditions
+      Competitive Analysis and Benchmarking
+        Compare performance against market indices and benchmarks
+        Analyze performance attribution by algorithm component
+        Track performance by time of day and market session
+        Compare results against alternative trading strategies
+        Benchmark against industry standard performance metrics
+  Risk Management and Monitoring Systems
+    Real-Time Risk Controls
+      Position and Exposure Monitoring
+        Implement real-time position size limits and enforcement
+        Monitor total portfolio exposure and concentration risk
+        Test automatic position reduction during adverse conditions
+        Validate correlation risk monitoring across positions
+        Test emergency stop-loss and liquidation procedures
+      System Health Monitoring (production_monitor.py)
+        Monitor CPU, memory, disk usage with <80% thresholds
+        Track network connectivity and data feed quality
+        Test alert system for critical threshold breaches
+        Validate dashboard real-time updates and visualization
+        Monitor system uptime and maintain 99.9% SLA
+    Business Continuity and Disaster Recovery
+      Backup and Recovery Testing
+        Test automated backup of all trading data and configurations
+        Validate system recovery from hardware failures
+        Test failover to backup data sources and servers
+        Verify trade reconstruction from audit trails
+        Test business continuity during extended outages
+      Regulatory Compliance and Audit
+        Maintain complete audit trail of all trading decisions
+        Test data retention and archival procedures
+        Validate record-keeping compliance requirements
+        Test trade reporting and regulatory submission
+        Maintain documentation for compliance audits
+  Business Validation and Performance Tracking
+    Profitability Analysis and Reporting
+      Real-Time P&L Tracking
+        Track profit/loss per signal in real-time
+        Monitor daily, weekly, and monthly P&L performance
+        Calculate risk-adjusted returns and Sharpe ratios
+        Track maximum drawdown and recovery metrics
+        Analyze profit attribution by algorithm component
+      Performance Reporting and Analysis
+        Generate daily trading performance reports
+        Create weekly algorithm performance summaries
+        Produce monthly business performance analysis
+        Track key performance indicators against targets
+        Generate quarterly business review reports
+    Continuous Improvement and Optimization
+      Algorithm Evolution and Enhancement
+        Test new algorithm variations in shadow mode
+        Validate algorithm improvements through backtesting
+        Implement gradual rollout of algorithm enhancements
+        Monitor performance impact of algorithm changes
+        Maintain version control and rollback capabilities
+      Cost Optimization and Efficiency
+        Optimize data usage to minimize costs
+        Test cost-effective data source combinations
+        Monitor operational efficiency and resource utilization
+        Implement cost reduction strategies without performance impact
+        Track cost per dollar of profit generated
+  Compliance and Audit Requirements
+    Trading Compliance and Documentation
+      Trade Documentation and Audit Trail
+        Log all trading signals with timestamp and rationale
+        Maintain complete record of all position changes
+        Document all algorithm parameter changes and justifications
+        Track all system configuration changes with approval
+        Maintain backup copies of all critical trading data
+      Regulatory Reporting and Compliance
+        Test automated regulatory reporting systems
+        Validate trade reporting accuracy and timeliness
+        Maintain compliance with position reporting requirements
+        Test audit trail reconstruction and validation
+        Document compliance procedures and controls
+    Quality Assurance and Validation
+      Independent Validation and Review
+        Implement independent validation of trading results
+        Test trade reconciliation against external sources
+        Validate P&L calculations with independent systems
+        Review algorithm performance with quantitative analysis
+        Conduct periodic independent system audits
+      Documentation and Knowledge Management
+        Maintain up-to-date system documentation
+        Document all operational procedures and emergency protocols
+        Create training materials for system operation
+        Maintain disaster recovery and business continuity plans
+        Document lessons learned and best practices
