@@ -11,10 +11,12 @@ python3 run_pipeline.py
 # Run Shadow Trading Mode (1-week live validation without real positions)
 python3 run_shadow_trading.py
 
+# Run Limited Live Trading (small position sizes with strict risk controls)
+python3 -c "from tasks.options_trading_system.analysis_engine.strategies.limited_live_trading_orchestrator import *; print('Limited Live Trading Ready')"
+
 # Test system readiness
 python3 tests/shadow_trading/test_real_performance_metrics.py
-python3 tests/shadow_trading/test_algorithm_integration.py
-python3 tests/shadow_trading/test_signal_validation.py
+python3 tests/limited_live_trading/test_limited_live_trading_integration.py
 ```
 
 > **System Status**: Production-ready with **Shadow Trading Mode** for live market validation. Real algorithms, real data, real performance tracking - no real positions.
@@ -39,8 +41,9 @@ Final Results: Top-ranked trading opportunities
 
 - **Analysis Pipeline**: `run_pipeline.py` - Traditional analysis execution
 - **Shadow Trading**: `run_shadow_trading.py` - Live market validation system
+- **Limited Live Trading**: `limited_live_trading_orchestrator.py` - Risk-controlled live position testing
 - **Pipeline System**: `tasks/options_trading_system/` - Modular analysis framework
-- **Shadow Trading Engine**: `tasks/options_trading_system/analysis_engine/strategies/` - Live validation components
+- **Trading Engine**: `tasks/options_trading_system/analysis_engine/strategies/` - Live validation and trading components
 - **Configuration**: Multiple profile-based configurations for different trading modes
 - **Documentation**: `docs/` - Comprehensive system and strategy documentation
 
@@ -160,6 +163,63 @@ Shadow trading configuration is managed in `config/shadow_trading.json`:
 - **Confidence Thresholds**: Signal quality requirements
 - **Risk Limits**: Maximum daily loss and position size limits
 - **Validation Criteria**: Signal validation and false positive detection settings
+
+### Validation Engine
+
+## Limited Live Trading Mode
+
+**Limited Live Trading provides risk-controlled position testing with real money but strict limits**:
+
+### Features
+- **1-Contract Maximum**: Strict position size limits for initial testing
+- **Real Order Placement**: Actual broker integration with live order execution
+- **P&L Tracking**: Real profits and losses vs algorithm predictions
+- **Budget Enforcement**: Automatic shutoffs at $8 daily and $200 monthly limits
+- **Execution Quality**: Slippage and fill quality monitoring
+- **Risk Management**: Stop-loss and profit target automation
+
+### Configuration
+Limited live trading uses strict risk controls:
+- **Max Position Size**: 1 contract maximum per position
+- **Daily Cost Limit**: $8 maximum data costs per day
+- **Monthly Budget**: $200 maximum operational budget
+- **Cost Per Signal**: <$5 target for signal generation costs
+- **Risk Limits**: $50 max daily loss, $200 max total risk exposure
+
+### Example Usage
+```python
+from tasks.options_trading_system.analysis_engine.strategies.limited_live_trading_orchestrator import (
+    LimitedLiveTradingConfig, LimitedLiveTradingOrchestrator
+)
+
+# Configure limited live trading
+config = LimitedLiveTradingConfig(
+    start_date='2025-06-12',
+    duration_days=1,
+    max_position_size=1,
+    daily_cost_limit=8.0,
+    monthly_budget_limit=200.0,
+    auto_shutoff_enabled=True
+)
+
+# Start live trading
+orchestrator = LimitedLiveTradingOrchestrator(config)
+orchestrator.start_live_trading()
+
+# Process signals with strict risk controls
+signal = {'id': 'test', 'confidence': 0.75, 'expected_value': 25.0}
+success = orchestrator.process_signal_for_live_trading(signal)
+
+# Monitor trading status
+status = orchestrator.get_trading_status()
+print(f"Positions: {status['open_positions']}, Risk: ${status['total_risk']:.2f}")
+```
+
+### Testing Suite
+Comprehensive integration tests validate all limited live trading features:
+```bash
+python3 tests/limited_live_trading/test_limited_live_trading_integration.py
+```
 
 ### Validation Engine
 The signal validation engine provides comprehensive signal quality assessment:
