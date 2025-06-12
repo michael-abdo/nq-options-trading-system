@@ -1,0 +1,40 @@
+{
+  "monitoring_interval": 60,
+  "alert_thresholds": {
+    "signal_accuracy": 0.70,
+    "system_latency": 150,
+    "error_rate": 0.05,
+    "daily_cost": 10.0,
+    "uptime": 0.995,
+    "monthly_budget": 200.0,
+    "memory_usage": 0.85,
+    "cpu_usage": 0.80,
+    "disk_usage": 0.90
+  },
+  "metrics_retention_days": 30,
+  "dashboard_refresh_interval": 300,
+  "notification_settings": {
+    "email_alerts": false,
+    "slack_webhook": null,
+    "log_level": "INFO"
+  },
+  "business_targets": {
+    "target_accuracy": 0.75,
+    "target_latency": 100,
+    "target_uptime": 0.999,
+    "target_roi": 0.25,
+    "max_daily_cost": 8.0
+  },
+  "data_sources": {
+    "trading_logs": "outputs/*/reports/",
+    "cost_tracking": "outputs/*/api_data/",
+    "error_logs": "outputs/monitoring/",
+    "performance_data": "outputs/*/analysis_exports/"
+  },
+  "dashboard_config": {
+    "refresh_interval": 300,
+    "chart_time_range": "24h",
+    "alert_history_days": 7,
+    "metrics_precision": 2
+  }
+}

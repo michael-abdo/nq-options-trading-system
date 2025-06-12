@@ -52,6 +52,9 @@ Final Results: Top-ranked trading opportunities
 │   └── testing.json                   # Testing configuration
 ├── scripts/                            # 🔧 UTILITY SCRIPTS
 │   ├── compare_barchart_databento.py  # Data source comparison
+│   ├── production_monitor.py          # Production monitoring system
+│   ├── monitoring_dashboard.py        # Web monitoring dashboard
+│   ├── validate_phase.py              # Phase validation script
 │   ├── requirements_databento.txt     # Databento dependencies
 │   └── setup_databento.sh             # Databento setup script
 ├── tests/                              # 🧪 TEST SUITE
@@ -75,7 +78,11 @@ Final Results: Top-ranked trading opportunities
 │   │   ├── reports/                    # Trading reports
 │   │   └── polygon_api_results/        # Polygon.io results
 │   ├── config_tests/                   # Configuration test results
-│   └── databento_cache/                # Databento cache
+│   ├── databento_cache/                # Databento cache
+│   └── monitoring/                     # Production monitoring data
+│       ├── production_metrics.json    # Real-time system metrics
+│       ├── dashboard.html             # Web monitoring dashboard
+│       └── monitor.log                # Monitoring system logs
 ├── tasks/options_trading_system/       # 🏗️ ACTIVE PIPELINE FRAMEWORK
 │   ├── config_manager.py               # Configuration management
 │   ├── analysis_engine/                # Analysis modules
@@ -88,6 +95,9 @@ Final Results: Top-ranked trading opportunities
 │   │   ├── interactive_brokers_api/   # Interactive Brokers integration
 │   │   └── tradovate_api_data/        # Tradovate integration
 │   └── output_generation/              # Results output modules
+├── templates/                          # 📋 DOCUMENTATION TEMPLATES
+│   ├── phase_template.md               # Template for future phases
+│   └── implementation_notes_template.md # Technical documentation template
 ├── venv/                               # Python virtual environment
 └── worktrees/                          # Git worktrees for branch work
 ```
@@ -186,6 +196,35 @@ python tests/test_config_system.py
 ```
 
 See [Data Sources Documentation](docs/data_sources/) for detailed setup guides.
+
+## Production Monitoring
+
+The system includes comprehensive production monitoring capabilities:
+
+### Monitoring Features
+- **Real-time Metrics**: System health, trading performance, cost tracking
+- **Web Dashboard**: Visual monitoring interface with auto-refresh
+- **Alert System**: Configurable thresholds with multiple alert levels
+- **Historical Tracking**: 30-day retention of all metrics
+
+### Quick Start Monitoring
+```bash
+# Start production monitoring
+python3 scripts/production_monitor.py
+
+# Launch web dashboard
+python3 scripts/monitoring_dashboard.py
+
+# View dashboard at: http://localhost:8080/dashboard.html
+```
+
+### Monitored Metrics
+- **Trading Performance**: Signal accuracy, latency, win/loss ratios
+- **System Health**: CPU, memory, disk usage, uptime
+- **Cost Management**: Daily costs, budget tracking, API usage
+- **Business Metrics**: ROI tracking, profit/loss analysis
+
+See [Production Monitoring Guide](docs/PRODUCTION_MONITORING.md) for detailed setup and configuration.
 
 ## Algorithm
 
