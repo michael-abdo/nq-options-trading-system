@@ -526,12 +526,13 @@ class MBOStreamingClient:
             # Initialize live client
             self.client = db.Live(key=self.api_key)
             
-            # Subscribe to MBO data
+            # Subscribe to NQ options data using available schema
+            # Note: MBO schema requires premium subscription, using trades schema
             self.client.subscribe(
                 dataset='GLBX.MDP3',
-                schema='mbo',
+                schema='trades',  # Available schema (MBO requires premium subscription)
                 symbols=self.symbols,
-                stype_in='parent'
+                stype_in='parent'  # Required: Use parent symbology for options access
             )
             
             self.is_streaming = True
@@ -620,7 +621,10 @@ class DatabentoMBOIngestion:
         """
         self.config = config
         self.api_key = self._get_api_key(config)
+        # Configure symbols with proper Databento GLBX.MDP3 format
+        # For NQ options: use "NQ.OPT" with stype_in="parent" to get all strikes/expirations
         self.symbols = [f"{symbol}.OPT" for symbol in config.get('symbols', ['NQ'])]
+        self.symbol_type = 'parent'  # Required: Use parent symbology for options access
         self.streaming_mode = config.get('streaming_mode', False)
         
         if not self.api_key:
@@ -646,6 +650,59 @@ class DatabentoMBOIngestion:
         
         return api_key
     
+    def _check_dataset_access(self) -> bool:
+        """Check if we have access to GLBX.MDP3 dataset"""
+        if not DATABENTO_AVAILABLE:
+            return False
+            
+        try:
+            client = db.Historical(self.api_key)
+            end_time = datetime.now(timezone.utc) - timedelta(days=1)
+            start_time = end_time - timedelta(seconds=1)
+            
+            test_response = client.timeseries.get_range(
+                dataset="GLBX.MDP3",
+                symbols=["NQ.OPT"],
+                stype_in="parent",
+                schema="ohlcv-1d",
+                start=start_time,
+                end=end_time,
+                limit=1
+            )
+            
+            return True
+            
+        except Exception as e:
+            error_msg = str(e)
+            if "no_dataset_entitlement" in error_msg or "403" in error_msg:
+                logger.warning("No access to GLBX.MDP3 dataset. Subscription upgrade required.")
+                return False
+            elif "422" in error_msg and "available" in error_msg:
+                return True
+            else:
+                logger.error(f"Error checking dataset access: {e}")
+                return False
+    
+    def _create_error_response(self, error_message: str) -> Dict[str, Any]:
+        """Create standardized error response"""
+        return {
+            'loader': None,
+            'metadata': {
+                'source': 'databento_mbo', 
+                'error': error_message,
+                'dataset_required': 'GLBX.MDP3',
+                'subscription_info': 'https://databento.com/pricing'
+            },
+            'options_summary': {'total_contracts': 0, 'calls': [], 'puts': []},
+            'quality_metrics': {
+                'total_contracts': 0,
+                'volume_coverage': 0.0,
+                'data_source': 'databento_mbo',
+                'access_status': 'DENIED'
+            },
+            'raw_data_available': False
+        }
+    
     def load_options_data(self) -> Dict[str, Any]:
         """
         Load options data - either streaming or historical based on config
@@ -653,6 +710,14 @@ class DatabentoMBOIngestion:
         Returns:
             Dictionary with standard format for pipeline integration
         """
+        # Check dataset access before attempting to load
+        if not self._check_dataset_access():
+            logger.error("No access to required GLBX.MDP3 dataset")
+            return self._create_error_response(
+                "Dataset access denied. GLBX.MDP3 subscription required for NQ options data. "
+                "Please contact Databento to upgrade your subscription."
+            )
+        
         if self.streaming_mode:
             return self._start_real_time_streaming()
         else:

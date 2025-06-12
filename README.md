@@ -5,15 +5,17 @@
 **Single Entry Point with Flexible Usage**:
 
 ```bash
-# Run with Databento (Standard E-mini NQ Options - $20 per point)
+# Run with automatic data source selection (currently Barchart primary)
 python3 run_pipeline.py
 
-# Note: Contract arguments are deprecated. Databento automatically fetches
-# current Standard E-mini NQ options data. For configuration options:
+# Note: The system automatically selects the best available data source
+# Priority: 1) Barchart (free), 2) Polygon (free tier), 3) Tradovate (demo), 4) Databento (CME)
 python3 run_pipeline.py --help
 ```
 
 This runs the complete Hierarchical Pipeline Analysis Framework with your actual NQ Options EV algorithm using **live market data** when available.
+
+> **Data Source Status**: Multi-source system with intelligent failover. Barchart provides primary coverage, Databento available for premium CME Globex data.
 
 ## System Overview
 
@@ -177,28 +179,48 @@ All generated files are automatically organized by date and type:
 
 ## Data Sources
 
-The system supports multiple data sources for comprehensive market coverage:
+The system supports multiple data sources with automatic priority-based selection:
 
-### Live Data Sources
-- **Databento** - CME Globex live futures and options data ($179/month subscription)
-- **Barchart** - Web API for options chains and pricing
-- **Polygon.io** - Nasdaq-100 options and market data
-- **Interactive Brokers** - Real-time trading data
-- **Tradovate** - Futures trading platform integration
+### Current Data Source Status
 
-### Setup Instructions
+| Source | Status | Priority | Notes |
+|--------|---------|----------|-------|
+| **Barchart** | ✅ READY | 1 (Primary) | Free web scraping, no API key required |
+| **Polygon.io** | ⚠️ Config Required | 2 | Free tier available, add API key to .env |
+| **Tradovate** | ⚠️ Config Required | 3 | Demo mode, add credentials to .env |
+| **Databento** | ✅ READY | 4 | CME Globex MDP3 subscription active ($179/mo) |
+
+### Why Barchart is Primary
+- **Free**: No API costs, uses web scraping with smart caching
+- **Reliable**: Automatic fallback to saved data
+- **Complete**: Full options chain data for NQ
+- **Fast**: 5-minute cache reduces API calls significantly
+
+### Databento Integration
+Premium CME Globex data source with full integration:
+- **Live Streaming**: Real-time trades schema available
+- **Market Hours**: Automatic trading hours detection
+- **Symbol Format**: Uses `NQ.OPT` with parent symbology
+- **Cost Monitoring**: Built-in budget tracking ($179/month)
+- **Reconnection**: Automatic backfill and error recovery
+- **Note**: MBO schema requires premium subscription upgrade
+
+### Configuration
 ```bash
-# Install Databento dependencies
-pip install -r scripts/requirements_databento.txt
+# All API keys go in .env file
+DATABENTO_API_KEY=your-key-here  # CME Globex MDP3 subscription active
+POLYGON_API_KEY=your-key-here    # Optional - free tier
+TRADOVATE_CID=your-cid           # Optional - demo mode
+TRADOVATE_SECRET=your-secret     # Optional - demo mode
 
-# Configure API keys (see docs/data_sources/databento.md)
-export DATABENTO_API_KEY=your-key-here
+# Test data source availability
+python3 tests/test_source_availability.py
+python3 tests/test_databento_integration.py
+python3 tests/test_mbo_live_streaming.py
 
-# Test integration
-python tests/test_databento_integration.py
-
-# Test configuration system
-python tests/test_config_system.py
+# Test configuration system  
+python3 tests/test_config_system.py
+python3 tests/test_barchart_caching.py
 ```
 
 See [Data Sources Documentation](docs/data_sources/) for detailed setup guides.

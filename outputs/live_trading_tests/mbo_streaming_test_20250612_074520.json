@@ -1,0 +1,75 @@
+{
+  "test_timestamp": "2025-06-12T07:45:19.528150",
+  "streaming_tests": {
+    "infrastructure": {
+      "queue_system": {
+        "status": "AVAILABLE",
+        "max_size": 10000
+      },
+      "threading": {
+        "status": "AVAILABLE"
+      },
+      "database": {
+        "status": "AVAILABLE"
+      }
+    },
+    "cost_monitoring": {
+      "usage_monitor": {
+        "status": "SUCCESS",
+        "events_processed": 2,
+        "estimated_cost": 2.930159722222222e-05,
+        "budget_remaining": 9.999970698402779,
+        "should_continue": true
+      }
+    },
+    "pipeline": {
+      "event_processor": {
+        "status": "SUCCESS",
+        "processed_event": {
+          "strike": 21900.0,
+          "option_type": "C",
+          "bid_price": 21900.0,
+          "ask_price": 21905.0,
+          "trade_side": "UNKNOWN"
+        }
+      },
+      "pressure_aggregator": {
+        "status": "SUCCESS",
+        "window_minutes": 5
+      }
+    }
+  },
+  "connectivity_checks": {
+    "parameters": {
+      "dataset": "GLBX.MDP3",
+      "schema": "mbo",
+      "symbols": [
+        "NQ.OPT"
+      ],
+      "stype_in": "parent",
+      "validation": "VALID"
+    },
+    "market_hours": {
+      "current_utc_time": "2025-06-12T14:45:20.677028+00:00",
+      "current_hour": 14,
+      "current_weekday": 3,
+      "weekday_name": "Thursday",
+      "likely_market_open": true,
+      "recommendation": "Good time for live testing"
+    }
+  },
+  "configuration_validation": {
+    "databento_package": {
+      "status": "AVAILABLE"
+    },
+    "api_key": {
+      "status": "CONFIGURED",
+      "length": 32,
+      "masked": "db-6P7di..."
+    },
+    "mbo_initialization": {
+      "status": "SUCCESS"
+    }
+  },
+  "overall_status": "READY_FOR_LIVE"
+}

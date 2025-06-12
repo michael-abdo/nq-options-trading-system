@@ -5,7 +5,8 @@
     "barchart_only",
     "databento_only",
     "testing",
-    "all_sources"
+    "all_sources",
+    "monitoring"
   ],
   "registry_available": true,
   "pipeline_integration": "successful",

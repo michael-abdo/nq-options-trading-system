@@ -71,7 +71,8 @@ def load_barchart_live_data(config: Dict[str, Any]) -> Dict[str, Any]:
             print(f"📅 Calculated EOD symbol: {eod_symbol}")
         
         # Use hybrid scraper to get live data
-        scraper = HybridBarchartScraper(headless=headless)
+        use_cache = config.get("use_cache", True)
+        scraper = HybridBarchartScraper(headless=headless, use_cache=use_cache)
         
         # Authenticate and fetch data
         if not scraper.authenticate(futures_symbol):
@@ -87,7 +88,7 @@ def load_barchart_live_data(config: Dict[str, Any]) -> Dict[str, Any]:
             if not api_data or api_data.get('total', 0) == 0:
                 raise Exception(f"❌ No live options data available for {eod_symbol} or MC6M25. Market may be closed or contracts not listed.")
         
-        return {
+        result = {
             "raw_data": api_data,
             "source": "barchart_live_api",
             "symbol": eod_symbol if api_data.get('total', 0) > 0 else "MC6M25",
@@ -95,9 +96,15 @@ def load_barchart_live_data(config: Dict[str, Any]) -> Dict[str, Any]:
             "total_contracts": api_data.get('total', 0)
         }
         
+        return result
+        
     except Exception as e:
         print(f"❌ Live API failed: {e}")
         raise e
+    finally:
+        # Clean up scraper resources
+        if 'scraper' in locals():
+            scraper.cleanup()
 
 
 class DataSourcesRegistry:
@@ -108,6 +115,14 @@ class DataSourcesRegistry:
     def __init__(self):
         """Initialize the registry with all available sources"""
         self._sources = {}
+        self._source_priorities = {
+            "barchart": 1,      # Primary - free web scraping
+            "barchart_live": 1, # Same as barchart
+            "polygon": 2,       # Secondary - free tier with limits
+            "tradovate": 3,     # Tertiary - demo mode
+            "databento": 4,     # Last - no GLBX.MDP3 access
+            "barchart_saved": 5 # Fallback - offline data
+        }
         self._register_all_sources()
     
     def _register_all_sources(self):
@@ -195,6 +210,82 @@ class DataSourcesRegistry:
         """Get list of all available source names"""
         return list(self._sources.keys())
     
+    def get_sources_by_priority(self, only_available: bool = True) -> List[str]:
+        """Get sources sorted by priority (lower number = higher priority)"""
+        sources = self.get_available_sources() if only_available else list(self._sources.keys())
+        # Sort by priority, defaulting to 999 for sources without explicit priority
+        return sorted(sources, key=lambda x: self._source_priorities.get(x, 999))
+    
+    def load_first_available(self, config_by_source: Dict[str, Dict[str, Any]], 
+                           log_attempts: bool = True) -> Dict[str, Any]:
+        """
+        Try to load data from sources in priority order, returning first successful result
+        
+        Args:
+            config_by_source: Dict mapping source names to their configs
+            log_attempts: Whether to log loading attempts
+            
+        Returns:
+            Data from first successful source
+            
+        Raises:
+            Exception if all sources fail
+        """
+        sources_to_try = self.get_sources_by_priority(only_available=True)
+        errors = []
+        
+        for source_name in sources_to_try:
+            if source_name not in config_by_source:
+                continue
+                
+            if not config_by_source[source_name].get('enabled', True):
+                if log_attempts:
+                    print(f"⏭️  Skipping {source_name} (disabled in config)")
+                continue
+            
+            try:
+                if log_attempts:
+                    priority = self._source_priorities.get(source_name, 999)
+                    print(f"🔍 Trying {source_name} (priority {priority})...")
+                
+                result = self.load_source(source_name, config_by_source[source_name])
+                
+                # Check for data in different formats
+                has_data = False
+                if result:
+                    # Standard format
+                    if result.get('options_summary', {}).get('total_contracts', 0) > 0:
+                        has_data = True
+                    # Live API format (barchart)
+                    elif result.get('total_contracts', 0) > 0:
+                        has_data = True
+                    # Check raw_data
+                    elif result.get('raw_data', {}).get('total', 0) > 0:
+                        has_data = True
+                
+                if has_data:
+                    if log_attempts:
+                        print(f"✅ Successfully loaded data from {source_name}")
+                    return result
+                else:
+                    if log_attempts:
+                        print(f"⚠️  {source_name} returned no data")
+                    
+            except Exception as e:
+                error_msg = str(e)
+                errors.append(f"{source_name}: {error_msg}")
+                
+                # Special handling for Databento access issues
+                if source_name == "databento" and "GLBX.MDP3" in error_msg:
+                    if log_attempts:
+                        print(f"🚫 {source_name}: No GLBX.MDP3 access (subscription required)")
+                else:
+                    if log_attempts:
+                        print(f"❌ {source_name} failed: {error_msg}")
+        
+        # All sources failed
+        raise Exception(f"All data sources failed:\n" + "\n".join(errors))
+    
     def get_source_info(self, source_name: str) -> Dict[str, Any]:
         """Get information about a specific source"""
         if source_name not in self._sources:
@@ -259,6 +350,10 @@ def get_available_sources() -> List[str]:
     """Get list of all available source names"""
     return get_sources_registry().get_available_sources()
 
+def get_sources_by_priority(only_available: bool = True) -> List[str]:
+    """Get sources sorted by priority"""
+    return get_sources_registry().get_sources_by_priority(only_available)
+
 def is_source_available(source_name: str) -> bool:
     """Check if a source is available"""
     return get_sources_registry().is_source_available(source_name)
@@ -266,3 +361,8 @@ def is_source_available(source_name: str) -> bool:
 def load_source_data(source_name: str, config: Dict[str, Any]) -> Dict[str, Any]:
     """Load data from a specific source"""
     return get_sources_registry().load_source(source_name, config)
+
+def load_first_available_source(config_by_source: Dict[str, Dict[str, Any]], 
+                               log_attempts: bool = True) -> Dict[str, Any]:
+    """Try to load data from sources in priority order"""
+    return get_sources_registry().load_first_available(config_by_source, log_attempts)

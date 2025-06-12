@@ -10,18 +10,21 @@ from typing import Dict, Any, Optional
 
 from .solution import BarchartWebScraper
 from .barchart_api_client import BarchartAPIClient
+from .cache_manager import get_cache_manager
 
 class HybridBarchartScraper:
     """
     Combines Selenium for authentication with direct API calls for speed
     """
     
-    def __init__(self, headless: bool = True):
+    def __init__(self, headless: bool = True, use_cache: bool = True):
         self.logger = logging.getLogger(__name__)
         self.headless = headless
         self.web_scraper = None
         self.api_client = None
         self.cookies = None
+        self.use_cache = use_cache
+        self.cache_manager = get_cache_manager() if use_cache else None
         
     def authenticate(self, futures_symbol: str = "NQM25") -> bool:
         """
@@ -89,6 +92,13 @@ class HybridBarchartScraper:
         Returns:
             Options data from API
         """
+        # Check cache first
+        if self.use_cache and self.cache_manager:
+            cached_data = self.cache_manager.get(symbol, futures_symbol)
+            if cached_data:
+                self.logger.info(f"🎯 Using cached data for {symbol}")
+                return cached_data
+        
         if not self.cookies:
             self.logger.error("No cookies available. Run authenticate() first.")
             return None
@@ -101,19 +111,52 @@ class HybridBarchartScraper:
             self.api_client.set_cookies(self.cookies)
             
             # Fetch data
-            self.logger.info(f"Fetching options data for {symbol} via API...")
+            self.logger.info(f"🔄 Fetching fresh data for {symbol} via API...")
             data = self.api_client.get_options_data(symbol, futures_symbol)
             
             # Save the data to file
             if data and data.get('total', 0) > 0:
                 saved_path = self.api_client.save_api_response(data, symbol)
                 self.logger.info(f"✅ Saved {data.get('total', 0)} contracts to {saved_path}")
+                
+                # Cache the data for future requests
+                if self.use_cache and self.cache_manager:
+                    self.cache_manager.save(symbol, futures_symbol, data)
+                    self.logger.info(f"💾 Cached data for {symbol}")
             
             return data
             
         except Exception as e:
             self.logger.error(f"API call failed: {e}")
             return None
+    
+    def get_cache_stats(self) -> Dict[str, Any]:
+        """Get cache statistics"""
+        if self.cache_manager:
+            return self.cache_manager.get_stats()
+        return {"cache_disabled": True}
+    
+    def print_cache_stats(self) -> None:
+        """Print cache statistics"""
+        if self.cache_manager:
+            self.cache_manager.print_stats()
+        else:
+            print("📊 Cache disabled")
+    
+    def clear_cache(self) -> None:
+        """Clear cache"""
+        if self.cache_manager:
+            self.cache_manager.clear()
+            self.logger.info("Cache cleared")
+    
+    def cleanup(self) -> None:
+        """Clean up resources"""
+        if self.web_scraper and self.web_scraper.driver:
+            self.web_scraper.driver.quit()
+        
+        # Print cache stats on cleanup
+        if self.use_cache:
+            self.print_cache_stats()
     
     def fetch_eod_options(self, futures_symbol: str = "NQM25") -> Dict[str, Any]:
         """

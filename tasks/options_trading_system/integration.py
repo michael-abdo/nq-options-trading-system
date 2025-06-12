@@ -40,7 +40,7 @@ class NQOptionsTradingSystem:
         print("  Validating System Configuration...")
         
         validation = {
-            "data_config_valid": "data" in self.config,
+            "data_config_valid": "data" in self.config or "data_sources" in self.config,
             "analysis_config_valid": "analysis" in self.config,
             "output_config_valid": "output" in self.config,
             "save_config_valid": "save" in self.config,
@@ -60,7 +60,8 @@ class NQOptionsTradingSystem:
         """Execute data ingestion pipeline"""
         print("  Running Data Pipeline...")
         
-        data_config = self.config.get("data", {})
+        # Handle both old "data" format and new "data_sources" format
+        data_config = self.config.get("data", self.config)
         
         try:
             result = run_data_ingestion(data_config)
