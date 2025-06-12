@@ -1,0 +1,191 @@
+{
+  "test_timestamp": "2025-06-11T21:52:21.701048",
+  "load_distribution": {
+    "strategies": {
+      "round_robin": {
+        "distribution": {
+          "databento": 250,
+          "polygon": 250,
+          "barchart": 250,
+          "tradovate": 250
+        },
+        "total_cost": 1.75,
+        "average_latency": 156.25,
+        "weighted_reliability": 92.5,
+        "capacity_utilization": {
+          "databento": 25.0,
+          "polygon": 5000.0,
+          "barchart": 41.66666666666667,
+          "tradovate": 1.6666666666666667
+        }
+      },
+      "weighted_round_robin": {
+        "distribution": {
+          "databento": 400,
+          "polygon": 100,
+          "barchart": 300,
+          "tradovate": 200
+        },
+        "total_cost": 2.4,
+        "average_latency": 145.0,
+        "weighted_reliability": 94.3,
+        "capacity_utilization": {
+          "databento": 40.0,
+          "polygon": 2000.0,
+          "barchart": 50.0,
+          "tradovate": 1.3333333333333335
+        }
+      },
+      "least_connections": {
+        "distribution": {
+          "databento": 250,
+          "polygon": 240,
+          "barchart": 270,
+          "tradovate": 220
+        },
+        "total_cost": 1.69,
+        "average_latency": 158.0,
+        "weighted_reliability": 90.64,
+        "capacity_utilization": {
+          "databento": 25.0,
+          "polygon": 4800.0,
+          "barchart": 45.0,
+          "tradovate": 1.4666666666666666
+        }
+      },
+      "capacity_based": {
+        "distribution": {
+          "databento": 60,
+          "polygon": 0,
+          "barchart": 36,
+          "tradovate": 903
+        },
+        "total_cost": 2.106,
+        "average_latency": 81.525,
+        "weighted_reliability": 94.977,
+        "capacity_utilization": {
+          "databento": 6.0,
+          "polygon": 0.0,
+          "barchart": 6.0,
+          "tradovate": 6.02
+        }
+      },
+      "cost_optimized": {
+        "distribution": {
+          "polygon": 5,
+          "barchart": 600,
+          "tradovate": 395,
+          "databento": 0
+        },
+        "total_cost": 0.79,
+        "average_latency": 210.625,
+        "weighted_reliability": 93.15,
+        "capacity_utilization": {
+          "polygon": 100.0,
+          "barchart": 100.0,
+          "tradovate": 2.6333333333333333,
+          "databento": 0.0
+        }
+      }
+    },
+    "source_utilization": {}
+  },
+  "balancing_algorithms": {
+    "adaptive_algorithms": {
+      "Normal Load": {
+        "available_sources": 4,
+        "distribution": {
+          "databento": 6,
+          "polygon": 0,
+          "barchart": 3,
+          "tradovate": 90
+        },
+        "total_handled": 99,
+        "overflow": 1,
+        "success_rate": 99.0
+      },
+      "High Load": {
+        "available_sources": 4,
+        "distribution": {
+          "databento": 30,
+          "polygon": 0,
+          "barchart": 18,
+          "tradovate": 451
+        },
+        "total_handled": 499,
+        "overflow": 1,
+        "success_rate": 99.8
+      },
+      "Source Failure": {
+        "available_sources": 3,
+        "distribution": {
+          "polygon": 0,
+          "barchart": 7,
+          "tradovate": 192
+        },
+        "total_handled": 199,
+        "overflow": 1,
+        "success_rate": 99.5
+      },
+      "Rate Limited": {
+        "available_sources": 3,
+        "distribution": {
+          "databento": 18,
+          "barchart": 10,
+          "tradovate": 271
+        },
+        "total_handled": 299,
+        "overflow": 1,
+        "success_rate": 99.66666666666667
+      }
+    },
+    "real_time_adjustments": {}
+  },
+  "performance_metrics": {
+    "latency_analysis": {
+      "single_source_latency": 50,
+      "load_balanced_latency": 149.0,
+      "performance_penalty": 198.0
+    },
+    "throughput_analysis": {
+      "max_single_source": 15000,
+      "combined_capacity": 16605,
+      "throughput_multiplier": 1.107,
+      "load_balancing_efficiency": 95
+    },
+    "overhead_measurements": {
+      "decision_time_ms": 2.5,
+      "routing_overhead_ms": 1.0,
+      "monitoring_overhead_ms": 0.5,
+      "total_overhead_ms": 4.0
+    }
+  },
+  "capacity_testing": {
+    "stress_scenarios": {
+      "2x Normal Load": {
+        "load": 400,
+        "total_capacity": 16605,
+        "success_rate": 100,
+        "overflow": 0,
+        "test_passed": true
+      },
+      "5x Normal Load": {
+        "load": 1000,
+        "total_capacity": 16605,
+        "success_rate": 100,
+        "overflow": 0,
+        "test_passed": true
+      },
+      "10x Normal Load": {
+        "load": 2000,
+        "total_capacity": 16605,
+        "success_rate": 100,
+        "overflow": 0,
+        "test_passed": true
+      }
+    },
+    "breaking_points": {},
+    "recovery_behavior": {}
+  },
+  "overall_status": "EXCELLENT"
+}

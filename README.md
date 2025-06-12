@@ -57,7 +57,7 @@ Final Results: Top-ranked trading opportunities
 │   ├── validate_phase.py              # Phase validation script
 │   ├── requirements_databento.txt     # Databento dependencies
 │   └── setup_databento.sh             # Databento setup script
-├── tests/                              # 🧪 TEST SUITE
+├── tests/                              # 🧪 TEST SUITE (32 test files)
 │   ├── test_config_system.py          # Configuration system tests
 │   ├── test_pipeline_config.py        # Pipeline configuration tests
 │   ├── test_pipeline_with_config.py   # Full pipeline tests
@@ -65,11 +65,15 @@ Final Results: Top-ranked trading opportunities
 │   ├── test_barchart_api_only.py      # Barchart API tests
 │   ├── test_databento_api.py          # Databento API tests
 │   ├── test_databento_nq_options.py   # NQ options specific tests
-│   └── test_web_scrape_simple.py      # Web scraping tests
+│   ├── test_live_trading_readiness.py # Live trading readiness tests
+│   ├── test_api_authentication.py     # API authentication tests
+│   ├── test_edge_cases.py             # Edge case handling tests
+│   └── ... (22 more test files)       # Complete test coverage
 ├── archive/                            # Legacy files (archived)
 ├── docs/                               # 📚 DOCUMENTATION
 │   ├── analysis/                       # Strategy documentation
 │   ├── data_sources/                   # Data source guides
+│   ├── live_trading_test_plan.txt     # Comprehensive test plan
 │   └── *.md                           # System documentation
 ├── outputs/                            # 📁 ORGANIZED OUTPUT STRUCTURE
 │   ├── YYYYMMDD/                       # Date-based organization
@@ -140,8 +144,10 @@ Edit configuration files in `config/` directory to switch strategies and data so
 The root directory contains only essential files:
 - **`run_pipeline.py`** - Main entry point for the trading system
 - **`README.md`** - This documentation file
-- **`.env`** - Configuration file (create from .env.example)
+- **`.env`** - Configuration file (API keys)
 - **`.gitignore`** - Git configuration
+
+All test files have been organized into the `tests/` directory for better structure.
 
 ### Directory Structure
 ```

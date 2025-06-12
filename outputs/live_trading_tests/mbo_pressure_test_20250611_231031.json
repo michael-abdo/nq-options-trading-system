@@ -1,0 +1,26 @@
+{
+  "test_timestamp": "2025-06-11T23:10:31.482096",
+  "pressure_metrics": {
+    "scenarios_tested": 3,
+    "average_accuracy": 100.0,
+    "pressure_range": [
+      -100,
+      100
+    ]
+  },
+  "analysis_accuracy": {
+    "extreme_pressure": {
+      "threshold": 75,
+      "scenarios": 1
+    },
+    "strong_pressure": {
+      "threshold": 50,
+      "scenarios": 1
+    },
+    "moderate_pressure": {
+      "threshold": 25,
+      "scenarios": 1
+    }
+  },
+  "overall_status": "EXCELLENT"
+}

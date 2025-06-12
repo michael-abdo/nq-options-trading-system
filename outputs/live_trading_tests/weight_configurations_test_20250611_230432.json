@@ -1,0 +1,123 @@
+{
+  "test_timestamp": "2025-06-11T23:04:32.928678",
+  "backtest_period": "6 months",
+  "weight_configurations": {
+    "conservative": {
+      "total_trades": 18,
+      "profitable_trades": 6,
+      "win_rate": 33.33333333333333,
+      "total_return": 3.32716683166176,
+      "avg_return_per_trade": 0.18484260175898667,
+      "max_drawdown": 0.8563028285422077,
+      "sharpe_ratio": 3.8855025590958463,
+      "signal_strength_threshold": 0.7,
+      "risk_tolerance": 0.3
+    },
+    "balanced": {
+      "total_trades": 30,
+      "profitable_trades": 10,
+      "win_rate": 33.33333333333333,
+      "total_return": 5.902415466528931,
+      "avg_return_per_trade": 0.19674718221763102,
+      "max_drawdown": 2.416206829008578,
+      "sharpe_ratio": 2.4428436322857423,
+      "signal_strength_threshold": 0.6,
+      "risk_tolerance": 0.5
+    },
+    "aggressive": {
+      "total_trades": 46,
+      "profitable_trades": 15,
+      "win_rate": 32.608695652173914,
+      "total_return": 5.885545027192848,
+      "avg_return_per_trade": 0.12794663102593148,
+      "max_drawdown": 4.3172406671775025,
+      "sharpe_ratio": 1.3632654468254748,
+      "signal_strength_threshold": 0.5,
+      "risk_tolerance": 0.7
+    },
+    "institutional_focused": {
+      "total_trades": 22,
+      "profitable_trades": 7,
+      "win_rate": 31.818181818181817,
+      "total_return": 3.6291388509965032,
+      "avg_return_per_trade": 0.16496085686347742,
+      "max_drawdown": 0.6948057538748575,
+      "sharpe_ratio": 5.22324236775125,
+      "signal_strength_threshold": 0.65,
+      "risk_tolerance": 0.4
+    },
+    "volume_focused": {
+      "total_trades": 40,
+      "profitable_trades": 13,
+      "win_rate": 32.5,
+      "total_return": 6.0983029579987695,
+      "avg_return_per_trade": 0.15245757394996923,
+      "max_drawdown": 3.244052493701581,
+      "sharpe_ratio": 1.879841022868402,
+      "signal_strength_threshold": 0.55,
+      "risk_tolerance": 0.6
+    }
+  },
+  "performance_analysis": {
+    "stress_scenarios": {
+      "High Volatility": {
+        "trades": 30,
+        "modified_return": 4.721932373223145,
+        "robustness_score": 80.0
+      },
+      "Low Volume": {
+        "trades": 9,
+        "modified_return": 1.7707246399586791,
+        "robustness_score": 30.0
+      },
+      "Market Crash": {
+        "trades": 30,
+        "modified_return": -8.853623199793397,
+        "robustness_score": -150.00000000000003
+      },
+      "Bull Market": {
+        "trades": 30,
+        "modified_return": 10.624347839752076,
+        "robustness_score": 180.00000000000003
+      }
+    },
+    "sensitivity_analysis": {}
+  },
+  "optimization_results": {
+    "best_performing": "balanced",
+    "optimization_insights": {
+      "volume_spike": {
+        "best_config_weight": 0.2,
+        "worst_config_weight": 0.3,
+        "difference": -0.09999999999999998,
+        "importance": "medium"
+      },
+      "institutional_flow": {
+        "best_config_weight": 0.25,
+        "worst_config_weight": 0.25,
+        "difference": 0.0,
+        "importance": "low"
+      },
+      "expected_value": {
+        "best_config_weight": 0.25,
+        "worst_config_weight": 0.2,
+        "difference": 0.04999999999999999,
+        "importance": "low"
+      },
+      "expiration_pressure": {
+        "best_config_weight": 0.2,
+        "worst_config_weight": 0.15,
+        "difference": 0.05000000000000002,
+        "importance": "medium"
+      },
+      "risk_analysis": {
+        "best_config_weight": 0.1,
+        "worst_config_weight": 0.1,
+        "difference": 0.0,
+        "importance": "low"
+      }
+    },
+    "recommended_adjustments": {}
+  },
+  "overall_status": "POOR"
+}

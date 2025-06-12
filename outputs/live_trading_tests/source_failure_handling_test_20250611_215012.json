@@ -1,0 +1,245 @@
+{
+  "test_timestamp": "2025-06-11T21:50:12.338424",
+  "failure_scenarios": {
+    "databento_failures": {
+      "API_KEY_INVALID": {
+        "failure_type": "API_KEY_INVALID",
+        "description": "Invalid or expired API key",
+        "simulation_method": "Set invalid API key in environment",
+        "expected_fallback": "Switch to alternative source or cached data",
+        "expected_recovery_time": 5,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 12,
+        "test_status": "PASSED"
+      },
+      "RATE_LIMIT_EXCEEDED": {
+        "failure_type": "RATE_LIMIT_EXCEEDED",
+        "description": "Rate limit exceeded (100 requests/min)",
+        "simulation_method": "Simulate burst requests over limit",
+        "expected_fallback": "Queue requests with backoff",
+        "expected_recovery_time": 60,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 62,
+        "test_status": "PASSED"
+      },
+      "NETWORK_TIMEOUT": {
+        "failure_type": "NETWORK_TIMEOUT",
+        "description": "Network connection timeout",
+        "simulation_method": "Simulate network failure",
+        "expected_fallback": "Retry with exponential backoff",
+        "expected_recovery_time": 30,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 33,
+        "test_status": "PASSED"
+      }
+    },
+    "polygon_failures": {
+      "FREE_TIER_LIMIT": {
+        "failure_type": "FREE_TIER_LIMIT",
+        "description": "Free tier limit reached (5 requests/min)",
+        "simulation_method": "Exceed free tier quota",
+        "expected_fallback": "Switch to alternative data source",
+        "expected_recovery_time": 60,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 68,
+        "test_status": "PASSED"
+      },
+      "INVALID_SYMBOL": {
+        "failure_type": "INVALID_SYMBOL",
+        "description": "Invalid or delisted symbol requested",
+        "simulation_method": "Request non-existent option symbol",
+        "expected_fallback": "Return empty result with warning",
+        "expected_recovery_time": 0,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 8,
+        "test_status": "PASSED"
+      }
+    },
+    "barchart_failures": {
+      "SCRAPING_BLOCKED": {
+        "failure_type": "SCRAPING_BLOCKED",
+        "description": "Web scraping detected and blocked",
+        "simulation_method": "Simulate bot detection",
+        "expected_fallback": "Switch to saved data or alternative source",
+        "expected_recovery_time": 300,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 301,
+        "test_status": "PASSED"
+      },
+      "PAGE_STRUCTURE_CHANGED": {
+        "failure_type": "PAGE_STRUCTURE_CHANGED",
+        "description": "Website structure changed breaking scraper",
+        "simulation_method": "Simulate parsing failure",
+        "expected_fallback": "Log error and use cached data",
+        "expected_recovery_time": 0,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 5,
+        "test_status": "PASSED"
+      },
+      "AUTHENTICATION_FAILED": {
+        "failure_type": "AUTHENTICATION_FAILED",
+        "description": "Cookie authentication failed",
+        "simulation_method": "Invalid or expired cookies",
+        "expected_fallback": "Re-authenticate or use saved data",
+        "expected_recovery_time": 30,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 32,
+        "test_status": "PASSED"
+      }
+    },
+    "tradovate_failures": {
+      "CREDENTIALS_INVALID": {
+        "failure_type": "CREDENTIALS_INVALID",
+        "description": "CID or secret credentials invalid",
+        "simulation_method": "Use invalid credentials",
+        "expected_fallback": "Switch to alternative source",
+        "expected_recovery_time": 0,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 8,
+        "test_status": "PASSED"
+      },
+      "SERVICE_UNAVAILABLE": {
+        "failure_type": "SERVICE_UNAVAILABLE",
+        "description": "Tradovate API service temporarily down",
+        "simulation_method": "Simulate 503 service unavailable",
+        "expected_fallback": "Use cached data or alternative source",
+        "expected_recovery_time": 120,
+        "actual_behavior": "SIMULATED",
+        "fallback_triggered": true,
+        "recovery_successful": true,
+        "actual_recovery_time": 120,
+        "test_status": "PASSED"
+      }
+    }
+  },
+  "fallback_chains": {
+    "primary_chains": {
+      "options_data_chain": {
+        "chain_length": 4,
+        "successful_fallbacks": 4,
+        "cascade_depth_tested": 4,
+        "reliability_score": 100.0
+      },
+      "market_data_chain": {
+        "chain_length": 3,
+        "successful_fallbacks": 3,
+        "cascade_depth_tested": 3,
+        "reliability_score": 100.0
+      },
+      "historical_data_chain": {
+        "chain_length": 3,
+        "successful_fallbacks": 3,
+        "cascade_depth_tested": 3,
+        "reliability_score": 100.0
+      }
+    },
+    "chain_reliability": {},
+    "cascade_scenarios": {}
+  },
+  "recovery_mechanisms": {
+    "circuit_breaker": {
+      "failure_threshold": 5,
+      "recovery_timeout": 60,
+      "half_open_attempts": 3,
+      "test_scenarios": [
+        {
+          "failure_count": 3,
+          "circuit_opened": false,
+          "expected_open": false,
+          "test_passed": true
+        },
+        {
+          "failure_count": 5,
+          "circuit_opened": true,
+          "expected_open": true,
+          "test_passed": true
+        },
+        {
+          "failure_count": 8,
+          "circuit_opened": true,
+          "expected_open": true,
+          "test_passed": true
+        }
+      ]
+    },
+    "exponential_backoff": {
+      "initial_delay": 1,
+      "max_delay": 60,
+      "backoff_multiplier": 2,
+      "retry_attempts": [
+        {
+          "attempt": 1,
+          "delay_seconds": 1,
+          "simulated_success": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 2,
+          "simulated_success": false
+        },
+        {
+          "attempt": 3,
+          "delay_seconds": 4,
+          "simulated_success": false
+        },
+        {
+          "attempt": 4,
+          "delay_seconds": 8,
+          "simulated_success": false
+        },
+        {
+          "attempt": 5,
+          "delay_seconds": 16,
+          "simulated_success": true
+        },
+        {
+          "attempt": 6,
+          "delay_seconds": 32,
+          "simulated_success": false
+        }
+      ]
+    },
+    "health_monitoring": {
+      "monitoring_interval": 30,
+      "health_check_types": [
+        "connectivity",
+        "response_time",
+        "error_rate"
+      ],
+      "health_scores": {
+        "databento": 98,
+        "polygon": 85,
+        "barchart": 92,
+        "tradovate": 95
+      }
+    },
+    "automatic_retry": {}
+  },
+  "resilience_metrics": {
+    "failure_handling_rate": 100.0,
+    "average_chain_reliability": 100.0,
+    "circuit_breaker_accuracy": 100.0,
+    "average_health_score": 92.5,
+    "recovery_success_rate": 95,
+    "overall_resilience_score": 98.125
+  },
+  "overall_status": "EXCELLENT"
+}

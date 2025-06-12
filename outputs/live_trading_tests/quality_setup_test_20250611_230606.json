@@ -1,0 +1,478 @@
+{
+  "test_timestamp": "2025-06-11T23:06:06.756915",
+  "setup_identification": {
+    "scenarios_processed": 30,
+    "setups_identified": 9,
+    "quality_distribution": {
+      "poor": 8,
+      "fair": 15,
+      "good": 4,
+      "excellent": 3
+    },
+    "detailed_scores": [
+      {
+        "scenario_id": "scenario_01",
+        "component_scores": {
+          "volume_anomaly": 65.11234378264511,
+          "institutional_flow": 100,
+          "expected_value": 73.3260281625166,
+          "probability_confidence": 100,
+          "time_sensitivity": 92.85714285714286
+        },
+        "composite_score": 84.87186300673602,
+        "quality_class": "excellent",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_02",
+        "component_scores": {
+          "volume_anomaly": 61.927961369548015,
+          "institutional_flow": 91.92035738467794,
+          "expected_value": 0,
+          "probability_confidence": 0,
+          "time_sensitivity": 0
+        },
+        "composite_score": 38.462079688556486,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_03",
+        "component_scores": {
+          "volume_anomaly": 52.86618537107556,
+          "institutional_flow": 100,
+          "expected_value": 0.06889840371147216,
+          "probability_confidence": 57.12607784634245,
+          "time_sensitivity": 0
+        },
+        "composite_score": 46.79923770046255,
+        "quality_class": "fair",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_04",
+        "component_scores": {
+          "volume_anomaly": 55.77758991212989,
+          "institutional_flow": 100,
+          "expected_value": 27.724477472523574,
+          "probability_confidence": 86.79804014016095,
+          "time_sensitivity": 0
+        },
+        "composite_score": 57.50899899356133,
+        "quality_class": "fair",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_05",
+        "component_scores": {
+          "volume_anomaly": 76.62518051570925,
+          "institutional_flow": 24.657736969517412,
+          "expected_value": 100,
+          "probability_confidence": 13.158919645021472,
+          "time_sensitivity": 24.0
+        },
+        "composite_score": 50.894567318059885,
+        "quality_class": "fair",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_06",
+        "component_scores": {
+          "volume_anomaly": 61.853713092061454,
+          "institutional_flow": 100,
+          "expected_value": 67.92894654447748,
+          "probability_confidence": 0,
+          "time_sensitivity": 92.0
+        },
+        "composite_score": 67.84921758191086,
+        "quality_class": "good",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_07",
+        "component_scores": {
+          "volume_anomaly": 72.32512926781668,
+          "institutional_flow": 36.83622866264818,
+          "expected_value": 100,
+          "probability_confidence": 0,
+          "time_sensitivity": 70.0
+        },
+        "composite_score": 57.79033948261622,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_08",
+        "component_scores": {
+          "volume_anomaly": 76.68886891010271,
+          "institutional_flow": 100,
+          "expected_value": 100,
+          "probability_confidence": 100,
+          "time_sensitivity": 86.0
+        },
+        "composite_score": 92.07221722752568,
+        "quality_class": "excellent",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_09",
+        "component_scores": {
+          "volume_anomaly": 67.2381264458198,
+          "institutional_flow": 74.4224081466482,
+          "expected_value": 100,
+          "probability_confidence": 5.32755764547721,
+          "time_sensitivity": 0
+        },
+        "composite_score": 56.21426729493858,
+        "quality_class": "fair",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_10",
+        "component_scores": {
+          "volume_anomaly": 65.69249597986928,
+          "institutional_flow": 36.91400337381865,
+          "expected_value": 33.7357437160385,
+          "probability_confidence": 0,
+          "time_sensitivity": 7.9999999999999964
+        },
+        "composite_score": 33.59877358162968,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_11",
+        "component_scores": {
+          "volume_anomaly": 0,
+          "institutional_flow": 66.66483200190643,
+          "expected_value": 0,
+          "probability_confidence": 33.0502944670219,
+          "time_sensitivity": 7.142857142857142
+        },
+        "composite_score": 22.695180741958463,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_12",
+        "component_scores": {
+          "volume_anomaly": 77.21936174443192,
+          "institutional_flow": 52.560855699704675,
+          "expected_value": 67.38697472016011,
+          "probability_confidence": 77.38563823859037,
+          "time_sensitivity": 4.0000000000000036
+        },
+        "composite_score": 58.130295040854726,
+        "quality_class": "fair",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_13",
+        "component_scores": {
+          "volume_anomaly": 59.79198842901948,
+          "institutional_flow": 85.63942299223682,
+          "expected_value": 84.22091196194103,
+          "probability_confidence": 0,
+          "time_sensitivity": 28.000000000000004
+        },
+        "composite_score": 57.40203524770228,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_14",
+        "component_scores": {
+          "volume_anomaly": 76.63329480211779,
+          "institutional_flow": 100,
+          "expected_value": 0,
+          "probability_confidence": 9.151255712718509,
+          "time_sensitivity": 4.0000000000000036
+        },
+        "composite_score": 46.131012057437225,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_15",
+        "component_scores": {
+          "volume_anomaly": 74.69842904337233,
+          "institutional_flow": 100,
+          "expected_value": 0,
+          "probability_confidence": 100,
+          "time_sensitivity": 78.0
+        },
+        "composite_score": 70.37460726084308,
+        "quality_class": "good",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_16",
+        "component_scores": {
+          "volume_anomaly": 68.5700114341754,
+          "institutional_flow": 100,
+          "expected_value": 0,
+          "probability_confidence": 100,
+          "time_sensitivity": 12.0
+        },
+        "composite_score": 58.94250285854385,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_17",
+        "component_scores": {
+          "volume_anomaly": 72.7555217884478,
+          "institutional_flow": 2.0783599776957615,
+          "expected_value": 100,
+          "probability_confidence": 0,
+          "time_sensitivity": 100
+        },
+        "composite_score": 53.70847044153589,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_18",
+        "component_scores": {
+          "volume_anomaly": 62.26568949547793,
+          "institutional_flow": 100,
+          "expected_value": 46.90772257864393,
+          "probability_confidence": 0,
+          "time_sensitivity": 30.000000000000004
+        },
+        "composite_score": 54.44796688959827,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_19",
+        "component_scores": {
+          "volume_anomaly": 74.2741587477631,
+          "institutional_flow": 69.01618825908764,
+          "expected_value": 56.382467878359,
+          "probability_confidence": 0,
+          "time_sensitivity": 54.0
+        },
+        "composite_score": 55.199080327384486,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_20",
+        "component_scores": {
+          "volume_anomaly": 77.25552274341774,
+          "institutional_flow": 75.51599667887086,
+          "expected_value": 0,
+          "probability_confidence": 78.27615151247738,
+          "time_sensitivity": 92.0
+        },
+        "composite_score": 63.73430258244376,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_21",
+        "component_scores": {
+          "volume_anomaly": 50.112648259424475,
+          "institutional_flow": 34.32804607462322,
+          "expected_value": 0,
+          "probability_confidence": 48.695742326013615,
+          "time_sensitivity": 100
+        },
+        "composite_score": 43.414534932413964,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_22",
+        "component_scores": {
+          "volume_anomaly": 68.69067515193282,
+          "institutional_flow": 55.202474113948895,
+          "expected_value": 1.639632788461661,
+          "probability_confidence": 44.319753513167946,
+          "time_sensitivity": 7.9999999999999964
+        },
+        "composite_score": 39.149176901137956,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_23",
+        "component_scores": {
+          "volume_anomaly": 59.27165563650319,
+          "institutional_flow": 100,
+          "expected_value": 93.55070132564671,
+          "probability_confidence": 15.132458522004333,
+          "time_sensitivity": 100
+        },
+        "composite_score": 75.7979229525558,
+        "quality_class": "good",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_24",
+        "component_scores": {
+          "volume_anomaly": 73.60244771791844,
+          "institutional_flow": 100,
+          "expected_value": 100,
+          "probability_confidence": 0,
+          "time_sensitivity": 54.0
+        },
+        "composite_score": 71.5006119294796,
+        "quality_class": "good",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_25",
+        "component_scores": {
+          "volume_anomaly": 74.68801829014934,
+          "institutional_flow": 4.608647116277476,
+          "expected_value": 100,
+          "probability_confidence": 0,
+          "time_sensitivity": 0
+        },
+        "composite_score": 39.824166351606706,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_26",
+        "component_scores": {
+          "volume_anomaly": 0,
+          "institutional_flow": 100,
+          "expected_value": 100,
+          "probability_confidence": 99.1291099661419,
+          "time_sensitivity": 24.0
+        },
+        "composite_score": 63.46936649492128,
+        "quality_class": "fair",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_27",
+        "component_scores": {
+          "volume_anomaly": 72.14517964530621,
+          "institutional_flow": 30.70865830449308,
+          "expected_value": 0,
+          "probability_confidence": 100,
+          "time_sensitivity": 0
+        },
+        "composite_score": 40.713459487449825,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_28",
+        "component_scores": {
+          "volume_anomaly": 68.98323729235392,
+          "institutional_flow": 84.48921141975116,
+          "expected_value": 100,
+          "probability_confidence": 100,
+          "time_sensitivity": 74.0
+        },
+        "composite_score": 84.46811217802627,
+        "quality_class": "excellent",
+        "qualifies": true
+      },
+      {
+        "scenario_id": "scenario_29",
+        "component_scores": {
+          "volume_anomaly": 68.62144230047939,
+          "institutional_flow": 4.08301741805438,
+          "expected_value": 0,
+          "probability_confidence": 76.54273775594116,
+          "time_sensitivity": 14.285714285714285
+        },
+        "composite_score": 31.800382735881758,
+        "quality_class": "poor",
+        "qualifies": false
+      },
+      {
+        "scenario_id": "scenario_30",
+        "component_scores": {
+          "volume_anomaly": 73.55840205268393,
+          "institutional_flow": 0,
+          "expected_value": 95.2401772804852,
+          "probability_confidence": 23.25101654497019,
+          "time_sensitivity": 48.0
+        },
+        "composite_score": 48.12528845101355,
+        "quality_class": "fair",
+        "qualifies": false
+      }
+    ]
+  },
+  "scoring_accuracy": {
+    "component_accuracy": {
+      "volume_anomaly": {
+        "average_score": 63.641509307391765,
+        "score_range": [
+          0,
+          77.25552274341774
+        ],
+        "above_threshold_count": 28,
+        "distribution_quality": "good"
+      },
+      "institutional_flow": {
+        "average_score": 67.65488148646536,
+        "score_range": [
+          0,
+          100
+        ],
+        "above_threshold_count": 21,
+        "distribution_quality": "good"
+      },
+      "expected_value": {
+        "average_score": 51.60375609443217,
+        "score_range": [
+          0,
+          100
+        ],
+        "above_threshold_count": 16,
+        "distribution_quality": "good"
+      },
+      "probability_confidence": {
+        "average_score": 42.24482512786831,
+        "score_range": [
+          0,
+          100
+        ],
+        "above_threshold_count": 12,
+        "distribution_quality": "good"
+      },
+      "time_sensitivity": {
+        "average_score": 40.14285714285714,
+        "score_range": [
+          0,
+          100
+        ],
+        "above_threshold_count": 12,
+        "distribution_quality": "good"
+      }
+    },
+    "threshold_accuracy": {
+      "excellent_rate": 10.0,
+      "good_plus_rate": 23.333333333333332,
+      "qualification_rate": 30.0,
+      "rejection_rate": 70.0
+    },
+    "ranking_accuracy": {}
+  },
+  "quality_metrics": {
+    "score_distribution": {
+      "mean": 55.50300125795954,
+      "median": 56.21426729493858,
+      "std_dev": 16.097317461302797,
+      "score_ranges": {
+        "0-25": 1,
+        "25-50": 10,
+        "50-75": 15,
+        "75-100": 4
+      }
+    },
+    "correlation_analysis": {},
+    "performance_prediction": {}
+  },
+  "validation_results": {},
+  "overall_status": "EXCELLENT"
+}
