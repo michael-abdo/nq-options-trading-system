@@ -1,0 +1,72 @@
+{
+  "test_timestamp": "2025-06-11T20:54:18.156602",
+  "reconnection_tests": {
+    "retry_logic": {
+      "max_retries": 3,
+      "retry_delays": [
+        1,
+        2,
+        4
+      ],
+      "simulated_failures": 2,
+      "successful_reconnect": true
+    },
+    "circuit_breaker": {
+      "failure_threshold": 5,
+      "timeout_seconds": 30,
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_time": "2025-06-11T20:54:18.529268"
+    },
+    "health_monitor": {
+      "heartbeat_interval_seconds": 30,
+      "max_missed_heartbeats": 3,
+      "monitoring_active": true,
+      "health_checks": [
+        {
+          "timestamp": "2025-06-11T20:54:18.636970",
+          "status": "HEALTHY",
+          "latency_ms": 50
+        },
+        {
+          "timestamp": "2025-06-11T20:54:48.638132",
+          "status": "HEALTHY",
+          "latency_ms": 60
+        },
+        {
+          "timestamp": "2025-06-11T20:55:18.638293",
+          "status": "TIMEOUT",
+          "latency_ms": null
+        },
+        {
+          "timestamp": "2025-06-11T20:55:48.638351",
+          "status": "HEALTHY",
+          "latency_ms": 80
+        },
+        {
+          "timestamp": "2025-06-11T20:56:18.638379",
+          "status": "HEALTHY",
+          "latency_ms": 90
+        }
+      ],
+      "health_percentage": 80.0
+    }
+  },
+  "backfill_capabilities": {
+    "module_available": true,
+    "gap_detected": true,
+    "gap_duration_seconds": 180.0,
+    "backfill_required": true,
+    "estimated_records": 1800,
+    "batches_needed": 2,
+    "estimated_time_seconds": 0.6666666666666666
+  },
+  "resilience_metrics": {
+    "retry_success_rate": 100.0,
+    "backfill_capability": true,
+    "circuit_breaker_enabled": true,
+    "health_monitoring_enabled": true,
+    "overall_resilience_score": 0.95
+  },
+  "overall_status": "EXCELLENT"
+}

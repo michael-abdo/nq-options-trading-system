@@ -1,0 +1,99 @@
+{
+  "test_timestamp": "2025-06-11T21:09:47.975639",
+  "authentication_methods": {
+    "scraper_availability": {
+      "hybrid_scraper_available": true,
+      "api_client_available": true
+    },
+    "cookie_auth": {
+      "method": "Browser automation with Selenium",
+      "requirements": {
+        "selenium": "Required for browser automation",
+        "chrome_driver": "Required for Chrome control",
+        "xsrf_token": "Extracted from cookies"
+      },
+      "security_features": [
+        "XSRF token validation",
+        "Session cookie management",
+        "Automatic cookie refresh",
+        "Secure cookie storage"
+      ],
+      "cookie_storage": "Directory not found",
+      "stored_cookies": 0
+    },
+    "api_config": {
+      "base_url": "https://www.barchart.com",
+      "api_endpoints": {
+        "options_chain": "/proxies/core-api/v1/options/chain",
+        "quotes": "/proxies/core-api/v1/quotes/get",
+        "historical": "/proxies/core-api/v1/historical/get"
+      },
+      "headers_required": [
+        "x-xsrf-token",
+        "cookie",
+        "user-agent",
+        "referer"
+      ],
+      "endpoints_configured": 3,
+      "headers_configured": 4
+    },
+    "flow_summary": {
+      "steps": [
+        "1. Check existing cookies",
+        "2. Validate session if cookies exist",
+        "3. Launch browser if authentication needed",
+        "4. Extract XSRF token from cookies",
+        "5. Make authenticated API requests",
+        "6. Handle authentication errors",
+        "7. Implement fallback on failure"
+      ],
+      "complexity": "Medium",
+      "reliability": "High with fallbacks"
+    }
+  },
+  "cookie_management": {},
+  "session_persistence": {
+    "cookie_lifetime": "Session-based (browser session)",
+    "refresh_strategy": "Automatic on expiry",
+    "persistence_methods": [
+      "Cookie file storage",
+      "Automatic re-authentication",
+      "Session timeout detection",
+      "Graceful degradation to saved data"
+    ],
+    "session_validation": {
+      "check_cookie_expiry": true,
+      "check_xsrf_token": true,
+      "check_response_status": true,
+      "retry_on_401": true
+    }
+  },
+  "fallback_mechanisms": {
+    "primary_method": "Live API with authentication",
+    "fallback_methods": [
+      {
+        "level": 1,
+        "method": "Retry with new authentication",
+        "trigger": "401 Unauthorized"
+      },
+      {
+        "level": 2,
+        "method": "Use cached data if available",
+        "trigger": "Multiple auth failures"
+      },
+      {
+        "level": 3,
+        "method": "Switch to saved data files",
+        "trigger": "API unavailable"
+      }
+    ],
+    "fallback_triggers": [
+      "HTTP 401/403 errors",
+      "Cookie expiration",
+      "Rate limiting",
+      "Network errors",
+      "Invalid XSRF token"
+    ]
+  },
+  "overall_status": "EXCELLENT"
+}

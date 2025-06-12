@@ -1,0 +1,38 @@
+{
+  "test_timestamp": "2025-06-11T20:48:04.493557",
+  "cache_systems": {
+    "databento": {
+      "directory_exists": true,
+      "total_cache_files": 1,
+      "total_cache_size_mb": 0.36
+    },
+    "mbo": {
+      "database_exists": false
+    }
+  },
+  "performance_metrics": {
+    "cache_simulation": {
+      "simulated_requests": 100,
+      "cache_hits": 80,
+      "cache_misses": 20,
+      "avg_hit_time_ms": 0.00044405460357666016,
+      "avg_miss_time_ms": 1.7968297004699707,
+      "hit_ratio": 0.8
+    },
+    "file_cache": {
+      "avg_write_time_ms": 0.4821300506591797,
+      "avg_read_time_ms": 0.1527547836303711,
+      "files_tested": 10
+    }
+  },
+  "efficiency_analysis": {
+    "recommendations": [
+      "\u2705 Good cache hit ratio (>70%)",
+      "\u2705 Excellent read performance (<5ms)",
+      "\u2705 Cache size well managed (<100MB)"
+    ],
+    "efficiency_score": 1.0,
+    "total_cache_size_mb": 0.36
+  },
+  "overall_status": "EXCELLENT"
+}

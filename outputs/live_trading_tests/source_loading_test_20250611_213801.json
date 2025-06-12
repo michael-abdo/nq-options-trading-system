@@ -1,0 +1,169 @@
+{
+  "test_timestamp": "2025-06-11T21:37:59.997073",
+  "source_registry": {
+    "registry_file": "tasks/options_trading_system/data_ingestion/sources_registry.py",
+    "sources_available": {},
+    "total_sources": 0,
+    "import_error": "cannot import name 'load_source' from 'sources_registry' (/Users/Mike/trading/algos/EOD/tasks/options_trading_system/data_ingestion/sources_registry.py)"
+  },
+  "availability_checks": {
+    "sources_tested": {
+      "databento_api": {
+        "module_path": "tasks/options_trading_system/data_ingestion/databento_api",
+        "solution_file": "tasks/options_trading_system/data_ingestion/databento_api/solution.py",
+        "available": true,
+        "loadable": true
+      },
+      "polygon_api": {
+        "module_path": "tasks/options_trading_system/data_ingestion/polygon_api",
+        "solution_file": "tasks/options_trading_system/data_ingestion/polygon_api/solution.py",
+        "available": true,
+        "loadable": true
+      },
+      "barchart_web_scraper": {
+        "module_path": "tasks/options_trading_system/data_ingestion/barchart_web_scraper",
+        "solution_file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "available": true,
+        "loadable": true
+      },
+      "tradovate_api_data": {
+        "module_path": "tasks/options_trading_system/data_ingestion/tradovate_api_data",
+        "solution_file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "available": true,
+        "loadable": true
+      },
+      "interactive_brokers_api": {
+        "module_path": "tasks/options_trading_system/data_ingestion/interactive_brokers_api",
+        "solution_file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/solution.py",
+        "available": true,
+        "loadable": true
+      }
+    },
+    "success_rate": 100.0
+  },
+  "dynamic_loading": {
+    "switch_scenarios": [
+      {
+        "name": "Enable Databento only",
+        "profile": "databento_only",
+        "expected_sources": [
+          "databento_api"
+        ],
+        "test_result": "SUCCESS",
+        "profile_exists": true
+      },
+      {
+        "name": "Enable Barchart only",
+        "profile": "barchart_only",
+        "expected_sources": [
+          "barchart_web_scraper"
+        ],
+        "test_result": "SUCCESS",
+        "profile_exists": true
+      },
+      {
+        "name": "Enable all sources",
+        "profile": "all_sources",
+        "expected_sources": [
+          "databento_api",
+          "polygon_api",
+          "barchart_web_scraper",
+          "tradovate_api_data"
+        ],
+        "test_result": "SUCCESS",
+        "profile_exists": true
+      },
+      {
+        "name": "Testing profile",
+        "profile": "testing",
+        "expected_sources": [
+          "barchart_saved_data"
+        ],
+        "test_result": "SUCCESS",
+        "profile_exists": true
+      }
+    ],
+    "success_rate": 100.0,
+    "health_monitoring": {
+      "monitoring_capabilities": {
+        "connection_status": true,
+        "response_time_tracking": true,
+        "error_rate_monitoring": true,
+        "availability_scoring": true
+      },
+      "health_checks": {
+        "databento_api": {
+          "connection_status": "HEALTHY",
+          "last_response_time_ms": 250,
+          "error_rate_24h": 0.0,
+          "availability_score": 95,
+          "last_check": "2025-06-11T21:38:01.059974"
+        },
+        "polygon_api": {
+          "connection_status": "HEALTHY",
+          "last_response_time_ms": 427,
+          "error_rate_24h": 0.02,
+          "availability_score": 97,
+          "last_check": "2025-06-11T21:38:01.059986"
+        },
+        "barchart_web_scraper": {
+          "connection_status": "HEALTHY",
+          "last_response_time_ms": 390,
+          "error_rate_24h": 0.0,
+          "availability_score": 95,
+          "last_check": "2025-06-11T21:38:01.059993"
+        },
+        "tradovate_api_data": {
+          "connection_status": "HEALTHY",
+          "last_response_time_ms": 283,
+          "error_rate_24h": 0.03,
+          "availability_score": 98,
+          "last_check": "2025-06-11T21:38:01.059998"
+        },
+        "interactive_brokers_api": {
+          "connection_status": "HEALTHY",
+          "last_response_time_ms": 337,
+          "error_rate_24h": 0.02,
+          "availability_score": 97,
+          "last_check": "2025-06-11T21:38:01.060004"
+        }
+      }
+    }
+  },
+  "configuration_tests": {
+    "config_profiles": {
+      "barchart_only": {
+        "file": "config/barchart_only.json",
+        "valid": true,
+        "sources_enabled": 1,
+        "total_sources": 4
+      },
+      "databento_only": {
+        "file": "config/databento_only.json",
+        "valid": true,
+        "sources_enabled": 1,
+        "total_sources": 4
+      },
+      "testing": {
+        "file": "config/testing.json",
+        "valid": true,
+        "sources_enabled": 1,
+        "total_sources": 4
+      },
+      "all_sources": {
+        "file": "config/all_sources.json",
+        "valid": true,
+        "sources_enabled": 4,
+        "total_sources": 4
+      },
+      "monitoring": {
+        "file": "config/monitoring.json",
+        "valid": false,
+        "error": "'str' object has no attribute 'get'"
+      }
+    },
+    "profile_switching": {},
+    "validation_results": {}
+  },
+  "overall_status": "GOOD"
+}

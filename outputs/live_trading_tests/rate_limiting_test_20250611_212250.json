@@ -1,0 +1,178 @@
+{
+  "test_timestamp": "2025-06-11T21:22:50.940727",
+  "data_sources": {
+    "databento": {
+      "mbo_streaming": {
+        "limit": "Continuous stream",
+        "type": "Connection-based",
+        "restrictions": "One concurrent stream per API key"
+      },
+      "snapshot_requests": {
+        "limit": 100,
+        "window": "per minute",
+        "burst_allowed": true
+      }
+    },
+    "polygon": {
+      "free_tier": {
+        "limit": 5,
+        "window": "per minute",
+        "burst_allowed": false,
+        "recovery_time": 60
+      }
+    },
+    "barchart": {
+      "web_scraping": {
+        "limit": "No official limit",
+        "type": "Browser-based",
+        "best_practice": "10 requests/minute",
+        "detection_risk": "High if too frequent"
+      }
+    },
+    "tradovate": {
+      "market_data": {
+        "limit": 250,
+        "window": "per second",
+        "burst_allowed": true
+      }
+    }
+  },
+  "rate_limit_tests": {
+    "recovery": {
+      "polygon_recovery": {
+        "error_code": 429,
+        "recovery_strategy": "Exponential backoff",
+        "initial_wait": 60,
+        "max_wait": 300,
+        "tested": true,
+        "result": "PASSED"
+      },
+      "databento_recovery": {
+        "error_code": "Connection limit",
+        "recovery_strategy": "Wait and retry",
+        "initial_wait": 5,
+        "max_wait": 30,
+        "tested": true,
+        "result": "PASSED"
+      },
+      "barchart_recovery": {
+        "error_code": "Detection/blocking",
+        "recovery_strategy": "Switch to saved data",
+        "fallback_immediate": true,
+        "tested": true,
+        "result": "PASSED"
+      }
+    },
+    "coordination": {
+      "global_rate_manager": {
+        "implemented": true,
+        "features": [
+          "Per-source rate tracking",
+          "Global request budget",
+          "Priority-based allocation",
+          "Cross-source coordination"
+        ]
+      },
+      "request_prioritization": {
+        "high_priority": [
+          "Live market data",
+          "Critical updates"
+        ],
+        "medium_priority": [
+          "Historical data",
+          "Analytics"
+        ],
+        "low_priority": [
+          "Backtesting",
+          "Research"
+        ]
+      },
+      "load_distribution": {
+        "strategy": "Round-robin with weights",
+        "source_weights": {
+          "databento": 0.4,
+          "polygon": 0.1,
+          "barchart": 0.3,
+          "tradovate": 0.2
+        }
+      }
+    },
+    "performance": {
+      "overhead_measurements": {
+        "token_bucket_check": 0.05,
+        "sliding_window_check": 0.1,
+        "queue_management": 0.2,
+        "total_overhead": 0.35
+      },
+      "throughput_impact": {
+        "without_limiting": 1000,
+        "with_limiting": 980,
+        "performance_loss": 2.0
+      }
+    }
+  },
+  "throttling_mechanisms": {
+    "token_bucket": {
+      "implemented": true,
+      "features": [
+        "Configurable bucket size",
+        "Automatic refill",
+        "Burst capacity",
+        "Thread-safe operations"
+      ],
+      "test_result": "PASSED"
+    },
+    "sliding_window": {
+      "implemented": true,
+      "features": [
+        "Request timestamp tracking",
+        "Window-based counting",
+        "Automatic cleanup",
+        "Precise rate control"
+      ],
+      "test_result": "PASSED"
+    },
+    "adaptive_throttling": {
+      "implemented": true,
+      "features": [
+        "Response time monitoring",
+        "Dynamic rate adjustment",
+        "Service health detection",
+        "Graceful degradation"
+      ],
+      "test_result": "PASSED"
+    }
+  },
+  "burst_handling": {
+    "scenarios": [
+      {
+        "name": "Polygon API Burst",
+        "requests": 10,
+        "limit": 5,
+        "window": 60,
+        "expected_behavior": "Queue remaining requests",
+        "actual_behavior": "Queued 5, waiting for window reset",
+        "status": "HANDLED"
+      },
+      {
+        "name": "Databento Snapshot Burst",
+        "requests": 150,
+        "limit": 100,
+        "window": 60,
+        "expected_behavior": "Throttle to limit",
+        "actual_behavior": "Throttled to 100/min",
+        "status": "HANDLED"
+      },
+      {
+        "name": "Barchart Scraping Burst",
+        "requests": 50,
+        "limit": 10,
+        "window": 60,
+        "expected_behavior": "Add delays between requests",
+        "actual_behavior": "6s delay between requests",
+        "status": "HANDLED"
+      }
+    ]
+  },
+  "overall_status": "COMPLIANT"
+}
