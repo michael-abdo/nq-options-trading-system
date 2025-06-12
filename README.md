@@ -126,13 +126,36 @@ Edit configuration files in `config/` directory to switch strategies and data so
 
 ## File Organization
 
-**Automated Output Management**: All generated files are automatically organized by date and type:
+### Clean Root Directory
+The root directory contains only essential files:
+- **`run_pipeline.py`** - Main entry point for the trading system
+- **`README.md`** - This documentation file
+- **`.env`** - Configuration file (create from .env.example)
+- **`.gitignore`** - Git configuration
+
+### Directory Structure
+```
+├── tasks/                     # Core implementation modules
+│   └── options_trading_system/
+│       ├── analysis_engine/   # Analysis algorithms and strategies
+│       ├── data_ingestion/    # Data source integrations
+│       └── output_generation/ # Report generators
+├── config/                    # Configuration profiles
+├── docs/                      # Documentation and guides
+├── outputs/                   # Generated outputs (auto-organized)
+├── scripts/                   # Utility scripts
+├── tests/                     # Test files
+└── archive/                   # Legacy code for reference
+```
+
+### Automated Output Management
+All generated files are automatically organized by date and type:
 
 - **Analysis Results**: `outputs/YYYYMMDD/analysis_exports/` - JSON exports with trade recommendations  
 - **Trading Reports**: `outputs/YYYYMMDD/reports/` - Human-readable trading reports
 - **System Logs**: `outputs/YYYYMMDD/logs/` - Pipeline execution logs
-- **API Data**: `tasks/.../barchart_web_scraper/outputs/YYYYMMDD/api_data/` - Live market data
-- **Debug Data**: Screenshots, HTML snapshots, and comparison results organized by date
+- **API Data**: `outputs/YYYYMMDD/api_data/` - Live market data snapshots
+- **Performance Data**: `outputs/performance_tracking/` - System metrics
 
 **No manual file management required** - the system automatically creates organized directories and routes all outputs appropriately.
 

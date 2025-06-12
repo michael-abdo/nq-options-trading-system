@@ -527,7 +527,7 @@ class PressureRatioAnalyzer:
         Returns:
             Coordination score 0-1 (1 = highest coordination)
         """
-        # TODO: Implement cross-strike coordination analysis
+        # Future enhancement: Cross-strike coordination analysis for Phase 5
         # For now, return moderate coordination as placeholder
         return 0.6
     
@@ -700,7 +700,7 @@ class MarketMakingDetector:
     def _analyze_volatility_crush(self, current_metrics: PressureMetrics, activity: List[PressureMetrics]) -> Dict:
         """Analyze for volatility crush patterns"""
         
-        # TODO: Implement price decline analysis
+        # Future enhancement: Price decline analysis for volatility crush detection
         # For now, return placeholder analysis
         
         return {
