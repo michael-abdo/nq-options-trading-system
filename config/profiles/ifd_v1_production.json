@@ -1,0 +1,38 @@
+{
+  "name": "ifd_v1_production",
+  "description": "IFD v1.0 Dead Simple Algorithm - Production Settings",
+  "algorithm_version": "v1.0",
+  "data_mode": "real_time",
+  "testing_mode": "production",
+  "config": {
+    "dead_simple": {
+      "min_vol_oi_ratio": 10,
+      "min_volume": 500,
+      "min_dollar_size": 100000,
+      "max_distance_percent": 2.0,
+      "confidence_thresholds": {
+        "extreme": 50,
+        "very_high": 30,
+        "high": 20,
+        "moderate": 10
+      }
+    },
+    "data_sources": {
+      "primary": [
+        "barchart",
+        "polygon"
+      ],
+      "fallback": [
+        "tradovate"
+      ],
+      "mode": "real_time"
+    },
+    "risk_management": {
+      "max_position_size": 10,
+      "max_daily_trades": 20,
+      "stop_loss_percent": 15
+    }
+  },
+  "created_at": "2025-06-12T09:23:56.595760",
+  "last_modified": "2025-06-12T09:23:56.595766"
+}

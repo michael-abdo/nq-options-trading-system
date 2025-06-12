@@ -1,0 +1,68 @@
+{
+  "name": "paper_trading_validation",
+  "description": "Paper Trading Validation - Historical Data Testing",
+  "algorithm_version": "both",
+  "data_mode": "historical",
+  "testing_mode": "paper_trading",
+  "config": {
+    "paper_trading": {
+      "enabled": true,
+      "simulation_period_days": 14,
+      "starting_capital": 100000,
+      "position_sizing": "confidence_weighted",
+      "transaction_costs": 0.02,
+      "slippage": 0.25
+    },
+    "v1_config": {
+      "min_vol_oi_ratio": 8,
+      "min_volume": 500,
+      "min_dollar_size": 75000,
+      "max_distance_percent": 2.0,
+      "confidence_thresholds": {
+        "extreme": 50,
+        "very_high": 30,
+        "high": 20,
+        "moderate": 10
+      }
+    },
+    "v3_config": {
+      "db_path": "outputs/ifd_v3_production.db",
+      "pressure_thresholds": {
+        "min_pressure_ratio": 1.8,
+        "min_volume_concentration": 0.35,
+        "min_time_persistence": 0.45,
+        "min_trend_strength": 0.55
+      },
+      "confidence_thresholds": {
+        "min_baseline_anomaly": 1.8,
+        "min_overall_confidence": 0.65
+      },
+      "market_making_penalty": 0.4,
+      "historical_baselines": {
+        "lookback_days": 20,
+        "min_data_quality": 0.9
+      }
+    },
+    "data_sources": {
+      "mode": "historical",
+      "date_range": {
+        "start": "2025-05-27",
+        "end": "2025-06-09"
+      },
+      "primary": [
+        "barchart"
+      ],
+      "simulation_speed": 1.0
+    },
+    "validation_metrics": {
+      "track_pnl": true,
+      "track_drawdown": true,
+      "track_sharpe_ratio": true,
+      "track_win_rate": true,
+      "track_signal_quality": true,
+      "generate_trade_log": true
+    }
+  },
+  "created_at": "2025-06-12T09:23:56.595795",
+  "last_modified": "2025-06-12T09:23:56.595796"
+}

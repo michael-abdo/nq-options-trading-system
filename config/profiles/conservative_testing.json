@@ -1,0 +1,36 @@
+{
+  "name": "conservative_testing",
+  "description": "Conservative Testing - High Confidence Signals Only",
+  "algorithm_version": "v3.0",
+  "data_mode": "real_time",
+  "testing_mode": "validation",
+  "config": {
+    "institutional_flow_v3": {
+      "db_path": "outputs/ifd_v3_conservative.db",
+      "pressure_thresholds": {
+        "min_pressure_ratio": 3.0,
+        "min_volume_concentration": 0.6,
+        "min_time_persistence": 0.7,
+        "min_trend_strength": 0.8
+      },
+      "confidence_thresholds": {
+        "min_baseline_anomaly": 3.0,
+        "min_overall_confidence": 0.85
+      },
+      "market_making_penalty": 0.5,
+      "historical_baselines": {
+        "lookback_days": 30,
+        "min_data_quality": 0.95
+      }
+    },
+    "risk_management": {
+      "max_position_size": 5,
+      "max_daily_trades": 10,
+      "stop_loss_percent": 8,
+      "confidence_scaling": true,
+      "min_signal_confidence": 0.85
+    }
+  },
+  "created_at": "2025-06-12T09:23:56.595800",
+  "last_modified": "2025-06-12T09:23:56.595801"
+}

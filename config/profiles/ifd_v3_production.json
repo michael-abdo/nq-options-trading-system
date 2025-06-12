@@ -1,0 +1,46 @@
+{
+  "name": "ifd_v3_production",
+  "description": "IFD v3.0 Enhanced MBO Streaming - Production Settings",
+  "algorithm_version": "v3.0",
+  "data_mode": "real_time",
+  "testing_mode": "production",
+  "config": {
+    "institutional_flow_v3": {
+      "db_path": "outputs/ifd_v3_production.db",
+      "pressure_thresholds": {
+        "min_pressure_ratio": 2.0,
+        "min_volume_concentration": 0.4,
+        "min_time_persistence": 0.5,
+        "min_trend_strength": 0.6
+      },
+      "confidence_thresholds": {
+        "min_baseline_anomaly": 2.0,
+        "min_overall_confidence": 0.7
+      },
+      "market_making_penalty": 0.4,
+      "historical_baselines": {
+        "lookback_days": 20,
+        "min_data_quality": 0.9
+      }
+    },
+    "data_sources": {
+      "primary": [
+        "databento"
+      ],
+      "fallback": [
+        "barchart",
+        "polygon"
+      ],
+      "mode": "real_time",
+      "mbo_streaming": true
+    },
+    "risk_management": {
+      "max_position_size": 15,
+      "max_daily_trades": 30,
+      "stop_loss_percent": 12,
+      "confidence_scaling": true
+    }
+  },
+  "created_at": "2025-06-12T09:23:56.595780",
+  "last_modified": "2025-06-12T09:23:56.595781"
+}

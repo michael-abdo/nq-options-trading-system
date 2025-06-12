@@ -1,0 +1,157 @@
+{
+  "shadow_trading": {
+    "start_date": "2025-06-16",
+    "duration_days": 7,
+    "trading_hours_start": "09:30",
+    "trading_hours_end": "16:00",
+    "report_frequency": "daily",
+    "validation_mode": "strict",
+    "max_daily_signals": 50,
+    "confidence_threshold": 0.65,
+    "paper_trading_capital": 100000.0,
+    "save_detailed_logs": true,
+
+    "alert_thresholds": {
+      "max_daily_loss_pct": 2.0,
+      "min_signal_accuracy": 0.70,
+      "max_false_positive_rate": 0.15,
+      "min_daily_signals": 5,
+      "max_drawdown_pct": 5.0
+    },
+
+    "risk_management": {
+      "max_position_size_pct": 5.0,
+      "max_correlation": 0.7,
+      "stop_loss_pct": 2.0,
+      "profit_target_pct": 6.0
+    }
+  },
+
+  "market_relevance": {
+    "relevance_window_minutes": 30,
+    "min_confidence_threshold": 0.65,
+    "correlation_threshold": 0.7,
+    "max_tracking_hours": 8,
+    "timing_analysis": {
+      "optimal_execution_window_min": 5,
+      "optimal_execution_window_max": 30,
+      "stale_signal_threshold_minutes": 60
+    }
+  },
+
+  "data_sources": {
+    "primary": "barchart",
+    "fallback": ["databento", "polygon", "tradovate"],
+    "cache_enabled": true,
+    "cache_ttl_minutes": 5,
+    "retry_attempts": 3,
+    "timeout_seconds": 30,
+    "quality_thresholds": {
+      "min_data_completeness": 0.95,
+      "max_latency_ms": 500,
+      "min_update_frequency": 60
+    }
+  },
+
+  "algorithms": {
+    "v1_enabled": true,
+    "v3_enabled": true,
+    "comparison_mode": "parallel",
+    "allocation_split": 0.5,
+    "algorithm_configs": {
+      "v1": {
+        "expected_value_weights": {
+          "oi_factor": 0.4,
+          "vol_factor": 0.3,
+          "pcr_factor": 0.2,
+          "distance_factor": 0.1
+        },
+        "min_ev": 10,
+        "min_probability": 0.55,
+        "confidence_threshold": 0.60
+      },
+      "v3": {
+        "expected_value_weights": {
+          "oi_factor": 0.35,
+          "vol_factor": 0.25,
+          "pcr_factor": 0.25,
+          "distance_factor": 0.15
+        },
+        "min_ev": 15,
+        "min_probability": 0.60,
+        "confidence_threshold": 0.65,
+        "institutional_flow_weight": 0.3,
+        "volatility_pattern_weight": 0.2
+      }
+    }
+  },
+
+  "output": {
+    "base_directory": "outputs/shadow_trading",
+    "save_daily_reports": true,
+    "save_signal_details": true,
+    "save_market_data": false,
+    "generate_charts": true,
+    "report_formats": ["markdown", "json"],
+    "retention_days": 30
+  },
+
+  "monitoring": {
+    "enable_real_time_monitoring": true,
+    "dashboard_update_frequency": 300,
+    "performance_tracking": {
+      "track_latency": true,
+      "track_memory_usage": true,
+      "track_api_costs": true,
+      "track_data_quality": true
+    },
+    "alerts": {
+      "email": null,
+      "slack_webhook": null,
+      "log_level": "WARNING"
+    }
+  },
+
+  "historical_comparison": {
+    "enable_comparison": true,
+    "backtesting_period_days": 30,
+    "comparison_metrics": [
+      "signal_frequency",
+      "accuracy_rate",
+      "false_positive_rate",
+      "timing_consistency",
+      "market_correlation"
+    ],
+    "tolerance_thresholds": {
+      "signal_frequency_variance": 0.2,
+      "accuracy_variance": 0.05,
+      "timing_variance": 0.15
+    }
+  },
+
+  "validation_criteria": {
+    "minimum_requirements": {
+      "overall_accuracy": 0.70,
+      "false_positive_rate": 0.15,
+      "signal_count_per_day": 5,
+      "system_uptime": 0.995,
+      "data_completeness": 0.95
+    },
+
+    "target_requirements": {
+      "overall_accuracy": 0.75,
+      "false_positive_rate": 0.10,
+      "signal_count_per_day": 10,
+      "avg_expected_value": 20.0,
+      "win_rate": 0.65
+    },
+
+    "scoring_weights": {
+      "accuracy": 0.3,
+      "false_positive_rate": 0.2,
+      "signal_quality": 0.2,
+      "timing_consistency": 0.15,
+      "system_reliability": 0.15
+    }
+  }
+}

@@ -2,22 +2,24 @@
 
 ## Quick Start
 
-**Single Entry Point with Flexible Usage**:
+**Production Trading System with Shadow Trading Mode**:
 
 ```bash
-# Run with automatic data source selection (currently Barchart primary)
+# Run standard analysis pipeline
 python3 run_pipeline.py
 
-# Note: The system automatically selects the best available data source
-# Priority: 1) Barchart (free), 2) Polygon (free tier), 3) Tradovate (demo), 4) Databento (CME)
-python3 run_pipeline.py --help
+# Run Shadow Trading Mode (1-week live validation without real positions)
+python3 run_shadow_trading.py
+
+# Test system readiness
+python3 tests/shadow_trading/test_real_performance_metrics.py
+python3 tests/shadow_trading/test_algorithm_integration.py
+python3 tests/shadow_trading/test_signal_validation.py
 ```
 
-This runs the complete Hierarchical Pipeline Analysis Framework with your actual NQ Options EV algorithm using **live market data** when available.
+> **System Status**: Production-ready with **Shadow Trading Mode** for live market validation. Real algorithms, real data, real performance tracking - no real positions.
 
-> **System Status**: Production-ready with comprehensive security, live trading infrastructure, and automated monitoring. Full test coverage with 96% success rate.
-
-> **Data Source Status**: Multi-source system with intelligent failover. Barchart provides primary coverage, Databento available for premium CME Globex data.
+> **Shadow Trading**: Comprehensive 1-week validation system with IFD v1.0/v3.0 algorithms, real-time performance metrics, signal validation, and false positive detection.
 
 ## System Overview
 
@@ -35,10 +37,12 @@ Final Results: Top-ranked trading opportunities
 
 ## Core Components
 
-- **Entry Point**: `run_pipeline.py` - Single command to run everything
+- **Analysis Pipeline**: `run_pipeline.py` - Traditional analysis execution
+- **Shadow Trading**: `run_shadow_trading.py` - Live market validation system
 - **Pipeline System**: `tasks/options_trading_system/` - Modular analysis framework
-- **Configuration**: `tasks/options_trading_system/analysis_engine/pipeline_config.json`
-- **Documentation**: `docs/hierarchical_pipeline_framework.md`
+- **Shadow Trading Engine**: `tasks/options_trading_system/analysis_engine/strategies/` - Live validation components
+- **Configuration**: Multiple profile-based configurations for different trading modes
+- **Documentation**: `docs/` - Comprehensive system and strategy documentation
 
 ## Project Structure
 
@@ -46,14 +50,17 @@ Final Results: Top-ranked trading opportunities
 /Users/Mike/trading/algos/EOD/
 ├── CLAUDE.md                           # Project instructions
 ├── README.md                           # This file
-├── run_pipeline.py                     # 🚀 MAIN ENTRY POINT
+├── run_pipeline.py                     # 🚀 ANALYSIS PIPELINE ENTRY POINT
+├── run_shadow_trading.py               # 🎯 SHADOW TRADING ENTRY POINT
 ├── .env                                # Environment variables (API keys)
 ├── .gitignore                          # Git ignore patterns
 ├── config/                             # 📋 CONFIGURATION PROFILES
-│   ├── databento_only.json            # Databento-only configuration (default)
-│   ├── barchart_only.json             # Barchart-only configuration
+│   ├── databento_only.json            # Databento-only configuration
+│   ├── barchart_only.json             # Barchart-only configuration (default)
 │   ├── all_sources.json               # All data sources enabled
-│   └── testing.json                   # Testing configuration
+│   ├── shadow_trading.json            # Shadow trading configuration
+│   ├── testing.json                   # Testing configuration
+│   └── profiles/                       # Algorithm-specific profiles
 ├── scripts/                            # 🔧 UTILITY SCRIPTS
 │   ├── compare_barchart_databento.py  # Data source comparison
 │   ├── production_monitor.py          # Production monitoring system
@@ -61,20 +68,21 @@ Final Results: Top-ranked trading opportunities
 │   ├── validate_phase.py              # Phase validation script
 │   ├── requirements_databento.txt     # Databento dependencies
 │   └── setup_databento.sh             # Databento setup script
-├── tests/                              # 🧪 TEST SUITE (32 test files)
+├── tests/                              # 🧪 TEST SUITE (40+ test files)
+│   ├── shadow_trading/                 # Shadow trading system tests
+│   │   ├── test_real_performance_metrics.py     # Performance metrics tests
+│   │   ├── test_algorithm_integration.py        # Algorithm integration tests
+│   │   ├── test_signal_validation.py            # Signal validation tests
+│   │   └── test_shadow_trading_integration.py   # Complete system tests
 │   ├── test_config_system.py          # Configuration system tests
 │   ├── test_pipeline_config.py        # Pipeline configuration tests
-│   ├── test_pipeline_with_config.py   # Full pipeline tests
 │   ├── test_databento_integration.py  # Databento integration tests
-│   ├── test_barchart_api_only.py      # Barchart API tests
-│   ├── test_databento_api.py          # Databento API tests
-│   ├── test_databento_nq_options.py   # NQ options specific tests
 │   ├── test_live_trading_readiness.py # Live trading readiness tests
 │   ├── test_api_authentication.py     # API authentication tests
-│   ├── test_edge_cases.py             # Edge case handling tests
-│   └── ... (22 more test files)       # Complete test coverage
+│   └── ... (30+ more test files)      # Complete test coverage
 ├── archive/                            # Legacy files (archived)
 ├── docs/                               # 📚 DOCUMENTATION
+│   ├── SHADOW_TRADING_IMPLEMENTATION_SUMMARY.md # Complete implementation guide
 │   ├── analysis/                       # Strategy documentation
 │   ├── data_sources/                   # Data source guides
 │   ├── live_trading_test_plan.txt     # Comprehensive test plan
@@ -85,6 +93,11 @@ Final Results: Top-ranked trading opportunities
 │   │   ├── api_data/                   # API responses
 │   │   ├── reports/                    # Trading reports
 │   │   └── polygon_api_results/        # Polygon.io results
+│   ├── shadow_trading/                 # Shadow trading validation outputs
+│   │   └── YYYY-MM-DD/                # Shadow trading session results
+│   │       ├── ab_testing/            # A/B testing comparison results
+│   │       ├── paper_trading/         # Paper trading execution logs
+│   │       └── performance_tracking/  # Real-time performance metrics
 │   ├── config_tests/                   # Configuration test results
 │   ├── databento_cache/                # Databento cache
 │   └── monitoring/                     # Production monitoring data
@@ -93,7 +106,14 @@ Final Results: Top-ranked trading opportunities
 │       └── monitor.log                # Monitoring system logs
 ├── tasks/options_trading_system/       # 🏗️ ACTIVE PIPELINE FRAMEWORK
 │   ├── config_manager.py               # Configuration management
-│   ├── analysis_engine/                # Analysis modules
+│   ├── analysis_engine/                # Analysis modules and strategies
+│   │   ├── strategies/                 # Trading strategy implementations
+│   │   │   ├── shadow_trading_orchestrator.py    # Shadow trading main engine
+│   │   │   ├── real_performance_metrics.py       # Real-time performance tracking
+│   │   │   ├── signal_validation_engine.py       # Signal validation & false positive detection
+│   │   │   ├── market_relevance_tracker.py       # Market timing and relevance analysis
+│   │   │   └── ...                    # Additional strategy modules
+│   │   └── integration.py             # Analysis pipeline integration
 │   ├── data_ingestion/                 # Data loading modules
 │   │   ├── sources_registry.py        # Data source registry
 │   │   ├── integration.py             # Pipeline integration
@@ -110,14 +130,62 @@ Final Results: Top-ranked trading opportunities
 └── worktrees/                          # Git worktrees for branch work
 ```
 
+## Shadow Trading Mode
+
+**Shadow Trading Mode provides comprehensive live market validation without taking real positions**:
+
+### Features
+- **Real Market Data**: Live feeds from Barchart, Databento, Polygon, and Tradovate
+- **Real Algorithms**: IFD v1.0 (Dead Simple Volume Spike) and IFD v3.0 (Enhanced MBO Streaming)
+- **Signal Validation**: Advanced validation engine with false positive detection
+- **Performance Tracking**: Real-time latency, cost, and data quality monitoring
+- **Paper Trading**: Complete execution simulation with P&L tracking
+- **Daily Reports**: Comprehensive validation analysis with recommendations
+
+### Quick Start
+```bash
+# Run 1-week shadow trading validation
+python3 run_shadow_trading.py
+
+# Test shadow trading components
+python3 tests/shadow_trading/test_real_performance_metrics.py
+python3 tests/shadow_trading/test_algorithm_integration.py
+python3 tests/shadow_trading/test_signal_validation.py
+```
+
+### Configuration
+Shadow trading configuration is managed in `config/shadow_trading.json`:
+- **Duration**: 1-7 days validation period
+- **Trading Hours**: Market hours and optimal trading windows
+- **Confidence Thresholds**: Signal quality requirements
+- **Risk Limits**: Maximum daily loss and position size limits
+- **Validation Criteria**: Signal validation and false positive detection settings
+
+### Validation Engine
+The signal validation engine provides comprehensive signal quality assessment:
+- **Historical Pattern Matching**: Correlates signals with historical success patterns
+- **Market Context Analysis**: Validates timing and market conditions
+- **Technical Criteria**: Confidence, expected value, and risk/reward validation
+- **False Positive Detection**: Multi-factor analysis to identify unreliable signals
+
+### Performance Metrics
+Real-time performance tracking includes:
+- **Latency Monitoring**: Data load and algorithm execution times
+- **Cost Tracking**: API usage and provider-specific cost monitoring
+- **Data Quality**: Completeness, error rates, and source reliability
+- **System Resources**: CPU, memory, and network utilization
+
+See [Shadow Trading Implementation Guide](docs/SHADOW_TRADING_IMPLEMENTATION_SUMMARY.md) for complete details.
+
 ## Configurable Data Sources
 
 The system now supports **easy configuration switching** between data sources:
 
 ### Available Configurations
-- **`databento_only.json`** - Standard E-mini NQ options (default, $20 per point)
-- **`barchart_only.json`** - Micro E-mini NQ options ($2 per point)
+- **`barchart_only.json`** - Micro E-mini NQ options (default, $2 per point)
+- **`databento_only.json`** - Standard E-mini NQ options ($20 per point)
 - **`all_sources.json`** - All data sources enabled
+- **`shadow_trading.json`** - Shadow trading validation configuration
 - **`testing.json`** - Test configuration with saved data
 
 ### Switching Data Sources
