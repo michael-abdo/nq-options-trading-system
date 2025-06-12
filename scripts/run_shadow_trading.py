@@ -20,7 +20,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 # Add project directories to path
-project_root = Path(__file__).parent
+script_dir = Path(__file__).parent
+project_root = script_dir.parent
 sys.path.insert(0, str(project_root))
 sys.path.insert(0, str(project_root / "tasks" / "options_trading_system"))
 

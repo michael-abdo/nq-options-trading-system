@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 # Add project directories to path
-project_root = Path(__file__).parent
+project_root = Path(__file__).parent.parent.parent  # Go up to project root
 sys.path.insert(0, str(project_root))
 sys.path.insert(0, str(project_root / "tasks" / "options_trading_system"))
 
@@ -38,6 +38,11 @@ def test_shadow_trading_imports():
         )
         logger.info("✓ Market Relevance Tracker import successful")
 
+        # Add scripts directory to path
+        scripts_path = project_root / "scripts"
+        if str(scripts_path) not in sys.path:
+            sys.path.insert(0, str(scripts_path))
+
         from run_shadow_trading import (
             create_default_config, validate_config, setup_historical_data
         )
@@ -55,6 +60,10 @@ def test_shadow_trading_config():
     logger.info("Testing shadow trading configuration...")
 
     try:
+        # Ensure scripts path is added
+        scripts_path = project_root / "scripts"
+        if str(scripts_path) not in sys.path:
+            sys.path.insert(0, str(scripts_path))
         from run_shadow_trading import create_default_config, validate_config
 
         # Test default config creation
@@ -224,6 +233,10 @@ def test_historical_data_setup():
     logger.info("Testing historical data setup...")
 
     try:
+        # Ensure scripts path is added
+        scripts_path = project_root / "scripts"
+        if str(scripts_path) not in sys.path:
+            sys.path.insert(0, str(scripts_path))
         from run_shadow_trading import setup_historical_data
 
         historical_data = setup_historical_data()
@@ -284,8 +297,8 @@ def run_integration_test():
         logger.info("🎉 ALL TESTS PASSED - Shadow Trading System Ready!")
         logger.info("\nNext steps:")
         logger.info("1. Review shadow trading configuration in config/shadow_trading.json")
-        logger.info("2. Run: python run_shadow_trading.py --dry-run")
-        logger.info("3. Start shadow trading: python run_shadow_trading.py")
+        logger.info("2. Run: python scripts/run_shadow_trading.py --dry-run")
+        logger.info("3. Start shadow trading: python scripts/run_shadow_trading.py")
         return True
     else:
         logger.warning(f"⚠️ {total-passed} TESTS FAILED - Fix issues before deployment")

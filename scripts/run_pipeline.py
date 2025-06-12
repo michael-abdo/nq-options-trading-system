@@ -16,7 +16,9 @@ import argparse
 from datetime import datetime
 
 # Add pipeline system to path
-pipeline_path = os.path.join(os.path.dirname(__file__), 'tasks', 'options_trading_system')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+pipeline_path = os.path.join(parent_dir, 'tasks', 'options_trading_system')
 sys.path.insert(0, pipeline_path)
 
 from integration import run_complete_nq_trading_system

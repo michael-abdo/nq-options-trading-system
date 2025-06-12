@@ -1,0 +1,94 @@
+{
+  "test_run_timestamp": "2025-06-12T14:46:35.814914",
+  "tests_passed": 6,
+  "tests_failed": 1,
+  "critical_failures": [
+    "File Structure"
+  ],
+  "warnings": [],
+  "test_details": {
+    "Configuration Loading": {
+      "status": "PASSED",
+      "elapsed_time": 0.015137910842895508,
+      "result": {
+        "databento_only": {
+          "total_sources": 4,
+          "enabled_sources": 1
+        },
+        "barchart_only": {
+          "total_sources": 4,
+          "enabled_sources": 1
+        },
+        "all_sources": {
+          "total_sources": 4,
+          "enabled_sources": 4
+        },
+        "testing": {
+          "total_sources": 4,
+          "enabled_sources": 1
+        }
+      }
+    },
+    "Core Imports": {
+      "status": "PASSED",
+      "elapsed_time": 1.1199889183044434,
+      "result": {
+        "config_manager": "OK",
+        "integration": "OK",
+        "analysis_engines": "OK",
+        "data_ingestion": "OK"
+      }
+    },
+    "System Initialization": {
+      "status": "PASSED",
+      "elapsed_time": 9.441375732421875e-05,
+      "result": {
+        "system_type": "NQOptionsTradingSystem",
+        "config_loaded": true,
+        "initialization_time": "< 1 second"
+      }
+    },
+    "File Structure": {
+      "status": "FAILED",
+      "elapsed_time": 3.0040740966796875e-05,
+      "error": "Critical path missing: run_pipeline.py",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/Mike/trading/algos/EOD/tests/test_live_trading_readiness.py\", line 37, in run_test\n    result = test_func()\n  File \"/Users/Mike/trading/algos/EOD/tests/test_live_trading_readiness.py\", line 244, in test_file_structure\n    raise Exception(f\"Critical path missing: {path}\")\nException: Critical path missing: run_pipeline.py\n"
+    },
+    "Algorithm Thresholds": {
+      "status": "PASSED",
+      "elapsed_time": 0.00018715858459472656,
+      "result": {
+        "thresholds_validated": true,
+        "weights_validated": true,
+        "config_source": "databento_only.json"
+      }
+    },
+    "Production Monitoring": {
+      "status": "PASSED",
+      "elapsed_time": 0.0029680728912353516,
+      "result": {
+        "config_valid": true,
+        "monitor_initialized": true,
+        "alert_thresholds": {
+          "signal_accuracy": 0.7,
+          "system_latency": 150,
+          "error_rate": 0.05,
+          "daily_cost": 10.0,
+          "uptime": 0.995,
+          "monthly_budget": 200.0,
+          "memory_usage": 0.85,
+          "cpu_usage": 0.8,
+          "disk_usage": 0.9
+        }
+      }
+    },
+    "Error Handling": {
+      "status": "PASSED",
+      "elapsed_time": 8.130073547363281e-05,
+      "result": {
+        "config_error_handling": "GRACEFUL",
+        "import_error_handling": "GRACEFUL"
+      }
+    }
+  }
+}

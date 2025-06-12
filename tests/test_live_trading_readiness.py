@@ -226,7 +226,8 @@ class LiveTradingReadinessTest:
     def test_file_structure(self):
         """Test critical files and directories exist"""
         critical_paths = [
-            'run_pipeline.py',
+            'scripts/run_pipeline.py',
+            'scripts/run_shadow_trading.py',
             'config/databento_only.json',
             'config/monitoring.json',
             'tasks/options_trading_system',

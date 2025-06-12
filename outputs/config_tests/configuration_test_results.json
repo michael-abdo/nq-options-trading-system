@@ -5,6 +5,7 @@
     "barchart_only",
     "databento_only",
     "testing",
+    "shadow_trading",
     "all_sources",
     "monitoring"
   ],
