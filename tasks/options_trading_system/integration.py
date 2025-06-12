@@ -23,53 +23,53 @@ from output_generation.integration import run_output_generation
 
 class NQOptionsTradingSystem:
     """Complete NQ Options Trading System with your actual EV algorithm"""
-    
+
     def __init__(self, config: Dict[str, Any]):
         """
         Initialize the complete trading system
-        
+
         Args:
             config: Master configuration for all system components
         """
         self.config = config
         self.system_results = {}
         self.version = "1.0"
-        
+
     def validate_configuration(self) -> Dict[str, Any]:
         """Validate system configuration"""
         print("  Validating System Configuration...")
-        
+
         validation = {
             "data_config_valid": "data" in self.config or "data_sources" in self.config,
             "analysis_config_valid": "analysis" in self.config,
             "output_config_valid": "output" in self.config,
             "save_config_valid": "save" in self.config,
         }
-        
+
         all_valid = all(validation.values())
-        
+
         print(f"    ✓ Configuration validation: {all_valid}")
-        
+
         return {
             "status": "valid" if all_valid else "invalid",
             "checks": validation,
             "missing_sections": [k.replace("_config_valid", "") for k, v in validation.items() if not v]
         }
-    
+
     def run_data_pipeline(self) -> Dict[str, Any]:
         """Execute data ingestion pipeline"""
         print("  Running Data Pipeline...")
-        
+
         # Handle both old "data" format and new "data_sources" format
         data_config = self.config.get("data", self.config)
-        
+
         try:
             result = run_data_ingestion(data_config)
-            
+
             print(f"    ✓ Data Pipeline: {result['pipeline_status']}")
             print(f"    ✓ Total Contracts: {result['summary']['total_contracts']}")
             print(f"    ✓ Data Quality: {result['quality_metrics']['overall_volume_coverage']:.1%} volume coverage")
-            
+
             return {
                 "status": "success",
                 "result": result,
@@ -82,25 +82,25 @@ class NQOptionsTradingSystem:
                 "error": str(e),
                 "timestamp": datetime.now().isoformat()
             }
-    
+
     def run_analysis_pipeline(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Execute analysis engine with your NQ EV algorithm"""
         print("  Running Analysis Pipeline (NQ EV Algorithm Primary)...")
-        
+
         analysis_config = self.config.get("analysis", {})
-        
+
         try:
             result = run_analysis_engine(data_config, analysis_config)
-            
+
             print(f"    ✓ Analysis Pipeline: {result['status']}")
             print(f"    ✓ Successful Analyses: {result['summary']['successful_analyses']}/2")
             print(f"    ✓ Primary Algorithm: {result['primary_algorithm']}")
-            
+
             # Show best NQ EV trade
             if result.get("synthesis", {}).get("trading_recommendations"):
                 best_rec = result["synthesis"]["trading_recommendations"][0]
                 print(f"    ✓ Best NQ EV Trade: {best_rec['trade_direction']} EV={best_rec['expected_value']:+.1f} points")
-            
+
             return {
                 "status": "success",
                 "result": result,
@@ -113,26 +113,26 @@ class NQOptionsTradingSystem:
                 "error": str(e),
                 "timestamp": datetime.now().isoformat()
             }
-    
+
     def run_output_pipeline(self, data_config: Dict[str, Any], analysis_results: Dict[str, Any] = None) -> Dict[str, Any]:
         """Execute output generation pipeline"""
         print("  Running Output Pipeline...")
-        
+
         output_config = self.config.get("output", {})
         save_config = self.config.get("save", {})
-        
+
         # Pass cached analysis results if available
         if analysis_results:
             data_config = {**data_config, "_cached_analysis_results": analysis_results}
-        
+
         try:
             result = run_output_generation(data_config, output_config, save_config)
-            
+
             print(f"    ✓ Output Pipeline: {result['status']}")
             print(f"    ✓ Successful Generations: {result['summary']['successful_generations']}/2")
             print(f"    ✓ Files Saved: {result['summary']['files_saved']}")
             print(f"    ✓ Total Output Size: {result['summary']['total_output_size']} bytes")
-            
+
             return {
                 "status": "success",
                 "result": result,
@@ -145,10 +145,10 @@ class NQOptionsTradingSystem:
                 "error": str(e),
                 "timestamp": datetime.now().isoformat()
             }
-    
+
     def create_system_summary(self) -> Dict[str, Any]:
         """Create comprehensive system execution summary"""
-        
+
         summary = {
             "timestamp": datetime.now().isoformat(),
             "system_version": self.version,
@@ -161,28 +161,28 @@ class NQOptionsTradingSystem:
             "trading_summary": {},
             "system_health": {}
         }
-        
+
         # Performance metrics
         total_execution_time = 0
         if "analysis" in self.system_results and self.system_results["analysis"]["status"] == "success":
             total_execution_time += self.system_results["analysis"]["result"]["execution_time_seconds"]
         if "output" in self.system_results and self.system_results["output"]["status"] == "success":
             total_execution_time += self.system_results["output"]["result"]["execution_time_seconds"]
-        
+
         summary["performance_metrics"] = {
             "total_execution_time": total_execution_time,
             "successful_pipelines": len([s for s in summary["execution_status"].values() if s == "success"]),
             "failed_pipelines": len([s for s in summary["execution_status"].values() if s == "failed"])
         }
-        
+
         # Trading summary (from analysis results)
         if "analysis" in self.system_results and self.system_results["analysis"]["status"] == "success":
             analysis_result = self.system_results["analysis"]["result"]
-            
+
             # Extract NQ EV results
             if analysis_result.get("individual_results", {}).get("expected_value", {}).get("status") == "success":
                 ev_result = analysis_result["individual_results"]["expected_value"]["result"]
-                
+
                 summary["trading_summary"] = {
                     "underlying_price": ev_result["underlying_price"],
                     "algorithm": "nq_options_ev",
@@ -191,7 +191,7 @@ class NQOptionsTradingSystem:
                     "avg_probability": ev_result["metrics"]["avg_probability"],
                     "primary_recommendation": None
                 }
-                
+
                 # Primary recommendation
                 if analysis_result.get("synthesis", {}).get("trading_recommendations"):
                     primary_rec = analysis_result["synthesis"]["trading_recommendations"][0]
@@ -204,11 +204,11 @@ class NQOptionsTradingSystem:
                         "probability": primary_rec["probability"],
                         "position_size": primary_rec["position_size"]
                     }
-        
+
         # System health
         successful_pipelines = summary["performance_metrics"]["successful_pipelines"]
         total_pipelines = 3
-        
+
         if successful_pipelines == total_pipelines:
             health_status = "excellent"
         elif successful_pipelines >= 2:
@@ -217,7 +217,7 @@ class NQOptionsTradingSystem:
             health_status = "degraded"
         else:
             health_status = "failed"
-        
+
         summary["system_health"] = {
             "status": health_status,
             "pipeline_success_rate": successful_pipelines / total_pipelines,
@@ -225,9 +225,9 @@ class NQOptionsTradingSystem:
             "data_quality_acceptable": summary["execution_status"]["data"] == "success",
             "output_generation_operational": summary["execution_status"]["output"] == "success"
         }
-        
+
         return summary
-    
+
     def run_complete_system(self) -> Dict[str, Any]:
         """Execute the complete NQ Options Trading System"""
         print("=" * 60)
@@ -237,9 +237,9 @@ class NQOptionsTradingSystem:
         print(f"Primary Algorithm: Your NQ Options EV Algorithm")
         print(f"Execution Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print("=" * 60)
-        
+
         start_time = datetime.now()
-        
+
         # Step 1: Configuration validation
         config_validation = self.validate_configuration()
         if config_validation["status"] != "valid":
@@ -249,34 +249,34 @@ class NQOptionsTradingSystem:
                 "config_validation": config_validation,
                 "timestamp": datetime.now().isoformat()
             }
-        
+
         # Step 2: Data pipeline
         data_config = self.config.get("data", {})
         self.system_results["data"] = self.run_data_pipeline()
-        
+
         if self.system_results["data"]["status"] != "success":
             print("\n✗ SYSTEM FAILURE: Data pipeline failed")
             return self._create_failure_result("Data pipeline failure")
-        
+
         # Step 3: Analysis pipeline (Your NQ EV Algorithm)
         self.system_results["analysis"] = self.run_analysis_pipeline(data_config)
-        
+
         if self.system_results["analysis"]["status"] != "success":
             print("\n✗ SYSTEM FAILURE: Analysis pipeline failed")
             return self._create_failure_result("Analysis pipeline failure")
-        
+
         # Step 4: Output pipeline (with cached analysis results to avoid re-running)
         analysis_results = self.system_results["analysis"].get("result")
         self.system_results["output"] = self.run_output_pipeline(data_config, analysis_results)
-        
+
         # Output pipeline failure is not critical for system success
-        
+
         # Step 5: System summary
         system_summary = self.create_system_summary()
-        
+
         # Calculate total execution time
         execution_time = (datetime.now() - start_time).total_seconds()
-        
+
         # Final system results
         final_results = {
             "timestamp": datetime.now().isoformat(),
@@ -288,7 +288,7 @@ class NQOptionsTradingSystem:
             "system_summary": system_summary,
             "master_config": self.config
         }
-        
+
         # Print success summary
         print(f"\n{'='*60}")
         print("SYSTEM EXECUTION COMPLETE - SUCCESS!")
@@ -296,17 +296,17 @@ class NQOptionsTradingSystem:
         print(f"⏱️  Total Execution Time: {execution_time:.2f}s")
         print(f"📊 System Health: {system_summary['system_health']['status'].title()}")
         print(f"🎯 Pipeline Success Rate: {system_summary['system_health']['pipeline_success_rate']:.1%}")
-        
+
         if system_summary.get("trading_summary", {}).get("primary_recommendation"):
             rec = system_summary["trading_summary"]["primary_recommendation"]
             print(f"💰 Primary Trade: {rec['direction']} EV={rec['expected_value']:+.1f} points")
             print(f"📈 Entry: {rec['entry']:,.2f} → Target: {rec['target']:,.0f}")
             print(f"🛡️  Stop: {rec['stop']:,.0f} | Probability: {rec['probability']:.1%}")
-        
+
         print(f"{'='*60}")
-        
+
         return final_results
-    
+
     def _create_failure_result(self, reason: str) -> Dict[str, Any]:
         """Create failure result structure"""
         return {
@@ -322,10 +322,10 @@ class NQOptionsTradingSystem:
 def run_complete_nq_trading_system(config: Dict[str, Any] = None) -> Dict[str, Any]:
     """
     Run the complete NQ Options Trading System
-    
+
     Args:
         config: Master system configuration (optional)
-        
+
     Returns:
         Dict with complete system execution results
     """
@@ -392,6 +392,6 @@ def run_complete_nq_trading_system(config: Dict[str, Any] = None) -> Dict[str, A
                 "timestamp_suffix": True
             }
         }
-    
+
     system = NQOptionsTradingSystem(config)
     return system.run_complete_system()

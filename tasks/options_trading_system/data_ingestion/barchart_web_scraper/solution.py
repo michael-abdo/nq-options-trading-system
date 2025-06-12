@@ -20,7 +20,7 @@ class OptionsContract:
     strike: float
     call_last: Optional[float]
     call_change: Optional[float]
-    call_bid: Optional[float] 
+    call_bid: Optional[float]
     call_ask: Optional[float]
     call_volume: Optional[int]
     call_open_interest: Optional[int]
@@ -52,26 +52,26 @@ class BarchartWebScraper:
     EXPERIMENTAL FRAMEWORK: Web scraping barchart.com options data
     for comparison with API data to validate data consistency
     """
-    
+
     def __init__(self, headless: bool = True):
         self.headless = headless
         self.driver = None
         self.wait_time = 10  # seconds
         self.comparison_results = []
-        
+
         # Setup logging
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
-        
+
     def setup_driver(self) -> webdriver.Chrome:
         """
         Setup Chrome WebDriver with appropriate options
         """
         chrome_options = Options()
-        
+
         if self.headless:
             chrome_options.add_argument("--headless")
-            
+
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
@@ -79,10 +79,10 @@ class BarchartWebScraper:
         chrome_options.add_argument("--disable-extensions")
         chrome_options.add_argument("--disable-plugins")
         chrome_options.add_argument("--disable-images")  # Speed up loading
-        
+
         # User agent to avoid detection
         chrome_options.add_argument("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-        
+
         try:
             driver = webdriver.Chrome(options=chrome_options)
             driver.implicitly_wait(10)
@@ -90,61 +90,61 @@ class BarchartWebScraper:
         except Exception as e:
             self.logger.error(f"Failed to setup Chrome driver: {e}")
             raise
-    
+
     def get_cookies_from_driver(self) -> Dict[str, str]:
         """
         Extract cookies from Selenium driver for API use
-        
+
         Returns:
             Dictionary of cookie names and values
         """
         if not self.driver:
             return {}
-            
+
         cookies = {}
         for cookie in self.driver.get_cookies():
             cookies[cookie['name']] = cookie['value']
-        
+
         self.logger.info(f"Extracted {len(cookies)} cookies from browser")
         return cookies
-    
+
     def scrape_barchart_options(self, url: str) -> OptionsChainData:
         """
         CORE SCRAPING FUNCTION: Extract options data from barchart.com
-        
+
         Args:
             url: Barchart options page URL
-            
+
         Returns:
             OptionsChainData object with scraped information
         """
-        
+
         self.logger.info(f"Starting to scrape: {url}")
-        
+
         try:
             # Setup driver
             self.driver = self.setup_driver()
-            
+
             # Set page load timeout to 10 seconds
             self.driver.set_page_load_timeout(10)
-            
+
             # Navigate to page with timeout
             try:
                 self.driver.get(url)
                 self.logger.info("Page loaded within 10 seconds")
             except TimeoutException:
                 self.logger.info("Page load timed out after 10 seconds - continuing with current content")
-            
+
             # Additional wait for dynamic content to render
             self.logger.info("Waiting for dynamic content to render...")
             time.sleep(2)  # Brief wait for JS execution
-            
+
             # Save HTML snapshot
             self._save_html_snapshot(url)
-            
+
             # Wait for options table to be present
             wait = WebDriverWait(self.driver, 30)
-            
+
             # Look for the options table - barchart uses different selectors
             table_selectors = [
                 "table.datatable",
@@ -153,7 +153,7 @@ class BarchartWebScraper:
                 "table[class*='option']",
                 ".bc-table"
             ]
-            
+
             options_table = None
             for selector in table_selectors:
                 try:
@@ -164,18 +164,18 @@ class BarchartWebScraper:
                     break
                 except TimeoutException:
                     continue
-            
+
             if not options_table:
                 # Fallback: get page source and parse manually
                 self.logger.warning("Options table not found with standard selectors, parsing HTML manually")
                 return self._parse_page_source_fallback()
-            
+
             # Extract underlying symbol and price
             underlying_info = self._extract_underlying_info()
-            
+
             # Extract options contracts
             contracts = self._extract_options_contracts(options_table)
-            
+
             # Create result
             options_data = OptionsChainData(
                 underlying_symbol=underlying_info['symbol'],
@@ -186,48 +186,48 @@ class BarchartWebScraper:
                 timestamp=datetime.now(),
                 total_contracts=len(contracts)
             )
-            
+
             self.logger.info(f"Successfully scraped {len(contracts)} options contracts")
             return options_data
-            
+
         except Exception as e:
             self.logger.error(f"Error scraping barchart options: {e}")
             raise
         finally:
             if self.driver:
                 self.driver.quit()
-    
+
     def scrape_eod_options(self, futures_symbol: str = "NQM25") -> OptionsChainData:
         """
         Convenience method to scrape today's EOD (End of Day) options
-        
+
         Args:
             futures_symbol: The underlying futures symbol (default: "NQM25" for June 2025)
-            
+
         Returns:
             OptionsChainData object with scraped EOD options
         """
         comparator = BarchartAPIComparator()
         eod_url = comparator.get_eod_options_url(futures_symbol)
-        
+
         self.logger.info(f"Scraping EOD options for {futures_symbol}")
         return self.scrape_barchart_options(eod_url)
-    
+
     def _parse_page_source_fallback(self) -> OptionsChainData:
         """
         Fallback method to parse page source when table selectors fail
         """
         page_source = self.driver.page_source
         soup = BeautifulSoup(page_source, 'html.parser')
-        
+
         # Look for any table containing options data
         tables = soup.find_all('table')
-        
+
         contracts = []
         underlying_symbol = "NQM25"  # Default from URL
         underlying_price = None
         expiration_date = "2025-06-20"  # Default
-        
+
         # Try to find underlying price
         price_elements = soup.find_all(text=lambda text: text and '$' in str(text) and ',' in str(text))
         for element in price_elements:
@@ -238,28 +238,28 @@ class BarchartWebScraper:
                     break
             except:
                 continue
-        
+
         # Parse tables for options data
         for table in tables:
             rows = table.find_all('tr')
             if len(rows) < 2:  # Skip tables with no data rows
                 continue
-                
+
             headers = [th.get_text().strip().lower() for th in rows[0].find_all(['th', 'td'])]
-            
+
             # Check if this looks like an options table
             options_indicators = ['strike', 'call', 'put', 'bid', 'ask', 'volume', 'oi']
             if not any(indicator in ' '.join(headers) for indicator in options_indicators):
                 continue
-            
+
             self.logger.info(f"Found potential options table with headers: {headers}")
-            
+
             # Parse data rows
             for row in rows[1:]:
                 cells = [td.get_text().strip() for td in row.find_all(['td', 'th'])]
                 if len(cells) < 5:  # Need minimum columns for options data
                     continue
-                
+
                 try:
                     contract = self._parse_options_row(cells, headers, underlying_price, expiration_date)
                     if contract:
@@ -267,7 +267,7 @@ class BarchartWebScraper:
                 except Exception as e:
                     self.logger.debug(f"Error parsing row {cells}: {e}")
                     continue
-        
+
         return OptionsChainData(
             underlying_symbol=underlying_symbol,
             expiration_date=expiration_date,
@@ -277,7 +277,7 @@ class BarchartWebScraper:
             timestamp=datetime.now(),
             total_contracts=len(contracts)
         )
-    
+
     def _extract_underlying_info(self) -> Dict[str, Any]:
         """
         Extract underlying symbol, price, and expiration from page
@@ -287,7 +287,7 @@ class BarchartWebScraper:
             'price': None,
             'expiration': '2025-06-20'
         }
-        
+
         try:
             # Look for underlying price
             price_selectors = [
@@ -297,7 +297,7 @@ class BarchartWebScraper:
                 "[class*='last']",
                 "[class*='price']"
             ]
-            
+
             for selector in price_selectors:
                 try:
                     price_element = self.driver.find_element(By.CSS_SELECTOR, selector)
@@ -307,7 +307,7 @@ class BarchartWebScraper:
                         break
                 except:
                     continue
-            
+
             # Look for symbol in page title or headers
             try:
                 title = self.driver.title
@@ -319,22 +319,22 @@ class BarchartWebScraper:
                         info['symbol'] = symbol_match.group(1)
             except:
                 pass
-                
+
         except Exception as e:
             self.logger.debug(f"Error extracting underlying info: {e}")
-        
+
         return info
-    
+
     def _save_html_snapshot(self, url: str) -> str:
         """
         Save screenshot of the page to organized directory structure
-        
+
         Directory structure:
         screenshots/
         ├── 20250108/
         │   ├── barchart_NQM25_143052.png
         │   └── barchart_NQM25_153052.png
-        
+
         Returns:
             Path to saved screenshot file
         """
@@ -343,32 +343,32 @@ class BarchartWebScraper:
             import re
             symbol_match = re.search(r'/quotes/([^/]+)/options', url)
             symbol = symbol_match.group(1) if symbol_match else 'unknown'
-            
+
             # Create directory structure
             base_dir = os.path.dirname(os.path.abspath(__file__))
             screenshot_dir = os.path.join(base_dir, 'screenshots')
             date_dir = os.path.join(screenshot_dir, datetime.now().strftime('%Y%m%d'))
-            
+
             # Create directories if they don't exist
             os.makedirs(date_dir, exist_ok=True)
-            
+
             # Generate filename with timestamp
             timestamp = datetime.now().strftime('%H%M%S')
             filename = f'barchart_{symbol}_{timestamp}.png'
             filepath = os.path.join(date_dir, filename)
-            
+
             # Set window size for full page capture
             self.driver.set_window_size(1920, 1080)
-            
+
             # Scroll to capture full page height
             total_height = self.driver.execute_script("return document.body.scrollHeight")
             self.driver.set_window_size(1920, total_height)
-            
+
             # Save screenshot
             self.driver.save_screenshot(filepath)
-            
+
             self.logger.info(f"Screenshot saved: {filepath}")
-            
+
             # Also save a metadata file for this snapshot
             metadata = {
                 'url': url,
@@ -378,45 +378,45 @@ class BarchartWebScraper:
                 'screenshot_path': filepath,
                 'window_size': {'width': 1920, 'height': total_height}
             }
-            
+
             metadata_file = filepath.replace('.png', '_metadata.json')
             with open(metadata_file, 'w') as f:
                 json.dump(metadata, f, indent=2)
-            
+
             # Reset window size
             self.driver.set_window_size(1920, 1080)
-            
+
             return filepath
-            
+
         except Exception as e:
             self.logger.error(f"Error saving screenshot: {e}")
             return ""
-    
+
     def _extract_options_contracts(self, table_element) -> List[OptionsContract]:
         """
         Extract options contracts from the table element
         """
         contracts = []
-        
+
         try:
             # Get table HTML and parse with BeautifulSoup for easier handling
             table_html = table_element.get_attribute('outerHTML')
             soup = BeautifulSoup(table_html, 'html.parser')
-            
+
             rows = soup.find_all('tr')
             if not rows:
                 return contracts
-            
+
             # Get headers
             headers = [th.get_text().strip().lower() for th in rows[0].find_all(['th', 'td'])]
             self.logger.info(f"Options table headers: {headers}")
-            
+
             # Parse data rows
             for row in rows[1:]:
                 cells = [td.get_text().strip() for td in row.find_all(['td', 'th'])]
                 if len(cells) < 5:
                     continue
-                
+
                 try:
                     contract = self._parse_options_row(cells, headers, None, "2025-06-20")
                     if contract:
@@ -424,18 +424,18 @@ class BarchartWebScraper:
                 except Exception as e:
                     self.logger.debug(f"Error parsing options row: {e}")
                     continue
-        
+
         except Exception as e:
             self.logger.error(f"Error extracting options contracts: {e}")
-        
+
         return contracts
-    
-    def _parse_options_row(self, cells: List[str], headers: List[str], 
+
+    def _parse_options_row(self, cells: List[str], headers: List[str],
                           underlying_price: Optional[float], expiration_date: str) -> Optional[OptionsContract]:
         """
         Parse a single options table row into an OptionsContract
         """
-        
+
         def safe_float(value: str) -> Optional[float]:
             try:
                 clean_value = value.replace('$', '').replace(',', '').replace('%', '')
@@ -444,7 +444,7 @@ class BarchartWebScraper:
                 return float(clean_value)
             except:
                 return None
-        
+
         def safe_int(value: str) -> Optional[int]:
             try:
                 clean_value = value.replace(',', '')
@@ -453,7 +453,7 @@ class BarchartWebScraper:
                 return int(float(clean_value))
             except:
                 return None
-        
+
         try:
             # Find strike price (usually in middle or first column)
             strike = None
@@ -465,10 +465,10 @@ class BarchartWebScraper:
                         break
                 except:
                     continue
-            
+
             if not strike:
                 return None
-            
+
             # Initialize contract with defaults
             contract = OptionsContract(
                 strike=strike,
@@ -481,7 +481,7 @@ class BarchartWebScraper:
                 source='web_scrape',
                 timestamp=datetime.now()
             )
-            
+
             # Parse remaining cells based on typical barchart layout
             # This is a best-effort parsing since layout may vary
             if len(cells) >= 10:
@@ -497,9 +497,9 @@ class BarchartWebScraper:
                     contract.put_volume = safe_int(cells[8]) if len(cells) > 8 else None
                 except:
                     pass
-            
+
             return contract
-            
+
         except Exception as e:
             self.logger.debug(f"Error parsing options row {cells}: {e}")
             return None
@@ -508,18 +508,18 @@ class BarchartAPIComparator:
     """
     Compare web scraped data with API data from barchart
     """
-    
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-    
+
     def get_eod_contract_symbol(self, base_symbol: str = "NQ") -> str:
         """
         Get the EOD (End of Day) options contract symbol for today
-        
+
         Barchart daily options symbols:
         - Format: {BASE}{DAY_CODE}{MONTH}{YEAR}
         - For NQ Micro daily options: MC{D}{M}{YY}
-        
+
         Day codes for daily options:
         - 1 = Monday (MC1)
         - 2 = Tuesday (MC2)
@@ -527,18 +527,18 @@ class BarchartAPIComparator:
         - 4 = Thursday (MC4)
         - 5 = Friday (MC5)
         - Weekend: Use next Monday's contract (MC1)
-        
+
         For weekly/monthly options:
         - 6 = Standard monthly (3rd Friday)
         - 7 = Weekly options
-        
+
         Returns:
             Symbol like "MC1M25" for Monday June 2025 daily options
         """
         from datetime import datetime, timedelta
-        
+
         now = datetime.now()
-        
+
         # Determine expiration date and day code
         if now.weekday() < 5:  # Monday = 0, Friday = 4
             # Weekday: use today's daily option
@@ -551,7 +551,7 @@ class BarchartAPIComparator:
                 days_until_monday = 7
             expiry_date = now + timedelta(days=days_until_monday)
             day_code = 1  # Monday
-        
+
         # Get month letter code
         month_codes = {
             1: 'F',   # January
@@ -567,79 +567,79 @@ class BarchartAPIComparator:
             11: 'X',  # November
             12: 'Z'   # December
         }
-        
+
         month_code = month_codes[expiry_date.month]
         year_code = str(expiry_date.year)[-2:]  # Last 2 digits of year
-        
+
         # Construct symbol
         eod_symbol = f"MC{day_code}{month_code}{year_code}"
-        
+
         self.logger.info(f"Today's EOD contract: {eod_symbol} (expires {expiry_date.strftime('%Y-%m-%d')})")
-        
+
         return eod_symbol
-    
+
     def get_eod_options_url(self, futures_symbol: str = "NQM25") -> str:
         """
         Get the Barchart URL for today's EOD options
-        
+
         Args:
             futures_symbol: The underlying futures symbol (e.g., "NQM25" for June 2025)
-            
+
         Returns:
             URL like: https://www.barchart.com/futures/quotes/NQM25/options/MC7M25
         """
         eod_symbol = self.get_eod_contract_symbol()
         url = f"https://www.barchart.com/futures/quotes/{futures_symbol}/options/{eod_symbol}"
-        
+
         self.logger.info(f"EOD options URL: {url}")
         return url
-        
+
     def fetch_api_data(self, symbol: str = None, save_to_file: bool = True) -> OptionsChainData:
         """
         Fetch options data from existing barchart API data file
-        
+
         Uses the actual barchart API response data from /data/api_responses/
         Optionally saves a copy to api_data subfolder for record keeping
-        
+
         Args:
             symbol: Options symbol (e.g., "MC1M25"). If None, uses today's EOD contract
             save_to_file: Whether to save a snapshot of the API data
-            
+
         Returns:
             OptionsChainData with the loaded contracts
         """
-        
+
         # Use EOD contract if no symbol specified
         if symbol is None:
             symbol = self.get_eod_contract_symbol()
             self.logger.info(f"Using today's EOD contract: {symbol}")
-        
+
         self.logger.info(f"Loading existing barchart API data for {symbol}")
-        
+
         # Load the existing API response directly
         import json
-        
+
         # Load the existing API response
         api_file_path = '/Users/Mike/trading/algos/EOD/data/api_responses/options_data_20250602_141553.json'
-        
+
         try:
             with open(api_file_path, 'r') as f:
                 barchart_response = json.load(f)
-            
+
             # Save a copy to api_data subfolder if requested
             if save_to_file:
                 self._save_api_data_snapshot(barchart_response, symbol)
-            
+
             # Extract calls and puts from the API response structure
             calls_data = barchart_response.get('data', {}).get('Call', [])
             puts_data = barchart_response.get('data', {}).get('Put', [])
-            
+
             contracts = []
-            
+
             # Process calls
             for call in calls_data:
                 raw = call.get('raw', {})
-                
+
                 # Create contract for this strike, starting with call data
                 contract = OptionsContract(
                     strike=float(raw.get('strike', 0)),
@@ -658,16 +658,16 @@ class BarchartAPIComparator:
                     source='barchart_api',
                     timestamp=datetime.now()
                 )
-                
+
                 contracts.append(contract)
-            
+
             # Process puts and match to existing contracts or create new ones
             strike_map = {c.strike: c for c in contracts}
-            
+
             for put in puts_data:
                 raw = put.get('raw', {})
                 strike = float(raw.get('strike', 0))
-                
+
                 if strike in strike_map:
                     # Update existing contract with put data
                     contract = strike_map[strike]
@@ -696,9 +696,9 @@ class BarchartAPIComparator:
                         timestamp=datetime.now()
                     )
                     contracts.append(contract)
-            
+
             self.logger.info(f"Loaded {len(contracts)} contracts from barchart API data")
-            
+
             return OptionsChainData(
                 underlying_symbol=symbol,
                 expiration_date="2025-06-20",
@@ -708,10 +708,10 @@ class BarchartAPIComparator:
                 timestamp=datetime.now(),
                 total_contracts=len(contracts)
             )
-            
+
         except Exception as e:
             self.logger.error(f"Error loading barchart API data: {e}")
-            
+
             # Fallback to small mock data if file loading fails
             mock_contract = OptionsContract(
                 strike=19000.0,
@@ -724,7 +724,7 @@ class BarchartAPIComparator:
                 source='fallback_mock',
                 timestamp=datetime.now()
             )
-            
+
             return OptionsChainData(
                 underlying_symbol=symbol,
                 expiration_date="2025-06-20",
@@ -734,17 +734,17 @@ class BarchartAPIComparator:
                 timestamp=datetime.now(),
                 total_contracts=1
             )
-    
+
     def _save_api_data_snapshot(self, api_response: dict, symbol: str) -> str:
         """
         Save API data snapshot to organized directory structure
-        
+
         Directory structure:
         api_data/
         ├── 20250108/
         │   ├── barchart_api_NQM25_143052.json
         │   └── barchart_api_NQM25_153052.json
-        
+
         Returns:
             Path to saved API data file
         """
@@ -753,41 +753,41 @@ class BarchartAPIComparator:
             base_dir = os.path.dirname(os.path.abspath(__file__))
             api_data_dir = os.path.join(base_dir, 'api_data')
             date_dir = os.path.join(api_data_dir, datetime.now().strftime('%Y%m%d'))
-            
+
             # Create directories if they don't exist
             os.makedirs(date_dir, exist_ok=True)
-            
+
             # Generate filename with timestamp
             timestamp = datetime.now().strftime('%H%M%S')
             filename = f'barchart_api_{symbol}_{timestamp}.json'
             filepath = os.path.join(date_dir, filename)
-            
+
             # Save API response
             with open(filepath, 'w') as f:
                 json.dump(api_response, f, indent=2)
-            
+
             self.logger.info(f"API data snapshot saved: {filepath}")
-            
+
             # Also save a metadata file
             metadata = {
                 'symbol': symbol,
                 'timestamp': datetime.now().isoformat(),
                 'source_file': '/data/api_responses/options_data_20250602_141553.json',
-                'contracts_count': len(api_response.get('data', {}).get('Call', [])) + 
+                'contracts_count': len(api_response.get('data', {}).get('Call', [])) +
                                  len(api_response.get('data', {}).get('Put', [])),
                 'file_path': filepath
             }
-            
+
             metadata_file = filepath.replace('.json', '_metadata.json')
             with open(metadata_file, 'w') as f:
                 json.dump(metadata, f, indent=2)
-            
+
             return filepath
-            
+
         except Exception as e:
             self.logger.error(f"Error saving API data snapshot: {e}")
             return ""
-    
+
     def _safe_float(self, value) -> Optional[float]:
         """Safely convert value to float"""
         if value is None or value == 'N/A' or value == '':
@@ -796,7 +796,7 @@ class BarchartAPIComparator:
             return float(value)
         except (ValueError, TypeError):
             return None
-    
+
     def _safe_int(self, value) -> Optional[int]:
         """Safely convert value to int"""
         if value is None or value == 'N/A' or value == '':
@@ -805,14 +805,14 @@ class BarchartAPIComparator:
             return int(float(value))
         except (ValueError, TypeError):
             return None
-    
+
     def compare_data_sources(self, web_data: OptionsChainData, api_data: OptionsChainData) -> Dict[str, Any]:
         """
         EXPERIMENTAL VALIDATION: Compare web scraped vs API data
-        
+
         Returns comprehensive comparison analysis
         """
-        
+
         comparison = {
             'comparison_timestamp': datetime.now().isoformat(),
             'web_data_summary': {
@@ -842,53 +842,53 @@ class BarchartAPIComparator:
                 'overall_similarity': 0.0
             }
         }
-        
+
         # Compare underlying prices
         if web_data.underlying_price and api_data.underlying_price:
             comparison['differences']['underlying_price_diff'] = web_data.underlying_price - api_data.underlying_price
-        
+
         # Create strike mappings
         web_strikes = {c.strike: c for c in web_data.contracts}
         api_strikes = {c.strike: c for c in api_data.contracts}
-        
+
         # Find missing strikes
         comparison['differences']['missing_strikes_web'] = list(set(api_strikes.keys()) - set(web_strikes.keys()))
         comparison['differences']['missing_strikes_api'] = list(set(web_strikes.keys()) - set(api_strikes.keys()))
-        
+
         # Compare overlapping strikes
         common_strikes = set(web_strikes.keys()) & set(api_strikes.keys())
-        
+
         for strike in common_strikes:
             web_contract = web_strikes[strike]
             api_contract = api_strikes[strike]
-            
+
             discrepancies = self._compare_contracts(web_contract, api_contract, strike)
             if discrepancies:
                 comparison['differences']['price_discrepancies'].append({
                     'strike': strike,
                     'discrepancies': discrepancies
                 })
-        
+
         # Calculate data quality metrics
         comparison['data_quality'] = self._calculate_quality_metrics(web_data, api_data, common_strikes)
-        
+
         return comparison
-    
+
     def _compare_contracts(self, web_contract: OptionsContract, api_contract: OptionsContract, strike: float) -> Dict[str, Any]:
         """
         Compare individual contracts for discrepancies
         """
         discrepancies = {}
-        
+
         fields_to_compare = [
             'call_last', 'call_bid', 'call_ask', 'call_volume', 'call_open_interest',
             'put_last', 'put_bid', 'put_ask', 'put_volume', 'put_open_interest'
         ]
-        
+
         for field in fields_to_compare:
             web_value = getattr(web_contract, field)
             api_value = getattr(api_contract, field)
-            
+
             if web_value is not None and api_value is not None:
                 if isinstance(web_value, (int, float)) and isinstance(api_value, (int, float)):
                     diff = abs(web_value - api_value)
@@ -899,47 +899,47 @@ class BarchartAPIComparator:
                             'difference': diff,
                             'percentage_diff': (diff / max(abs(api_value), 0.01)) * 100
                         }
-        
+
         return discrepancies
-    
+
     def _calculate_quality_metrics(self, web_data: OptionsChainData, api_data: OptionsChainData, common_strikes: set) -> Dict[str, float]:
         """
         Calculate data quality and similarity metrics
         """
-        
+
         # Web data completeness
         web_complete_fields = 0
         web_total_fields = 0
-        
+
         for contract in web_data.contracts:
             fields = ['call_last', 'call_bid', 'call_ask', 'put_last', 'put_bid', 'put_ask']
             for field in fields:
                 web_total_fields += 1
                 if getattr(contract, field) is not None:
                     web_complete_fields += 1
-        
+
         web_completeness = web_complete_fields / max(web_total_fields, 1)
-        
+
         # API data completeness
         api_complete_fields = 0
         api_total_fields = 0
-        
+
         for contract in api_data.contracts:
             fields = ['call_last', 'call_bid', 'call_ask', 'put_last', 'put_bid', 'put_ask']
             for field in fields:
                 api_total_fields += 1
                 if getattr(contract, field) is not None:
                     api_complete_fields += 1
-        
+
         api_completeness = api_complete_fields / max(api_total_fields, 1)
-        
+
         # Overall similarity (based on common strikes and data agreement)
         total_strikes = len(set(c.strike for c in web_data.contracts) | set(c.strike for c in api_data.contracts))
         strike_overlap = len(common_strikes) / max(total_strikes, 1)
-        
+
         # Simple similarity metric
         overall_similarity = (strike_overlap + web_completeness + api_completeness) / 3
-        
+
         return {
             'web_completeness': round(web_completeness, 3),
             'api_completeness': round(api_completeness, 3),
@@ -950,58 +950,58 @@ def main():
     """
     Main execution function for barchart data comparison
     """
-    
+
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
-    
+
     # Target URL
     url = "https://www.barchart.com/futures/quotes/NQM25/options/MC7M25?futuresOptionsView=merged"
-    
+
     logger.info("Starting Barchart Data Comparison Analysis")
-    
+
     try:
         # Initialize scraper
         scraper = BarchartWebScraper(headless=False)  # Set to False to see browser
-        
+
         # Scrape web data
         logger.info("Scraping web data...")
         web_data = scraper.scrape_barchart_options(url)
-        
+
         # Get API data
         logger.info("Fetching API data...")
         comparator = BarchartAPIComparator()
         api_data = comparator.fetch_api_data("NQM25")
-        
+
         # Compare data sources
         logger.info("Comparing data sources...")
         comparison_results = comparator.compare_data_sources(web_data, api_data)
-        
+
         # Save results to organized directory structure
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         date_str = datetime.now().strftime("%Y%m%d")
-        
+
         # Create organized directories
         outputs_dir = f"outputs/{date_str}"
         os.makedirs(f"{outputs_dir}/web_data", exist_ok=True)
         os.makedirs(f"{outputs_dir}/api_data", exist_ok=True)
         os.makedirs(f"{outputs_dir}/comparisons", exist_ok=True)
-        
+
         # Save web data
         web_file = f"{outputs_dir}/web_data/web_data_{timestamp}.json"
         with open(web_file, 'w') as f:
             json.dump(asdict(web_data), f, indent=2, default=str)
-        
-        # Save API data  
+
+        # Save API data
         api_file = f"{outputs_dir}/api_data/api_data_{timestamp}.json"
         with open(api_file, 'w') as f:
             json.dump(asdict(api_data), f, indent=2, default=str)
-        
+
         # Save comparison
         comparison_file = f"{outputs_dir}/comparisons/comparison_{timestamp}.json"
         with open(comparison_file, 'w') as f:
             json.dump(comparison_results, f, indent=2, default=str)
-        
+
         # Print summary
         logger.info("=== COMPARISON SUMMARY ===")
         logger.info(f"Web scraped contracts: {web_data.total_contracts}")
@@ -1010,17 +1010,17 @@ def main():
         logger.info(f"Web data completeness: {comparison_results['data_quality']['web_completeness']:.1%}")
         logger.info(f"API data completeness: {comparison_results['data_quality']['api_completeness']:.1%}")
         logger.info(f"Overall similarity: {comparison_results['data_quality']['overall_similarity']:.1%}")
-        
+
         if comparison_results['differences']['price_discrepancies']:
             logger.info(f"Price discrepancies found: {len(comparison_results['differences']['price_discrepancies'])}")
         else:
             logger.info("No significant price discrepancies found")
-        
+
         logger.info(f"✅ Results saved to organized structure:")
         logger.info(f"   📁 Web data: {web_file}")
         logger.info(f"   📁 API data: {api_file}")
         logger.info(f"   📁 Comparison: {comparison_file}")
-        
+
     except Exception as e:
         logger.error(f"Error in main execution: {e}")
         raise

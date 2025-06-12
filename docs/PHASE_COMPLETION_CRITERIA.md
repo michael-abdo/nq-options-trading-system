@@ -199,17 +199,17 @@ Performance: [Expected performance characteristics]
 def function_name(param1: Type, param2: Type) -> ReturnType:
     """
     Brief description of function purpose.
-    
+
     Args:
         param1: Description of first parameter
         param2: Description of second parameter
-        
+
     Returns:
         Description of return value
-        
+
     Raises:
         ExceptionType: When this exception occurs
-        
+
     Example:
         >>> function_name(value1, value2)
         expected_result

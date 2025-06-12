@@ -10,18 +10,18 @@ from datetime import datetime
 
 def main():
     """Simple interface to run the complete NQ Options Trading System"""
-    
+
     print("🚀 NQ OPTIONS TRADING SYSTEM")
     print("=" * 50)
     print("Loading system...")
-    
+
     try:
         # Add tasks directory to path
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'tasks', 'options_trading_system'))
-        
+
         # Import the main trading system
         from integration import run_complete_nq_trading_system
-        
+
         # Default configuration - ready to run
         config = {
             'data': {
@@ -30,7 +30,7 @@ def main():
                 },
                 'tradovate': {
                     'mode': 'demo',
-                    'cid': '6540', 
+                    'cid': '6540',
                     'secret': 'f7a2b8f5-8348-424f-8ffa-047ab7502b7c',
                     'use_mock': True
                 }
@@ -39,7 +39,7 @@ def main():
                 'expected_value': {
                     'weights': {
                         'oi_factor': 0.35,
-                        'vol_factor': 0.25, 
+                        'vol_factor': 0.25,
                         'pcr_factor': 0.25,
                         'distance_factor': 0.15
                     },
@@ -75,27 +75,27 @@ def main():
                 'timestamp_suffix': True
             }
         }
-        
+
         print("✓ System loaded successfully")
         print("✓ Running analysis on NQ Options data...")
         print()
-        
+
         # Run the complete trading system
         result = run_complete_nq_trading_system(config)
-        
+
         # Show results
         print("\n" + "=" * 60)
         print("🎯 TRADING ANALYSIS COMPLETE")
         print("=" * 60)
-        
+
         if result['status'] == 'success':
             summary = result['system_summary']
-            
+
             print(f"✅ System Status: SUCCESS")
             print(f"📊 System Health: {summary['system_health']['status'].title()}")
             print(f"⏱️  Execution Time: {result['execution_time_seconds']:.2f} seconds")
             print(f"🎯 Pipeline Success: {summary['system_health']['pipeline_success_rate']:.1%}")
-            
+
             # Show primary trade recommendation
             if summary.get('trading_summary', {}).get('primary_recommendation'):
                 rec = summary['trading_summary']['primary_recommendation']
@@ -107,12 +107,12 @@ def main():
                 print(f"   Expected Value: {rec['expected_value']:+.1f} points")
                 print(f"   Win Probability: {rec['probability']:.1%}")
                 print(f"   Position Size: {rec['position_size']}")
-                
+
                 # Show risk analysis context
                 if 'risk_bias' in summary.get('trading_summary', {}):
                     print(f"\n🎯 Risk Analysis:")
                     print(f"   Market Bias: {summary['trading_summary'].get('risk_bias', 'Unknown')}")
-            
+
             # Show output files
             pipeline_results = result.get('pipeline_results', {})
             if pipeline_results.get('output', {}).get('status') == 'success':
@@ -124,9 +124,9 @@ def main():
         else:
             print(f"❌ System Status: FAILED")
             print(f"Error: {result.get('error', 'Unknown error')}")
-        
+
         print("\n" + "=" * 60)
-        
+
     except Exception as e:
         print(f"❌ Error: {str(e)}")
         print("Make sure you're running this from the project root directory.")

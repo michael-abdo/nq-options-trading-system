@@ -110,7 +110,7 @@ result = run_analysis_engine(data_config, profile_name="ifd_v1_production")
 # Run 24-hour A/B test
 result = run_ab_testing_analysis(
     v1_profile="ifd_v1_production",
-    v3_profile="ifd_v3_production", 
+    v3_profile="ifd_v3_production",
     duration_hours=24.0
 )
 ```

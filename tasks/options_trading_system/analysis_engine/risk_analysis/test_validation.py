@@ -20,13 +20,13 @@ from solution import RiskAnalyzer, run_risk_analysis
 def validate_risk_analysis():
     """
     Validate the risk analysis functionality
-    
+
     Returns:
         Dict with validation results and evidence
     """
     print("EXECUTING VALIDATION: risk_analysis")
     print("-" * 50)
-    
+
     validation_results = {
         "task": "risk_analysis",
         "type": "leaf",
@@ -35,7 +35,7 @@ def validate_risk_analysis():
         "status": "FAILED",
         "evidence": {}
     }
-    
+
     # Test configuration
     test_data_config = {
         "normalized_data": {
@@ -76,14 +76,14 @@ def validate_risk_analysis():
             ]
         }
     }
-    
+
     test_analysis_config = {
         "multiplier": 20,
         "immediate_threat_distance": 10,
         "near_term_distance": 25,
         "medium_term_distance": 50
     }
-    
+
     # Test 1: Analyzer initialization
     print("\n1. Testing RiskAnalyzer initialization...")
     try:
@@ -94,15 +94,15 @@ def validate_risk_analysis():
             analyzer.near_term_distance == 25 and
             analyzer.medium_term_distance == 50
         )
-        
+
         validation_results["tests"].append({
             "name": "analyzer_init",
             "passed": init_valid,
             "details": f"Analyzer initialized with correct config: {init_valid}"
         })
-        
+
         print(f"   ✓ Analyzer initialization: {init_valid}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "analyzer_init",
@@ -111,12 +111,12 @@ def validate_risk_analysis():
         })
         print(f"   ✗ Error: {e}")
         return validation_results
-    
+
     # Test 2: Risk calculation functionality
     print("\n2. Testing risk calculation...")
     try:
         result = analyzer.analyze_risk(test_data_config)
-        
+
         calc_valid = (
             result["status"] == "success" and
             "summary" in result and
@@ -126,7 +126,7 @@ def validate_risk_analysis():
             result["summary"]["total_call_risk"] > 0 and
             result["summary"]["total_put_risk"] > 0
         )
-        
+
         validation_results["tests"].append({
             "name": "risk_calculation",
             "passed": calc_valid,
@@ -137,11 +137,11 @@ def validate_risk_analysis():
                 "battle_zones_found": len(result.get("battle_zones", []))
             }
         })
-        
+
         print(f"   ✓ Risk calculation: {calc_valid}")
         print(f"   ✓ Call risk: ${result['summary']['total_call_risk']:,.0f}")
         print(f"   ✓ Put risk: ${result['summary']['total_put_risk']:,.0f}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "risk_calculation",
@@ -149,19 +149,19 @@ def validate_risk_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 3: Dominance analysis
     print("\n3. Testing dominance analysis...")
     try:
         result = analyzer.analyze_risk(test_data_config)
-        
+
         dominance_valid = (
             "risk_ratio" in result["summary"] and
             "verdict" in result["summary"] and
             "bias" in result["summary"] and
             result["summary"]["risk_ratio"] > 0
         )
-        
+
         validation_results["tests"].append({
             "name": "dominance_analysis",
             "passed": dominance_valid,
@@ -171,11 +171,11 @@ def validate_risk_analysis():
                 "bias": result["summary"]["bias"]
             }
         })
-        
+
         print(f"   ✓ Dominance analysis: {dominance_valid}")
         print(f"   ✓ Risk ratio: {result['summary']['risk_ratio']:.2f}")
         print(f"   ✓ Verdict: {result['summary']['verdict']}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "dominance_analysis",
@@ -183,14 +183,14 @@ def validate_risk_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 4: Battle zone mapping
     print("\n4. Testing battle zone mapping...")
     try:
         result = analyzer.analyze_risk(test_data_config)
-        
+
         battle_zones = result.get("battle_zones", [])
-        
+
         battle_valid = (
             len(battle_zones) > 0 and
             all("danger_score" in zone for zone in battle_zones) and
@@ -198,7 +198,7 @@ def validate_risk_analysis():
             all("type" in zone for zone in battle_zones) and
             battle_zones == sorted(battle_zones, key=lambda x: x["danger_score"], reverse=True)
         )
-        
+
         validation_results["tests"].append({
             "name": "battle_zone_mapping",
             "passed": battle_valid,
@@ -208,12 +208,12 @@ def validate_risk_analysis():
                 "defense_types": list(set(zone["type"] for zone in battle_zones))
             }
         })
-        
+
         print(f"   ✓ Battle zone mapping: {battle_valid}")
         print(f"   ✓ Zones found: {len(battle_zones)}")
         if battle_zones:
             print(f"   ✓ Top zone: {battle_zones[0]['strike']} ({battle_zones[0]['urgency']})")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "battle_zone_mapping",
@@ -221,19 +221,19 @@ def validate_risk_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 5: Module-level function
     print("\n5. Testing module-level function...")
     try:
         result = run_risk_analysis(test_data_config, test_analysis_config)
-        
+
         module_valid = (
             result is not None and
             result["status"] == "success" and
             "signals" in result and
             len(result["signals"]) > 0
         )
-        
+
         validation_results["tests"].append({
             "name": "module_function",
             "passed": module_valid,
@@ -243,10 +243,10 @@ def validate_risk_analysis():
                 "metrics_available": "metrics" in result
             }
         })
-        
+
         print(f"   ✓ Module function: {module_valid}")
         print(f"   ✓ Signals generated: {len(result['signals'])}")
-        
+
         # Store evidence
         validation_results["evidence"]["sample_result"] = {
             "status": result["status"],
@@ -255,7 +255,7 @@ def validate_risk_analysis():
             "metrics": result["metrics"],
             "battle_zones_count": len(result["battle_zones"])
         }
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "module_function",
@@ -263,35 +263,35 @@ def validate_risk_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
     validation_results['status'] = "VALIDATED" if all_passed else "FAILED"
-    
+
     # Summary
     print("\n" + "-" * 50)
     print(f"VALIDATION COMPLETE: {validation_results['status']}")
     print(f"Tests passed: {sum(1 for t in validation_results['tests'] if t['passed'])}/{len(validation_results['tests'])}")
-    
+
     return validation_results
 
 
 def save_evidence(validation_results):
     """Save validation evidence to evidence.json"""
     evidence_path = os.path.join(os.path.dirname(__file__), "evidence.json")
-    
+
     with open(evidence_path, 'w') as f:
         json.dump(validation_results, f, indent=2)
-    
+
     print(f"\nEvidence saved to: {evidence_path}")
 
 
 if __name__ == "__main__":
     # Execute validation
     results = validate_risk_analysis()
-    
+
     # Save evidence
     save_evidence(results)
-    
+
     # Exit with appropriate code
     exit(0 if results['status'] == "VALIDATED" else 1)

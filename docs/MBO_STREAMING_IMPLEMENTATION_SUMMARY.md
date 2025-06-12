@@ -64,7 +64,7 @@ if not self._check_dataset_access():
 - **Data Access**: ❌ No GLBX.MDP3 entitlement
 - **Error Handling**: ✅ Graceful failure with clear message
 
-### Reconnection Test  
+### Reconnection Test
 - **Disconnect Simulation**: ✅ Successful
 - **Reconnection Time**: ✅ 894ms
 - **Recovery**: ✅ Automatic

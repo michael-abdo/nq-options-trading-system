@@ -18,17 +18,17 @@ from solution import main
 def setup_logging(verbose: bool = False):
     """Setup logging configuration"""
     import os
-    
+
     level = logging.DEBUG if verbose else logging.INFO
-    
+
     # Create organized log directory
     date_str = datetime.now().strftime("%Y%m%d")
     log_dir = f"outputs/{date_str}/logs"
     os.makedirs(log_dir, exist_ok=True)
-    
+
     # Create log filename
     log_file = os.path.join(log_dir, f'barchart_comparison_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
-    
+
     logging.basicConfig(
         level=level,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -37,25 +37,25 @@ def setup_logging(verbose: bool = False):
             logging.FileHandler(log_file)
         ]
     )
-    
+
     logging.info(f"📄 Logging to: {log_file}")
 
 def check_dependencies():
     """Check if required dependencies are installed"""
     required_packages = {
         'selenium': 'selenium',
-        'beautifulsoup4': 'bs4', 
+        'beautifulsoup4': 'bs4',
         'requests': 'requests',
         'pandas': 'pandas'
     }
-    
+
     missing_packages = []
     for package_name, import_name in required_packages.items():
         try:
             __import__(import_name)
         except ImportError:
             missing_packages.append(package_name)
-    
+
     if missing_packages:
         print("❌ Missing required packages:")
         for package in missing_packages:
@@ -63,7 +63,7 @@ def check_dependencies():
         print("\nInstall missing packages with:")
         print(f"pip install {' '.join(missing_packages)}")
         return False
-    
+
     print("✅ All required packages installed")
     return True
 
@@ -72,17 +72,17 @@ def check_chromedriver():
     try:
         from selenium import webdriver
         from selenium.webdriver.chrome.options import Options
-        
+
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        
+
         driver = webdriver.Chrome(options=chrome_options)
         driver.quit()
         print("✅ Chrome WebDriver available")
         return True
-        
+
     except Exception as e:
         print(f"❌ Chrome WebDriver not available: {e}")
         print("\nInstall ChromeDriver:")
@@ -93,14 +93,14 @@ def check_chromedriver():
 def run_tests():
     """Run validation tests"""
     print("\n=== Running Validation Tests ===")
-    
+
     try:
         import subprocess
         result = subprocess.run([
-            sys.executable, '-m', 'pytest', 
+            sys.executable, '-m', 'pytest',
             'test_validation.py', '-v'
         ], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
-        
+
         if result.returncode == 0:
             print("✅ All tests passed")
             return True
@@ -109,10 +109,10 @@ def run_tests():
             print(result.stdout)
             print(result.stderr)
             return False
-            
+
     except ImportError:
         print("⚠️  pytest not available, running basic tests...")
-        
+
         # Run basic validation without pytest
         try:
             import test_validation
@@ -125,7 +125,7 @@ def run_tests():
 
 def main_runner():
     """Main runner function with command line interface"""
-    
+
     parser = argparse.ArgumentParser(description='Barchart Data Comparison Tool')
     parser.add_argument('--url', default=None,
                        help='Barchart options URL to scrape (default: today\'s EOD contract)')
@@ -143,23 +143,23 @@ def main_runner():
                        help='Skip validation tests')
     parser.add_argument('--verbose', '-v', action='store_true',
                        help='Enable verbose logging')
-    
+
     args = parser.parse_args()
-    
+
     # Setup logging
     setup_logging(args.verbose)
-    
+
     print("🚀 Barchart Data Comparison Tool")
     print("=" * 50)
-    
+
     # Check dependencies
     print("\n📋 Checking Dependencies...")
     if not check_dependencies():
         sys.exit(1)
-    
+
     if not check_chromedriver():
         sys.exit(1)
-    
+
     # Run tests if requested
     if not args.skip_tests:
         if not run_tests():
@@ -167,20 +167,20 @@ def main_runner():
                 print("\n⚠️  Tests failed but continuing with scraping...")
             else:
                 sys.exit(1)
-    
+
     # Exit if test-only mode
     if args.test_only:
         print("\n✅ Test-only mode completed")
         sys.exit(0)
-    
+
     # Configure headless mode
     headless_mode = args.headless and not args.no_headless
-    
+
     # Import modules
     from solution import BarchartWebScraper, BarchartAPIComparator
     import json
     from dataclasses import asdict
-    
+
     # Determine URL to use
     if args.url:
         # Use provided URL
@@ -201,19 +201,19 @@ def main_runner():
             eod_symbol = comparator.get_eod_contract_symbol()
             print(f"\n🌐 Starting Data Comparison...")
             print(f"Using today's EOD contract: {eod_symbol}")
-    
+
     print(f"URL: {url}")
     print(f"Headless mode: {headless_mode}")
     print(f"Browser wait time: 10 seconds")
-    
+
     try:
         # Initialize scraper with headless setting
         scraper = BarchartWebScraper(headless=headless_mode)
-        
+
         # Scrape web data
         print("\n📊 Scraping web data...")
         web_data = scraper.scrape_barchart_options(url)
-        
+
         # Get API data
         print("📡 Fetching API data...")
         if not args.symbol and not args.url:
@@ -229,64 +229,64 @@ def main_runner():
                 symbol_match = re.search(r'/options/([^/?]+)', url)
                 symbol = symbol_match.group(1) if symbol_match else None
                 api_data = comparator.fetch_api_data(symbol)
-        
+
         # Compare data sources
         print("🔍 Comparing data sources...")
         comparison_results = comparator.compare_data_sources(web_data, api_data)
-        
+
         # Save results to organized structure
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         date_str = datetime.now().strftime("%Y%m%d")
-        
+
         # Create organized directories
         outputs_dir = f"outputs/{date_str}"
         os.makedirs(f"{outputs_dir}/web_data", exist_ok=True)
         os.makedirs(f"{outputs_dir}/api_data", exist_ok=True)
         os.makedirs(f"{outputs_dir}/comparisons", exist_ok=True)
-        
+
         web_file = os.path.join(f"{outputs_dir}/web_data", f'web_data_{timestamp}.json')
         api_file = os.path.join(f"{outputs_dir}/api_data", f'api_data_{timestamp}.json')
         comparison_file = os.path.join(f"{outputs_dir}/comparisons", f'comparison_{timestamp}.json')
-        
+
         # Save files
         with open(web_file, 'w') as f:
             json.dump(asdict(web_data), f, indent=2, default=str)
-        
+
         with open(api_file, 'w') as f:
             json.dump(asdict(api_data), f, indent=2, default=str)
-        
+
         with open(comparison_file, 'w') as f:
             json.dump(comparison_results, f, indent=2, default=str)
-        
+
         # Display results
         print("\n" + "=" * 50)
         print("📈 COMPARISON RESULTS")
         print("=" * 50)
-        
+
         print(f"Web scraped contracts: {web_data.total_contracts}")
         print(f"API contracts: {api_data.total_contracts}")
         print(f"Contract count difference: {comparison_results['differences']['contract_count_diff']}")
-        
+
         if comparison_results['differences']['underlying_price_diff'] is not None:
             print(f"Underlying price difference: ${comparison_results['differences']['underlying_price_diff']:.2f}")
-        
+
         print(f"Web data completeness: {comparison_results['data_quality']['web_completeness']:.1%}")
         print(f"API data completeness: {comparison_results['data_quality']['api_completeness']:.1%}")
         print(f"Overall similarity: {comparison_results['data_quality']['overall_similarity']:.1%}")
-        
+
         price_discrepancies = len(comparison_results['differences']['price_discrepancies'])
         if price_discrepancies > 0:
             print(f"⚠️  Price discrepancies found: {price_discrepancies}")
         else:
             print("✅ No significant price discrepancies found")
-        
+
         print(f"\n💾 Results saved:")
         print(f"  - Web data: {web_file}")
         print(f"  - API data: {api_file}")
         print(f"  - Comparison: {comparison_file}")
-        
+
         print(f"\n✅ Comparison completed successfully!")
-        
+
     except KeyboardInterrupt:
         print("\n🛑 Operation cancelled by user")
         sys.exit(130)

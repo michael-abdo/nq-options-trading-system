@@ -12,11 +12,11 @@ The **Hierarchical Pipeline Analysis Framework** treats market analysis as a **d
 
 ### Data Flow Philosophy
 ```
-Raw Market Data (1000 strikes) 
+Raw Market Data (1000 strikes)
     ↓ [Transform to TradingOpportunity objects]
 Risk Analysis: "Enrich with risk data → Filter significant exposure → Sort by risk"
     ↓ (100 opportunities remain)
-EV Analysis: "Enrich with EV data → Filter positive EV → Sort by expected value"  
+EV Analysis: "Enrich with EV data → Filter positive EV → Sort by expected value"
     ↓ (50 opportunities remain)
 Momentum Analysis: "Enrich with momentum → Filter aligned momentum → Sort by strength"
     ↓ (25 opportunities remain)
@@ -49,19 +49,19 @@ class TradingOpportunity:
     opportunity_id: str
     strike_price: float
     underlying_price: float
-    
+
     # Raw options data
     call_open_interest: int
     put_open_interest: int
     call_mark_price: float
     put_mark_price: float
     # ... other options fields
-    
+
     # Accumulating analysis data
     analysis_data: Dict[str, Dict[str, Any]]  # {"RiskAnalysis": {...}, "EVAnalysis": {...}}
     scores: Dict[str, float]                  # {"RiskAnalysis": 0.85, "EVAnalysis": 0.92}
     composite_score: float                    # Weighted final score
-    
+
     # Pipeline metadata
     analysis_history: List[str]              # Track processing history
     pipeline_stage: str                      # Current stage name
@@ -82,21 +82,21 @@ class PipelineAnalysis:
     def process(self, dataset: OpportunityDataset) -> OpportunityDataset:
         # Step 1: Enrich each opportunity with analysis-specific data
         enriched = self.enrich_dataset(dataset)
-        
-        # Step 2: Filter opportunities that don't meet criteria  
+
+        # Step 2: Filter opportunities that don't meet criteria
         filtered = self.filter_dataset(enriched)
-        
+
         # Step 3: Sort by analysis-specific scoring
         sorted_data = self.sort_dataset(filtered)
-        
+
         return sorted_data
-    
+
     def enrich_dataset(self, dataset) -> OpportunityDataset:
         """Add analysis-specific data to each opportunity"""
-        
+
     def filter_dataset(self, dataset) -> OpportunityDataset:
         """Remove opportunities that don't meet criteria"""
-        
+
     def sort_dataset(self, dataset) -> OpportunityDataset:
         """Sort opportunities by analysis-specific scoring"""
 ```
@@ -115,24 +115,24 @@ class AnalysisPipeline:
     def __init__(self, config: Dict[str, Any]):
         self.analyses: List[PipelineAnalysis] = []
         self.config = config
-        
+
     def add_analysis(self, analysis: PipelineAnalysis):
         """Add analysis to pipeline in execution order"""
-        
+
     def execute(self, raw_data: Dict[str, Any]) -> OpportunityDataset:
         """Execute full pipeline on raw market data"""
-        
+
         # Convert raw data to TradingOpportunity objects
         dataset = OpportunityDataset.from_normalized_data(raw_data)
-        
+
         # Execute each analysis in sequence
         for analysis in self.analyses:
             dataset = analysis.process(dataset)
-            
+
             # Early termination if no opportunities remain
             if dataset.is_empty():
                 break
-                
+
         return dataset
 ```
 
@@ -155,7 +155,7 @@ class AnalysisPipeline:
           }
         },
         {
-          "name": "EVAnalysis", 
+          "name": "EVAnalysis",
           "config": {
             "min_ev": 20,
             "min_probability": 0.70,
@@ -196,32 +196,32 @@ class MomentumAnalysis(PipelineAnalysis):
     def __init__(self, config: Dict[str, Any]):
         self.min_momentum_score = config.get("min_momentum_score", 0.6)
         self.sort_by = config.get("sort_by", "momentum_score")
-        
+
     def enrich_dataset(self, dataset: OpportunityDataset) -> OpportunityDataset:
         for opportunity in dataset.opportunities:
             # Calculate momentum metrics
             momentum_score = self.calculate_momentum(opportunity)
             direction_alignment = self.check_direction_alignment(opportunity)
-            
+
             # Add to opportunity
             opportunity.add_analysis_data("MomentumAnalysis", {
                 "momentum_score": momentum_score,
                 "direction_alignment": direction_alignment,
                 "momentum_duration": self.calculate_duration(opportunity)
             })
-            
+
             # Add score
             opportunity.add_score("MomentumAnalysis", momentum_score)
-            
+
         return dataset
-        
+
     def filter_dataset(self, dataset: OpportunityDataset) -> OpportunityDataset:
         def momentum_filter(opp):
             momentum_data = opp.get_analysis_data("MomentumAnalysis")
             return momentum_data.get("momentum_score", 0) >= self.min_momentum_score
-            
+
         return dataset.filter_by_criteria(momentum_filter)
-        
+
     def sort_dataset(self, dataset: OpportunityDataset) -> OpportunityDataset:
         return dataset.sort_by_score("MomentumAnalysis", reverse=True)
 ```
@@ -283,15 +283,15 @@ def enrich_dataset(self, dataset: OpportunityDataset) -> OpportunityDataset:
         # Get data from previous analyses
         risk_data = opportunity.get_analysis_data("RiskAnalysis")
         ev_data = opportunity.get_analysis_data("EVAnalysis")
-        
+
         # Use previous data to inform current analysis
         if risk_data.get("battle_zone", False):
             momentum_adjustment = 0.8  # Reduce momentum confidence in battle zones
         else:
             momentum_adjustment = 1.0
-            
+
         momentum_score = self.calculate_momentum(opportunity) * momentum_adjustment
-        
+
         # Continue with analysis...
 ```
 
@@ -301,13 +301,13 @@ def filter_dataset(self, dataset: OpportunityDataset) -> OpportunityDataset:
     def smart_filter(opp):
         momentum_data = opp.get_analysis_data("MomentumAnalysis")
         ev_data = opp.get_analysis_data("EVAnalysis")
-        
+
         # More lenient momentum requirements for high EV opportunities
         if ev_data.get("expected_value", 0) > 30:
             return momentum_data.get("momentum_score", 0) >= 0.5  # Lower threshold
         else:
             return momentum_data.get("momentum_score", 0) >= 0.7  # Normal threshold
-            
+
     return dataset.filter_by_criteria(smart_filter)
 ```
 
@@ -325,7 +325,7 @@ def filter_dataset(self, dataset: OpportunityDataset) -> OpportunityDataset:
 # ML optimizable weights
 composite_weights = {
     "RiskAnalysis": 0.25,      # Weight for risk score
-    "EVAnalysis": 0.40,        # Weight for EV score  
+    "EVAnalysis": 0.40,        # Weight for EV score
     "MomentumAnalysis": 0.35   # Weight for momentum score
 }
 
@@ -344,7 +344,7 @@ training_sample = {
         "strike_price": 21750,
         "underlying_price": 21376.75,
         "risk_score": 0.85,
-        "ev_score": 0.92, 
+        "ev_score": 0.92,
         "momentum_score": 0.78
     },
     "composite_weights": [0.25, 0.40, 0.35],
@@ -383,7 +383,7 @@ optimizable_config = {
 ```python
 analysis_orders = [
     ["RiskAnalysis", "EVAnalysis", "MomentumAnalysis"],      # Conservative
-    ["EVAnalysis", "MomentumAnalysis", "RiskAnalysis"],      # Aggressive  
+    ["EVAnalysis", "MomentumAnalysis", "RiskAnalysis"],      # Aggressive
     ["MomentumAnalysis", "EVAnalysis", "RiskAnalysis"]       # Technical
 ]
 
@@ -417,21 +417,21 @@ analysis_orders = [
 ```python
 def execute_with_error_handling(self, raw_data: Dict[str, Any]) -> OpportunityDataset:
     dataset = OpportunityDataset.from_normalized_data(raw_data)
-    
+
     for analysis in self.analyses:
         try:
             dataset = analysis.process(dataset)
-            
+
             # Log pipeline state after each analysis
             self.log_pipeline_state(analysis.__class__.__name__, dataset)
-            
+
         except Exception as e:
             # Log error but continue pipeline with previous dataset
             self.log_error(f"Analysis {analysis.__class__.__name__} failed: {e}")
-            
+
             # Optional: Skip analysis or use degraded mode
             continue
-            
+
     return dataset
 ```
 
@@ -440,7 +440,7 @@ def execute_with_error_handling(self, raw_data: Dict[str, Any]) -> OpportunityDa
 def log_pipeline_state(self, analysis_name: str, dataset: OpportunityDataset):
     print(f"After {analysis_name}:")
     print(f"  Opportunities remaining: {dataset.size()}")
-    
+
     if not dataset.is_empty():
         top_opp = dataset.get_top(1)[0]
         print(f"  Top opportunity: Strike {top_opp.strike_price}")
@@ -451,7 +451,7 @@ def log_pipeline_state(self, analysis_name: str, dataset: OpportunityDataset):
 
 ### Common Issues & Solutions
 
-1. **All Opportunities Filtered Out**: 
+1. **All Opportunities Filtered Out**:
    - **Cause**: Too aggressive filtering in early analyses
    - **Solution**: Relax thresholds or reorder analyses
 
@@ -492,7 +492,7 @@ class RegimeAdaptiveAnalysis(PipelineAnalysis):
     """Adjust analysis based on current market regime"""
     def filter_dataset(self, dataset):
         market_regime = self.detect_market_regime()
-        
+
         if market_regime == "HIGH_VOLATILITY":
             # Use more conservative thresholds
             return self.apply_conservative_filter(dataset)
@@ -521,7 +521,7 @@ class PortfolioOptimizationAnalysis(PipelineAnalysis):
 
 **Key Implementation Priorities**:
 1. **Start with TradingOpportunity data structure** - This is the foundation everything builds on
-2. **Implement PipelineAnalysis interface** - Simple 3-method pattern for all analyses  
+2. **Implement PipelineAnalysis interface** - Simple 3-method pattern for all analyses
 3. **Create configuration loader** - JSON-driven strategy selection
 4. **Convert existing Risk/EV analyses** - Prove the pattern works
 5. **Add pipeline orchestrator** - Sequential execution with error handling

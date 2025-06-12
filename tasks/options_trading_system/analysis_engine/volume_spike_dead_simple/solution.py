@@ -33,7 +33,7 @@ class InstitutionalSignal:
     confidence: str  # 'EXTREME', 'VERY_HIGH', 'HIGH', 'MODERATE'
     timestamp: datetime
     expiration_date: str
-    
+
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization"""
         d = asdict(self)
@@ -45,33 +45,33 @@ class DeadSimpleVolumeSpike:
     DEAD Simple Strategy Implementation
     Detects institutional positioning through abnormal options volume
     """
-    
+
     # Strategy parameters
     MIN_VOL_OI_RATIO = 10
     MIN_VOLUME = 500
     MIN_DOLLAR_SIZE = 100_000
     CONTRACT_MULTIPLIER = 20  # $20 per point for NQ mini
-    
+
     # Confidence thresholds
     EXTREME_RATIO = 50
     VERY_HIGH_RATIO = 30
     HIGH_RATIO = 20
-    
+
     def __init__(self, config: Optional[Dict] = None):
         """Initialize with optional custom configuration"""
         if config:
             self.MIN_VOL_OI_RATIO = config.get('min_vol_oi_ratio', self.MIN_VOL_OI_RATIO)
             self.MIN_VOLUME = config.get('min_volume', self.MIN_VOLUME)
             self.MIN_DOLLAR_SIZE = config.get('min_dollar_size', self.MIN_DOLLAR_SIZE)
-    
+
     def analyze_strike(self, strike_data: Dict, current_price: float) -> Optional[InstitutionalSignal]:
         """
         Analyze a single strike for institutional activity
-        
+
         Args:
             strike_data: Dictionary containing strike information
             current_price: Current underlying price
-            
+
         Returns:
             InstitutionalSignal if criteria met, None otherwise
         """
@@ -81,40 +81,40 @@ class DeadSimpleVolumeSpike:
             raw_volume = strike_data.get('volume')
             raw_oi = strike_data.get('openInterest')
             raw_price = strike_data.get('lastPrice')
-            
+
             # Skip if critical fields are None or empty
             if any(x is None for x in [raw_strike, raw_volume, raw_oi]):
                 return None
-            
+
             strike = float(raw_strike or 0)
             volume = int(raw_volume or 0)
             open_interest = int(raw_oi or 0)
             option_type = str(strike_data.get('optionType', '') or '').upper()
             option_price = float(raw_price or 0)
-            
+
             # Skip if no open interest (avoid division by zero) or zero volume
             if open_interest == 0 or volume == 0:
                 return None
-            
+
             # Calculate volume/OI ratio
             vol_oi_ratio = volume / open_interest
-            
+
             # Apply basic filters
             if vol_oi_ratio < self.MIN_VOL_OI_RATIO or volume < self.MIN_VOLUME:
                 return None
-            
+
             # Calculate dollar size (institutional footprint)
             dollar_size = volume * option_price * self.CONTRACT_MULTIPLIER
-            
+
             if dollar_size < self.MIN_DOLLAR_SIZE:
                 return None
-            
+
             # Determine trading direction
             direction = 'LONG' if option_type == 'CALL' else 'SHORT'
-            
+
             # Calculate confidence level
             confidence = self._calculate_confidence(vol_oi_ratio)
-            
+
             # Create signal
             signal = InstitutionalSignal(
                 strike=strike,
@@ -130,16 +130,16 @@ class DeadSimpleVolumeSpike:
                 timestamp=datetime.now(timezone.utc),
                 expiration_date=strike_data.get('expirationDate', '')
             )
-            
+
             logger.info(f"Institutional signal detected: {strike}{option_type} "
                        f"Vol/OI={vol_oi_ratio:.1f}x ${dollar_size:,.0f}")
-            
+
             return signal
-            
+
         except Exception as e:
             logger.error(f"Error analyzing strike {strike_data}: {e}")
             return None
-    
+
     def _calculate_confidence(self, vol_oi_ratio: float) -> str:
         """Calculate confidence level based on volume/OI ratio"""
         if vol_oi_ratio >= self.EXTREME_RATIO:
@@ -150,52 +150,52 @@ class DeadSimpleVolumeSpike:
             return 'HIGH'
         else:
             return 'MODERATE'
-    
+
     def find_institutional_flow(self, options_chain: List[Dict], current_price: float) -> List[InstitutionalSignal]:
         """
         Scan entire options chain for institutional activity
-        
+
         Args:
             options_chain: List of option strikes data
             current_price: Current underlying price
-            
+
         Returns:
             List of institutional signals sorted by confidence and size
         """
         signals = []
-        
+
         for strike_data in options_chain:
             signal = self.analyze_strike(strike_data, current_price)
             if signal:
                 signals.append(signal)
-        
+
         # Sort by confidence (priority) then by dollar size
         confidence_order = {'EXTREME': 0, 'VERY_HIGH': 1, 'HIGH': 2, 'MODERATE': 3}
         signals.sort(key=lambda s: (confidence_order.get(s.confidence, 999), -s.dollar_size))
-        
+
         return signals
-    
+
     def generate_trade_plan(self, signal: InstitutionalSignal, current_price: float) -> Dict:
         """
         Generate a specific trade plan based on institutional signal
-        
+
         Args:
             signal: The institutional signal to trade
             current_price: Current underlying price
-            
+
         Returns:
             Dictionary containing trade plan details
         """
         # Calculate entry and stops
         distance_to_target = abs(current_price - signal.target_price)
-        
+
         if signal.direction == 'LONG':
             stop_loss = current_price - (distance_to_target * 0.5)
             take_profit = signal.target_price
         else:  # SHORT
             stop_loss = current_price + (distance_to_target * 0.5)
             take_profit = signal.target_price
-        
+
         # Position sizing based on confidence
         confidence_multipliers = {
             'EXTREME': 3.0,
@@ -203,9 +203,9 @@ class DeadSimpleVolumeSpike:
             'HIGH': 1.5,
             'MODERATE': 1.0
         }
-        
+
         size_multiplier = confidence_multipliers.get(signal.confidence, 1.0)
-        
+
         trade_plan = {
             'signal': signal.to_dict(),
             'entry_price': current_price,
@@ -216,42 +216,42 @@ class DeadSimpleVolumeSpike:
             'risk_reward_ratio': 2.0,  # Fixed 1:2 risk/reward
             'notes': f"Following ${signal.dollar_size:,.0f} institutional flow at {signal.strike}"
         }
-        
+
         return trade_plan
-    
-    def filter_actionable_signals(self, signals: List[InstitutionalSignal], 
+
+    def filter_actionable_signals(self, signals: List[InstitutionalSignal],
                                  current_price: float,
                                  max_distance_percent: float = 2.0) -> List[InstitutionalSignal]:
         """
         Filter signals for actionable trades based on distance from current price
-        
+
         Args:
             signals: List of institutional signals
             current_price: Current underlying price
             max_distance_percent: Maximum % distance from current price
-            
+
         Returns:
             Filtered list of actionable signals
         """
         actionable = []
-        
+
         for signal in signals:
             distance_percent = abs(signal.target_price - current_price) / current_price * 100
-            
+
             if distance_percent <= max_distance_percent:
                 actionable.append(signal)
             else:
                 logger.debug(f"Signal at {signal.strike} too far ({distance_percent:.1f}%)")
-        
+
         return actionable
-    
+
     def summarize_institutional_activity(self, signals: List[InstitutionalSignal]) -> Dict:
         """
         Summarize overall institutional positioning
-        
+
         Args:
             signals: List of institutional signals
-            
+
         Returns:
             Summary statistics and positioning
         """
@@ -264,11 +264,11 @@ class DeadSimpleVolumeSpike:
                 'net_positioning': 'NEUTRAL',
                 'top_strikes': []
             }
-        
+
         call_volume = sum(s.dollar_size for s in signals if s.option_type == 'CALL')
         put_volume = sum(s.dollar_size for s in signals if s.option_type == 'PUT')
         total_volume = call_volume + put_volume
-        
+
         # Determine net positioning
         if total_volume > 0:
             call_percent = call_volume / total_volume * 100
@@ -280,10 +280,10 @@ class DeadSimpleVolumeSpike:
                 net_positioning = 'MIXED'
         else:
             net_positioning = 'NEUTRAL'
-        
+
         # Get top 5 strikes by dollar volume
         top_strikes = sorted(signals, key=lambda s: s.dollar_size, reverse=True)[:5]
-        
+
         summary = {
             'total_signals': len(signals),
             'total_dollar_volume': total_volume,
@@ -303,7 +303,7 @@ class DeadSimpleVolumeSpike:
                 for s in top_strikes
             ]
         }
-        
+
         return summary
 
 # Integration with pipeline
@@ -332,32 +332,32 @@ if __name__ == "__main__":
             'expirationDate': '2024-01-10'
         }
     ]
-    
+
     # Initialize analyzer
     analyzer = DeadSimpleVolumeSpike()
-    
+
     # Find institutional flow
     current_price = 21870
     signals = analyzer.find_institutional_flow(sample_options, current_price)
-    
+
     # Display results
     print("\n=== DEAD Simple Strategy Analysis ===")
     print(f"Current Price: ${current_price:,.2f}")
     print(f"\nFound {len(signals)} institutional signals:")
-    
+
     for signal in signals:
         print(f"\n{signal.strike}{signal.option_type[0]}:")
         print(f"  Vol/OI: {signal.vol_oi_ratio:.1f}x")
         print(f"  Dollar Size: ${signal.dollar_size:,.0f}")
         print(f"  Direction: {signal.direction} → {signal.target_price}")
         print(f"  Confidence: {signal.confidence}")
-        
+
         # Generate trade plan
         trade_plan = analyzer.generate_trade_plan(signal, current_price)
         print(f"  Entry: ${trade_plan['entry_price']}")
         print(f"  Stop: ${trade_plan['stop_loss']}")
         print(f"  Target: ${trade_plan['take_profit']}")
-    
+
     # Summary
     summary = analyzer.summarize_institutional_activity(signals)
     print(f"\n=== Institutional Summary ===")

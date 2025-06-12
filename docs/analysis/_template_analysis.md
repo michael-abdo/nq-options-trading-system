@@ -56,14 +56,14 @@ CONSTANTS:
         [PARAM_3]: [value],    // [Comment explaining purpose]
         [PARAM_4]: [value]     // [Comment explaining purpose]
     }
-    
+
     [CONSTANT_GROUP_2] = {
         [THRESHOLD_1]: [value],     // [Comment on when/how used]
         [THRESHOLD_2]: [value],     // [Comment on significance]
         [THRESHOLD_3]: [value],     // [Comment on application]
         [THRESHOLD_4]: [value]      // [Comment on meaning]
     }
-    
+
     [CATEGORIES/CLASSIFICATIONS] = {
         [CATEGORY_1]: [value],    // [Description of this category]
         [CATEGORY_2]: [value],    // [Description of this category]
@@ -106,26 +106,26 @@ END STRUCTURE
 FUNCTION [main_analysis_function](input_data, parameters):
     // Step 1: [Description of first major step]
     [step1_result] = [function_call](input_data)
-    
+
     // Step 2: [Description of second major step]
     [step2_result] = [function_call]([step1_result], parameters)
-    
+
     // Step 3: [Description of third major step]
     [step3_result] = [function_call]([step1_result], [step2_result])
-    
+
     // Step 4: [Description of fourth major step]
     [step4_result] = [function_call]([step3_result], parameters)
-    
+
     // Step 5: [Description of fifth major step]
     [step5_result] = [function_call]([step4_result])
-    
+
     // Step 6: [Description of sixth major step]
     [step6_result] = [function_call]([multiple_inputs])
-    
+
     // Step 7: [Final compilation/result generation]
     final_result = [ResultDataStructure]()
     [populate_final_result_fields]
-    
+
     RETURN final_result
 END FUNCTION
 
@@ -135,10 +135,10 @@ END FUNCTION
 
 FUNCTION [category1_function_1]([parameters]):
     [detailed_implementation_logic]
-    
+
     FOR each [item] IN [collection]:
         [processing_logic]
-        
+
         IF [condition]:
             [action]
         ELSE IF [condition]:
@@ -146,10 +146,10 @@ FUNCTION [category1_function_1]([parameters]):
         ELSE:
             [default_action]
         END IF
-        
+
         [additional_processing]
     END FOR
-    
+
     RETURN [result]
 END FUNCTION
 
@@ -169,13 +169,13 @@ END FUNCTION
 
 FUNCTION [category2_function_2]([parameters]):
     [implementation]
-    
+
     // [Step-by-step breakdown with comments]
     [calculation_logic]
-    
+
     // [Normalization or adjustment logic]
     [adjustment_logic]
-    
+
     RETURN [final_calculation]
 END FUNCTION
 
@@ -185,14 +185,14 @@ END FUNCTION
 
 FUNCTION [category3_function_1]([parameters]):
     [analysis_logic]
-    
+
     // [Pattern recognition or classification logic]
     IF [pattern_condition_1]:
         [action_1]
     ELSE IF [pattern_condition_2]:
         [action_2]
     END IF
-    
+
     RETURN [analysis_result]
 END FUNCTION
 
@@ -202,7 +202,7 @@ END FUNCTION
 
 FUNCTION [decision_function]([analysis_results]):
     [decision_logic]
-    
+
     // [Classification based on results]
     IF [result] >= [THRESHOLD_1]:
         [classification] = "[HIGH_CATEGORY]"
@@ -214,12 +214,12 @@ FUNCTION [decision_function]([analysis_results]):
         [classification] = "[LOW_CATEGORY]"
         [description] = "[Detailed explanation]"
     END IF
-    
+
     // [Additional context or adjustments]
     IF [special_condition]:
         [description] += " | [Additional context]"
     END IF
-    
+
     RETURN {
         [field1]: [classification],
         [field2]: [description]
@@ -232,15 +232,15 @@ END FUNCTION
 
 FUNCTION [signal_generation_function]([analysis_results]):
     signals = []
-    
+
     // Signal 1: [Primary signal description]
     signals.append("[SIGNAL_TYPE]: " + [primary_result])
-    
+
     // Signal 2: [Secondary signal description]
     IF [condition]:
         signals.append("[SIGNAL_DESCRIPTION]: " + [specific_result])
     END IF
-    
+
     // Signal 3: [Pattern-based signals]
     FOR [pattern] IN [identified_patterns]:
         IF [pattern] == "[PATTERN_TYPE_1]":
@@ -249,12 +249,12 @@ FUNCTION [signal_generation_function]([analysis_results]):
             signals.append("[SPECIFIC_SIGNAL_2]")
         END IF
     END FOR
-    
+
     // Signal 4: [Threshold-based alerts]
     IF [critical_condition]:
         signals.append("[ALERT_TYPE]: " + [details])
     END IF
-    
+
     RETURN signals
 END FUNCTION
 
@@ -285,10 +285,10 @@ BEGIN MAIN:
     // Load input data
     [input_data] = [load_data_function]()
     [parameters] = [get_parameters]()
-    
+
     // Run analysis
     [analysis_result] = [main_analysis_function]([input_data], [parameters])
-    
+
     // Display results
     PRINT "=== [ANALYSIS NAME HEADER] ==="
     PRINT "[Context Information]: " + [relevant_data]

@@ -142,13 +142,13 @@
 ### Lessons Learned
 - **What went well**:
   - [List items]
-  
+
 - **What could be improved**:
   - [List items]
-  
+
 - **Technical debt introduced**:
   - [List items]
-  
+
 - **Follow-up actions required**:
   - [List items]
 

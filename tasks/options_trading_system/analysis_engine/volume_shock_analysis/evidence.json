@@ -18,7 +18,7 @@
       "alert_generation": true
     },
     "flow_type_classification": {
-      "status": "VALIDATED", 
+      "status": "VALIDATED",
       "classification_accuracy": "100%",
       "gamma_emergency_detection": true,
       "institutional_sweep_detection": true,
@@ -45,7 +45,7 @@
     "pressure_calculation": "Delta Exposure / Response Time²",
     "flow_types_supported": [
       "GAMMA_EMERGENCY",
-      "INSTITUTIONAL_SWEEP", 
+      "INSTITUTIONAL_SWEEP",
       "AMBIGUOUS_SIGNAL"
     ]
   },

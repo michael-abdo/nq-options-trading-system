@@ -34,7 +34,7 @@ Best EV: +5964.4 points
 Average Probability: 86.4%
 
 🏆 TOP 5 OPPORTUNITIES:
-Rank  Dir    TP       SL       Prob    RR     EV        
+Rank  Dir    TP       SL       Prob    RR     EV
 --------------------------------------------------
 1     SHOR   14000    21380    80.9%   2269.8    +5964.4
 2     SHOR   14000    21390    80.9%   556.7     +5962.4

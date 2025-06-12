@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 TASK: risk_analysis
-TYPE: Leaf Task  
+TYPE: Leaf Task
 PURPOSE: Analyze options positioning risk to identify institutional commitments and battle zones
 """
 
@@ -17,11 +17,11 @@ sys.path.insert(0, project_root)
 
 class RiskAnalyzer:
     """Options Risk Analyzer - 'Who Has More Skin in the Game?'"""
-    
+
     def __init__(self, config: Dict[str, Any]):
         """
         Initialize the risk analyzer
-        
+
         Args:
             config: Risk analysis configuration
         """
@@ -30,7 +30,7 @@ class RiskAnalyzer:
         self.immediate_distance = config.get("immediate_threat_distance", 10)
         self.near_term_distance = config.get("near_term_distance", 25)
         self.medium_term_distance = config.get("medium_term_distance", 50)
-        
+
     def calculate_reinforcement_strength(self, open_interest: float, volume: float) -> str:
         """Calculate reinforcement strength based on volume vs OI"""
         if open_interest > 0:
@@ -43,7 +43,7 @@ class RiskAnalyzer:
                 return "EXISTING POSITIONS"
         else:
             return "NEW POSITIONS ONLY"
-    
+
     def calculate_danger_score(self, risk_amount: float, distance: float) -> tuple:
         """Calculate danger score and urgency based on proximity"""
         if distance <= self.immediate_distance:
@@ -58,35 +58,35 @@ class RiskAnalyzer:
         else:
             urgency = "DISTANT"
             multiplier = 0.5
-        
+
         return risk_amount * multiplier, urgency
-    
+
     def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
         """Estimate current underlying price from contract data"""
         # Look for underlying price in contract metadata
         for contract in contracts:
             if contract.get("underlying_price"):
                 return float(contract["underlying_price"])
-        
+
         # Fallback: estimate from ATM options
         strikes = [c["strike"] for c in contracts if c["strike"] and c["strike"] > 0]
         if strikes:
             return sum(strikes) / len(strikes)  # Average strike as rough estimate
-        
+
         return 21376.75  # Default fallback
-    
+
     def analyze_risk(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """
         Perform comprehensive options risk analysis
-        
+
         Args:
             data_config: Configuration with normalized data
-            
+
         Returns:
             Dict with risk analysis results
         """
         print("    Running Risk Analysis (Skin in the Game)...")
-        
+
         try:
             # Check if data is already normalized (for testing) or needs pipeline processing
             if "normalized_data" in data_config:
@@ -98,34 +98,34 @@ class RiskAnalyzer:
                 # Load data using data ingestion pipeline (production scenario)
                 sys.path.insert(0, os.path.join(project_root, 'tasks', 'options_trading_system'))
                 from data_ingestion.integration import run_data_ingestion
-                
+
                 pipeline_result = run_data_ingestion(data_config)
-                
+
                 if pipeline_result["pipeline_status"] != "success":
                     return {
                         "status": "failed",
                         "error": "Data ingestion pipeline failed for risk analysis",
                         "timestamp": datetime.now().isoformat()
                     }
-                
+
                 # Extract normalized data
                 normalized_data = pipeline_result["normalized_data"]
                 contracts = normalized_data.get("contracts", [])
                 underlying_price = self._estimate_underlying_price(contracts)
-            
+
             if not contracts:
                 return {
                     "status": "failed",
                     "error": "No contract data available for risk analysis",
                     "timestamp": datetime.now().isoformat()
                 }
-            
+
             # Initialize risk containers
             calls_at_risk = []
             puts_at_risk = []
             total_call_risk = 0
             total_put_risk = 0
-            
+
             # STEP 1: CLASSIFY RISK BY STRIKE
             for contract in contracts:
                 strike = contract.get("strike", 0)
@@ -134,11 +134,11 @@ class RiskAnalyzer:
                 call_premium = contract.get("call_mark_price", 0)
                 put_premium = contract.get("put_mark_price", 0)
                 volume = contract.get("volume", 0)
-                
+
                 call_risk = call_oi * call_premium * self.multiplier
                 put_risk = put_oi * put_premium * self.multiplier
                 distance = abs(strike - underlying_price)
-                
+
                 # Calls at risk if OTM (strike > current price)
                 if strike > underlying_price and call_risk > 0:
                     calls_at_risk.append({
@@ -151,7 +151,7 @@ class RiskAnalyzer:
                         "reinforcement": self.calculate_reinforcement_strength(call_oi, volume)
                     })
                     total_call_risk += call_risk
-                
+
                 # Puts at risk if OTM (strike < current price)
                 if strike < underlying_price and put_risk > 0:
                     puts_at_risk.append({
@@ -164,13 +164,13 @@ class RiskAnalyzer:
                         "reinforcement": self.calculate_reinforcement_strength(put_oi, volume)
                     })
                     total_put_risk += put_risk
-            
+
             # STEP 2: CALCULATE DOMINANCE METRICS
             if total_put_risk > 0:
                 risk_ratio = total_call_risk / total_put_risk
             else:
                 risk_ratio = float('inf') if total_call_risk > 0 else 0
-            
+
             if risk_ratio > 2.0:
                 verdict = "STRONG CALL DOMINANCE - Bulls have much more to lose"
                 bias = "UPWARD PRESSURE EXPECTED"
@@ -180,17 +180,17 @@ class RiskAnalyzer:
             else:
                 verdict = "BALANCED RISK - Contested territory"
                 bias = "SIDEWAYS/CHOPPY ACTION EXPECTED"
-            
+
             # STEP 3: FIND CRITICAL BATTLE ZONES
             calls_at_risk.sort(key=lambda x: x["distance"])
             puts_at_risk.sort(key=lambda x: x["distance"])
-            
+
             nearest_call_threat = calls_at_risk[0] if calls_at_risk else None
             nearest_put_threat = puts_at_risk[0] if puts_at_risk else None
-            
+
             # STEP 4: BATTLE ZONE MAPPING
             battle_zones = []
-            
+
             # Process calls at risk
             for call_risk in calls_at_risk:
                 danger_score, urgency = self.calculate_danger_score(call_risk["total_risk"], call_risk["distance"])
@@ -204,13 +204,13 @@ class RiskAnalyzer:
                     "open_interest": call_risk["open_interest"],
                     "reinforcement": call_risk["reinforcement"]
                 })
-            
+
             # Process puts at risk
             for put_risk in puts_at_risk:
                 danger_score, urgency = self.calculate_danger_score(put_risk["total_risk"], put_risk["distance"])
                 battle_zones.append({
                     "strike": put_risk["strike"],
-                    "type": "PUT DEFENSE", 
+                    "type": "PUT DEFENSE",
                     "risk_amount": put_risk["total_risk"],
                     "distance": put_risk["distance"],
                     "danger_score": danger_score,
@@ -218,13 +218,13 @@ class RiskAnalyzer:
                     "open_interest": put_risk["open_interest"],
                     "reinforcement": put_risk["reinforcement"]
                 })
-            
+
             # Sort by danger score
             battle_zones.sort(key=lambda x: x["danger_score"], reverse=True)
-            
+
             # STEP 5: GENERATE TRADING SIGNALS
             signals = []
-            
+
             # Immediate threats
             for zone in battle_zones:
                 if zone["urgency"] == "IMMEDIATE":
@@ -232,23 +232,23 @@ class RiskAnalyzer:
                         signals.append(f"STRONG SUPPORT expected at {zone['strike']}")
                     else:
                         signals.append(f"STRONG RESISTANCE expected at {zone['strike']}")
-            
+
             # Directional bias
             if nearest_call_threat and nearest_put_threat:
                 if nearest_call_threat["distance"] < nearest_put_threat["distance"]:
                     signals.append("UPWARD BIAS - Calls closer to danger")
                 else:
                     signals.append("DOWNWARD BIAS - Puts closer to danger")
-            
+
             # Risk concentration signals
             if len(battle_zones) > 0:
                 top_zone = battle_zones[0]
                 signals.append(f"CRITICAL BATTLE ZONE: {top_zone['strike']} ({top_zone['type']}) - ${top_zone['risk_amount']:,.0f} at risk")
-            
+
             # Calculate metrics
             total_positions = len(calls_at_risk) + len(puts_at_risk)
             immediate_threats = len([z for z in battle_zones if z["urgency"] == "IMMEDIATE"])
-            
+
             return {
                 "status": "success",
                 "underlying_price": underlying_price,
@@ -274,7 +274,7 @@ class RiskAnalyzer:
                 },
                 "timestamp": datetime.now().isoformat()
             }
-            
+
         except Exception as e:
             return {
                 "status": "failed",
@@ -286,11 +286,11 @@ class RiskAnalyzer:
 def run_risk_analysis(data_config: Dict[str, Any], analysis_config: Dict[str, Any] = None) -> Dict[str, Any]:
     """
     Run options risk analysis
-    
+
     Args:
         data_config: Configuration with normalized data
         analysis_config: Risk analysis configuration
-        
+
     Returns:
         Dict with risk analysis results
     """
@@ -301,7 +301,7 @@ def run_risk_analysis(data_config: Dict[str, Any], analysis_config: Dict[str, An
             "near_term_distance": 25,
             "medium_term_distance": 50
         }
-    
+
     analyzer = RiskAnalyzer(analysis_config)
     return analyzer.analyze_risk(data_config)
 
@@ -339,6 +339,6 @@ if __name__ == "__main__":
             ]
         }
     }
-    
+
     result = run_risk_analysis(test_config)
     print("Risk Analysis Result:", result)

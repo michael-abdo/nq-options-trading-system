@@ -307,7 +307,7 @@ Each phase follows a consistent structure:
 
 ---
 
-**Document Version**: 1.0  
-**Created**: June 11, 2025  
-**Based on**: IFD v3.0 project experience  
+**Document Version**: 1.0
+**Created**: June 11, 2025
+**Based on**: IFD v3.0 project experience
 **Next Update**: After implementing improvements

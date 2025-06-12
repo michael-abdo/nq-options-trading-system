@@ -83,7 +83,7 @@ output_engine.generation_results["report"] = {
 }
 
 output_engine.generation_results["json"] = {
-    "status": "success", 
+    "status": "success",
     "result": {
         "json_data": extract_json_from_cached(analysis_result),
         "metadata": {
@@ -116,7 +116,7 @@ def generate_report_from_cached(analysis_result):
     # Simple report generation without re-running analyses
     synthesis = analysis_result.get('synthesis', {})
     primary_rec = synthesis.get('trading_recommendations', [{}])[0]
-    
+
     return f"""NQ OPTIONS TRADING REPORT
 {'='*50}
 PRIMARY RECOMMENDATION: {primary_rec.get('trade_direction', 'N/A')}

@@ -22,7 +22,7 @@ Databento Live Stream → Event Buffer → Pressure Aggregator → SQLite Storag
   - Handle connection lifecycle and authentication
   - Buffer incoming events for processing
 
-#### MBOEventProcessor  
+#### MBOEventProcessor
 - **Purpose**: Process individual MBO events in real-time
 - **Responsibilities**:
   - Parse MBO event data structure

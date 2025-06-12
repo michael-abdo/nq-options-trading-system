@@ -19,11 +19,11 @@ from analysis_engine.integration import run_analysis_engine
 
 class JSONExporter:
     """Export trading analysis results as structured JSON data"""
-    
+
     def __init__(self, config: Dict[str, Any]):
         """
         Initialize the JSON exporter
-        
+
         Args:
             config: Configuration for JSON export options
         """
@@ -32,7 +32,7 @@ class JSONExporter:
         self.include_metadata = config.get("include_metadata", True)
         self.format_pretty = config.get("format_pretty", True)
         self.include_analysis_details = config.get("include_analysis_details", True)
-        
+
     def clean_analysis_data(self, data: Any) -> Any:
         """Clean and sanitize analysis data for JSON serialization"""
         if isinstance(data, dict):
@@ -47,14 +47,14 @@ class JSONExporter:
         else:
             # Convert other types to string
             return str(data)
-    
+
     def extract_trading_signals(self, analysis_results: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract trading signals in a standardized format"""
         signals = []
-        
+
         synthesis = analysis_results.get("synthesis", {})
         trading_recs = synthesis.get("trading_recommendations", [])
-        
+
         for i, rec in enumerate(trading_recs):
             signal = {
                 "signal_id": f"nq_ev_{i+1}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
@@ -78,7 +78,7 @@ class JSONExporter:
                     "total_signals": len(trading_recs)
                 }
             }
-            
+
             # Calculate risk/reward ratio
             if signal["trade"]["entry_price"] and signal["trade"]["target_price"] and signal["trade"]["stop_price"]:
                 if signal["trade"]["direction"] == "LONG":
@@ -87,14 +87,14 @@ class JSONExporter:
                 else:  # SHORT
                     reward = signal["trade"]["entry_price"] - signal["trade"]["target_price"]
                     risk = signal["trade"]["stop_price"] - signal["trade"]["entry_price"]
-                
+
                 if risk > 0:
                     signal["trade"]["risk_reward_ratio"] = round(reward / risk, 2)
-            
+
             signals.append(signal)
-        
+
         return signals
-    
+
     def extract_market_analysis(self, analysis_results: Dict[str, Any]) -> Dict[str, Any]:
         """Extract market analysis data"""
         market_data = {
@@ -112,20 +112,20 @@ class JSONExporter:
             "quality_metrics": {},
             "analysis_summary": {}
         }
-        
+
         # Extract market context
         market_context = analysis_results.get("synthesis", {}).get("market_context", {})
         if market_context:
             market_data["underlying"]["price"] = market_context.get("nq_price", 0)
             market_data["sentiment"]["momentum"] = market_context.get("momentum_sentiment", "neutral")
             market_data["sentiment"]["volatility_regime"] = market_context.get("iv_regime", "normal")
-            
+
             # Overall sentiment based on momentum
             market_data["sentiment"]["overall"] = market_context.get("momentum_sentiment", "neutral")
-        
+
         # Extract quality metrics from individual analyses
         individual_results = analysis_results.get("individual_results", {})
-        
+
         # NQ EV Analysis metrics
         if "expected_value" in individual_results and individual_results["expected_value"].get("status") == "success":
             ev_result = individual_results["expected_value"]["result"]
@@ -136,7 +136,7 @@ class JSONExporter:
                 "best_ev": ev_result.get("metrics", {}).get("best_ev", 0),
                 "avg_probability": ev_result.get("metrics", {}).get("avg_probability", 0)
             }
-        
+
         # Momentum analysis metrics
         if "momentum" in individual_results and individual_results["momentum"].get("status") == "success":
             momentum_result = individual_results["momentum"]["result"]
@@ -146,7 +146,7 @@ class JSONExporter:
                 "bullish_momentum": momentum_result.get("market_sentiment", {}).get("bullish_momentum", 0),
                 "bearish_momentum": momentum_result.get("market_sentiment", {}).get("bearish_momentum", 0)
             }
-        
+
         # Volatility analysis metrics
         if "volatility" in individual_results and individual_results["volatility"].get("status") == "success":
             vol_result = individual_results["volatility"]["result"]
@@ -156,7 +156,7 @@ class JSONExporter:
                 "iv_spread": vol_result.get("metrics", {}).get("iv_spread", 0),
                 "skew_type": vol_result.get("iv_skew_analysis", {}).get("skew_type", "neutral")
             }
-        
+
         # Analysis summary
         summary = analysis_results.get("summary", {})
         market_data["analysis_summary"] = {
@@ -165,12 +165,12 @@ class JSONExporter:
             "execution_time": analysis_results.get("execution_time_seconds", 0),
             "primary_algorithm": analysis_results.get("primary_algorithm", "nq_ev_analysis")
         }
-        
+
         return market_data
-    
+
     def create_export_structure(self, analysis_results: Dict[str, Any]) -> Dict[str, Any]:
         """Create the main export data structure"""
-        
+
         export_data = {
             "metadata": {
                 "export_timestamp": datetime.now().isoformat(),
@@ -187,12 +187,12 @@ class JSONExporter:
                 "next_analysis_recommended": datetime.now().isoformat()
             }
         }
-        
+
         # Calculate execution summary
         signals = export_data["trading_signals"]
         export_data["execution_summary"]["total_signals"] = len(signals)
         export_data["execution_summary"]["high_priority_signals"] = len([s for s in signals if s["priority"] in ["PRIMARY", "IMMEDIATE"]])
-        
+
         # Determine recommended action
         if export_data["execution_summary"]["high_priority_signals"] > 0:
             primary_signal = next((s for s in signals if s["priority"] == "PRIMARY"), None)
@@ -202,38 +202,38 @@ class JSONExporter:
                 export_data["execution_summary"]["recommended_action"] = "review_signals"
         else:
             export_data["execution_summary"]["recommended_action"] = "hold"
-        
+
         # Include detailed analysis if requested
         if self.include_analysis_details:
             export_data["detailed_analysis"] = {
                 "raw_analysis_results": self.clean_analysis_data(analysis_results) if self.include_raw_data else {},
                 "individual_analysis_status": {
-                    name: result.get("status", "unknown") 
+                    name: result.get("status", "unknown")
                     for name, result in analysis_results.get("individual_results", {}).items()
                 }
             }
-        
+
         return export_data
-    
+
     def export_json(self, data_config: Dict[str, Any], analysis_config: Dict[str, Any] = None) -> Dict[str, Any]:
         """Export analysis results as JSON"""
-        
+
         # Check for cached analysis results first
         if "_cached_analysis_results" in data_config:
             analysis_results = data_config["_cached_analysis_results"]
         else:
             # Run analysis engine to get results
             analysis_results = run_analysis_engine(data_config, analysis_config)
-        
+
         # Create export structure
         export_data = self.create_export_structure(analysis_results)
-        
+
         # Format JSON
         if self.format_pretty:
             json_output = json.dumps(export_data, indent=2, default=str)
         else:
             json_output = json.dumps(export_data, default=str)
-        
+
         return {
             "json_data": export_data,
             "json_string": json_output,
@@ -247,17 +247,17 @@ class JSONExporter:
 
 
 # Module-level function for easy integration
-def export_analysis_json(data_config: Dict[str, Any], 
+def export_analysis_json(data_config: Dict[str, Any],
                         export_config: Dict[str, Any] = None,
                         analysis_config: Dict[str, Any] = None) -> Dict[str, Any]:
     """
     Export analysis results as structured JSON
-    
+
     Args:
         data_config: Configuration for data sources
         export_config: Configuration for JSON export (optional)
         analysis_config: Configuration for analysis engine (optional)
-        
+
     Returns:
         Dict with JSON data and metadata
     """
@@ -268,6 +268,6 @@ def export_analysis_json(data_config: Dict[str, Any],
             "format_pretty": True,
             "include_analysis_details": True
         }
-    
+
     exporter = JSONExporter(export_config)
     return exporter.export_json(data_config, analysis_config)

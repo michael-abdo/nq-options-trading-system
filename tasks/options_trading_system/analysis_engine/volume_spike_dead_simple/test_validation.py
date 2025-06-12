@@ -10,12 +10,12 @@ from solution import DeadSimpleVolumeSpike, InstitutionalSignal
 
 class TestDeadSimpleStrategy(unittest.TestCase):
     """Test cases for DEAD Simple strategy implementation"""
-    
+
     def setUp(self):
         """Set up test fixtures"""
         self.analyzer = DeadSimpleVolumeSpike()
         self.current_price = 21870
-    
+
     def test_extreme_volume_spike_detection(self):
         """Test detection of extreme volume spike (55x ratio)"""
         strike_data = {
@@ -26,16 +26,16 @@ class TestDeadSimpleStrategy(unittest.TestCase):
             'lastPrice': 35.5,
             'expirationDate': '2024-01-10'
         }
-        
+
         signal = self.analyzer.analyze_strike(strike_data, self.current_price)
-        
+
         self.assertIsNotNone(signal)
         self.assertEqual(signal.vol_oi_ratio, 55.0)
         self.assertEqual(signal.confidence, 'EXTREME')
         self.assertEqual(signal.direction, 'SHORT')
         self.assertEqual(signal.target_price, 21840)
         self.assertGreater(signal.dollar_size, 1_000_000)  # $1.95M
-    
+
     def test_minimum_threshold_filtering(self):
         """Test that low volume/OI ratios are filtered out"""
         strike_data = {
@@ -46,10 +46,10 @@ class TestDeadSimpleStrategy(unittest.TestCase):
             'lastPrice': 40.0,
             'expirationDate': '2024-01-10'
         }
-        
+
         signal = self.analyzer.analyze_strike(strike_data, self.current_price)
         self.assertIsNone(signal)
-    
+
     def test_dollar_size_threshold(self):
         """Test that small dollar volumes are filtered out"""
         strike_data = {
@@ -60,10 +60,10 @@ class TestDeadSimpleStrategy(unittest.TestCase):
             'lastPrice': 5.0,  # But only $60K total - below $100K threshold
             'expirationDate': '2024-01-10'
         }
-        
+
         signal = self.analyzer.analyze_strike(strike_data, self.current_price)
         self.assertIsNone(signal)
-    
+
     def test_confidence_levels(self):
         """Test correct confidence level assignment"""
         test_cases = [
@@ -72,11 +72,11 @@ class TestDeadSimpleStrategy(unittest.TestCase):
             (25, 'HIGH'),       # 25x ratio
             (15, 'MODERATE'),   # 15x ratio
         ]
-        
+
         for vol_oi_ratio, expected_confidence in test_cases:
             confidence = self.analyzer._calculate_confidence(vol_oi_ratio)
             self.assertEqual(confidence, expected_confidence)
-    
+
     def test_institutional_flow_detection(self):
         """Test full options chain analysis"""
         options_chain = [
@@ -105,15 +105,15 @@ class TestDeadSimpleStrategy(unittest.TestCase):
                 'lastPrice': 20.0,
             },
         ]
-        
+
         signals = self.analyzer.find_institutional_flow(options_chain, self.current_price)
-        
+
         self.assertEqual(len(signals), 2)
         self.assertEqual(signals[0].strike, 21840)  # Extreme signal first
         self.assertEqual(signals[0].confidence, 'EXTREME')
         self.assertEqual(signals[1].strike, 21900)  # High signal second
         self.assertEqual(signals[1].confidence, 'HIGH')
-    
+
     def test_trade_plan_generation(self):
         """Test trade plan generation for signals"""
         signal = InstitutionalSignal(
@@ -130,15 +130,15 @@ class TestDeadSimpleStrategy(unittest.TestCase):
             timestamp=datetime.now(timezone.utc),
             expiration_date='2024-01-10'
         )
-        
+
         trade_plan = self.analyzer.generate_trade_plan(signal, self.current_price)
-        
+
         self.assertEqual(trade_plan['direction'], 'SHORT')
         self.assertEqual(trade_plan['entry_price'], 21870)
         self.assertEqual(trade_plan['take_profit'], 21840)
         self.assertEqual(trade_plan['stop_loss'], 21885)  # Half the distance
         self.assertEqual(trade_plan['size_multiplier'], 3.0)  # Extreme confidence
-    
+
     def test_actionable_signal_filtering(self):
         """Test filtering signals by distance from current price"""
         signals = [
@@ -171,16 +171,16 @@ class TestDeadSimpleStrategy(unittest.TestCase):
                 expiration_date='2024-01-10'
             ),
         ]
-        
+
         actionable = self.analyzer.filter_actionable_signals(
-            signals, 
+            signals,
             self.current_price,
             max_distance_percent=1.0
         )
-        
+
         self.assertEqual(len(actionable), 1)
         self.assertEqual(actionable[0].strike, 21850)
-    
+
     def test_institutional_summary(self):
         """Test institutional activity summary"""
         signals = [
@@ -213,16 +213,16 @@ class TestDeadSimpleStrategy(unittest.TestCase):
                 expiration_date='2024-01-10'
             ),
         ]
-        
+
         summary = self.analyzer.summarize_institutional_activity(signals)
-        
+
         self.assertEqual(summary['total_signals'], 2)
         self.assertEqual(summary['total_dollar_volume'], 2_550_000)
         self.assertEqual(summary['put_dollar_volume'], 1_950_000)
         self.assertEqual(summary['call_dollar_volume'], 600_000)
         self.assertEqual(summary['net_positioning'], 'BEARISH')  # 76% puts
         self.assertAlmostEqual(summary['put_percentage'], 76.47, places=1)
-    
+
     def test_zero_open_interest_handling(self):
         """Test that strikes with zero OI are handled gracefully"""
         strike_data = {
@@ -233,7 +233,7 @@ class TestDeadSimpleStrategy(unittest.TestCase):
             'lastPrice': 40.0,
             'expirationDate': '2024-01-10'
         }
-        
+
         signal = self.analyzer.analyze_strike(strike_data, self.current_price)
         self.assertIsNone(signal)
 

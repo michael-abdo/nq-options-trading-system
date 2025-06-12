@@ -26,7 +26,7 @@ try:
     from volume_shock_analysis.solution import analyze_volume_shocks
     from expiration_pressure_calculator.solution import ExpirationPressureCalculator
     from volume_spike_dead_simple.solution import DeadSimpleVolumeSpike
-    
+
     print("✓ All 6 analysis modules imported successfully")
     results.append(("Core Analysis Modules", True))
 except Exception as e:
@@ -38,7 +38,7 @@ print("\n2. Phase 4 Production Components")
 print("-" * 30)
 phase4_modules = [
     "success_metrics_tracker",
-    "websocket_backfill_manager", 
+    "websocket_backfill_manager",
     "monthly_budget_dashboard",
     "adaptive_threshold_manager",
     "staged_rollout_framework",

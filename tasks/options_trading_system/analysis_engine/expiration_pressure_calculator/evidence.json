@@ -27,7 +27,7 @@
   },
   "algorithmic_validation": {
     "mathematical_correctness": "VALIDATED",
-    "computational_performance": "VALIDATED", 
+    "computational_performance": "VALIDATED",
     "logical_consistency": "VALIDATED",
     "framework_completeness": "VALIDATED"
   },

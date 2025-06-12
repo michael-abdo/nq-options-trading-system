@@ -1,11 +1,11 @@
 # Phase X: [Phase Name]
 
 ## Phase Overview
-**Phase Number**: [X]  
-**Phase Name**: [Descriptive Name]  
-**Duration**: [X weeks]  
-**Priority**: [High/Medium/Low]  
-**Dependencies**: [List dependencies]  
+**Phase Number**: [X]
+**Phase Name**: [Descriptive Name]
+**Duration**: [X weeks]
+**Priority**: [High/Medium/Low]
+**Dependencies**: [List dependencies]
 
 ## Objectives
 ### Primary Objective
@@ -91,11 +91,11 @@ class ComponentName:
     def method_name(self, param1: Type, param2: Type) -> ReturnType:
         """
         Description of what this method does
-        
+
         Args:
             param1: Description
             param2: Description
-            
+
         Returns:
             Description of return value
         """
@@ -288,6 +288,6 @@ class DataModel:
 
 ---
 
-**Template Version**: 1.0  
-**Created**: June 11, 2025  
+**Template Version**: 1.0
+**Created**: June 11, 2025
 **Usage**: Copy this template for each new phase

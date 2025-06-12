@@ -5,7 +5,7 @@
 ### Root Directory
 Only essential integration and configuration files remain in root:
 - `integration.py` - Main integration point for all analysis strategies
-- `config_manager.py` - Configuration management system  
+- `config_manager.py` - Configuration management system
 - `pipeline_config.json` - Pipeline configuration
 - `evidence_rollup.json` - Aggregated evidence from all tasks
 

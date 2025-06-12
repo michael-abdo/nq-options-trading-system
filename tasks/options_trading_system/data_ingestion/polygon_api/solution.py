@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 TASK: polygon_api
-TYPE: Leaf Task - Data Source Implementation  
+TYPE: Leaf Task - Data Source Implementation
 PURPOSE: Load Nasdaq-100 options data from Polygon.io API
 
 This module provides access to Nasdaq-100 options data through Polygon.io API.
@@ -40,14 +40,14 @@ class PolygonOptionsContract:
 
 class PolygonAPIClient:
     """Polygon.io API client for options data"""
-    
+
     def __init__(self, api_key: str = None):
         """Initialize the Polygon client with API key"""
         self.api_key = api_key or os.getenv('POLYGON_API_KEY')
-        
+
         if not self.api_key:
             raise ValueError("Polygon API key not provided. Set POLYGON_API_KEY environment variable or pass api_key parameter.")
-        
+
         self.base_url = 'https://api.polygon.io'
         self.headers = {
             'Authorization': f'Bearer {self.api_key}',
@@ -55,45 +55,45 @@ class PolygonAPIClient:
         }
         self.last_request_time = 0
         self.min_request_interval = 12  # 5 requests per minute = 12 seconds between requests
-    
+
     def _make_request(self, endpoint: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
         """Make a request to the Polygon API with rate limiting"""
         # Rate limiting
         current_time = time.time()
         time_since_last_request = current_time - self.last_request_time
-        
+
         if time_since_last_request < self.min_request_interval:
             sleep_time = self.min_request_interval - time_since_last_request
             time.sleep(sleep_time)
-        
+
         url = f"{self.base_url}{endpoint}"
-        
+
         # Add API key to params
         if params is None:
             params = {}
         params['apiKey'] = self.api_key
-        
+
         try:
             response = requests.get(url, params=params)
             self.last_request_time = time.time()
-            
+
             response.raise_for_status()
             data = response.json()
-            
+
             if 'status' in data and data['status'] != 'OK':
                 raise Exception(f"API Error: {data.get('error', 'Unknown error')}")
-            
+
             return data
         except requests.exceptions.RequestException as e:
             raise Exception(f"API request failed: {e}")
-    
-    def get_options_contracts(self, underlying_ticker: str, 
+
+    def get_options_contracts(self, underlying_ticker: str,
                             contract_type: str = None,
                             expiration_date: str = None,
                             limit: int = 100) -> List[PolygonOptionsContract]:
         """
         Get options contracts for a given underlying ticker
-        
+
         Args:
             underlying_ticker: The underlying asset ticker (e.g., "NDX", "QQQ")
             contract_type: Type of contract ("call" or "put")
@@ -101,23 +101,23 @@ class PolygonAPIClient:
             limit: Number of results to return
         """
         endpoint = "/v3/reference/options/contracts"
-        
+
         params = {
             'underlying_ticker': underlying_ticker,
             'limit': limit,
             'order': 'desc',
             'sort': 'expiration_date'
         }
-        
+
         if contract_type:
             params['contract_type'] = contract_type
-        
+
         if expiration_date:
             params['expiration_date'] = expiration_date
-        
+
         response = self._make_request(endpoint, params)
         contracts = []
-        
+
         if 'results' in response:
             timestamp = datetime.now().isoformat()
             for contract_data in response['results']:
@@ -130,15 +130,15 @@ class PolygonAPIClient:
                     timestamp=timestamp
                 )
                 contracts.append(contract)
-        
+
         return contracts
-    
+
     def get_last_trade(self, ticker: str) -> Dict[str, Any]:
         """Get the last trade for an options contract"""
         endpoint = f"/v2/last/trade/{ticker}"
         return self._make_request(endpoint)
-    
-    def get_aggregates(self, ticker: str, 
+
+    def get_aggregates(self, ticker: str,
                       multiplier: int = 1,
                       timespan: str = 'day',
                       from_date: str = None,
@@ -149,29 +149,29 @@ class PolygonAPIClient:
             from_date = datetime.now().strftime('%Y-%m-%d')
         if not to_date:
             to_date = datetime.now().strftime('%Y-%m-%d')
-            
+
         endpoint = f"/v2/aggs/ticker/{ticker}/range/{multiplier}/{timespan}/{from_date}/{to_date}"
-        
+
         params = {
             'adjusted': 'true',
             'sort': 'desc',
             'limit': limit
         }
-        
+
         return self._make_request(endpoint, params)
 
 
 def load_polygon_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
     """
     Load Nasdaq-100 options data from Polygon.io API
-    
+
     Args:
         config: Configuration dictionary with:
             - api_key: Polygon.io API key (optional, uses env var if not provided)
-            - tickers: List of underlying tickers to fetch (default: ["NDX", "QQQ"])  
+            - tickers: List of underlying tickers to fetch (default: ["NDX", "QQQ"])
             - limit: Number of contracts per ticker (default: 20)
             - include_pricing: Whether to fetch pricing data (default: False due to rate limits)
-    
+
     Returns:
         Dict with standardized options data
     """
@@ -180,16 +180,16 @@ def load_polygon_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
     tickers = config.get('tickers', ['NDX', 'QQQ'])
     limit = config.get('limit', 20)
     include_pricing = config.get('include_pricing', False)
-    
+
     client = PolygonAPIClient(api_key=api_key)
-    
+
     all_contracts = []
     source_summary = {}
-    
+
     for ticker in tickers:
         try:
             contracts = client.get_options_contracts(ticker, limit=limit)
-            
+
             # Enhance with pricing data if requested and not rate limited
             if include_pricing and len(contracts) <= 5:  # Only for small requests
                 for contract in contracts[:3]:  # Limit to avoid rate limits
@@ -201,20 +201,20 @@ def load_polygon_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
                             contract.volume = trade_data.get('s')
                     except Exception:
                         pass  # Skip pricing if failed
-            
+
             all_contracts.extend(contracts)
             source_summary[ticker] = {
                 'contracts_found': len(contracts),
                 'status': 'success'
             }
-            
+
         except Exception as e:
             source_summary[ticker] = {
                 'contracts_found': 0,
                 'status': 'failed',
                 'error': str(e)
             }
-    
+
     # Convert to standard format
     options_data = []
     for contract in all_contracts:
@@ -233,7 +233,7 @@ def load_polygon_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
             'source': 'polygon_api',
             'timestamp': contract.timestamp
         })
-    
+
     return {
         'options_summary': {
             'total_contracts': len(all_contracts),
@@ -256,7 +256,7 @@ def load_polygon_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
         'metadata': {
             'api_source': 'polygon.io',
             'data_type': 'nasdaq_100_options',
-            'alternatives_to': 'NQ_futures_options', 
+            'alternatives_to': 'NQ_futures_options',
             'notes': 'NDX provides index exposure, QQQ provides ETF exposure to Nasdaq-100'
         }
     }
@@ -270,15 +270,15 @@ if __name__ == "__main__":
         'limit': 5,
         'include_pricing': False  # Set to False to avoid rate limits
     }
-    
+
     try:
         result = load_polygon_api_data(test_config)
         print(f"Loaded {result['options_summary']['total_contracts']} contracts")
         print(f"Sources: {list(result['source_summary'].keys())}")
-        
+
         # Save test result
         with open('polygon_test_result.json', 'w') as f:
             json.dump(result, f, indent=2, default=str)
-        
+
     except Exception as e:
         print(f"Test failed: {e}")

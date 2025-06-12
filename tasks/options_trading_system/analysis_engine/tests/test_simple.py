@@ -23,7 +23,7 @@ try:
     from risk_analysis.solution import run_risk_analysis
     from volume_shock_analysis.solution import analyze_volume_shocks
     print("✓ Core analysis modules loaded")
-    
+
     # Test analyze_expected_value with dummy data
     test_data = {
         "options_data": {
@@ -40,12 +40,12 @@ try:
         },
         "underlying_price": 21500
     }
-    
+
     result = analyze_expected_value(test_data)
     if result and "analysis_results" in result:
         print("✓ Expected value analysis working")
         print(f"  Found {len(result['analysis_results'])} opportunities")
-    
+
 except Exception as e:
     print(f"✗ Failed: {e}")
 
@@ -53,17 +53,17 @@ except Exception as e:
 print("\n2. Testing Integration Module...")
 try:
     from integration import AnalysisEngine
-    
+
     # Minimal config
     config = {
         "expected_value": {"enabled": True},
         "risk_analysis": {"enabled": False},
         "volume_shock": {"enabled": False}
     }
-    
+
     engine = AnalysisEngine(config)
     print("✓ AnalysisEngine created successfully")
-    
+
 except Exception as e:
     print(f"✗ Failed: {e}")
 
@@ -93,31 +93,31 @@ print("\n4. Testing Reorganized Structure...")
 try:
     # These should work with our new structure
     sys.path.append('strategies')
-    sys.path.append('monitoring') 
+    sys.path.append('monitoring')
     sys.path.append('phase4')
-    
+
     successes = []
-    
+
     # Try importing from different directories
     try:
         from volatility_crush_detector import VolatilityCrushDetector
         successes.append("volatility_crush_detector")
     except: pass
-    
+
     try:
         from performance_tracker import PerformanceTracker
         successes.append("performance_tracker")
     except: pass
-    
+
     try:
         from success_metrics_tracker import SuccessMetricsTracker
         successes.append("success_metrics_tracker")
     except: pass
-    
+
     print(f"✓ Successfully imported {len(successes)} modules")
     for module in successes:
         print(f"  - {module}")
-        
+
 except Exception as e:
     print(f"✗ Import test failed: {e}")
 

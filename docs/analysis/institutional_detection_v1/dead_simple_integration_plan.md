@@ -94,7 +94,7 @@ The synthesis will include:
 1. **Data Collection**: Options chain with volume, OI, prices
 2. **Parallel Analysis**: All 4 strategies run simultaneously
 3. **Signal Detection**: DEAD Simple finds institutional footprints
-4. **Prioritization**: 
+4. **Prioritization**:
    - EXTREME signals (>50x) → IMMEDIATE execution
    - Alignment with NQ EV → MAXIMUM confidence
 5. **Trade Execution**: Follow institutional money with proper risk management

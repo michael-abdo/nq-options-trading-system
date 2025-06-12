@@ -55,21 +55,21 @@ for contract in contracts:
         put_oi = contract.get('put_open_interest', 0)
         call_price = contract.get('call_mark_price', 0)
         put_price = contract.get('put_mark_price', 0)
-        
+
         if call_oi > 0 or put_oi > 0:
             call_risk = call_oi * call_price * 20
             put_risk = put_oi * put_price * 20
-            
+
             total_call_risk += call_risk
             total_put_risk += put_risk
-            
+
             position = "ABOVE" if strike > current_price else "BELOW"
             distance = strike - current_price
-            
+
             print(f'Strike {strike} ({distance:+.0f} {position}):')
             print(f'  Calls: {call_oi} OI @ ${call_price:.2f} = ${call_risk:,.0f} risk')
             print(f'  Puts: {put_oi} OI @ ${put_price:.2f} = ${put_risk:,.0f} risk')
-            
+
             if call_risk > put_risk:
                 print(f'  -> Bulls have more risk')
             elif put_risk > call_risk:
@@ -95,16 +95,16 @@ else:
     print(f'Risk Ratio: {ratio:.1f}:1 (Bears:Bulls)')
     print('\nIMPLICATIONS:')
     print('- Bears will defend this area')
-    print('- This level acts as RESISTANCE') 
+    print('- This level acts as RESISTANCE')
     print('- Price likely to reject if tested')
 
 # Overall market context
 print('\n' + '=' * 60)
 print('OVERALL MARKET CONTEXT:')
 
-total_market_call_risk = sum(c.get('call_open_interest', 0) * c.get('call_mark_price', 0) * 20 
+total_market_call_risk = sum(c.get('call_open_interest', 0) * c.get('call_mark_price', 0) * 20
                             for c in contracts)
-total_market_put_risk = sum(c.get('put_open_interest', 0) * c.get('put_mark_price', 0) * 20 
+total_market_put_risk = sum(c.get('put_open_interest', 0) * c.get('put_mark_price', 0) * 20
                            for c in contracts)
 
 if total_market_put_risk > total_market_call_risk:

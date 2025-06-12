@@ -20,11 +20,11 @@ from data_normalizer.solution import normalize_loaded_data
 
 class DataIngestionPipeline:
     """Integrated data ingestion pipeline combining all data sources"""
-    
+
     def __init__(self, config: Dict[str, Any]):
         """
         Initialize pipeline with configuration
-        
+
         Args:
             config: Dict with source configurations
         """
@@ -36,15 +36,15 @@ class DataIngestionPipeline:
             "created_at": datetime.now().isoformat(),
             "sources_configured": list(config.keys())
         }
-    
+
     def load_all_sources(self) -> Dict[str, Any]:
         """Load data from all configured sources using registry-driven approach"""
         results = {}
-        
+
         # Import registry for dynamic source loading
         from sources_registry import get_sources_registry, load_first_available_source
         registry = get_sources_registry()
-        
+
         # Handle both old-style config and new-style config
         if "data_sources" in self.config:
             # New configuration format with enabled/disabled sources
@@ -58,18 +58,18 @@ class DataIngestionPipeline:
                 sys.path.insert(0, parent_dir)
                 from config_manager import get_config_manager
             config_manager = get_config_manager()
-            
+
             # Get all enabled sources and their configs
             enabled_sources = config_manager.get_enabled_sources(self.config)
             print(f"🔧 Enabled sources: {enabled_sources}")
-            
+
             # Build config dictionary for priority-based loading
             config_by_source = {}
             for source_name in enabled_sources:
                 source_config = config_manager.get_source_config(self.config, source_name)
                 source_config['enabled'] = True
                 config_by_source[source_name] = source_config
-            
+
             # Also add disabled sources with enabled=False for complete picture
             all_sources = self.config.get("data_sources", {})
             for source_name, source_info in all_sources.items():
@@ -77,12 +77,12 @@ class DataIngestionPipeline:
                     source_config = source_info.get("config", {})
                     source_config['enabled'] = source_info.get("enabled", False)
                     config_by_source[source_name] = source_config
-            
+
             # Try to load using priority system
             try:
                 print("\n🎯 Loading data using priority-based system...")
                 source_data = load_first_available_source(config_by_source, log_attempts=True)
-                
+
                 # Find which source succeeded
                 if isinstance(source_data, dict):
                     # Try different ways to find the source name
@@ -93,12 +93,12 @@ class DataIngestionPipeline:
                     )
                 else:
                     successful_source = 'unknown'
-                
+
                 # Process the successful result
                 results[successful_source] = self._process_source_result(successful_source, source_data)
                 results['_primary_source'] = successful_source
                 results['_loading_method'] = 'priority_based'
-                
+
                 # Mark other sources as skipped
                 for source_name in config_by_source:
                     if source_name != successful_source and source_name not in results:
@@ -106,7 +106,7 @@ class DataIngestionPipeline:
                             "status": "skipped",
                             "reason": f"Using higher priority source: {successful_source}"
                         }
-                
+
             except Exception as e:
                 import traceback
                 print(f"❌ Priority-based loading failed: {e}")
@@ -115,7 +115,7 @@ class DataIngestionPipeline:
                     print("Traceback:")
                     traceback.print_exc()
                 print("⚠️  Falling back to individual source loading...")
-                
+
                 # Fallback to trying each source individually
                 for source_name in enabled_sources:
                     try:
@@ -125,11 +125,11 @@ class DataIngestionPipeline:
                                 "error": f"Source not available: {source_name}"
                             }
                             continue
-                        
+
                         source_config = config_manager.get_source_config(self.config, source_name)
                         source_data = registry.load_source(source_name, source_config)
                         results[source_name] = self._process_source_result(source_name, source_data)
-                        
+
                     except Exception as e:
                         print(f"❌ Failed to load {source_name}: {e}")
                         results[source_name] = {
@@ -139,34 +139,34 @@ class DataIngestionPipeline:
         else:
             # Legacy configuration format - maintain backward compatibility
             self._load_sources_legacy_format(results, registry)
-        
+
         # Separate metadata from actual sources before storing
         metadata = {}
         actual_sources = {}
-        
+
         for key, value in results.items():
             if key.startswith('_'):
                 # This is metadata, not a source
                 metadata[key] = value
             else:
                 actual_sources[key] = value
-        
+
         self.sources = actual_sources
         self.pipeline_metadata.update(metadata)
-        
+
         # Return both sources and metadata
         return results
-    
+
     def _process_source_result(self, source_name: str, source_data: Dict[str, Any]) -> Dict[str, Any]:
         """Process raw source data into standard pipeline format"""
-        
+
         # Handle different source data formats
         if isinstance(source_data, dict) and "options_summary" in source_data:
             # Standard format
             total_contracts = source_data["options_summary"]["total_contracts"]
             quality_metrics = source_data.get("quality_metrics", {})
         elif isinstance(source_data, dict) and "raw_data" in source_data:
-            # Live API format  
+            # Live API format
             total_contracts = source_data.get("total_contracts", 0)
             quality_metrics = {
                 "data_source": "live",
@@ -190,25 +190,25 @@ class DataIngestionPipeline:
                 "volume_coverage": 0.0,
                 "oi_coverage": 0.0
             }
-        
+
         return {
             "status": "success",
             "contracts": total_contracts,
             "quality": quality_metrics,
             "data": source_data
         }
-    
+
     def _load_sources_legacy_format(self, results: Dict[str, Any], registry):
         """Load sources using legacy configuration format for backward compatibility"""
-        
+
         # Legacy format: check for each source individually using registry
         legacy_source_map = {
             "barchart": "barchart",
-            "tradovate": "tradovate", 
+            "tradovate": "tradovate",
             "polygon": "polygon",
             "databento": "databento"
         }
-        
+
         for config_key, source_name in legacy_source_map.items():
             if config_key in self.config:
                 try:
@@ -225,23 +225,23 @@ class DataIngestionPipeline:
                         "status": "failed",
                         "error": str(e)
                     }
-    
+
     def normalize_pipeline_data(self) -> Dict[str, Any]:
         """Normalize all loaded data into standard format"""
         if not self.sources:
             raise ValueError("No data sources loaded. Call load_all_sources() first.")
-        
+
         # Use the data_normalizer to normalize already loaded sources
         normalized_result = normalize_loaded_data(self.sources)
-        
+
         self.normalized_data = normalized_result
         return normalized_result
-    
+
     def get_pipeline_summary(self) -> Dict[str, Any]:
         """Get summary of the entire data pipeline"""
         if not self.normalized_data:
             raise ValueError("No normalized data available. Run pipeline first.")
-        
+
         summary = {
             "pipeline_metadata": self.pipeline_metadata,
             "sources_loaded": len([s for s in self.sources.values() if isinstance(s, dict) and s.get("status") == "success"]),
@@ -250,7 +250,7 @@ class DataIngestionPipeline:
             "data_quality": self.normalized_data["quality_metrics"],
             "timestamp": datetime.now().isoformat()
         }
-        
+
         # Add per-source summaries
         summary["source_details"] = {}
         for source_name, source_data in self.sources.items():
@@ -260,20 +260,20 @@ class DataIngestionPipeline:
                     "volume_coverage": source_data.get("quality", {}).get("volume_coverage", 0.0),
                     "oi_coverage": source_data.get("quality", {}).get("oi_coverage", 0.0)
                 }
-        
+
         return summary
-    
+
     def run_full_pipeline(self) -> Dict[str, Any]:
         """Execute the complete data ingestion pipeline"""
         # Step 1: Load all sources
         load_results = self.load_all_sources()
-        
+
         # Step 2: Normalize data
         normalized = self.normalize_pipeline_data()
-        
+
         # Step 3: Get summary
         summary = self.get_pipeline_summary()
-        
+
         return {
             "pipeline_status": "success",
             "load_results": load_results,
@@ -287,10 +287,10 @@ class DataIngestionPipeline:
 def create_data_ingestion_pipeline(config: Dict[str, Any]) -> DataIngestionPipeline:
     """
     Create and return configured data ingestion pipeline
-    
+
     Args:
         config: Configuration for data sources
-        
+
     Returns:
         Configured DataIngestionPipeline instance
     """
@@ -300,10 +300,10 @@ def create_data_ingestion_pipeline(config: Dict[str, Any]) -> DataIngestionPipel
 def run_data_ingestion(config: Dict[str, Any]) -> Dict[str, Any]:
     """
     Run the complete data ingestion pipeline
-    
+
     Args:
         config: Configuration for data sources
-        
+
     Returns:
         Dict with pipeline results
     """

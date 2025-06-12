@@ -6,7 +6,7 @@ Clean, simple interface to the new NQ Options Trading System
 Usage:
   python3 run_pipeline.py                    # Run with Databento NQ options data
   python3 run_pipeline.py [DEPRECATED]       # Contract args no longer used (Databento auto-fetches)
-  
+
 Note: Now uses Databento for Standard E-mini NQ options (20x multiplier)
 """
 
@@ -29,24 +29,24 @@ def parse_arguments():
         epilog="""
 Examples:
   python3 run_pipeline.py                    # Run with Databento NQ options (Standard E-mini)
-  
+
 Note: Contract arguments are deprecated. Databento automatically fetches
       current Standard E-mini NQ options data ($20 per point).
         """
     )
-    
+
     parser.add_argument(
-        'contract', 
-        nargs='?', 
+        'contract',
+        nargs='?',
         help='Options contract symbol (e.g., MC7M25, MC1M25). If not provided, uses today\'s EOD contract.'
     )
-    
+
     parser.add_argument(
-        '--contract', 
+        '--contract',
         dest='contract_flag',
         help='Options contract symbol (alternative syntax)'
     )
-    
+
     return parser.parse_args()
 
 def get_target_contract(args):
@@ -63,22 +63,22 @@ def main():
     """Single entry point for the pipeline system"""
     args = parse_arguments()
     target_contract = get_target_contract(args)
-    
+
     print("🚀 NQ Options Hierarchical Pipeline Analysis Framework")
     print("=" * 60)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    
+
     print("Primary Data Source: Databento (Standard E-mini NQ Options)")
     print()
-    
+
     try:
         # Import configuration manager
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'tasks', 'options_trading_system'))
         from config_manager import get_config_manager
-        
+
         # Use configuration manager with databento_only profile
         config_manager = get_config_manager()
-        
+
         # Create standard profiles if they don't exist
         try:
             config = config_manager.load_profile("databento_only")
@@ -88,25 +88,25 @@ def main():
             config_manager.create_standard_profiles()
             config = config_manager.load_profile("databento_only")
             print("📋 Created and loaded 'databento_only' configuration profile")
-        
+
         # Validate configuration
         validation_issues = config_manager.validate_config(config)
         if validation_issues:
             print("⚠️ Configuration validation issues:")
             for issue in validation_issues:
                 print(f"   - {issue}")
-        
+
         # Show configuration summary
         summary = config_manager.get_config_summary(config)
         print(f"📊 Configuration: {len(summary['enabled_sources'])} sources enabled")
         for source in summary['enabled_sources']:
             print(f"   ✓ {source}")
-        
+
         # The config is already complete from config_manager
-        
+
         # Run the complete pipeline system
         result = run_complete_nq_trading_system(config)
-        
+
         if result['status'] == 'success':
             # Show the key result
             if 'system_summary' in result and 'trading_summary' in result['system_summary']:
@@ -125,11 +125,11 @@ def main():
                 print(f"\n✅ PIPELINE COMPLETE: {result['status']}")
         else:
             print(f"\n❌ PIPELINE FAILED: {result.get('error', 'Unknown error')}")
-            
+
     except Exception as e:
         print(f"\n❌ PIPELINE ERROR: {str(e)}")
         return 1
-    
+
     print()
     print("=" * 60)
     return 0

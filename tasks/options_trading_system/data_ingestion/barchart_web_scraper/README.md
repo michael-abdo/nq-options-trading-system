@@ -111,7 +111,7 @@ The system automatically determines the correct EOD contract based on the curren
 
 Each run generates timestamped files:
 - `web_data_YYYYMMDD_HHMMSS.json` - Scraped web data
-- `api_data_YYYYMMDD_HHMMSS.json` - API response data  
+- `api_data_YYYYMMDD_HHMMSS.json` - API response data
 - `comparison_YYYYMMDD_HHMMSS.json` - Detailed comparison analysis
 
 ### Screenshots
@@ -291,7 +291,7 @@ comparison = comparator.compare_data_sources(web_data, api_data)
 
 **Current Validation Results**:
 - ✅ All unit tests passing
-- ✅ 1000+ contract processing capability  
+- ✅ 1000+ contract processing capability
 - ✅ Sub-10 second comparison analysis
 - ✅ Comprehensive error handling
 - ✅ Type-safe data structures

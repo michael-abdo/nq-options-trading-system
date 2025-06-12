@@ -2,15 +2,15 @@
 
 ## Summary
 
-**Date**: June 6, 2025  
-**Status**: ✅ All legacy files successfully archived  
-**Total Files Archived**: 34 files  
+**Date**: June 6, 2025
+**Status**: ✅ All legacy files successfully archived
+**Total Files Archived**: 34 files
 
 ## Archive Contents
 
 ### 📁 `/archive/legacy_scripts/` - 8 files
 - ✅ analyze_nearby_strikes.py
-- ✅ analyze_strike.py  
+- ✅ analyze_strike.py
 - ✅ fast_run.py
 - ✅ performance_test.py
 - ✅ quick_risk_check.py
@@ -48,7 +48,7 @@ After cleanup, the root directory will contain only:
 
 ```
 /Users/Mike/trading/algos/EOD/
-├── CLAUDE.md                    # Project instructions  
+├── CLAUDE.md                    # Project instructions
 ├── README.md                    # Main documentation
 ├── archive/                     # All legacy files preserved
 ├── data/                        # Market data
@@ -71,7 +71,7 @@ The **Hierarchical Pipeline Analysis Framework** is now ready:
 
 All archived files can be accessed at:
 - `archive/legacy_scripts/[filename]`
-- `archive/legacy_coordination/[filename]`  
+- `archive/legacy_coordination/[filename]`
 - `archive/legacy_outputs/[filename]`
 
 The archive is complete and the transition is ready! 🎉

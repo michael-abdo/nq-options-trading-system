@@ -56,7 +56,7 @@ class ConfigProfile:
 class ConfigManager:
     """
     Enhanced configuration manager for IFD v1.0 vs v3.0 A/B testing
-    
+
     Features:
     - Profile-based configuration management
     - A/B testing support with parallel execution
@@ -64,32 +64,32 @@ class ConfigManager:
     - Performance comparison settings
     - Backward compatibility
     """
-    
+
     def __init__(self, config_dir: str = "config/profiles"):
         """
         Initialize configuration manager
-        
+
         Args:
             config_dir: Directory to store configuration profiles
         """
         self.config_dir = config_dir
         self.profiles: Dict[str, ConfigProfile] = {}
-        
+
         # Ensure config directory exists
         os.makedirs(config_dir, exist_ok=True)
-        
+
         # Load existing profiles
         self._load_profiles()
-        
+
         # Create default profiles if none exist
         if not self.profiles:
             self._create_default_profiles()
-    
+
     def _load_profiles(self):
         """Load configuration profiles from disk"""
         if not os.path.exists(self.config_dir):
             return
-            
+
         for filename in os.listdir(self.config_dir):
             if filename.endswith('.json'):
                 filepath = os.path.join(self.config_dir, filename)
@@ -109,11 +109,11 @@ class ConfigManager:
                         self.profiles[profile.name] = profile
                 except Exception as e:
                     print(f"Warning: Failed to load profile {filename}: {e}")
-    
+
     def _save_profile(self, profile: ConfigProfile):
         """Save configuration profile to disk"""
         filepath = os.path.join(self.config_dir, f"{profile.name}.json")
-        
+
         data = {
             'name': profile.name,
             'description': profile.description,
@@ -124,13 +124,13 @@ class ConfigManager:
             'created_at': profile.created_at.isoformat(),
             'last_modified': profile.last_modified.isoformat()
         }
-        
+
         with open(filepath, 'w') as f:
             json.dump(data, f, indent=2)
-    
+
     def _create_default_profiles(self):
         """Create default configuration profiles"""
-        
+
         # v1.0 Production Profile
         v1_production = ConfigProfile(
             name="ifd_v1_production",
@@ -165,7 +165,7 @@ class ConfigManager:
             created_at=datetime.now(),
             last_modified=datetime.now()
         )
-        
+
         # v3.0 Production Profile
         v3_production = ConfigProfile(
             name="ifd_v3_production",
@@ -208,7 +208,7 @@ class ConfigManager:
             created_at=datetime.now(),
             last_modified=datetime.now()
         )
-        
+
         # A/B Testing Profile
         ab_testing = ConfigProfile(
             name="ab_testing_production",
@@ -248,7 +248,7 @@ class ConfigManager:
             created_at=datetime.now(),
             last_modified=datetime.now()
         )
-        
+
         # Paper Trading Profile
         paper_trading = ConfigProfile(
             name="paper_trading_validation",
@@ -273,7 +273,7 @@ class ConfigManager:
                 },
                 "v3_config": {
                     **v3_production.config["institutional_flow_v3"],
-                    # Adjusted for paper trading  
+                    # Adjusted for paper trading
                     "pressure_thresholds": {
                         "min_pressure_ratio": 1.8,  # Slightly looser
                         "min_volume_concentration": 0.35,
@@ -306,7 +306,7 @@ class ConfigManager:
             created_at=datetime.now(),
             last_modified=datetime.now()
         )
-        
+
         # Conservative Testing Profile
         conservative_testing = ConfigProfile(
             name="conservative_testing",
@@ -344,24 +344,24 @@ class ConfigManager:
             created_at=datetime.now(),
             last_modified=datetime.now()
         )
-        
+
         # Save all default profiles
         for profile in [v1_production, v3_production, ab_testing, paper_trading, conservative_testing]:
             self.profiles[profile.name] = profile
             self._save_profile(profile)
-    
+
     def get_profile(self, name: str) -> Optional[ConfigProfile]:
         """Get configuration profile by name"""
         return self.profiles.get(name)
-    
+
     def list_profiles(self) -> List[str]:
         """List all available configuration profiles"""
         return list(self.profiles.keys())
-    
+
     def create_profile(self, name: str, description: str, algorithm_version: AlgorithmVersion,
                       data_mode: DataMode, testing_mode: TestingMode, config: Dict[str, Any]) -> ConfigProfile:
         """Create a new configuration profile"""
-        
+
         profile = ConfigProfile(
             name=name,
             description=description,
@@ -372,44 +372,44 @@ class ConfigManager:
             created_at=datetime.now(),
             last_modified=datetime.now()
         )
-        
+
         self.profiles[name] = profile
         self._save_profile(profile)
-        
+
         return profile
-    
+
     def update_profile(self, name: str, **kwargs) -> Optional[ConfigProfile]:
         """Update an existing configuration profile"""
-        
+
         if name not in self.profiles:
             return None
-        
+
         profile = self.profiles[name]
-        
+
         # Update fields
         for key, value in kwargs.items():
             if hasattr(profile, key):
                 setattr(profile, key, value)
-        
+
         profile.last_modified = datetime.now()
-        
+
         self._save_profile(profile)
         return profile
-    
+
     def get_analysis_config(self, profile_name: str) -> Dict[str, Any]:
         """
         Get analysis configuration for the analysis engine
-        
+
         Args:
             profile_name: Name of the configuration profile
-            
+
         Returns:
             Dict compatible with run_analysis_engine()
         """
         profile = self.get_profile(profile_name)
         if not profile:
             raise ValueError(f"Profile '{profile_name}' not found")
-        
+
         # Base configuration with existing analyses
         analysis_config = {
             "expected_value": {
@@ -439,45 +439,45 @@ class ConfigManager:
                 "validation_mode": True
             }
         }
-        
+
         # Add algorithm-specific configuration
         if profile.algorithm_version == AlgorithmVersion.V1_0:
             analysis_config["dead_simple"] = profile.config.get("dead_simple", {})
-            
+
         elif profile.algorithm_version == AlgorithmVersion.V3_0:
             analysis_config["institutional_flow_v3"] = profile.config.get("institutional_flow_v3", {})
-            
+
         elif profile.algorithm_version == AlgorithmVersion.BOTH:
             # A/B testing mode - include both
             analysis_config["dead_simple"] = profile.config.get("v1_config", {})
             analysis_config["institutional_flow_v3"] = profile.config.get("v3_config", {})
             analysis_config["ab_testing"] = profile.config.get("ab_testing", {})
-        
+
         return analysis_config
-    
+
     def get_data_config(self, profile_name: str) -> Dict[str, Any]:
         """
         Get data configuration for the data ingestion pipeline
-        
+
         Args:
             profile_name: Name of the configuration profile
-            
+
         Returns:
             Dict compatible with data ingestion pipeline
         """
         profile = self.get_profile(profile_name)
         if not profile:
             raise ValueError(f"Profile '{profile_name}' not found")
-        
+
         data_sources = profile.config.get("data_sources", {})
-        
+
         # Base data configuration
         data_config = {
             "mode": data_sources.get("mode", "real_time"),
             "primary_sources": data_sources.get("primary", ["barchart"]),
             "fallback_sources": data_sources.get("fallback", [])
         }
-        
+
         # Add mode-specific configuration
         if profile.data_mode == DataMode.HISTORICAL:
             date_range = data_sources.get("date_range", {})
@@ -487,34 +487,34 @@ class ConfigManager:
                 "end_date": date_range.get("end"),
                 "simulation_speed": data_sources.get("simulation_speed", 1.0)
             })
-        
+
         elif profile.data_mode == DataMode.REAL_TIME:
             data_config.update({
                 "real_time_mode": True,
                 "mbo_streaming": data_sources.get("mbo_streaming", False)
             })
-        
+
         return data_config
-    
-    def create_ab_testing_config(self, v1_profile: str, v3_profile: str, 
+
+    def create_ab_testing_config(self, v1_profile: str, v3_profile: str,
                                 testing_duration_hours: int = 24) -> ConfigProfile:
         """
         Create A/B testing configuration from existing v1.0 and v3.0 profiles
-        
+
         Args:
             v1_profile: Name of v1.0 profile
-            v3_profile: Name of v3.0 profile  
+            v3_profile: Name of v3.0 profile
             testing_duration_hours: Duration for A/B testing
-            
+
         Returns:
             New A/B testing profile
         """
         v1_config = self.get_profile(v1_profile)
         v3_config = self.get_profile(v3_profile)
-        
+
         if not v1_config or not v3_config:
             raise ValueError("Both v1.0 and v3.0 profiles must exist")
-        
+
         ab_config = {
             "ab_testing": {
                 "enabled": True,
@@ -534,9 +534,9 @@ class ConfigManager:
                 "mode": "real_time"
             }
         }
-        
+
         profile_name = f"ab_test_{v1_profile}_vs_{v3_profile}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        
+
         return self.create_profile(
             name=profile_name,
             description=f"A/B Testing: {v1_profile} vs {v3_profile}",
@@ -561,7 +561,7 @@ def load_profile_config(profile_name: str) -> Dict[str, Any]:
     return manager.get_analysis_config(profile_name)
 
 
-def create_ab_test(v1_profile: str = "ifd_v1_production", 
+def create_ab_test(v1_profile: str = "ifd_v1_production",
                   v3_profile: str = "ifd_v3_production") -> str:
     """Create A/B testing configuration and return profile name"""
     manager = get_config_manager()
@@ -572,17 +572,17 @@ def create_ab_test(v1_profile: str = "ifd_v1_production",
 if __name__ == "__main__":
     # Example usage and testing
     manager = ConfigManager()
-    
+
     print("Available profiles:")
     for profile_name in manager.list_profiles():
         profile = manager.get_profile(profile_name)
         print(f"  - {profile_name}: {profile.description}")
         print(f"    Algorithm: {profile.algorithm_version.value}, Mode: {profile.data_mode.value}")
-    
+
     # Test A/B configuration creation
     ab_profile = manager.create_ab_testing_config("ifd_v1_production", "ifd_v3_production")
     print(f"\nCreated A/B testing profile: {ab_profile.name}")
-    
+
     # Test configuration retrieval
     config = manager.get_analysis_config("ifd_v3_production")
     print(f"\nv3.0 analysis config keys: {list(config.keys())}")

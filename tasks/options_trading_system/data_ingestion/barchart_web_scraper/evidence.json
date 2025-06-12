@@ -35,7 +35,7 @@
       ],
       "metrics": [
         "Web data completeness percentage",
-        "API data completeness percentage", 
+        "API data completeness percentage",
         "Overall similarity score",
         "Contract count differences",
         "Price discrepancy analysis"
@@ -66,7 +66,7 @@
   "validation_framework": {
     "unit_tests": [
       "Options contract parsing validation",
-      "Invalid data handling tests", 
+      "Invalid data handling tests",
       "Data comparison logic verification",
       "Quality metrics calculation tests",
       "Serialization/deserialization tests"
@@ -101,7 +101,7 @@
   "data_comparison_capabilities": {
     "comparison_metrics": [
       "Contract count differences",
-      "Underlying price discrepancies", 
+      "Underlying price discrepancies",
       "Individual field-level comparisons",
       "Missing strike identification",
       "Data completeness scoring"

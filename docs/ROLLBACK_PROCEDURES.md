@@ -219,12 +219,12 @@ def check_system_health():
         'performance': check_performance(),
         'errors': check_error_rate()
     }
-    
+
     failed = [k for k, v in checks.items() if not v]
     if failed:
         print(f"❌ Health check failed: {failed}")
         return False
-    
+
     print("✅ System healthy")
     return True
 

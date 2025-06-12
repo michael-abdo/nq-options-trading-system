@@ -77,7 +77,7 @@ print("\n5. Testing Configuration Management...")
 try:
     from config_manager import ConfigManager
     config_mgr = ConfigManager()
-    
+
     # Test loading a configuration
     config = config_mgr.load_config("ifd_v3_production")
     if config:
@@ -96,7 +96,7 @@ except Exception as e:
 print("\n6. Testing Integration Engine...")
 try:
     from integration import AnalysisEngine
-    
+
     # Create minimal test config
     test_config = {
         "expected_value": {"enabled": True},
@@ -104,7 +104,7 @@ try:
         "volume_shock": {"enabled": False},
         "institutional_flow_v3": {"enabled": True}
     }
-    
+
     engine = AnalysisEngine(test_config)
     print("✓ Analysis engine created successfully")
     test_results.append(("Integration Engine", True, None))

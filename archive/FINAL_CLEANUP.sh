@@ -18,7 +18,7 @@ echo ""
 # List files that will be removed
 echo "Legacy Scripts:"
 echo "  - analyze_nearby_strikes.py"
-echo "  - analyze_strike.py" 
+echo "  - analyze_strike.py"
 echo "  - fast_run.py"
 echo "  - performance_test.py"
 echo "  - quick_risk_check.py"
@@ -38,7 +38,7 @@ echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo ""
     echo "🗑️  Removing legacy files..."
-    
+
     # Remove legacy scripts
     rm -f analyze_nearby_strikes.py
     rm -f analyze_strike.py
@@ -48,11 +48,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     rm -f run_trading_system.py
     rm -f simple_run.py
     rm -f cleanup_old_docs.sh
-    
+
     # Remove legacy directories
     rm -rf coordination/
     rm -rf outputs/
-    
+
     echo "✅ Cleanup complete!"
     echo ""
     echo "📁 Remaining files in root:"
@@ -60,11 +60,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo ""
     echo "📦 All legacy files preserved in archive/"
     echo "    - archive/legacy_scripts/"
-    echo "    - archive/legacy_coordination/" 
+    echo "    - archive/legacy_coordination/"
     echo "    - archive/legacy_outputs/"
     echo ""
     echo "🚀 Ready for new Hierarchical Pipeline Framework!"
-    
+
 else
     echo ""
     echo "❌ Cleanup cancelled. Files remain unchanged."

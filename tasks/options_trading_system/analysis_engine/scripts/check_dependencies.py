@@ -22,13 +22,13 @@ def main():
     print("=" * 60)
     print("ANALYSIS ENGINE DEPENDENCY CHECK")
     print("=" * 60)
-    
+
     # Define dependencies and their features
     dependencies = {
         'pandas': {
             'features': [
                 'Advanced data analysis',
-                'DataFrame operations', 
+                'DataFrame operations',
                 'Efficient data aggregation'
             ],
             'fallback': 'Basic dict/list operations',
@@ -177,35 +177,35 @@ def main():
             'category': 'Development'
         }
     }
-    
+
     # Check each dependency
     installed = []
     missing = []
     categories = {}
-    
+
     print("\nChecking dependencies...\n")
-    
+
     # Group by category
     for module, info in dependencies.items():
         category = info.get('category', 'Other')
         if category not in categories:
             categories[category] = []
         categories[category].append((module, info))
-    
+
     # Display by category
-    for category in ['Phase 4 Core', 'Enhanced Visualization', 'Data Validation', 
+    for category in ['Phase 4 Core', 'Enhanced Visualization', 'Data Validation',
                      'Performance Monitoring', 'Database Enhancement', 'API Enhancement',
                      'Logging Enhancement', 'Testing', 'Development']:
         if category not in categories:
             continue
-            
+
         print(f"\n{'='*60}")
         print(f"{category.upper()}")
         print(f"{'='*60}")
-        
+
         for module, info in categories[category]:
             installed_status, version = check_module(module)
-            
+
             if installed_status:
                 installed.append(module)
                 print(f"✅ {module:<20} {version:<10} - INSTALLED")
@@ -217,14 +217,14 @@ def main():
                 print(f"❌ {module:<20} {'N/A':<10} - NOT INSTALLED")
                 print(f"   Fallback: {info['fallback']}")
             print()
-    
+
     # Summary
     print("=" * 60)
     print("SUMMARY")
     print("=" * 60)
     print(f"Installed: {len(installed)}/{len(dependencies)}")
     print(f"Missing:   {len(missing)}/{len(dependencies)}")
-    
+
     # Feature availability
     print("\n🚀 SYSTEM STATUS:")
     if len(installed) == len(dependencies):
@@ -236,40 +236,40 @@ def main():
         print("🔧 Mixed mode - Some enhanced features available")
         print(f"   Enhanced: {', '.join(installed)}")
         print(f"   Fallback: {', '.join(missing)}")
-    
+
     # Installation instructions
     if missing:
         print("\n📦 INSTALLATION OPTIONS:")
-        
+
         # Check which are Phase 4 core
         phase4_missing = [m for m in missing if any(
-            mod == m and info.get('category') == 'Phase 4 Core' 
+            mod == m and info.get('category') == 'Phase 4 Core'
             for mod, info in dependencies.items()
         )]
-        
+
         if phase4_missing:
             print("\n1. Install Phase 4 core dependencies:")
             print("   pip install -r requirements/phase4.txt")
-        
+
         print("\n2. Install ALL optional dependencies:")
         print("   pip install -r requirements/optional.txt")
-        
+
         print("\n3. Install specific packages:")
         for module in missing[:5]:  # Show first 5
             print(f"   pip install {module}")
         if len(missing) > 5:
             print(f"   ... and {len(missing)-5} more")
-    
+
     print("\n✨ NOTE: The system works perfectly without optional dependencies!")
     print("Optional packages only enhance functionality, not core operations.")
-    
+
     # Detailed status
     print("\n📊 DEPENDENCY CATEGORIES:")
     for category in ['Phase 4 Core', 'Enhanced Visualization', 'Testing', 'Development']:
         cat_mods = [m for m, i in dependencies.items() if i.get('category') == category]
         cat_installed = [m for m in cat_mods if m in installed]
         print(f"   {category}: {len(cat_installed)}/{len(cat_mods)} installed")
-    
+
     return 0 if len(installed) >= len(dependencies) // 2 else 1
 
 if __name__ == "__main__":

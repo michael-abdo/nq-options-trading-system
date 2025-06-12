@@ -2,14 +2,14 @@
 
 ## Cleanup Completed
 
-**Date**: June 6, 2025  
+**Date**: June 6, 2025
 **Reason**: Transition to Hierarchical Pipeline Analysis Framework
 
 ## Files Archived
 
 ### 📁 `/archive/legacy_scripts/` (8 files)
 - `analyze_nearby_strikes.py` - Strike range analysis tool
-- `analyze_strike.py` - Individual strike risk analysis  
+- `analyze_strike.py` - Individual strike risk analysis
 - `fast_run.py` - Fast execution with parallel processing
 - `performance_test.py` - Performance benchmarking
 - `quick_risk_check.py` - Quick risk assessment utility
@@ -32,7 +32,7 @@
 - `CLAUDE.md` - Project instructions
 - `README.md` - Main documentation
 
-### ✅ Active Directories  
+### ✅ Active Directories
 - `data/` - Market data files
 - `docs/` - Current documentation (including new framework docs)
 - `tasks/options_trading_system/` - Active pipeline system
@@ -45,7 +45,7 @@
 
 **Active Framework**: `/tasks/options_trading_system/`
 - Pipeline framework with opportunity data structure
-- Configuration-driven analysis strategies  
+- Configuration-driven analysis strategies
 - Modular analysis interface
 - Hierarchical enrichment and filtering
 
@@ -65,7 +65,7 @@ archive/
 ├── legacy_scripts/
 │   ├── README.md
 │   └── [8 archived scripts]
-├── legacy_coordination/ 
+├── legacy_coordination/
 │   ├── README.md
 │   └── [2 coordination files]
 └── legacy_outputs/
@@ -78,7 +78,7 @@ archive/
 ```bash
 # Check archive completeness
 ls -la archive/legacy_scripts/
-ls -la archive/legacy_coordination/  
+ls -la archive/legacy_coordination/
 ls -la archive/legacy_outputs/
 
 # Verify root cleanup

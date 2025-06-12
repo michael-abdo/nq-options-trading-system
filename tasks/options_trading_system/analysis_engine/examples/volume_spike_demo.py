@@ -9,16 +9,16 @@ from datetime import datetime
 
 def run_demo():
     """Run demonstration of DEAD Simple strategy"""
-    
+
     print("=" * 60)
     print("DEAD SIMPLE STRATEGY DEMO")
     print("Following Institutional Money Flow")
     print("=" * 60)
-    
+
     # Current NQ price
     current_price = 21870
     print(f"\nCurrent NQ Price: ${current_price:,.2f}")
-    
+
     # Realistic options data (based on actual institutional flow patterns)
     options_data = [
         # EXTREME signal - 55x ratio, $1.95M flow
@@ -33,7 +33,7 @@ def run_demo():
         # Very high signal - 35x ratio, $1M flow
         {
             'strike': 21850,
-            'optionType': 'PUT', 
+            'optionType': 'PUT',
             'volume': 1750,
             'openInterest': 50,
             'lastPrice': 30.0,
@@ -76,18 +76,18 @@ def run_demo():
             'expirationDate': '2024-01-10'
         }
     ]
-    
+
     # Initialize analyzer
     analyzer = DeadSimpleVolumeSpike()
-    
+
     # Find institutional flow
     print("\n🔍 Scanning for Institutional Flow...")
     print("-" * 50)
-    
+
     signals = analyzer.find_institutional_flow(options_data, current_price)
-    
+
     print(f"\n✅ Found {len(signals)} Institutional Signals:\n")
-    
+
     # Display each signal
     for i, signal in enumerate(signals, 1):
         print(f"{i}. {signal.strike}{signal.option_type[0]} - {signal.confidence}")
@@ -95,28 +95,28 @@ def run_demo():
         print(f"   💰 Dollar Size: ${signal.dollar_size:,.0f}")
         print(f"   🎯 Direction: {signal.direction} → Target ${signal.target_price:,.2f}")
         print()
-    
+
     # Generate institutional summary
     summary = analyzer.summarize_institutional_activity(signals)
-    
+
     print("\n📈 INSTITUTIONAL POSITIONING SUMMARY")
     print("-" * 50)
     print(f"Total Dollar Volume: ${summary['total_dollar_volume']:,.0f}")
     print(f"Call Volume: ${summary['call_dollar_volume']:,.0f} ({summary['call_percentage']:.1f}%)")
     print(f"Put Volume: ${summary['put_dollar_volume']:,.0f} ({summary['put_percentage']:.1f}%)")
     print(f"Net Positioning: {summary['net_positioning']}")
-    
+
     # Filter for actionable signals
     actionable = analyzer.filter_actionable_signals(signals, current_price, max_distance_percent=2.0)
-    
+
     print(f"\n🎯 ACTIONABLE SIGNALS (within 2% of current price)")
     print("-" * 50)
     print(f"Found {len(actionable)} actionable signals\n")
-    
+
     # Generate trade plans
     for signal in actionable[:2]:  # Top 2 actionable
         trade_plan = analyzer.generate_trade_plan(signal, current_price)
-        
+
         print(f"📍 {signal.strike}{signal.option_type[0]} - {signal.confidence} Signal")
         print(f"   Entry: ${trade_plan['entry_price']:,.2f}")
         print(f"   Target: ${trade_plan['take_profit']:,.2f}")
@@ -124,11 +124,11 @@ def run_demo():
         print(f"   Size Multiplier: {trade_plan['size_multiplier']}x")
         print(f"   Note: {trade_plan['notes']}")
         print()
-    
+
     # Trading recommendations
     print("\n💡 TRADING RECOMMENDATIONS")
     print("-" * 50)
-    
+
     if actionable:
         top_signal = actionable[0]
         if top_signal.confidence == "EXTREME":
@@ -144,7 +144,7 @@ def run_demo():
             print("📌 Institutional Flow Detected")
             print(f"   Notable activity at {top_signal.strike}")
             print(f"   ACTION: Consider {top_signal.direction} position")
-    
+
     # Key insights
     print("\n🔑 KEY INSIGHTS")
     print("-" * 50)

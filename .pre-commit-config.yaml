@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+
+  # Temporarily disabled - requires baseline setup
+  # - repo: https://github.com/Yelp/detect-secrets
+  #   rev: v1.4.0
+  #   hooks:
+  #     - id: detect-secrets
+  #       args: ['--baseline', '.secrets.baseline']
+  #       exclude: \.env\.example$
+
+  - repo: local
+    hooks:
+      - id: check-databento-keys
+        name: Check for Databento API keys in source code
+        entry: 'bash -c "if grep -r --include=\"*.py\" --include=\"*.md\" --exclude-dir=outputs --exclude-dir=.git \"db-[A-Za-z0-9]\\{26\\}\" . | grep -v -E \"(\.env\.example|API_KEY_SECURITY\.md|DATABENTO_TESTING_RESULTS\.md)\"; then exit 1; fi"'
+        language: system
+        pass_filenames: false

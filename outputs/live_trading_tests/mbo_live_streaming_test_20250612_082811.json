@@ -1,0 +1,51 @@
+{
+  "test_timestamp": "2025-06-12T08:28:07.213447",
+  "market_status": {
+    "current_utc": "2025-06-12T15:28:07.213466+00:00",
+    "weekday": 3,
+    "weekday_name": "Thu",
+    "hour_utc": 15,
+    "market_open": true,
+    "reason": "Regular trading day"
+  },
+  "streaming_test": {
+    "start_time": "2025-06-12T08:28:07.213482",
+    "duration_seconds": 10,
+    "events_received": 3,
+    "unique_instruments": 3,
+    "error_count": 0,
+    "connection_quality": "GOOD",
+    "end_time": "2025-06-12T08:28:09.001501"
+  },
+  "reconnection_test": {
+    "disconnection_simulated": true,
+    "reconnection_attempts": 1,
+    "reconnection_successful": true,
+    "time_to_reconnect_ms": 872.2209930419922,
+    "events_after_reconnect": 0
+  },
+  "backfill_test": {
+    "backfill_requested": true,
+    "gap_start": "2025-06-12T15:03:09.874036+00:00",
+    "gap_end": "2025-06-12T15:08:09.874036+00:00",
+    "records_backfilled": 14,
+    "backfill_successful": true,
+    "backfill_latency_ms": 1987.57004737854
+  },
+  "data_quality": {
+    "total_events": 3,
+    "events_per_second": 0.3,
+    "data_completeness": "LOW",
+    "latency_estimate_ms": "N/A",
+    "quality_score": 50
+  },
+  "cost_analysis": {
+    "test_duration_hours": 0.002777777777777778,
+    "streaming_cost_usd": 0.0028,
+    "data_transfer_mb": 0.0,
+    "transfer_cost_usd": 0.0,
+    "total_test_cost_usd": 0.0028,
+    "projected_daily_cost": 24.03,
+    "projected_monthly_cost": 720.78
+  }
+}

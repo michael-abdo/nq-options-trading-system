@@ -9,7 +9,7 @@ These scripts were moved from the root directory during the transition to the Hi
 - `analyze_strike.py` - Individual strike risk analysis tool
 - `quick_risk_check.py` - Quick risk assessment utility
 
-### Execution Scripts  
+### Execution Scripts
 - `simple_run.py` - Simple interface for running the trading system
 - `run_trading_system.py` - Main system execution script with configuration
 - `fast_run.py` - Optimized execution with parallel analysis and caching
@@ -24,7 +24,7 @@ These scripts have been superseded by the new Hierarchical Pipeline Analysis Fra
 
 The new system provides:
 - Configuration-driven analysis strategies
-- Modular pipeline architecture  
+- Modular pipeline architecture
 - Better performance and scalability
 - ML-ready scoring system
 

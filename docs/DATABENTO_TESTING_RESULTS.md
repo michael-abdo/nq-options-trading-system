@@ -44,7 +44,7 @@ Successfully validated Databento integration and identified API access limitatio
 ## Key Findings
 
 ### API Key Limitations
-The current API key (`db-6P7di3nVFkYBNB3tsPaXrajkdVQPH`) appears to be a **trial or basic tier** key with:
+The current API key appears to be a **trial or basic tier** key with:
 - ✅ Access to equity market data
 - ❌ NO access to futures data (GLBX.MDP3)
 - ❌ NO access to options data (OPRA.PILLAR)

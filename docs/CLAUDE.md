@@ -51,7 +51,7 @@ Before coding anything:
 ### **3. RECURSIVE EVIDENCE AGGREGATION**
 ```
 Parent validates when:
-├── All child evidence.json show "VALIDATED" 
+├── All child evidence.json show "VALIDATED"
 ├── integration.py successfully combines child solutions
 ├── test_validation.py proves integrated solution works
 └── evidence_rollup.json aggregates all proof

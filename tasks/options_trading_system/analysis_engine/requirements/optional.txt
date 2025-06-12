@@ -1,6 +1,6 @@
 # Optional Dependencies for Enhanced Features
 # Install with: pip install -r requirements/optional.txt
-# 
+#
 # The IFD v3.0 Analysis Engine works perfectly without any of these dependencies!
 # These packages enable enhanced features but all have robust fallback implementations.
 
@@ -12,7 +12,7 @@ pandas>=1.3.0
 # - Advanced data aggregation and pivoting
 # Fallback: Basic Python dict/list operations with similar functionality
 
-numpy>=1.20.0  
+numpy>=1.20.0
 # Enhanced features:
 # - Fast numerical computations and array operations
 # - Statistical calculations with better performance

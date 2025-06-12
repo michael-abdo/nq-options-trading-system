@@ -20,13 +20,13 @@ from solution import TradingReportGenerator, generate_trading_report
 def validate_report_generator():
     """
     Validate the trading report generator functionality
-    
+
     Returns:
         Dict with validation results and evidence
     """
     print("EXECUTING VALIDATION: report_generator")
     print("-" * 50)
-    
+
     validation_results = {
         "task": "report_generator",
         "timestamp": datetime.now().isoformat(),
@@ -34,7 +34,7 @@ def validate_report_generator():
         "status": "FAILED",
         "evidence": {}
     }
-    
+
     # Test configuration
     data_config = {
         "barchart": {
@@ -47,13 +47,13 @@ def validate_report_generator():
             "use_mock": True
         }
     }
-    
+
     report_config = {
         "style": "professional",
         "include_details": True,
         "include_market_context": True
     }
-    
+
     # Test 1: Initialize report generator
     print("\n1. Testing report generator initialization...")
     try:
@@ -64,7 +64,7 @@ def validate_report_generator():
             hasattr(generator, 'include_details') and
             generator.report_style == "professional"
         )
-        
+
         validation_results["tests"].append({
             "name": "generator_init",
             "passed": init_valid,
@@ -76,7 +76,7 @@ def validate_report_generator():
         })
         print(f"   ✓ Generator initialized: {init_valid}")
         print(f"   ✓ Report style: {generator.report_style}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "generator_init",
@@ -85,7 +85,7 @@ def validate_report_generator():
         })
         print(f"   ✗ Error: {e}")
         return validation_results
-    
+
     # Test 2: Generate report sections
     print("\n2. Testing report section generation...")
     try:
@@ -115,7 +115,7 @@ def validate_report_generator():
                 "execution_priorities": []
             }
         }
-        
+
         # Test header generation
         header = generator.generate_header(mock_analysis_results)
         header_valid = (
@@ -124,7 +124,7 @@ def validate_report_generator():
             "ANALYSIS REPORT" in header and
             len(header) > 100
         )
-        
+
         # Test executive summary
         summary = generator.generate_executive_summary(mock_analysis_results)
         summary_valid = (
@@ -133,9 +133,9 @@ def validate_report_generator():
             "PRIMARY RECOMMENDATION" in summary and
             len(summary) > 50
         )
-        
+
         sections_valid = header_valid and summary_valid
-        
+
         validation_results["tests"].append({
             "name": "section_generation",
             "passed": sections_valid,
@@ -146,11 +146,11 @@ def validate_report_generator():
                 "summary_length": len(summary)
             }
         })
-        
+
         print(f"   ✓ Section generation: {sections_valid}")
         print(f"   ✓ Header length: {len(header)} chars")
         print(f"   ✓ Summary length: {len(summary)} chars")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "section_generation",
@@ -158,12 +158,12 @@ def validate_report_generator():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 3: Generate complete report using integration function
     print("\n3. Testing complete report generation...")
     try:
         report_result = generate_trading_report(data_config, report_config)
-        
+
         report_valid = (
             isinstance(report_result, dict) and
             "report_text" in report_result and
@@ -171,7 +171,7 @@ def validate_report_generator():
             "metadata" in report_result and
             len(report_result["report_text"]) > 1000
         )
-        
+
         # Check report content
         report_text = report_result["report_text"]
         content_checks = {
@@ -181,9 +181,9 @@ def validate_report_generator():
             "has_execution_priorities": "EXECUTION PRIORITIES" in report_text,
             "has_footer": "RISK DISCLAIMER" in report_text
         }
-        
+
         content_valid = all(content_checks.values())
-        
+
         validation_results["tests"].append({
             "name": "complete_report_generation",
             "passed": report_valid and content_valid,
@@ -194,11 +194,11 @@ def validate_report_generator():
                 "metadata": report_result["metadata"]
             }
         })
-        
+
         print(f"   ✓ Complete report generation: {report_valid and content_valid}")
         print(f"   ✓ Report length: {len(report_text)} chars")
         print(f"   ✓ Sections included: {report_result['metadata']['sections_included']}")
-        
+
         # Store evidence
         validation_results["evidence"]["sample_report"] = {
             "report_length": len(report_text),
@@ -211,7 +211,7 @@ def validate_report_generator():
                 "execution_time": report_result["analysis_results"]["execution_time_seconds"]
             }
         }
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "complete_report_generation",
@@ -219,13 +219,13 @@ def validate_report_generator():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 4: Report formatting and structure
     print("\n4. Testing report formatting...")
     try:
         if 'report_result' in locals():
             report_text = report_result["report_text"]
-            
+
             # Check formatting elements
             format_checks = {
                 "has_section_dividers": "-" * 50 in report_text,
@@ -234,9 +234,9 @@ def validate_report_generator():
                 "has_emojis": any(emoji in report_text for emoji in ["📊", "🎯", "💡", "⚡"]),
                 "proper_line_breaks": "\n\n" in report_text
             }
-            
+
             formatting_valid = sum(format_checks.values()) >= 3  # At least 3 formatting elements
-            
+
             validation_results["tests"].append({
                 "name": "report_formatting",
                 "passed": formatting_valid,
@@ -245,7 +245,7 @@ def validate_report_generator():
                     "formatting_score": f"{sum(format_checks.values())}/5"
                 }
             })
-            
+
             print(f"   ✓ Report formatting: {formatting_valid}")
             print(f"   ✓ Formatting score: {sum(format_checks.values())}/5")
         else:
@@ -254,7 +254,7 @@ def validate_report_generator():
                 "passed": False,
                 "details": "No report available for formatting check"
             })
-            
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "report_formatting",
@@ -262,7 +262,7 @@ def validate_report_generator():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 5: Save report to file
     print("\n5. Testing report file saving...")
     try:
@@ -270,16 +270,16 @@ def validate_report_generator():
             # Save report to file
             report_filename = f"test_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
             report_path = os.path.join(os.path.dirname(__file__), report_filename)
-            
+
             with open(report_path, 'w', encoding='utf-8') as f:
                 f.write(report_result["report_text"])
-            
+
             # Verify file was created and has content
             file_exists = os.path.exists(report_path)
             file_size = os.path.getsize(report_path) if file_exists else 0
-            
+
             save_valid = file_exists and file_size > 1000
-            
+
             validation_results["tests"].append({
                 "name": "report_file_saving",
                 "passed": save_valid,
@@ -289,11 +289,11 @@ def validate_report_generator():
                     "file_path": report_path
                 }
             })
-            
+
             print(f"   ✓ Report file saving: {save_valid}")
             print(f"   ✓ File size: {file_size} bytes")
             print(f"   ✓ Saved to: {report_filename}")
-            
+
             # Clean up test file
             if file_exists:
                 os.remove(report_path)
@@ -303,7 +303,7 @@ def validate_report_generator():
                 "passed": False,
                 "details": "No report available for file saving"
             })
-            
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "report_file_saving",
@@ -311,35 +311,35 @@ def validate_report_generator():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
     validation_results['status'] = "VALIDATED" if all_passed else "FAILED"
-    
+
     # Summary
     print("\n" + "-" * 50)
     print(f"VALIDATION COMPLETE: {validation_results['status']}")
     print(f"Tests passed: {sum(1 for t in validation_results['tests'] if t['passed'])}/{len(validation_results['tests'])}")
-    
+
     return validation_results
 
 
 def save_evidence(validation_results):
     """Save validation evidence to evidence.json"""
     evidence_path = os.path.join(os.path.dirname(__file__), "evidence.json")
-    
+
     with open(evidence_path, 'w') as f:
         json.dump(validation_results, f, indent=2)
-    
+
     print(f"\nEvidence saved to: {evidence_path}")
 
 
 if __name__ == "__main__":
     # Execute validation
     results = validate_report_generator()
-    
+
     # Save evidence
     save_evidence(results)
-    
+
     # Exit with appropriate code
     exit(0 if results['status'] == "VALIDATED" else 1)

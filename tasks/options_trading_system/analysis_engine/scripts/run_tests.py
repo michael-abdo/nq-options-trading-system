@@ -17,12 +17,12 @@ def run_test_file(test_file):
     print(f"\n{'='*60}")
     print(f"Running: {test_file}")
     print('='*60)
-    
+
     try:
         # Import and run the test
         test_module_name = test_file.replace('.py', '')
         test_module = __import__(f'tests.{test_module_name}', fromlist=[''])
-        
+
         # Look for main() or run_tests() function
         if hasattr(test_module, 'main'):
             result = test_module.main()
@@ -48,23 +48,23 @@ def main():
     """Run all tests"""
     print("=== ANALYSIS ENGINE TEST SUITE ===")
     print(f"Started at: {datetime.now().isoformat()}")
-    
+
     # Get all test files
     test_dir = os.path.join(os.path.dirname(__file__), 'tests')
     test_files = [f for f in os.listdir(test_dir) if f.startswith('test_') and f.endswith('.py')]
-    
+
     # Add other important test files
     if 'phase_4_validation.py' in os.listdir(test_dir):
         test_files.append('phase_4_validation.py')
-    
+
     # Sort test files
     test_files.sort()
-    
+
     # Run tests
     results = {}
     passed = 0
     failed = 0
-    
+
     for test_file in test_files:
         success, error = run_test_file(test_file)
         results[test_file] = {
@@ -75,7 +75,7 @@ def main():
             passed += 1
         else:
             failed += 1
-    
+
     # Summary
     print(f"\n{'='*60}")
     print("TEST SUMMARY")
@@ -84,7 +84,7 @@ def main():
     print(f"Passed: {passed}")
     print(f"Failed: {failed}")
     print(f"Success Rate: {(passed/len(test_files)*100):.1f}%")
-    
+
     # Detailed results
     print("\nDetailed Results:")
     for test_file, result in results.items():
@@ -92,11 +92,11 @@ def main():
         print(f"{status_symbol} {test_file}: {result['status']}")
         if result['error']:
             print(f"  └─ {result['error']}")
-    
+
     # Save results
     results_file = os.path.join(os.path.dirname(__file__), 'outputs', 'test_results.json')
     os.makedirs(os.path.dirname(results_file), exist_ok=True)
-    
+
     with open(results_file, 'w') as f:
         json.dump({
             'timestamp': datetime.now().isoformat(),
@@ -105,9 +105,9 @@ def main():
             'failed': failed,
             'results': results
         }, f, indent=2)
-    
+
     print(f"\nResults saved to: {results_file}")
-    
+
     # Return exit code
     return 0 if failed == 0 else 1
 

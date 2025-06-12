@@ -6,7 +6,7 @@
 ```
 tasks/options_trading_system/analysis_engine/institutional_flow_v3/
 ├── solution.py          # 45,323 lines - Complete v3.0 detection logic
-├── test_validation.py   # 31,845 lines - Comprehensive testing suite  
+├── test_validation.py   # 31,845 lines - Comprehensive testing suite
 ├── evidence.json        # 1,401 lines - Performance validation results
 ```
 
@@ -15,7 +15,7 @@ tasks/options_trading_system/analysis_engine/institutional_flow_v3/
 **Real-time bid/ask volume aggregation by strike:**
 - `PressureRatioAnalyzer` class (lines 403-577 in solution.py)
 - Real-time pressure significance calculation
-- Volume concentration analysis  
+- Volume concentration analysis
 - Trend strength measurement across multiple windows
 - Time persistence tracking
 
@@ -58,7 +58,7 @@ tasks/options_trading_system/analysis_engine/institutional_flow_v3/
 - `EnhancedConfidenceScorer` class (lines 727-847 in solution.py)
 - 4-factor weighted scoring system:
   - Pressure significance (40% weight)
-  - Historical baseline context (30% weight)  
+  - Historical baseline context (30% weight)
   - Market making penalty (20% weight)
   - Cross-strike coordination bonus (10% weight)
 
@@ -87,11 +87,11 @@ tasks/options_trading_system/analysis_engine/institutional_flow_v3/
 @dataclass
 class InstitutionalSignalV3:
     # 22 fields covering pressure, baselines, market making, confidence, risk
-    
-@dataclass  
+
+@dataclass
 class BaselineContext:
     # Historical context with 20-day statistics
-    
+
 @dataclass
 class MarketMakingAnalysis:
     # Comprehensive MM detection results
@@ -153,7 +153,7 @@ class PressureAnalysis:
 
 ### Analysis Engine Integration
 - **File**: `analysis_engine/integration.py` (updated)
-- **New Method**: `run_ifd_v3_analysis()` 
+- **New Method**: `run_ifd_v3_analysis()`
 - **Parallel Execution**: 5 analyses (was 4)
 - **Market Context**: 6 new IFD v3.0 metrics added
 - **Error Handling**: Robust fallback to simulated data

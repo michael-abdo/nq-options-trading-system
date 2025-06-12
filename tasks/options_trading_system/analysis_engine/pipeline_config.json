@@ -14,7 +14,7 @@
           }
         },
         {
-          "name": "EVAnalysis", 
+          "name": "EVAnalysis",
           "config": {
             "min_ev": 20,
             "min_probability": 0.70,
@@ -30,13 +30,13 @@
             "min_momentum_score": 0.8,
             "momentum_window": 5,
             "volume_confirmation": true,
-            "sort_by": "momentum_score", 
+            "sort_by": "momentum_score",
             "sort_direction": "desc"
           }
         }
       ]
     },
-    
+
     "aggressive": {
       "description": "EV-first approach for high opportunity markets",
       "analyses": [
@@ -52,7 +52,7 @@
           }
         },
         {
-          "name": "MomentumAnalysis", 
+          "name": "MomentumAnalysis",
           "config": {
             "min_momentum_score": 0.6,
             "momentum_window": 3,
@@ -73,7 +73,7 @@
         }
       ]
     },
-    
+
     "technical": {
       "description": "Pattern-first approach for technical traders",
       "analyses": [
@@ -94,7 +94,7 @@
             "min_probability": 0.65,
             "max_risk": 150,
             "min_risk_reward": 1.0,
-            "sort_by": "expected_value", 
+            "sort_by": "expected_value",
             "sort_direction": "desc"
           }
         },
@@ -110,7 +110,7 @@
         }
       ]
     },
-    
+
     "scalping": {
       "description": "Fast execution for intraday scalping",
       "analyses": [
@@ -148,16 +148,16 @@
       ]
     }
   },
-  
+
   "analysis_registry": {
     "RiskAnalysis": "risk_analysis.solution.RiskPipelineAnalysis",
-    "EVAnalysis": "expected_value_analysis.solution.EVPipelineAnalysis", 
+    "EVAnalysis": "expected_value_analysis.solution.EVPipelineAnalysis",
     "MomentumAnalysis": "momentum_analysis.solution.MomentumPipelineAnalysis",
     "PatternAnalysis": "pattern_analysis.solution.PatternPipelineAnalysis",
     "TimingAnalysis": "timing_analysis.solution.TimingPipelineAnalysis",
     "LiquidityAnalysis": "liquidity_analysis.solution.LiquidityPipelineAnalysis"
   },
-  
+
   "global_settings": {
     "max_pipeline_items": 1000,
     "min_final_results": 1,

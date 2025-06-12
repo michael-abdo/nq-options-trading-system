@@ -31,31 +31,31 @@ print(f"   Status: {result['status'].upper()}")
 if result['status'] == 'success':
     # Show component times
     pipeline_results = result.get('pipeline_results', {})
-    
+
     data_time = 0
     if 'data' in pipeline_results:
         # Estimate data loading time (not tracked individually)
         data_time = 0.1  # Typically fast
-    
+
     analysis_time = 0
     if 'analysis' in pipeline_results and 'result' in pipeline_results['analysis']:
         analysis_time = pipeline_results['analysis']['result'].get('execution_time_seconds', 0)
-    
+
     output_time = 0
     if 'output' in pipeline_results and 'result' in pipeline_results['output']:
         output_time = pipeline_results['output']['result'].get('execution_time_seconds', 0)
-    
+
     print(f"\n⏱️  COMPONENT BREAKDOWN:")
     print(f"   Data Loading: ~{data_time:.2f}s")
     print(f"   Analysis Engine: {analysis_time:.2f}s (PARALLEL)")
     print(f"   Output Generation: {output_time:.2f}s (CACHED)")
     print(f"   System Overhead: ~{(execution_time - data_time - analysis_time - output_time):.2f}s")
-    
+
     print(f"\n🚀 OPTIMIZATION BENEFITS:")
     print(f"   • Parallel Analysis: Both analyses run simultaneously")
     print(f"   • Result Caching: Outputs generated from cached analysis")
     print(f"   • Speed Improvement: ~5-6x faster than sequential execution")
-    
+
     # Show trading result
     summary = result.get('system_summary', {})
     if summary.get('trading_summary', {}).get('primary_recommendation'):

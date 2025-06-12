@@ -6,7 +6,7 @@ This directory contains legacy files from the transition to the Hierarchical Pip
 
 - `legacy_scripts/` - Old analysis and utility scripts
 - `legacy_coordination/` - Task-based coordination files
-- `legacy_outputs/` - Historical output files and reports  
+- `legacy_outputs/` - Historical output files and reports
 - `task_based_system/` - Complete task-based implementation
 - `legacy_docs/` - Old documentation files
 

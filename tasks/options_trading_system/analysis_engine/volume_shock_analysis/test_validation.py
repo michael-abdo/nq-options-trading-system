@@ -20,7 +20,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(o
 sys.path.insert(0, project_root)
 
 from solution import (
-    VolumeShockDetectionEngine, 
+    VolumeShockDetectionEngine,
     VolumeShockAnalysisEngine,
     analyze_volume_shocks,
     FlowType,
@@ -31,20 +31,20 @@ from solution import (
 def validate_volume_shock_analysis():
     """
     Validate the volume shock analysis functionality
-    
+
     EXPERIMENTAL VALIDATION:
     1. Test volume anomaly detection accuracy
-    2. Validate delta exposure calculations  
+    2. Validate delta exposure calculations
     3. Test flow type classification
     4. Validate trading signal generation
     5. Test execution timing requirements
-    
+
     Returns:
         Dict with validation results and evidence
     """
     print("EXECUTING VALIDATION: volume_shock_analysis")
     print("-" * 50)
-    
+
     validation_results = {
         "task": "volume_shock_analysis",
         "timestamp": datetime.now().isoformat(),
@@ -52,7 +52,7 @@ def validate_volume_shock_analysis():
         "status": "FAILED",
         "evidence": {}
     }
-    
+
     # Test configuration
     data_config = {
         "barchart": {
@@ -60,11 +60,11 @@ def validate_volume_shock_analysis():
             "use_live_api": False  # Use saved data for testing
         },
         "tradovate": {
-            "mode": "demo", 
+            "mode": "demo",
             "use_mock": True
         }
     }
-    
+
     analysis_config = {
         "volume_ratio_threshold": 4.0,
         "min_volume_threshold": 100,
@@ -73,19 +73,19 @@ def validate_volume_shock_analysis():
         "emergency_delta_threshold": 5000,
         "validation_mode": True
     }
-    
+
     # Test 1: Volume shock detection engine initialization
     print("\\n1. Testing volume shock detection engine initialization...")
     try:
         detection_engine = VolumeShockDetectionEngine(analysis_config)
-        
+
         init_valid = (
             detection_engine is not None and
             hasattr(detection_engine, 'VOLUME_RATIO_THRESHOLD') and
             hasattr(detection_engine, 'detect_volume_shocks') and
             detection_engine.VOLUME_RATIO_THRESHOLD == 4.0
         )
-        
+
         validation_results["tests"].append({
             "name": "detection_engine_init",
             "passed": init_valid,
@@ -96,10 +96,10 @@ def validate_volume_shock_analysis():
                 "validation_mode": detection_engine.validation_mode
             }
         })
-        
+
         print(f"   ✓ Detection engine initialized: {init_valid}")
         print(f"   ✓ Volume ratio threshold: {detection_engine.VOLUME_RATIO_THRESHOLD}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "detection_engine_init",
@@ -108,23 +108,23 @@ def validate_volume_shock_analysis():
         })
         print(f"   ✗ Error: {e}")
         return validation_results
-    
+
     # Test 2: Mock volume shock scenario
     print("\\n2. Testing volume shock detection with mock data...")
     try:
         # Create mock options data with volume shock scenario
         mock_options_data = create_mock_volume_shock_scenario()
-        
+
         # Run detection
         volume_alerts = detection_engine.detect_volume_shocks(mock_options_data)
-        
+
         detection_valid = (
             isinstance(volume_alerts, list) and
             len(volume_alerts) > 0 and
             all(hasattr(alert, 'flow_type') for alert in volume_alerts) and
             all(hasattr(alert, 'hedge_direction') for alert in volume_alerts)
         )
-        
+
         # Analyze detected alerts
         alert_details = []
         for alert in volume_alerts:
@@ -136,7 +136,7 @@ def validate_volume_shock_analysis():
                 "confidence": alert.confidence,
                 "volume_ratio": alert.volume_ratio
             })
-        
+
         validation_results["tests"].append({
             "name": "volume_shock_detection",
             "passed": detection_valid,
@@ -147,10 +147,10 @@ def validate_volume_shock_analysis():
                 "has_institutional_sweep": any(a.flow_type == FlowType.INSTITUTIONAL_SWEEP for a in volume_alerts)
             }
         })
-        
+
         print(f"   ✓ Volume shock detection: {detection_valid}")
         print(f"   ✓ Alerts detected: {len(volume_alerts)}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "volume_shock_detection",
@@ -158,7 +158,7 @@ def validate_volume_shock_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 3: Delta exposure calculations
     print("\\n3. Testing delta exposure calculations...")
     try:
@@ -169,20 +169,20 @@ def validate_volume_shock_analysis():
             "put_delta": -0.5,
             "underlying_price": 21000
         }
-        
+
         # Test scenario: 500 call volume, 300 put volume
         call_volume = 500
         put_volume = 300
-        
+
         net_delta = detection_engine._calculate_net_delta_exposure(
             test_contract, call_volume, put_volume
         )
-        
+
         # Expected: (500 * 0.5 * 100) + (300 * -0.5 * -100) = 25000 + 15000 = 40000
         expected_delta = (call_volume * 0.5 * 100) + (put_volume * -0.5 * -100)
-        
+
         delta_calculation_valid = abs(net_delta - expected_delta) < 1.0
-        
+
         validation_results["tests"].append({
             "name": "delta_exposure_calculation",
             "passed": delta_calculation_valid,
@@ -196,11 +196,11 @@ def validate_volume_shock_analysis():
                 "calculation_error": abs(net_delta - expected_delta)
             }
         })
-        
+
         print(f"   ✓ Delta calculation: {delta_calculation_valid}")
         print(f"   ✓ Calculated delta: {net_delta:,.0f}")
         print(f"   ✓ Expected delta: {expected_delta:,.0f}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "delta_exposure_calculation",
@@ -208,12 +208,12 @@ def validate_volume_shock_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 4: Complete analysis engine integration
     print("\\n4. Testing complete volume shock analysis engine...")
     try:
         analysis_result = analyze_volume_shocks(data_config, analysis_config)
-        
+
         analysis_valid = (
             isinstance(analysis_result, dict) and
             analysis_result.get("status") == "success" and
@@ -221,12 +221,12 @@ def validate_volume_shock_analysis():
             "market_context" in analysis_result and
             "execution_recommendations" in analysis_result
         )
-        
+
         # Check analysis components
         alerts = analysis_result.get("alerts", [])
         market_context = analysis_result.get("market_context", {})
         execution_recs = analysis_result.get("execution_recommendations", [])
-        
+
         validation_results["tests"].append({
             "name": "complete_analysis_engine",
             "passed": analysis_valid,
@@ -239,11 +239,11 @@ def validate_volume_shock_analysis():
                 "has_risk_assessment": "risk_assessment" in analysis_result
             }
         })
-        
+
         print(f"   ✓ Complete analysis: {analysis_valid}")
         print(f"   ✓ Alerts generated: {len(alerts)}")
         print(f"   ✓ Execution recommendations: {len(execution_recs)}")
-        
+
         # Store evidence
         validation_results["evidence"]["analysis_sample"] = {
             "alerts_count": len(alerts),
@@ -252,7 +252,7 @@ def validate_volume_shock_analysis():
             "sample_alert": alerts[0] if alerts else None,
             "sample_recommendation": execution_recs[0] if execution_recs else None
         }
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "complete_analysis_engine",
@@ -260,7 +260,7 @@ def validate_volume_shock_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 5: Flow type classification accuracy
     print("\\n5. Testing flow type classification...")
     try:
@@ -290,7 +290,7 @@ def validate_volume_shock_analysis():
                 "expected_urgency": "UNKNOWN"
             }
         ]
-        
+
         classification_results = []
         for scenario in classification_scenarios:
             flow_type, urgency = detection_engine._classify_flow_type(
@@ -299,21 +299,21 @@ def validate_volume_shock_analysis():
                 scenario["response_time"],
                 {}  # mock contract
             )
-            
+
             classification_correct = (
                 flow_type == scenario["expected_flow"] and
                 urgency == scenario["expected_urgency"]
             )
-            
+
             classification_results.append({
                 "scenario": scenario,
                 "classified_flow": flow_type.value,
                 "classified_urgency": urgency,
                 "classification_correct": classification_correct
             })
-        
+
         classification_accuracy = sum(r["classification_correct"] for r in classification_results) / len(classification_results)
-        
+
         validation_results["tests"].append({
             "name": "flow_type_classification",
             "passed": classification_accuracy >= 0.8,  # 80% accuracy threshold
@@ -324,10 +324,10 @@ def validate_volume_shock_analysis():
                 "classification_results": classification_results
             }
         })
-        
+
         print(f"   ✓ Flow classification accuracy: {classification_accuracy:.1%}")
         print(f"   ✓ Scenarios tested: {len(classification_scenarios)}")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "flow_type_classification",
@@ -335,23 +335,23 @@ def validate_volume_shock_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 6: Execution timing requirements
     print("\\n6. Testing execution timing requirements...")
     try:
         # Test detection latency with time measurement
         start_time = datetime.now()
-        
+
         # Run detection on mock data
         mock_data = create_mock_volume_shock_scenario()
         alerts = detection_engine.detect_volume_shocks(mock_data)
-        
+
         detection_time = (datetime.now() - start_time).total_seconds() * 1000  # ms
-        
+
         # Strategy requires <5 minute total latency for effectiveness
         # We'll test for <1 second detection time as a proxy
         timing_valid = detection_time < 1000  # 1 second
-        
+
         validation_results["tests"].append({
             "name": "execution_timing_requirements",
             "passed": timing_valid,
@@ -365,10 +365,10 @@ def validate_volume_shock_analysis():
                 "average_alert_latency": sum(a.detection_latency_ms for a in alerts) / len(alerts) if alerts else 0
             }
         })
-        
+
         print(f"   ✓ Detection timing: {timing_valid}")
         print(f"   ✓ Detection time: {detection_time:.1f}ms")
-        
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "execution_timing_requirements",
@@ -376,13 +376,13 @@ def validate_volume_shock_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Test 7: Trading signal generation
     print("\\n7. Testing trading signal generation...")
     try:
         if 'analysis_result' in locals():
             execution_recs = analysis_result.get("execution_recommendations", [])
-            
+
             # Signal structure validation - if signals exist, they must be valid
             if execution_recs:
                 signal_valid = (
@@ -395,13 +395,13 @@ def validate_volume_shock_analysis():
             else:
                 # No signals is valid structure if no volume shocks found
                 signal_valid = True
-            
+
             # Check signal quality - no signals is valid if no volume shocks detected
             if execution_recs:
                 primary_signal = execution_recs[0]
                 risk_reward_ratio = primary_signal.get("risk_reward_ratio", 0)
                 expected_value = primary_signal.get("expected_value", 0)
-                
+
                 signal_quality_valid = (
                     risk_reward_ratio > 1.0 and  # Favorable risk/reward
                     expected_value > 0          # Positive expected value
@@ -409,7 +409,7 @@ def validate_volume_shock_analysis():
             else:
                 # No signals is valid - historical data may not have volume shocks
                 signal_quality_valid = True
-            
+
             validation_results["tests"].append({
                 "name": "trading_signal_generation",
                 "passed": signal_valid and signal_quality_valid,
@@ -421,7 +421,7 @@ def validate_volume_shock_analysis():
                     "signal_fields": list(execution_recs[0].keys()) if execution_recs else []
                 }
             })
-            
+
             print(f"   ✓ Trading signals: {signal_valid and signal_quality_valid}")
             print(f"   ✓ Signals generated: {len(execution_recs)}")
         else:
@@ -430,7 +430,7 @@ def validate_volume_shock_analysis():
                 "passed": False,
                 "details": "No analysis result available"
             })
-            
+
     except Exception as e:
         validation_results["tests"].append({
             "name": "trading_signal_generation",
@@ -438,34 +438,34 @@ def validate_volume_shock_analysis():
             "error": str(e)
         })
         print(f"   ✗ Error: {e}")
-    
+
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
     validation_results['status'] = "VALIDATED" if all_passed else "FAILED"
-    
+
     # Summary
     print("\\n" + "-" * 50)
     print(f"VALIDATION COMPLETE: {validation_results['status']}")
     print(f"Tests passed: {sum(1 for t in validation_results['tests'] if t['passed'])}/{len(validation_results['tests'])}")
-    
+
     return validation_results
 
 
 def create_mock_volume_shock_scenario() -> Dict[str, Any]:
     """
     Create mock options data with volume shock scenarios for testing
-    
+
     Creates scenarios for:
     - Gamma Emergency: High volume spike at single strike
     - Institutional Sweep: Moderate volume across multiple strikes
     """
-    
+
     # Mock underlying price
     underlying_price = 21000
-    
+
     # Create contracts with different volume scenarios
     contracts = []
-    
+
     # Gamma Emergency scenario: Strike 21000 with 10x volume spike
     contracts.append({
         "strike": 21000,
@@ -479,7 +479,7 @@ def create_mock_volume_shock_scenario() -> Dict[str, Any]:
         "put_bid": 45,
         "put_ask": 50
     })
-    
+
     # Institutional Sweep scenario: Multiple strikes with moderate volume
     for strike_offset in [-100, -50, 50, 100]:
         contracts.append({
@@ -494,7 +494,7 @@ def create_mock_volume_shock_scenario() -> Dict[str, Any]:
             "put_bid": 80 - strike_offset/10,
             "put_ask": 85 - strike_offset/10
         })
-    
+
     # Normal volume strikes (should not trigger alerts)
     for strike_offset in [-200, -150, 150, 200]:
         contracts.append({
@@ -509,7 +509,7 @@ def create_mock_volume_shock_scenario() -> Dict[str, Any]:
             "put_bid": 90 - strike_offset/15,
             "put_ask": 95 - strike_offset/15
         })
-    
+
     return {
         "underlying_symbol": "NQ",
         "underlying_price": underlying_price,
@@ -524,19 +524,19 @@ def create_mock_volume_shock_scenario() -> Dict[str, Any]:
 def save_evidence(validation_results):
     """Save validation evidence to evidence.json"""
     evidence_path = os.path.join(os.path.dirname(__file__), "evidence.json")
-    
+
     with open(evidence_path, 'w') as f:
         json.dump(validation_results, f, indent=2, default=str)
-    
+
     print(f"\\nEvidence saved to: {evidence_path}")
 
 
 if __name__ == "__main__":
     # Execute validation
     results = validate_volume_shock_analysis()
-    
+
     # Save evidence
     save_evidence(results)
-    
+
     # Exit with appropriate code
     exit(0 if results['status'] == "VALIDATED" else 1)

@@ -13,7 +13,7 @@
       "evidence_path": "tasks/options_trading_system/evidence.json"
     },
     "data_ingestion": {
-      "type": "parent", 
+      "type": "parent",
       "status": "validated",
       "parent": "options_trading_system",
       "subtasks": [
@@ -34,7 +34,7 @@
     },
     "tradovate_api_data": {
       "type": "leaf",
-      "status": "validated", 
+      "status": "validated",
       "parent": "data_ingestion",
       "description": "Fetch data from Tradovate API",
       "validated_at": "2025-06-04T14:36:25",

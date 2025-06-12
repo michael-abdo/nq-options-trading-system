@@ -30,7 +30,7 @@ python tests/test_databento_api.py
 
 ### Schemas Available
 - `ohlcv-1h`: Hourly OHLCV bars
-- `ohlcv-1m`: Minute OHLCV bars  
+- `ohlcv-1m`: Minute OHLCV bars
 - `trades`: Individual trades
 - `mbp-10`: Market by price (10 levels)
 - `tbbo`: Top of book best bid/offer

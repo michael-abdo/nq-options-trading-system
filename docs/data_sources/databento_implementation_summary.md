@@ -16,7 +16,7 @@ Created `/tasks/options_trading_system/data_ingestion/databento_api/` with:
 #### API Client (`DatabentoAPIClient`)
 - **Authentication**: Supports API key from config, environment, or .env file
 - **Caching**: SQLite-based cache to minimize API costs
-- **Data Retrieval**: 
+- **Data Retrieval**:
   - Options chain definitions (`get_nq_options_chain`)
   - Trade data for volume analysis (`get_options_trades`)
 - **Cost Management**: Checks cost before retrieval with configurable limits
@@ -100,7 +100,7 @@ config = {
 
 ### Unit Tests (83.3% pass rate)
 - ✅ API Key Loading
-- ✅ Standard Interface 
+- ✅ Standard Interface
 - ✅ Cache Functionality
 - ✅ Data Processing
 - ❌ Factory Function (minor issue with default config)

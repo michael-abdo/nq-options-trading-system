@@ -21,7 +21,7 @@ def test_edge_cases():
     """Test edge case handling with sparse data and extreme conditions"""
     print("🚨 Testing Edge Case Handling and Extreme Conditions")
     print("=" * 60)
-    
+
     test_results = {
         "test_timestamp": datetime.now().isoformat(),
         "data_edge_cases": {},
@@ -30,17 +30,17 @@ def test_edge_cases():
         "recovery_mechanisms": {},
         "overall_status": "UNKNOWN"
     }
-    
+
     # Test 1: Sparse Data Edge Cases
     print("\n1. Testing Sparse Data Edge Cases")
-    
+
     sparse_data_tests = {
         "empty_datasets": {},
         "partial_data": {},
         "missing_fields": {},
         "zero_values": {}
     }
-    
+
     # Test empty datasets
     empty_data_scenarios = [
         {
@@ -62,11 +62,11 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in empty_data_scenarios:
         print(f"  ✅ {scenario['name']}: {scenario['expected_behavior']}")
         sparse_data_tests["empty_datasets"][scenario["name"]] = scenario
-    
+
     # Test partial data scenarios
     partial_data_scenarios = [
         {
@@ -91,23 +91,23 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in partial_data_scenarios:
         print(f"  ✅ {scenario['name']}: {scenario['completeness']}% complete - {scenario['mitigation']}")
         sparse_data_tests["partial_data"][scenario["name"]] = scenario
-    
+
     test_results["data_edge_cases"] = sparse_data_tests
-    
+
     # Test 2: Extreme Market Conditions
     print("\n2. Testing Extreme Market Conditions")
-    
+
     extreme_conditions_tests = {
         "volatility_extremes": {},
         "volume_anomalies": {},
         "price_gaps": {},
         "market_halts": {}
     }
-    
+
     # Test extreme volatility scenarios
     volatility_scenarios = [
         {
@@ -132,11 +132,11 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in volatility_scenarios:
         print(f"  ✅ {scenario['name']}: {scenario['system_response']}")
         extreme_conditions_tests["volatility_extremes"][scenario["name"]] = scenario
-    
+
     # Test extreme volume scenarios
     volume_scenarios = [
         {
@@ -164,23 +164,23 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in volume_scenarios:
         print(f"  ✅ {scenario['name']}: {scenario['system_response']}")
         extreme_conditions_tests["volume_anomalies"][scenario["name"]] = scenario
-    
+
     test_results["extreme_conditions"] = extreme_conditions_tests
-    
+
     # Test 3: Error Handling and Resilience
     print("\n3. Testing Error Handling and Resilience")
-    
+
     error_handling_tests = {
         "api_errors": {},
         "data_corruption": {},
         "calculation_errors": {},
         "timeout_handling": {}
     }
-    
+
     # Test API error scenarios
     api_error_scenarios = [
         {
@@ -211,11 +211,11 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in api_error_scenarios:
         print(f"  ✅ {scenario['error_type']}: {scenario['handler']} -> {scenario['fallback']}")
         error_handling_tests["api_errors"][scenario["error_type"]] = scenario
-    
+
     # Test data corruption scenarios
     corruption_scenarios = [
         {
@@ -240,23 +240,23 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in corruption_scenarios:
         print(f"  ✅ {scenario['corruption_type']}: {scenario['detection']} -> {scenario['handler']}")
         error_handling_tests["data_corruption"][scenario["corruption_type"]] = scenario
-    
+
     test_results["error_handling"] = error_handling_tests
-    
+
     # Test 4: Mathematical Edge Cases
     print("\n4. Testing Mathematical Edge Cases")
-    
+
     math_edge_cases = {
         "division_by_zero": {},
         "overflow_conditions": {},
         "precision_limits": {},
         "invalid_calculations": {}
     }
-    
+
     # Test mathematical edge cases
     math_scenarios = [
         {
@@ -288,23 +288,23 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in math_scenarios:
         print(f"  ✅ {scenario['case']}: {scenario['handler']}")
         math_edge_cases["division_by_zero" if "zero" in scenario["case"] else "precision_limits"][scenario["case"]] = scenario
-    
+
     test_results["error_handling"]["mathematical_edge_cases"] = math_edge_cases
-    
+
     # Test 5: Recovery Mechanisms
     print("\n5. Testing Recovery Mechanisms")
-    
+
     recovery_tests = {
         "graceful_degradation": {},
         "automatic_recovery": {},
         "manual_intervention": {},
         "performance_monitoring": {}
     }
-    
+
     # Test graceful degradation scenarios
     degradation_scenarios = [
         {
@@ -326,12 +326,12 @@ def test_edge_cases():
             "test_result": "HANDLED"
         }
     ]
-    
+
     for scenario in degradation_scenarios:
         print(f"  ✅ {scenario['failure_scenario']}: {scenario['degradation_level']}")
         print(f"    Available: {', '.join(scenario['available_features'])}")
         recovery_tests["graceful_degradation"][scenario["failure_scenario"]] = scenario
-    
+
     # Test automatic recovery
     auto_recovery_scenarios = [
         {
@@ -356,30 +356,30 @@ def test_edge_cases():
             "fallback_required": True
         }
     ]
-    
+
     avg_recovery_time = sum(s["recovery_time"] for s in auto_recovery_scenarios) / len(auto_recovery_scenarios)
     avg_success_rate = sum(s["success_rate"] for s in auto_recovery_scenarios) / len(auto_recovery_scenarios)
-    
+
     recovery_tests["automatic_recovery"] = {
         "scenarios": auto_recovery_scenarios,
         "average_recovery_time": avg_recovery_time,
         "average_success_rate": avg_success_rate
     }
-    
+
     print(f"  ✅ Automatic recovery: {avg_success_rate:.1f}% success rate, {avg_recovery_time:.1f}s avg time")
-    
+
     test_results["recovery_mechanisms"] = recovery_tests
-    
+
     # Calculate overall status
     handled_scenarios = 0
     total_scenarios = 0
-    
+
     # Count all test scenarios
     test_categories = [
-        sparse_data_tests, extreme_conditions_tests, 
+        sparse_data_tests, extreme_conditions_tests,
         error_handling_tests, math_edge_cases, recovery_tests
     ]
-    
+
     for category in test_categories:
         if isinstance(category, dict):
             for subcategory in category.values():
@@ -395,17 +395,17 @@ def test_edge_cases():
                                     total_scenarios += 1
                                     if subitem["test_result"] == "HANDLED":
                                         handled_scenarios += 1
-    
+
     # Add recovery mechanism scenarios
     total_scenarios += len(auto_recovery_scenarios)
     handled_scenarios += len(auto_recovery_scenarios)  # All auto-recovery scenarios work
-    
+
     edge_case_handling_rate = (handled_scenarios / total_scenarios) * 100 if total_scenarios > 0 else 0
-    
+
     # Quality assessment
     criteria_met = 0
     total_criteria = 5
-    
+
     if edge_case_handling_rate >= 90:
         criteria_met += 1
     if avg_recovery_time <= 30:
@@ -416,9 +416,9 @@ def test_edge_cases():
         criteria_met += 1
     if len(extreme_conditions_tests["volatility_extremes"]) >= 3:
         criteria_met += 1
-    
+
     quality_score = (criteria_met / total_criteria) * 100
-    
+
     if quality_score >= 90:
         test_results["overall_status"] = "EXCELLENT"
     elif quality_score >= 75:
@@ -427,12 +427,12 @@ def test_edge_cases():
         test_results["overall_status"] = "ACCEPTABLE"
     else:
         test_results["overall_status"] = "POOR"
-    
+
     # Generate summary
     print("\n" + "=" * 60)
     print("EDGE CASE HANDLING TEST SUMMARY")
     print("=" * 60)
-    
+
     print(f"\nEdge Cases Tested: {total_scenarios}")
     print(f"Successfully Handled: {handled_scenarios}/{total_scenarios} ({edge_case_handling_rate:.1f}%)")
     print(f"Recovery Mechanisms: {len(auto_recovery_scenarios)}")
@@ -440,14 +440,14 @@ def test_edge_cases():
     print(f"Recovery Success Rate: {avg_success_rate:.1f}%")
     print(f"Quality Score: {quality_score:.1f}%")
     print(f"Overall Status: {test_results['overall_status']}")
-    
+
     print("\nEdge Case Categories:")
     print(f"  Sparse Data Scenarios: {len(empty_data_scenarios)} empty, {len(partial_data_scenarios)} partial")
     print(f"  Extreme Conditions: {len(volatility_scenarios)} volatility, {len(volume_scenarios)} volume")
     print(f"  Error Handling: {len(api_error_scenarios)} API, {len(corruption_scenarios)} corruption")
     print(f"  Mathematical Edge Cases: {len(math_scenarios)}")
     print(f"  Recovery Scenarios: {len(degradation_scenarios)} degradation")
-    
+
     print("\nCritical Edge Cases Covered:")
     print("  ✅ Empty/null data handling")
     print("  ✅ Extreme volatility (flash crashes)")
@@ -456,22 +456,22 @@ def test_edge_cases():
     print("  ✅ Mathematical edge cases")
     print("  ✅ Graceful degradation")
     print("  ✅ Automatic recovery")
-    
+
     if test_results["overall_status"] in ["EXCELLENT", "GOOD"]:
         print("\n🚨 EDGE CASE HANDLING ROBUST")
     else:
         print("\n⚠️  EDGE CASE HANDLING NEEDS STRENGTHENING")
-    
+
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/edge_cases_test_{timestamp}.json'
-    
+
     with open(results_file, 'w') as f:
         json.dump(test_results, f, indent=2)
-    
+
     print(f"\n📊 Test results saved to: {results_file}")
-    
+
     return test_results
 
 if __name__ == "__main__":

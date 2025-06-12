@@ -1,9 +1,9 @@
 # Implementation Notes Template
 
 ## Phase Information
-**Phase**: [Phase Number and Name]  
-**Implementation Date**: [Start Date - End Date]  
-**Lead Developer**: [Name]  
+**Phase**: [Phase Number and Name]
+**Implementation Date**: [Start Date - End Date]
+**Lead Developer**: [Name]
 **Team Members**: [List of team members]
 
 ## Technical Implementation Details
@@ -81,14 +81,14 @@ ALTER TABLE [existing_table] ADD COLUMN [new_field] TEXT;
 def endpoint_handler():
     """
     Purpose: [What this endpoint does]
-    
+
     Parameters:
         - param1 (str): [Description]
         - param2 (int): [Description]
-    
+
     Returns:
         JSON response with [description]
-    
+
     Example:
         POST /api/v1/endpoint
         {
@@ -315,7 +315,7 @@ Coverage: [Percentage]%
 
 ---
 
-**Document Version**: 1.0  
-**Created**: [Date]  
-**Last Updated**: [Date]  
+**Document Version**: 1.0
+**Created**: [Date]
+**Last Updated**: [Date]
 **Next Review**: [Date]

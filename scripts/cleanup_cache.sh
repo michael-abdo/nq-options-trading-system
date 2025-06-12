@@ -25,19 +25,19 @@ echo ""
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "Cleaning Python cache files..."
-    
+
     # Remove .pyc files
     find . -name "*.pyc" -type f -delete 2>/dev/null
-    
+
     # Remove __pycache__ directories
     find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null
-    
+
     # Remove .pytest_cache directories
     find . -name ".pytest_cache" -type d -exec rm -rf {} + 2>/dev/null
-    
+
     # Remove .mypy_cache directories
     find . -name ".mypy_cache" -type d -exec rm -rf {} + 2>/dev/null
-    
+
     echo ""
     echo "Cleanup complete!"
     echo "  Remaining .pyc files: $(count_files)"
