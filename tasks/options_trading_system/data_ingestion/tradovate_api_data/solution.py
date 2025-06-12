@@ -28,14 +28,18 @@ class TradovateAPIDataLoader:
         """
         self.config = config
         self.mode = config.get("mode", "demo")
-        self.cid = config.get("cid", "6540")
-        self.secret = config.get("secret", "f7a2b8f5-8348-424f-8ffa-047ab7502b7c")
+        self.cid = config.get("cid") or os.getenv("TRADOVATE_CID")
+        self.secret = config.get("secret") or os.getenv("TRADOVATE_SECRET")
         self.use_mock = config.get("use_mock", True)  # Default to mock for safety
         self.data = None
         self.metadata = {}
         
     def validate_credentials(self) -> bool:
         """Validate API credentials are present"""
+        if not self.cid:
+            raise ValueError("Tradovate Client ID not provided. Set TRADOVATE_CID environment variable or pass cid in config.")
+        if not self.secret:
+            raise ValueError("Tradovate Secret not provided. Set TRADOVATE_SECRET environment variable or pass secret in config.")
         return bool(self.cid and self.secret)
     
     def connect_api(self) -> bool:

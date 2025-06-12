@@ -43,7 +43,11 @@ class PolygonAPIClient:
     
     def __init__(self, api_key: str = None):
         """Initialize the Polygon client with API key"""
-        self.api_key = api_key or os.getenv('POLYGON_API_KEY', 'BntRhHbKto_R7jQfiSrfL9WMc7XaHXFu')
+        self.api_key = api_key or os.getenv('POLYGON_API_KEY')
+        
+        if not self.api_key:
+            raise ValueError("Polygon API key not provided. Set POLYGON_API_KEY environment variable or pass api_key parameter.")
+        
         self.base_url = 'https://api.polygon.io'
         self.headers = {
             'Authorization': f'Bearer {self.api_key}',
