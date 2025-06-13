@@ -1,5 +1,15 @@
 # NQ Options Trading System - Live Trading Ready
 
+## 🔒 Security Notice
+
+**CRITICAL**: This system has been secured against API key exposure. Always follow these security guidelines:
+
+- **Never commit API keys** to version control
+- Use the `.env` file for credentials (already in `.gitignore`)
+- All output files with sensitive data are automatically excluded from git tracking
+- Use templates in `outputs_safe/` for sharing examples
+- See [Security Guidelines](#security-guidelines) below for complete information
+
 ## Quick Start
 
 **Live Trading System - Fully Operational**:
@@ -218,10 +228,10 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │   ├── data_sources/                   # Data source guides
 │   ├── live_trading_test_plan.txt     # Comprehensive test plan
 │   └── *.md                           # System documentation
-├── outputs/                            # 📁 ORGANIZED OUTPUT STRUCTURE
+├── outputs/                            # 📁 OUTPUT STRUCTURE (GIT IGNORED - SECURE)
 │   ├── YYYYMMDD/                       # Date-based organization
-│   │   ├── analysis_exports/           # JSON analysis outputs
-│   │   ├── api_data/                   # API responses
+│   │   ├── analysis_exports/           # JSON analysis outputs (may contain API data)
+│   │   ├── api_data/                   # API responses (sensitive data)
 │   │   ├── reports/                    # Trading reports
 │   │   └── polygon_api_results/        # Polygon.io results
 │   ├── shadow_trading/                 # Shadow trading validation outputs
@@ -230,13 +240,17 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │   │       ├── paper_trading/         # Paper trading execution logs
 │   │       └── performance_tracking/  # Real-time performance metrics
 │   ├── config_tests/                   # Configuration test results
-│   ├── databento_cache/                # Databento cache
+│   ├── databento_cache/                # Databento cache (may contain API keys)
 │   ├── 5m_chart_outputs/               # 5-minute chart outputs
 │   │   ├── *.html                     # Generated chart files
 │   │   └── *.png                      # Chart exports
 │   └── monitoring/                     # Production monitoring data
 │       ├── production_metrics.json    # Real-time system metrics
 │       ├── dashboard.html             # Web monitoring dashboard
+├── outputs_safe/                       # 🔒 SAFE EXAMPLES (GIT TRACKED)
+│   ├── chart_templates/                # Example chart outputs (sanitized)
+│   ├── sample_configs/                 # Configuration templates (no real keys)
+│   └── documentation/                  # Usage examples and guides
 │       └── monitor.log                # Monitoring system logs
 ├── tasks/options_trading_system/       # 🏗️ ACTIVE PIPELINE FRAMEWORK
 │   ├── config_manager.py               # Configuration management
@@ -590,6 +604,56 @@ Uses your actual NQ Options Expected Value algorithm with:
 This system replaces the previous task-based implementation. All legacy files are preserved in the `archive/` directory for reference.
 
 **Ready to trade with: `python3 scripts/run_pipeline.py`** 🚀
+
+## Security Guidelines
+
+### 🔒 API Key Security
+
+**Critical Security Measures Implemented:**
+
+1. **Complete outputs/ Directory Protection**
+   - All files in `outputs/` are automatically excluded from git tracking
+   - Prevents accidental commit of sensitive API data
+   - Local files remain untouched for development use
+
+2. **Safe Examples Directory**
+   - Use `outputs_safe/` for sharing chart templates and configurations
+   - All examples guaranteed to contain no sensitive data
+   - Templates available for team development
+
+3. **Environment Variables**
+   ```bash
+   # Use .env file for credentials (never commit this file)
+   cp .env.example .env
+   # Edit .env with your actual API keys
+   ```
+
+4. **Pre-commit Security Hooks**
+   - Automatic scanning for API key patterns
+   - Prevents accidental exposure during commits
+   - Validates all changes before git operations
+
+### 🛡️ Security Best Practices
+
+- **Never commit** real API keys to version control
+- **Always use** `.env` files for credentials
+- **Use templates** from `outputs_safe/` for documentation
+- **Verify security** before pushing branches to GitHub
+- **Report issues** immediately if credentials are exposed
+
+### 🔍 Security Validation
+
+Run security checks:
+```bash
+# Verify no sensitive patterns in tracked files
+grep -r "db-[A-Za-z0-9]" --exclude-dir=.git --exclude-dir=outputs .
+
+# Check git tracking status
+git ls-files outputs/  # Should return empty
+
+# Validate outputs_safe/ examples are clean
+python scripts/test_installation.py
+```
 
 ## Recent Updates
 
