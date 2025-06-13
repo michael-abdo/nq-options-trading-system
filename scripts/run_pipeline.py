@@ -14,11 +14,15 @@ import sys
 import os
 import argparse
 from datetime import datetime
+
+# Add parent directory to path for imports
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+sys.path.insert(0, parent_dir)
+
 from utils.timezone_utils import get_eastern_time
 
 # Add pipeline system to path
-script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)
 pipeline_path = os.path.join(parent_dir, 'tasks', 'options_trading_system')
 sys.path.insert(0, pipeline_path)
 
