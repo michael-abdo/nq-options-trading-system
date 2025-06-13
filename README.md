@@ -20,6 +20,9 @@ python3 scripts/nq_volume_analysis.py
 # 📊 NEW: Interactive 5-minute candlestick charts
 python3 scripts/nq_5m_chart.py
 
+# 🔥 NEW: Real-time 5-minute dashboard with auto-refresh
+python3 scripts/start_trading_safe_chart.py --type dashboard
+
 # Run Shadow Trading Mode (validation without real positions)
 python3 scripts/run_shadow_trading.py
 
@@ -117,12 +120,15 @@ python3 scripts/nq_volume_analysis.py
 python3 scripts/nq_5m_chart.py
 ```
 
-### 📊 NEW: 5-Minute Candlestick Charts
-- **Real-Time Updates**: Automatic refresh every 30 seconds
-- **Professional Charts**: Interactive Plotly candlesticks with volume
-- **Technical Indicators**: MA20 and MA50 overlays
-- **Dark Theme**: Optimized for trading screens
-- **Flexible Time Ranges**: 1 hour to full day views
+### 📊 NEW: 5-Minute Candlestick Charts with Real-Time Dashboard
+- **Real-Time Dashboard**: Auto-refreshing web interface with live data
+- **Professional Charts**: Interactive Plotly candlesticks with volume indicators
+- **Technical Indicators**: MA20 and MA50 moving average overlays
+- **Dark Theme**: Professional trading interface optimized for extended use
+- **Flexible Time Ranges**: 1 hour to full trading day views
+- **Eastern Time Display**: All timestamps shown in ET for consistent market timing
+- **Bulletproof Authentication**: Hard failure on invalid API keys prevents fake data
+- **1-Minute to 5-Minute Aggregation**: Real-time conversion from Databento 1-minute bars
 
 ### Current Market Data (Example)
 - **NQ Price**: $21,742.50 (live)
@@ -150,6 +156,12 @@ python3 scripts/nq_5m_chart.py
 ├── scripts/                            # 🔧 UTILITY SCRIPTS & ENTRY POINTS
 │   ├── run_pipeline.py                # 🚀 ANALYSIS PIPELINE ENTRY POINT
 │   ├── run_shadow_trading.py          # 🎯 SHADOW TRADING ENTRY POINT
+│   ├── start_trading_safe_chart.py    # 🔥 5-MINUTE CHART DASHBOARD ENTRY POINT
+│   ├── nq_5m_chart.py                 # 📊 Static 5-minute chart generator
+│   ├── nq_5m_dash_app.py              # Real-time dashboard application
+│   ├── databento_5m_provider.py       # 5-minute data provider with timezone handling
+│   ├── databento_auth.py              # Bulletproof API authentication system
+│   ├── data_aggregation.py            # 1-minute to 5-minute OHLCV aggregation
 │   ├── compare_barchart_databento.py  # Data source comparison
 │   ├── production_monitor.py          # Production monitoring system
 │   ├── monitoring_dashboard.py        # Web monitoring dashboard
@@ -188,6 +200,9 @@ python3 scripts/nq_5m_chart.py
 │   │       └── performance_tracking/  # Real-time performance metrics
 │   ├── config_tests/                   # Configuration test results
 │   ├── databento_cache/                # Databento cache
+│   ├── 5m_chart_outputs/               # 5-minute chart outputs
+│   │   ├── *.html                     # Generated chart files
+│   │   └── *.png                      # Chart exports
 │   └── monitoring/                     # Production monitoring data
 │       ├── production_metrics.json    # Real-time system metrics
 │       ├── dashboard.html             # Web monitoring dashboard
@@ -211,6 +226,9 @@ python3 scripts/nq_5m_chart.py
 │   │   ├── interactive_brokers_api/   # Interactive Brokers integration
 │   │   └── tradovate_api_data/        # Tradovate integration
 │   └── output_generation/              # Results output modules
+├── utils/                              # 🔧 SHARED UTILITIES
+│   ├── timezone_utils.py               # Eastern Time utilities for consistent LLM communication
+│   └── __init__.py                     # Utils package initialization
 ├── templates/                          # 📋 DOCUMENTATION TEMPLATES
 │   ├── phase_template.md               # Template for future phases
 │   └── implementation_notes_template.md # Technical documentation template
