@@ -10,6 +10,7 @@ import os
 from datetime import datetime, timedelta
 from typing import Optional, Dict, List
 import logging
+import pytz
 from data_aggregation import aggregate_1min_to_5min, MinuteToFiveMinuteAggregator
 from databento_auth import ensure_trading_safe_databento_client, DatabentoCriticalAuthError
 
@@ -60,11 +61,21 @@ class Databento5MinuteProvider:
         Returns:
             DataFrame with 5-minute OHLCV bars
         """
-        # Set default times
+        # Set default times (timezone-aware UTC)
         if end is None:
-            end = datetime.now()
+            end = datetime.now(pytz.UTC)
         if start is None:
             start = end - timedelta(hours=hours_back)
+
+        # Auto-adjust end time if beyond data availability (safety feature)
+        # Databento data typically has a few minutes delay
+        max_available_end = datetime.now(pytz.UTC) - timedelta(minutes=15)
+        if end > max_available_end:
+            logger.info(f"Adjusting end time from {end} to {max_available_end} (data availability)")
+            end = max_available_end
+            # Recalculate start time to maintain the requested time window
+            if start is None or (end - start).total_seconds() / 3600 != hours_back:
+                start = end - timedelta(hours=hours_back)
 
         # Check cache first
         cache_key = f"{symbol}_{start.isoformat()}_{end.isoformat()}"
@@ -187,8 +198,8 @@ class Databento5MinuteProvider:
         Returns:
             DataFrame with latest 5-minute bars
         """
-        # Calculate time range (5 minutes per bar)
-        end = datetime.now()
+        # Calculate time range (5 minutes per bar) - timezone-aware
+        end = datetime.now(pytz.UTC)
         start = end - timedelta(minutes=count * 5 + 10)  # Add buffer
 
         df = self.get_historical_5min_bars(symbol, start, end)

@@ -14,6 +14,7 @@ import signal
 import sys
 import time
 import logging
+import pytz
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -62,6 +63,11 @@ class NQFiveMinuteChart:
         Args:
             df: DataFrame with OHLCV data
         """
+        # Convert UTC timestamps to Eastern Time for display
+        et_tz = pytz.timezone('US/Eastern')
+        df_display = df.copy()
+        df_display.index = df_display.index.tz_convert(et_tz)
+
         # Create subplots
         self.fig = make_subplots(
             rows=2, cols=1,
@@ -73,11 +79,11 @@ class NQFiveMinuteChart:
 
         # Add candlestick chart
         candlestick = go.Candlestick(
-            x=df.index,
-            open=df['open'],
-            high=df['high'],
-            low=df['low'],
-            close=df['close'],
+            x=df_display.index,
+            open=df_display['open'],
+            high=df_display['high'],
+            low=df_display['low'],
+            close=df_display['close'],
             name='Price',
             increasing_line_color='green',
             decreasing_line_color='red'
@@ -86,11 +92,11 @@ class NQFiveMinuteChart:
 
         # Add volume bars
         colors = ['red' if close < open else 'green'
-                 for close, open in zip(df['close'], df['open'])]
+                 for close, open in zip(df_display['close'], df_display['open'])]
 
         volume_bars = go.Bar(
-            x=df.index,
-            y=df['volume'],
+            x=df_display.index,
+            y=df_display['volume'],
             name='Volume',
             marker_color=colors,
             opacity=0.7
@@ -98,11 +104,11 @@ class NQFiveMinuteChart:
         self.fig.add_trace(volume_bars, row=2, col=1)
 
         # Add moving averages if we have enough data
-        if len(df) >= 20:
-            ma20 = df['close'].rolling(window=20).mean()
+        if len(df_display) >= 20:
+            ma20 = df_display['close'].rolling(window=20).mean()
             self.fig.add_trace(
                 go.Scatter(
-                    x=df.index,
+                    x=df_display.index,
                     y=ma20,
                     name='MA20',
                     line=dict(color='blue', width=1)
@@ -110,11 +116,11 @@ class NQFiveMinuteChart:
                 row=1, col=1
             )
 
-        if len(df) >= 50:
-            ma50 = df['close'].rolling(window=50).mean()
+        if len(df_display) >= 50:
+            ma50 = df_display['close'].rolling(window=50).mean()
             self.fig.add_trace(
                 go.Scatter(
-                    x=df.index,
+                    x=df_display.index,
                     y=ma50,
                     name='MA50',
                     line=dict(color='orange', width=1)
@@ -125,7 +131,7 @@ class NQFiveMinuteChart:
         # Update layout
         self.fig.update_layout(
             title=dict(
-                text=f"{self.symbol} - 5 Minute Chart",
+                text=f"{self.symbol} - 5 Minute Chart (Eastern Time)",
                 font=dict(size=20)
             ),
             yaxis_title="Price ($)",
@@ -139,11 +145,11 @@ class NQFiveMinuteChart:
         # Update y-axis labels
         self.fig.update_yaxes(title_text="Price ($)", row=1, col=1)
         self.fig.update_yaxes(title_text="Volume", row=2, col=1)
-        self.fig.update_xaxes(title_text="Time", row=2, col=1)
+        self.fig.update_xaxes(title_text="Time (Eastern)", row=2, col=1)
 
         # Add current price annotation
         last_price = df['close'].iloc[-1]
-        last_time = df.index[-1]
+        last_time = df_display.index[-1]  # Use Eastern Time for display
 
         self.fig.add_annotation(
             x=last_time,
@@ -181,7 +187,7 @@ class NQFiveMinuteChart:
 
             # Add update timestamp
             self.fig.add_annotation(
-                text=f"Updated: {datetime.now().strftime('%H:%M:%S')}",
+                text=f"Updated: {datetime.now(pytz.UTC).strftime('%H:%M:%S')} UTC",
                 xref="paper", yref="paper",
                 x=0.01, y=0.99,
                 showarrow=False,

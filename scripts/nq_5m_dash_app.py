@@ -21,6 +21,7 @@ import signal
 import webbrowser
 import threading
 import time
+import pytz
 
 from databento_5m_provider import Databento5MinuteProvider
 
@@ -199,10 +200,10 @@ class NQDashApp:
         def update_chart(n_intervals, symbol, hours, reset_clicks):
             """Update the chart with fresh data"""
             try:
-                # Update symbol and hours if changed
-                if symbol != self.symbol:
+                # Update symbol and hours if changed (with safety checks)
+                if symbol and symbol != self.symbol:
                     self.symbol = symbol
-                if hours != self.hours:
+                if hours is not None and hours != self.hours:
                     self.hours = hours
 
                 # Fetch fresh data
@@ -277,6 +278,11 @@ class NQDashApp:
 
     def _create_chart(self, df):
         """Create the plotly figure"""
+        # Convert UTC timestamps to Eastern Time for display
+        et_tz = pytz.timezone('US/Eastern')
+        df_display = df.copy()
+        df_display.index = df_display.index.tz_convert(et_tz)
+
         # Create subplots
         fig = make_subplots(
             rows=2, cols=1,
@@ -288,11 +294,11 @@ class NQDashApp:
 
         # Add candlestick chart
         candlestick = go.Candlestick(
-            x=df.index,
-            open=df['open'],
-            high=df['high'],
-            low=df['low'],
-            close=df['close'],
+            x=df_display.index,
+            open=df_display['open'],
+            high=df_display['high'],
+            low=df_display['low'],
+            close=df_display['close'],
             name='Price',
             increasing_line_color='#00FF00',
             decreasing_line_color='#FF0000',
@@ -303,11 +309,11 @@ class NQDashApp:
 
         # Add volume bars
         colors = ['#FF0000' if close < open else '#00FF00'
-                 for close, open in zip(df['close'], df['open'])]
+                 for close, open in zip(df_display['close'], df_display['open'])]
 
         volume_bars = go.Bar(
-            x=df.index,
-            y=df['volume'],
+            x=df_display.index,
+            y=df_display['volume'],
             name='Volume',
             marker_color=colors,
             opacity=0.7
@@ -315,11 +321,11 @@ class NQDashApp:
         fig.add_trace(volume_bars, row=2, col=1)
 
         # Add moving averages if we have enough data
-        if len(df) >= 20:
-            ma20 = df['close'].rolling(window=20).mean()
+        if len(df_display) >= 20:
+            ma20 = df_display['close'].rolling(window=20).mean()
             fig.add_trace(
                 go.Scatter(
-                    x=df.index,
+                    x=df_display.index,
                     y=ma20,
                     name='MA20',
                     line=dict(color='#0099FF', width=1),
@@ -328,11 +334,11 @@ class NQDashApp:
                 row=1, col=1
             )
 
-        if len(df) >= 50:
-            ma50 = df['close'].rolling(window=50).mean()
+        if len(df_display) >= 50:
+            ma50 = df_display['close'].rolling(window=50).mean()
             fig.add_trace(
                 go.Scatter(
-                    x=df.index,
+                    x=df_display.index,
                     y=ma50,
                     name='MA50',
                     line=dict(color='#FF9900', width=1),
@@ -344,7 +350,7 @@ class NQDashApp:
         # Update layout
         fig.update_layout(
             title=dict(
-                text=f"{self.symbol} - Real-Time 5 Minute Chart",
+                text=f"{self.symbol} - Real-Time 5 Minute Chart (Eastern Time)",
                 font=dict(size=20, color='#FFFFFF')
             ),
             paper_bgcolor='#1E1E1E',
@@ -380,6 +386,7 @@ class NQDashApp:
         # Update specific y-axis labels
         fig.update_yaxes(title_text="Price ($)", row=1, col=1)
         fig.update_yaxes(title_text="Volume", row=2, col=1)
+        fig.update_xaxes(title_text="Time (Eastern)", row=2, col=1)
 
         return fig
 
