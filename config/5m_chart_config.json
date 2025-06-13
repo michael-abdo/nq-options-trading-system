@@ -1,0 +1,252 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "5-Minute NQ Futures Chart Configuration",
+  "description": "Configuration schema for 5-minute NQ futures chart visualization",
+  "type": "object",
+  "properties": {
+    "chart": {
+      "type": "object",
+      "description": "Chart display settings",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark"],
+          "default": "dark",
+          "description": "Chart color theme"
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 400,
+          "maximum": 2000,
+          "default": 800,
+          "description": "Chart height in pixels"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 600,
+          "maximum": 3000,
+          "default": 1200,
+          "description": "Chart width in pixels"
+        },
+        "update_interval": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 300,
+          "default": 30,
+          "description": "Update interval in seconds"
+        },
+        "time_range_hours": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24,
+          "default": 4,
+          "description": "Hours of data to display"
+        },
+        "show_volume": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show volume subplot"
+        },
+        "volume_height_ratio": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 0.5,
+          "default": 0.3,
+          "description": "Volume subplot height as ratio of total chart height"
+        }
+      },
+      "additionalProperties": false
+    },
+    "indicators": {
+      "type": "object",
+      "description": "Technical indicator settings",
+      "properties": {
+        "enabled": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["sma", "ema", "vwap", "volume_ma", "bollinger"]
+          },
+          "default": ["sma"],
+          "description": "List of enabled indicators"
+        },
+        "sma": {
+          "type": "object",
+          "properties": {
+            "periods": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 5,
+                "maximum": 200
+              },
+              "default": [20, 50],
+              "description": "Simple moving average periods"
+            },
+            "colors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": ["blue", "orange"],
+              "description": "Colors for each SMA line"
+            }
+          }
+        },
+        "ema": {
+          "type": "object",
+          "properties": {
+            "periods": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 5,
+                "maximum": 200
+              },
+              "default": [12, 26],
+              "description": "Exponential moving average periods"
+            },
+            "colors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": ["cyan", "magenta"],
+              "description": "Colors for each EMA line"
+            }
+          }
+        },
+        "vwap": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "color": {
+              "type": "string",
+              "default": "yellow",
+              "description": "VWAP line color"
+            },
+            "line_width": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 5.0,
+              "default": 2.0
+            }
+          }
+        },
+        "volume_ma": {
+          "type": "object",
+          "properties": {
+            "period": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 100,
+              "default": 20,
+              "description": "Volume moving average period"
+            },
+            "color": {
+              "type": "string",
+              "default": "purple"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object",
+      "description": "Data source and processing settings",
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "default": "NQM5",
+          "description": "Default futures contract symbol"
+        },
+        "timezone": {
+          "type": "string",
+          "default": "US/Eastern",
+          "description": "Timezone for data display"
+        },
+        "cache_enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable data caching"
+        },
+        "cache_duration_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60,
+          "default": 15,
+          "description": "Cache duration in minutes"
+        }
+      },
+      "additionalProperties": false
+    },
+    "display": {
+      "type": "object",
+      "description": "Display and formatting options",
+      "properties": {
+        "price_format": {
+          "type": "string",
+          "enum": ["auto", "decimal_2", "decimal_4", "currency"],
+          "default": "decimal_2",
+          "description": "Price formatting style"
+        },
+        "volume_format": {
+          "type": "string",
+          "enum": ["raw", "thousands", "millions"],
+          "default": "thousands",
+          "description": "Volume formatting style"
+        },
+        "show_current_price": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show current price annotation"
+        },
+        "show_statistics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show statistics box"
+        },
+        "show_update_time": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show last update timestamp"
+        },
+        "grid_enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show chart grid"
+        }
+      },
+      "additionalProperties": false
+    },
+    "export": {
+      "type": "object",
+      "description": "Chart export settings",
+      "properties": {
+        "default_format": {
+          "type": "string",
+          "enum": ["html", "png", "pdf", "svg"],
+          "default": "html",
+          "description": "Default export format"
+        },
+        "include_timestamp": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include timestamp in exported filename"
+        },
+        "output_directory": {
+          "type": "string",
+          "default": "outputs",
+          "description": "Default output directory for exports"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["chart", "indicators", "data", "display", "export"],
+  "additionalProperties": false
+}

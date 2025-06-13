@@ -21,6 +21,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from databento_5m_provider import Databento5MinuteProvider
 from utils.timezone_utils import format_eastern_timestamp
+from chart_config_manager import ChartConfigManager
 
 # Configure logging
 logging.basicConfig(
@@ -32,18 +33,42 @@ logger = logging.getLogger(__name__)
 class NQFiveMinuteChart:
     """Interactive 5-minute chart for NQ futures"""
 
-    def __init__(self, symbol="NQM5", hours=4, update_interval=30):
+    def __init__(self, config=None, symbol=None, hours=None, update_interval=None):
         """
         Initialize the chart
 
         Args:
-            symbol: Contract symbol (default: NQM5)
-            hours: Hours of data to display (default: 4)
-            update_interval: Seconds between updates (default: 30)
+            config: Configuration dictionary (takes precedence over individual args)
+            symbol: Contract symbol (default from config or NQM5)
+            hours: Hours of data to display (default from config or 4)
+            update_interval: Seconds between updates (default from config or 30)
         """
-        self.symbol = symbol
-        self.hours = hours
-        self.update_interval = update_interval
+        # Use config or fallback to defaults
+        if config:
+            self.config = config
+            self.symbol = symbol or config.get("data", {}).get("symbol", "NQM5")
+            self.hours = hours or config.get("chart", {}).get("time_range_hours", 4)
+            self.update_interval = update_interval or config.get("chart", {}).get("update_interval", 30)
+            self.theme = config.get("chart", {}).get("theme", "dark")
+            self.height = config.get("chart", {}).get("height", 800)
+            self.width = config.get("chart", {}).get("width", 1200)
+            self.show_volume = config.get("chart", {}).get("show_volume", True)
+            self.volume_ratio = config.get("chart", {}).get("volume_height_ratio", 0.3)
+            self.indicators_enabled = config.get("indicators", {}).get("enabled", ["sma"])
+            self.display_config = config.get("display", {})
+        else:
+            self.config = {}
+            self.symbol = symbol or "NQM5"
+            self.hours = hours or 4
+            self.update_interval = update_interval or 30
+            self.theme = "dark"
+            self.height = 800
+            self.width = 1200
+            self.show_volume = True
+            self.volume_ratio = 0.3
+            self.indicators_enabled = ["sma"]
+            self.display_config = {}
+
         self.data_provider = Databento5MinuteProvider()
         self.fig = None
         self.running = True
@@ -70,14 +95,20 @@ class NQFiveMinuteChart:
         df_display = df.copy()
         df_display.index = df_display.index.tz_convert(et_tz)
 
-        # Create subplots
-        self.fig = make_subplots(
-            rows=2, cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
-            subplot_titles=(f'{self.symbol} - 5 Minute Chart', 'Volume'),
-            row_heights=[0.7, 0.3]
-        )
+        # Create subplots (adjust based on volume display setting)
+        if self.show_volume:
+            self.fig = make_subplots(
+                rows=2, cols=1,
+                shared_xaxes=True,
+                vertical_spacing=0.03,
+                subplot_titles=(f'{self.symbol} - 5 Minute Chart', 'Volume'),
+                row_heights=[1.0 - self.volume_ratio, self.volume_ratio]
+            )
+        else:
+            self.fig = make_subplots(
+                rows=1, cols=1,
+                subplot_titles=(f'{self.symbol} - 5 Minute Chart',)
+            )
 
         # Add candlestick chart
         candlestick = go.Candlestick(
@@ -92,45 +123,25 @@ class NQFiveMinuteChart:
         )
         self.fig.add_trace(candlestick, row=1, col=1)
 
-        # Add volume bars
-        colors = ['red' if close < open else 'green'
-                 for close, open in zip(df_display['close'], df_display['open'])]
+        # Add volume bars (only if volume is enabled)
+        if self.show_volume:
+            colors = ['red' if close < open else 'green'
+                     for close, open in zip(df_display['close'], df_display['open'])]
 
-        volume_bars = go.Bar(
-            x=df_display.index,
-            y=df_display['volume'],
-            name='Volume',
-            marker_color=colors,
-            opacity=0.7
-        )
-        self.fig.add_trace(volume_bars, row=2, col=1)
-
-        # Add moving averages if we have enough data
-        if len(df_display) >= 20:
-            ma20 = df_display['close'].rolling(window=20).mean()
-            self.fig.add_trace(
-                go.Scatter(
-                    x=df_display.index,
-                    y=ma20,
-                    name='MA20',
-                    line=dict(color='blue', width=1)
-                ),
-                row=1, col=1
+            volume_bars = go.Bar(
+                x=df_display.index,
+                y=df_display['volume'],
+                name='Volume',
+                marker_color=colors,
+                opacity=0.7
             )
+            self.fig.add_trace(volume_bars, row=2, col=1)
 
-        if len(df_display) >= 50:
-            ma50 = df_display['close'].rolling(window=50).mean()
-            self.fig.add_trace(
-                go.Scatter(
-                    x=df_display.index,
-                    y=ma50,
-                    name='MA50',
-                    line=dict(color='orange', width=1)
-                ),
-                row=1, col=1
-            )
+        # Add indicators based on configuration
+        self._add_indicators(df_display)
 
-        # Update layout
+        # Update layout using configuration
+        template = 'plotly_dark' if self.theme == 'dark' else 'plotly_white'
         self.fig.update_layout(
             title=dict(
                 text=f"{self.symbol} - 5 Minute Chart (Eastern Time)",
@@ -138,16 +149,20 @@ class NQFiveMinuteChart:
             ),
             yaxis_title="Price ($)",
             xaxis_rangeslider_visible=False,
-            height=800,
+            height=self.height,
+            width=self.width,
             showlegend=True,
             hovermode='x unified',
-            template='plotly_dark'  # Dark theme
+            template=template
         )
 
         # Update y-axis labels
         self.fig.update_yaxes(title_text="Price ($)", row=1, col=1)
-        self.fig.update_yaxes(title_text="Volume", row=2, col=1)
-        self.fig.update_xaxes(title_text="Time (Eastern)", row=2, col=1)
+        if self.show_volume:
+            self.fig.update_yaxes(title_text="Volume", row=2, col=1)
+            self.fig.update_xaxes(title_text="Time (Eastern)", row=2, col=1)
+        else:
+            self.fig.update_xaxes(title_text="Time (Eastern)", row=1, col=1)
 
         # Add current price annotation
         last_price = df['close'].iloc[-1]
@@ -167,6 +182,74 @@ class NQFiveMinuteChart:
             bgcolor="rgba(0,0,0,0.8)",
             font=dict(size=14, color="white")
         )
+
+    def _add_indicators(self, df_display):
+        """Add technical indicators based on configuration"""
+        if not self.indicators_enabled:
+            return
+
+        config_indicators = self.config.get("indicators", {})
+
+        # Simple Moving Averages
+        if "sma" in self.indicators_enabled:
+            sma_config = config_indicators.get("sma", {})
+            periods = sma_config.get("periods", [20, 50])
+            colors = sma_config.get("colors", ["blue", "orange"])
+
+            for i, period in enumerate(periods):
+                if len(df_display) >= period:
+                    ma = df_display['close'].rolling(window=period).mean()
+                    color = colors[i] if i < len(colors) else "gray"
+                    self.fig.add_trace(
+                        go.Scatter(
+                            x=df_display.index,
+                            y=ma,
+                            name=f'SMA{period}',
+                            line=dict(color=color, width=1)
+                        ),
+                        row=1, col=1
+                    )
+
+        # Exponential Moving Averages
+        if "ema" in self.indicators_enabled:
+            ema_config = config_indicators.get("ema", {})
+            periods = ema_config.get("periods", [12, 26])
+            colors = ema_config.get("colors", ["cyan", "magenta"])
+
+            for i, period in enumerate(periods):
+                if len(df_display) >= period:
+                    ema = df_display['close'].ewm(span=period).mean()
+                    color = colors[i] if i < len(colors) else "gray"
+                    self.fig.add_trace(
+                        go.Scatter(
+                            x=df_display.index,
+                            y=ema,
+                            name=f'EMA{period}',
+                            line=dict(color=color, width=1)
+                        ),
+                        row=1, col=1
+                    )
+
+        # VWAP (Volume Weighted Average Price)
+        if "vwap" in self.indicators_enabled:
+            vwap_config = config_indicators.get("vwap", {})
+            if vwap_config.get("enabled", False) and len(df_display) > 0:
+                # Calculate VWAP
+                typical_price = (df_display['high'] + df_display['low'] + df_display['close']) / 3
+                vwap = (typical_price * df_display['volume']).cumsum() / df_display['volume'].cumsum()
+
+                color = vwap_config.get("color", "yellow")
+                line_width = vwap_config.get("line_width", 2.0)
+
+                self.fig.add_trace(
+                    go.Scatter(
+                        x=df_display.index,
+                        y=vwap,
+                        name='VWAP',
+                        line=dict(color=color, width=line_width)
+                    ),
+                    row=1, col=1
+                )
 
     def update_chart(self):
         """Update the chart with latest data"""
@@ -268,20 +351,57 @@ class NQFiveMinuteChart:
 def main():
     """Main entry point"""
     parser = argparse.ArgumentParser(description='NQ Futures 5-Minute Chart')
-    parser.add_argument('--symbol', default='NQM5', help='Contract symbol (default: NQM5)')
-    parser.add_argument('--hours', type=int, default=4, help='Hours of data to display (default: 4)')
-    parser.add_argument('--update', type=int, default=30, help='Update interval in seconds (default: 30)')
+    parser.add_argument('--symbol', help='Contract symbol (overrides config)')
+    parser.add_argument('--hours', type=int, help='Hours of data to display (overrides config)')
+    parser.add_argument('--update', type=int, help='Update interval in seconds (overrides config)')
     parser.add_argument('--save', action='store_true', help='Save chart to HTML file instead of interactive')
     parser.add_argument('--output', help='Output filename for saved chart')
 
+    # New configuration options
+    parser.add_argument('--config', default='default', help='Configuration preset to use (default, scalping, swing_trading, minimal)')
+    parser.add_argument('--theme', choices=['light', 'dark'], help='Chart theme (overrides config)')
+    parser.add_argument('--indicators', nargs='*', choices=['sma', 'ema', 'vwap'], help='Indicators to enable (overrides config)')
+    parser.add_argument('--no-volume', action='store_true', help='Hide volume subplot')
+    parser.add_argument('--list-configs', action='store_true', help='List available configuration presets')
+
     args = parser.parse_args()
 
-    # Create chart instance
-    chart = NQFiveMinuteChart(
-        symbol=args.symbol,
-        hours=args.hours,
-        update_interval=args.update
-    )
+    # Initialize configuration manager
+    config_manager = ChartConfigManager()
+
+    # Handle list configs command
+    if args.list_configs:
+        print("Available configuration presets:")
+        for config_name in config_manager.list_available_configs():
+            config = config_manager.load_config(config_name)
+            summary = config_manager.get_config_summary(config)
+            print(f"  {config_name}: {summary['theme']} theme, {summary['time_range']}h, indicators: {summary['indicators_enabled']}")
+        return
+
+    # Load base configuration
+    config = config_manager.load_config(args.config)
+
+    # Create CLI overrides
+    cli_overrides = {}
+
+    if args.symbol:
+        cli_overrides.setdefault("data", {})["symbol"] = args.symbol
+    if args.hours:
+        cli_overrides.setdefault("chart", {})["time_range_hours"] = args.hours
+    if args.update:
+        cli_overrides.setdefault("chart", {})["update_interval"] = args.update
+    if args.theme:
+        cli_overrides.setdefault("chart", {})["theme"] = args.theme
+    if args.indicators is not None:
+        cli_overrides.setdefault("indicators", {})["enabled"] = args.indicators
+    if args.no_volume:
+        cli_overrides.setdefault("chart", {})["show_volume"] = False
+
+    # Merge configurations
+    final_config = config_manager.merge_configs(config, cli_overrides)
+
+    # Create chart instance with configuration
+    chart = NQFiveMinuteChart(config=final_config)
 
     try:
         if args.save:

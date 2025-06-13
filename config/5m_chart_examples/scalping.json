@@ -1,0 +1,50 @@
+{
+  "chart": {
+    "theme": "dark",
+    "height": 900,
+    "width": 1400,
+    "update_interval": 10,
+    "time_range_hours": 2,
+    "show_volume": true,
+    "volume_height_ratio": 0.4
+  },
+  "indicators": {
+    "enabled": ["ema", "vwap"],
+    "sma": {
+      "periods": [9, 21],
+      "colors": ["blue", "orange"]
+    },
+    "ema": {
+      "periods": [8, 21],
+      "colors": ["cyan", "magenta"]
+    },
+    "vwap": {
+      "enabled": true,
+      "color": "yellow",
+      "line_width": 2.5
+    },
+    "volume_ma": {
+      "period": 10,
+      "color": "purple"
+    }
+  },
+  "data": {
+    "symbol": "NQM5",
+    "timezone": "US/Eastern",
+    "cache_enabled": true,
+    "cache_duration_minutes": 5
+  },
+  "display": {
+    "price_format": "decimal_4",
+    "volume_format": "raw",
+    "show_current_price": true,
+    "show_statistics": true,
+    "show_update_time": true,
+    "grid_enabled": true
+  },
+  "export": {
+    "default_format": "png",
+    "include_timestamp": true,
+    "output_directory": "outputs/scalping"
+  }
+}

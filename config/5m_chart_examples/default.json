@@ -1,0 +1,50 @@
+{
+  "chart": {
+    "theme": "dark",
+    "height": 800,
+    "width": 1200,
+    "update_interval": 30,
+    "time_range_hours": 4,
+    "show_volume": true,
+    "volume_height_ratio": 0.3
+  },
+  "indicators": {
+    "enabled": ["sma"],
+    "sma": {
+      "periods": [20, 50],
+      "colors": ["blue", "orange"]
+    },
+    "ema": {
+      "periods": [12, 26],
+      "colors": ["cyan", "magenta"]
+    },
+    "vwap": {
+      "enabled": false,
+      "color": "yellow",
+      "line_width": 2.0
+    },
+    "volume_ma": {
+      "period": 20,
+      "color": "purple"
+    }
+  },
+  "data": {
+    "symbol": "NQM5",
+    "timezone": "US/Eastern",
+    "cache_enabled": true,
+    "cache_duration_minutes": 15
+  },
+  "display": {
+    "price_format": "decimal_2",
+    "volume_format": "thousands",
+    "show_current_price": true,
+    "show_statistics": true,
+    "show_update_time": true,
+    "grid_enabled": true
+  },
+  "export": {
+    "default_format": "html",
+    "include_timestamp": true,
+    "output_directory": "outputs"
+  }
+}

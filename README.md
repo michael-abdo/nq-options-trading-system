@@ -17,8 +17,18 @@ python3 scripts/nq_realtime_display.py
 # 🔴 NEW: NQ volume and trading analysis
 python3 scripts/nq_volume_analysis.py
 
-# 📊 NEW: Interactive 5-minute candlestick charts
-python3 scripts/nq_5m_chart.py
+# 📊 NEW: Interactive 5-minute candlestick charts with configuration system
+python3 scripts/nq_5m_chart.py --config default
+
+# List available chart configurations
+python3 scripts/nq_5m_chart.py --list-configs
+
+# Generate quick chart with different presets
+python3 scripts/examples/quick_chart.py
+python3 scripts/examples/batch_charts.py
+
+# Live market monitoring with alerts
+python3 scripts/examples/live_monitor.py
 
 # 🔥 NEW: Real-time 5-minute dashboard with auto-refresh
 python3 scripts/start_trading_safe_chart.py --type dashboard
@@ -120,15 +130,36 @@ python3 scripts/nq_volume_analysis.py
 python3 scripts/nq_5m_chart.py
 ```
 
-### 📊 NEW: 5-Minute Candlestick Charts with Real-Time Dashboard
+### 📊 NEW: 5-Minute Candlestick Charts with Advanced Configuration System
+- **Configuration Presets**: 4 trading styles (default, scalping, swing_trading, minimal)
+- **Technical Indicators**: SMA, EMA, VWAP with configurable parameters
+- **Theme Support**: Light/dark themes with professional styling
+- **CLI Interface**: Advanced command line with 10+ configuration flags
+- **JSON Schema**: Comprehensive configuration validation system
+- **User Preferences**: Persistent configuration saving and loading
 - **Real-Time Dashboard**: Auto-refreshing web interface with live data
 - **Professional Charts**: Interactive Plotly candlesticks with volume indicators
-- **Technical Indicators**: MA20 and MA50 moving average overlays
-- **Dark Theme**: Professional trading interface optimized for extended use
 - **Flexible Time Ranges**: 1 hour to full trading day views
 - **Eastern Time Display**: All timestamps shown in ET for consistent market timing
 - **Bulletproof Authentication**: Hard failure on invalid API keys prevents fake data
 - **1-Minute to 5-Minute Aggregation**: Real-time conversion from Databento 1-minute bars
+
+#### Chart Configuration Examples:
+```bash
+# Use different trading style presets
+python3 scripts/nq_5m_chart.py --config scalping    # Fast, high-frequency
+python3 scripts/nq_5m_chart.py --config swing_trading  # Extended timeframes
+python3 scripts/nq_5m_chart.py --config minimal    # Lightweight resource usage
+
+# Customize indicators and theme
+python3 scripts/nq_5m_chart.py --indicators sma ema vwap --theme light
+
+# Generate batch charts for comparison
+python3 scripts/examples/batch_charts.py --symbol NQU5
+
+# Live monitoring with alert system
+python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
+```
 
 ### Current Market Data (Example)
 - **NQ Price**: $21,742.50 (live)
