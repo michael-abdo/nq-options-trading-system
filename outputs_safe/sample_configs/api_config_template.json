@@ -1,0 +1,47 @@
+{
+  "_comment": "API Configuration Template - NEVER commit real API keys!",
+  "_security_note": "Replace all placeholder values with actual credentials in your local .env file",
+
+  "databento": {
+    "api_key": "db-YOUR_DATABENTO_API_KEY_HERE",
+    "base_url": "https://hist.databento.com",
+    "timeout_seconds": 30,
+    "max_retries": 3
+  },
+
+  "polygon": {
+    "api_key": "YOUR_POLYGON_API_KEY_HERE",
+    "base_url": "https://api.polygon.io",
+    "timeout_seconds": 30,
+    "max_retries": 3
+  },
+
+  "tradovate": {
+    "client_id": "YOUR_TRADOVATE_CID_HERE",
+    "client_secret": "YOUR_TRADOVATE_SECRET_HERE",
+    "environment": "demo",
+    "timeout_seconds": 30
+  },
+
+  "security_guidelines": {
+    "never_commit": [
+      "Real API keys",
+      "Production credentials",
+      "Live trading secrets",
+      "Personal authentication tokens"
+    ],
+    "use_instead": [
+      "Environment variables (.env file)",
+      "Secure credential managers",
+      "Template files with placeholders",
+      "Configuration without sensitive data"
+    ]
+  },
+
+  "environment_setup": {
+    "step_1": "Copy .env.example to .env",
+    "step_2": "Replace placeholder values with real credentials",
+    "step_3": "Ensure .env is in .gitignore",
+    "step_4": "Never commit .env to version control"
+  }
+}

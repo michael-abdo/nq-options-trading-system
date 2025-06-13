@@ -62,7 +62,11 @@ outputs/databento_cache/
 *.db
 *.cache
 
-# Test outputs
+# Complete outputs directory (security critical)
+outputs/
+!outputs_safe/
+
+# Legacy test outputs (kept for compatibility)
 outputs/*/databento_integration_test_*.json
 test_databento_*.py
 

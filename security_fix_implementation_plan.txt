@@ -1,0 +1,75 @@
+Security Fix Implementation Plan - API Key Exposure Prevention
+
+Phase 1: Immediate Security Fix
+  Emergency .gitignore Update
+    Add complete outputs/ directory exclusion to .gitignore
+    Add !outputs_safe/ exception for safe examples
+    Verify .gitignore syntax is correct
+  Repository Cleanup - Critical Security Step
+    Create backup of current outputs/ directory locally
+    Remove all tracked files from outputs/ using git rm --cached
+    Verify no tracked files remain in outputs/ directory
+    Test that outputs/ is now properly ignored
+  Safe Examples Directory Creation
+    Create outputs_safe/chart_templates directory
+    Create outputs_safe/sample_configs directory
+    Copy sanitized examples to outputs_safe/ (no API keys)
+    Verify all examples are clean of sensitive data
+  Initial Commit - Security Fix
+    Stage .gitignore changes
+    Stage new outputs_safe/ directory
+    Create commit with clear security fix message
+    Verify commit contains no sensitive data
+
+Phase 2: Process Improvement
+  Script Output Path Updates
+    Audit all Python scripts for output paths
+    Update scripts to use outputs/ for sensitive data
+    Update scripts to use outputs_safe/ only for examples
+    Test each modified script to ensure it works
+  Environment Variable Validation
+    Add API key validation before operations
+    Add environment checks in sensitive scripts
+    Create helper function for safe API key handling
+    Test validation with both valid and invalid keys
+  Documentation Updates
+    Update README with new security guidelines
+    Document outputs/ vs outputs_safe/ distinction
+    Add section on API key best practices
+    Update any references to old output file locations
+
+Phase 3: Long-term Protection
+  Pre-commit Hook Implementation
+    Create git pre-commit hook script
+    Add API key pattern detection (db-[A-Za-z0-9]+)
+    Add other sensitive pattern detection
+    Test hook with both clean and dirty commits
+  Automated Security Scanning
+    Create script for local repository scanning
+    Add to installation test suite
+    Schedule regular security audits
+    Document scanning procedures for team
+  Environment Isolation Setup
+    Create separate dev/prod environment handling
+    Document environment variable management
+    Add environment-specific configuration
+    Test isolation between environments
+
+Verification and Testing
+  Security Validation Checklist
+    Verify git ls-files outputs/ returns 0 results
+    Verify .gitignore contains outputs/ exclusion
+    Scan all tracked files for API key patterns
+    Verify safe examples available in outputs_safe/
+    Test all scripts generate output to untracked locations
+    Verify pre-commit hooks prevent future exposure
+  Functionality Testing
+    Test chart generation with new paths
+    Test all configuration examples work
+    Test API integration with new security measures
+    Test installation script with new structure
+  Team Communication
+    Document all changes for team members
+    Create migration guide for existing workflows
+    Schedule team training on new security practices
+    Establish ongoing security review process

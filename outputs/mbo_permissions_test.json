@@ -1,9 +1,0 @@
-{
-  "timestamp": "2025-06-12T16:47:41.973113",
-  "mbo_permissions": true,
-  "cost_per_minute": 0.01,
-  "hourly_rate": 0.6,
-  "daily_rate": 3.9,
-  "monthly_estimate": 78.0,
-  "test_status": "PASSED"
-}

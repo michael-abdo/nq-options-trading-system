@@ -1,6 +1,0 @@
-{
-  "test": "shadow_mode_deployment",
-  "timestamp": "2025-06-12T17:51:42.396913",
-  "error": "Failed to create rollout",
-  "status": "FAILED"
-}

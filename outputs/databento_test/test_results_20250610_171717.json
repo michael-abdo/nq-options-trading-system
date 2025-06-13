@@ -1,9 +1,0 @@
-{
-  "test_date": "20250610_171717",
-  "tests_run": [
-    "definitions",
-    "prices",
-    "specific_contract"
-  ],
-  "success": true
-}
