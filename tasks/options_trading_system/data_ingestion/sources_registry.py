@@ -231,6 +231,17 @@ class DataSourcesRegistry:
         Raises:
             Exception if all sources fail
         """
+        # Check for databento-only mode with live streaming
+        enabled_sources = [name for name, config in config_by_source.items()
+                          if config.get('enabled', True)]
+
+        if len(enabled_sources) == 1 and 'databento' in enabled_sources:
+            databento_config = config_by_source['databento']
+            if databento_config.get('streaming_mode', False):
+                if log_attempts:
+                    print("🎯 Databento-only live streaming mode detected - direct load")
+                return self._load_databento_direct(databento_config, log_attempts)
+
         sources_to_try = self.get_sources_by_priority(only_available=True)
         errors = []
 
@@ -285,6 +296,45 @@ class DataSourcesRegistry:
 
         # All sources failed
         raise Exception(f"All data sources failed:\n" + "\n".join(errors))
+
+    def _load_databento_direct(self, config: Dict[str, Any], log_attempts: bool = True) -> Dict[str, Any]:
+        """Load databento data directly without fallbacks for live streaming mode"""
+        try:
+            if log_attempts:
+                print("🚀 Loading live databento MBO stream...")
+
+            # Load directly using databento loader with no error tolerance
+            result = self.load_source("databento", config)
+
+            # For live streaming mode, don't require immediate data
+            # The streaming client may take time to connect and start receiving data
+            if config.get('streaming_mode', False):
+                if log_attempts:
+                    print("✅ Databento live streaming initialized")
+                return result
+
+            # For non-streaming mode, validate data presence
+            has_data = False
+            if result:
+                if result.get('options_summary', {}).get('total_contracts', 0) > 0:
+                    has_data = True
+                elif result.get('streaming_active', False):
+                    has_data = True
+                elif result.get('raw_data_available', False):
+                    has_data = True
+
+            if has_data or config.get('streaming_mode', False):
+                if log_attempts:
+                    print("✅ Databento data loaded successfully")
+                return result
+            else:
+                raise Exception("Databento returned no data and streaming not active")
+
+        except Exception as e:
+            if log_attempts:
+                print(f"❌ Databento direct load failed: {e}")
+            # In databento-only mode, we don't fall back - we fail fast
+            raise Exception(f"Databento-only mode failed: {str(e)}")
 
     def get_source_info(self, source_name: str) -> Dict[str, Any]:
         """Get information about a specific source"""

@@ -7,20 +7,23 @@
         "symbols": [
           "NQ"
         ],
-        "use_cache": true,
+        "streaming_mode": true,
+        "use_cache": false,
         "cache_dir": "outputs/databento_cache",
         "mbo_streaming": {
           "enabled": true,
           "dataset": "GLBX.MDP3",
-          "schema": "mbo",
+          "schema": "trades",
           "stype_in": "parent",
           "symbols": ["NQ.OPT"],
-          "window_size": 60,
+          "window_size": 300,
           "pressure_thresholds": {
-            "min_pressure_ratio": 2.0,
-            "min_volume": 100,
-            "min_confidence": 0.8
-          }
+            "min_pressure_ratio": 1.2,
+            "min_volume": 50,
+            "min_confidence": 0.6
+          },
+          "daily_budget": 25.0,
+          "enable_live_streaming": true
         }
       }
     },

@@ -1183,3 +1183,17 @@ if __name__ == "__main__":
     print(f"\nAnalysis Summary:")
     print(f"  Total Signals: {summary['total_signals']}")
     print(f"  Avg Confidence: {summary['avg_confidence']:.3f}")
+
+
+# ============================================================================
+# Import Aliases for Backward Compatibility
+# ============================================================================
+# These aliases allow dependent modules to import classes using expected names
+# while preserving the original descriptive class names for clarity.
+
+# Core analysis components
+PressureAnalyzer = PressureRatioAnalyzer
+ConfidenceScorer = EnhancedConfidenceScorer
+IFDv3Analyzer = IFDv3Engine
+BaselineManager = HistoricalBaselineManager
+BaselineDatabase = HistoricalBaselineManager

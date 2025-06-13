@@ -41,6 +41,7 @@ class SignalComparison:
     v1_confidence: float
     v1_direction: str
     v1_volume_metrics: Dict[str, Any]
+    v1_execution_time_ms: float
 
     # v3.0 Signal Data
     v3_signal_detected: bool
@@ -48,13 +49,13 @@ class SignalComparison:
     v3_direction: str
     v3_pressure_metrics: Dict[str, Any]
     v3_baseline_context: Dict[str, Any]
+    v3_execution_time_ms: float
 
     # Comparison Metrics
     signal_agreement: bool  # Both detected signal
     direction_agreement: bool  # Same direction
-    confidence_correlation: float
-    processing_time_v1: float
-    processing_time_v3: float
+    confidence_difference: float
+    performance_difference_ms: float
 
 
 @dataclass

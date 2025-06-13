@@ -263,12 +263,83 @@ class ConfigurationManager:
 
         return issues
 
+    def create_databento_live_profile(self) -> Dict[str, Any]:
+        """Create optimized databento-only live streaming configuration"""
+        config = self.get_default_config()
+
+        # Disable all sources except databento
+        for source_name in config["data_sources"]:
+            config["data_sources"][source_name]["enabled"] = source_name == "databento"
+
+        # Configure databento for live streaming
+        databento_config = {
+            "api_key": "${DATABENTO_API_KEY}",
+            "symbols": ["NQ"],
+            "streaming_mode": True,
+            "use_cache": False,
+            "cache_dir": "outputs/databento_cache",
+            "mbo_streaming": {
+                "enabled": True,
+                "dataset": "GLBX.MDP3",
+                "schema": "trades",
+                "stype_in": "parent",
+                "symbols": ["NQ.OPT"],
+                "window_size": 300,
+                "pressure_thresholds": {
+                    "min_pressure_ratio": 1.2,
+                    "min_volume": 50,
+                    "min_confidence": 0.6
+                },
+                "daily_budget": 25.0,
+                "enable_live_streaming": True
+            }
+        }
+
+        config["data_sources"]["databento"]["config"] = databento_config
+
+        # Optimize analysis config for IFD v3.0 with live data
+        config["analysis"]["institutional_flow_v3"] = {
+            "enabled": True,
+            "db_path": "outputs/ifd_v3_live.db",
+            "pressure_thresholds": {
+                "min_pressure_ratio": 1.2,
+                "min_volume_concentration": 0.3,
+                "min_time_persistence": 0.4,
+                "min_trend_strength": 0.5
+            },
+            "confidence_thresholds": {
+                "min_baseline_anomaly": 1.5,
+                "min_overall_confidence": 0.6
+            },
+            "market_making_penalty": 0.3,
+            "historical_baselines": {
+                "lookback_days": 10,
+                "min_data_quality": 0.85
+            }
+        }
+
+        return config
+
+    def load_databento_live_config(self) -> Dict[str, Any]:
+        """Load databento-only live configuration with validation"""
+        try:
+            return self.load_profile("databento_only")
+        except FileNotFoundError:
+            logger.info("Creating databento-only profile from template")
+            config = self.create_databento_live_profile()
+            self.save_profile("databento_only", config)
+            return config
+
     def create_standard_profiles(self):
         """Create and save standard configuration profiles"""
 
         # Databento only profile
         databento_config = self.create_source_profile("databento_only", ["databento"])
         self.save_profile("databento_only", databento_config)
+
+        # Databento live streaming profile
+        databento_live_config = self.create_databento_live_profile()
+        self.save_profile("databento_live", databento_live_config)
 
         # Barchart only profile
         barchart_config = self.create_source_profile("barchart_only", ["barchart"])
@@ -341,3 +412,7 @@ def create_standard_profiles():
 def validate_config(config: Dict[str, Any]) -> List[str]:
     """Validate a configuration"""
     return get_config_manager().validate_config(config)
+
+def load_databento_live_config() -> Dict[str, Any]:
+    """Load databento-only live streaming configuration"""
+    return get_config_manager().load_databento_live_config()

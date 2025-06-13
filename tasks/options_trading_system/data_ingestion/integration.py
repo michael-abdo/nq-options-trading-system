@@ -46,6 +46,11 @@ class DataIngestionPipeline:
         from sources_registry import get_sources_registry, load_first_available_source
         registry = get_sources_registry()
 
+        # Check for databento-only live streaming mode first
+        if self._is_databento_only_mode():
+            print("🎯 Databento-only live streaming mode detected")
+            return self._load_databento_only_mode()
+
         # Handle both old-style config and new-style config
         if "data_sources" in self.config:
             # New configuration format with enabled/disabled sources
@@ -157,6 +162,70 @@ class DataIngestionPipeline:
 
         # Return both sources and metadata
         return results
+
+    def _is_databento_only_mode(self) -> bool:
+        """Check if configuration is set for databento-only live streaming mode"""
+        if "data_sources" not in self.config:
+            return False
+
+        data_sources = self.config["data_sources"]
+
+        # Check if only databento is enabled
+        enabled_sources = [name for name, config in data_sources.items()
+                          if config.get("enabled", False)]
+
+        if len(enabled_sources) != 1 or "databento" not in enabled_sources:
+            return False
+
+        # Check if databento is configured for live streaming
+        databento_config = data_sources["databento"].get("config", {})
+        return databento_config.get("streaming_mode", False)
+
+    def _load_databento_only_mode(self) -> Dict[str, Any]:
+        """Load data in databento-only live streaming mode without fallbacks"""
+        try:
+            from sources_registry import get_sources_registry
+            registry = get_sources_registry()
+
+            # Get databento configuration
+            databento_config = self.config["data_sources"]["databento"]["config"]
+
+            print("🚀 Initializing Databento live MBO streaming...")
+
+            # Load databento directly - no error tolerance, no fallbacks
+            source_data = registry.load_source("databento", databento_config)
+
+            # Process the result
+            result = self._process_source_result("databento", source_data)
+
+            # Store the single source
+            self.sources = {"databento": result}
+
+            # Update pipeline metadata
+            self.pipeline_metadata.update({
+                "_primary_source": "databento",
+                "_loading_method": "databento_only_live",
+                "_streaming_mode": True
+            })
+
+            # Extract MBO pressure metrics if available
+            if "mbo_pressure_data" in source_data:
+                self.mbo_pressure_metrics = source_data["mbo_pressure_data"]
+
+            print("✅ Databento-only mode initialized successfully")
+
+            return {
+                "databento": result,
+                "_primary_source": "databento",
+                "_loading_method": "databento_only_live",
+                "_streaming_mode": True
+            }
+
+        except Exception as e:
+            print(f"❌ Databento-only mode failed: {e}")
+            # In databento-only mode, we fail completely rather than falling back
+            raise Exception(f"Databento-only live streaming failed: {str(e)}. "
+                          f"Check API key, subscription access, and network connectivity.")
 
     def _process_source_result(self, source_name: str, source_data: Dict[str, Any]) -> Dict[str, Any]:
         """Process raw source data into standard pipeline format"""

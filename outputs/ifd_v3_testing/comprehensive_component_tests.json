@@ -1,0 +1,44 @@
+{
+  "test_suite": "ifd_v3_comprehensive",
+  "timestamp": "2025-06-12T22:47:45.655781",
+  "tests": [
+    {
+      "name": "test_baseline_calculations",
+      "status": "PASSED",
+      "description": "Test baseline calculation algorithms"
+    },
+    {
+      "name": "test_data_flow_integrity",
+      "status": "PASSED",
+      "description": "Test data flow from MBO to signals"
+    },
+    {
+      "name": "test_market_making_detection",
+      "status": "PASSED",
+      "description": "Test market making detection algorithms"
+    },
+    {
+      "name": "test_performance_requirements",
+      "status": "PASSED",
+      "description": "Test performance requirements compliance"
+    },
+    {
+      "name": "test_pressure_analysis_components",
+      "status": "PASSED",
+      "description": "Test pressure analysis algorithm components"
+    },
+    {
+      "name": "test_signal_generation",
+      "status": "PASSED",
+      "description": "Test signal generation from pressure metrics"
+    }
+  ],
+  "summary": {
+    "total_tests": 6,
+    "passed": 6,
+    "failed": 0,
+    "errors": 0,
+    "success_rate": 1.0
+  },
+  "status": "PASSED"
+}

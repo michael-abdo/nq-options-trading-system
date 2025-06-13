@@ -33,6 +33,7 @@ from risk_analysis.solution import run_risk_analysis
 from volume_shock_analysis.solution import analyze_volume_shocks
 from volume_spike_dead_simple.solution import DeadSimpleVolumeSpike
 from institutional_flow_v3.solution import create_ifd_v3_analyzer, run_ifd_v3_analysis
+from institutional_flow_v3.optimizations import run_optimized_ifd_v3_analysis
 
 # Import latency monitoring
 from phase4.latency_monitor import create_latency_monitor, LatencyComponent
@@ -671,18 +672,38 @@ class AnalysisEngine:
                     monitor.checkpoint(request_id, LatencyComponent.DATA_INGESTION)
 
                     if pipeline_result["pipeline_status"] != "success":
-                        print("    ⚠ Data ingestion pipeline failed, using simulated MBO data")
-                        # Generate simulated pressure metrics for testing
-                        pressure_metrics = self._generate_simulated_pressure_metrics()
+                        # Check if we're in databento-only mode
+                        is_databento_only = (
+                            data_config.get('mode') == 'real_time' and
+                            data_config.get('sources') == ['databento']
+                        )
+
+                        if is_databento_only:
+                            print("    ❌ Databento-only mode: Pipeline failed - no fallback to simulation")
+                            raise Exception("Databento-only live streaming failed - check API connectivity")
+                        else:
+                            print("    ⚠ Data ingestion pipeline failed, using simulated MBO data")
+                            # Generate simulated pressure metrics for testing (only in mixed mode)
+                            pressure_metrics = self._generate_simulated_pressure_metrics()
                     else:
                         # Extract pressure metrics from MBO streaming data
                         pressure_metrics = self._extract_pressure_metrics_from_pipeline(pipeline_result)
 
                 except Exception as pipeline_error:
-                    print(f"    ⚠ Data ingestion error: {pipeline_error}, using simulated MBO data")
-                    # Generate simulated pressure metrics when pipeline fails completely
-                    pressure_metrics = self._generate_simulated_pressure_metrics()
-                    monitor.checkpoint(request_id, LatencyComponent.DATA_INGESTION)
+                    # Check if we're in databento-only mode
+                    is_databento_only = (
+                        data_config.get('mode') == 'real_time' and
+                        data_config.get('sources') == ['databento']
+                    )
+
+                    if is_databento_only:
+                        print(f"    ❌ Databento-only mode failed: {pipeline_error}")
+                        raise Exception(f"Databento-only live streaming failed: {str(pipeline_error)}")
+                    else:
+                        print(f"    ⚠ Data ingestion error: {pipeline_error}, using simulated MBO data")
+                        # Generate simulated pressure metrics when pipeline fails completely (only in mixed mode)
+                        pressure_metrics = self._generate_simulated_pressure_metrics()
+                        monitor.checkpoint(request_id, LatencyComponent.DATA_INGESTION)
 
                 # Cache the pressure metrics for performance
                 _pressure_cache.put(cache_key, pressure_metrics)
@@ -705,8 +726,8 @@ class AnalysisEngine:
 
             print(f"    ✓ Converted {len(pressure_data)} pressure metrics objects")
 
-            # Run IFD v3.0 analysis on all pressure data
-            result = run_ifd_v3_analysis(pressure_data, ifd_config)
+            # Run IFD v3.0 analysis on all pressure data with optimizations
+            result = run_optimized_ifd_v3_analysis(pressure_data, ifd_config)
             monitor.checkpoint(request_id, LatencyComponent.PRESSURE_ANALYSIS)
 
             # Extract signals and summaries from result
@@ -834,18 +855,27 @@ class AnalysisEngine:
                 except:
                     time_window = datetime.now()
 
+            # Extract strike and option type from metric or use defaults
+            strike = metric.get("strike", 21350.0)
+            option_type = metric.get("option_type", "CALL")
+
+            # Calculate volumes based on pressure
+            total_volume = metric.get("total_volume", 1000)
+            buy_pressure = metric.get("buy_pressure", 0.5)
+            sell_pressure = metric.get("sell_pressure", 0.5)
+
             # Create PressureMetrics object
             pressure_metric = PressureMetrics(
-                strike=21350.0,  # Mock NQ strike
-                option_type="CALL",  # Mock option type
+                strike=float(strike),
+                option_type=option_type,
                 time_window=time_window,
-                bid_volume=int(metric.get("total_volume", 1000) * 0.4),
-                ask_volume=int(metric.get("total_volume", 1000) * 0.6),
-                pressure_ratio=metric.get("buy_pressure", 0.5) / max(metric.get("sell_pressure", 0.5), 0.1),
+                bid_volume=int(total_volume * buy_pressure),
+                ask_volume=int(total_volume * sell_pressure),
+                pressure_ratio=buy_pressure / max(sell_pressure, 0.1),
                 total_trades=metric.get("total_trades", 100),
-                avg_trade_size=metric.get("total_volume", 1000) / max(metric.get("total_trades", 100), 1),
-                dominant_side="BUY" if metric.get("buy_pressure", 0.5) > metric.get("sell_pressure", 0.5) else "SELL",
-                confidence=min(abs(metric.get("buy_pressure", 0.5) - metric.get("sell_pressure", 0.5)) * 2, 1.0)
+                avg_trade_size=total_volume / max(metric.get("total_trades", 100), 1),
+                dominant_side="BUY" if buy_pressure > sell_pressure else "SELL",
+                confidence=min(abs(buy_pressure - sell_pressure) * 2, 1.0)
             )
             converted_metrics.append(pressure_metric)
 
@@ -1273,8 +1303,20 @@ def run_analysis_engine(data_config: Dict[str, Any], analysis_config: Dict[str, 
     Returns:
         Dict with comprehensive analysis results prioritizing your NQ EV algorithm
     """
+    # Check for databento-only live mode
+    if data_config.get('mode') == 'real_time' and data_config.get('sources') == ['databento']:
+        print("🎯 Databento-only live mode detected - loading optimized configuration")
+        try:
+            from config_manager import load_databento_live_config
+            full_config = load_databento_live_config()
+            data_config = full_config
+            if not analysis_config:
+                analysis_config = full_config.get('analysis', {})
+        except Exception as e:
+            print(f"Warning: Failed to load databento live config: {e}")
+
     # If profile name provided, load configuration from profile
-    if profile_name:
+    elif profile_name:
         try:
             from config_manager import get_config_manager
             config_manager = get_config_manager()
