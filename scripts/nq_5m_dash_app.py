@@ -7,6 +7,7 @@ Auto-refreshes in browser without manual reload
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 import dash
 from dash import dcc, html, Input, Output, callback
@@ -24,6 +25,7 @@ import time
 import pytz
 
 from databento_5m_provider import Databento5MinuteProvider
+from utils.timezone_utils import format_eastern_display
 
 # Configure logging
 logging.basicConfig(
@@ -239,7 +241,7 @@ class NQDashApp:
 
                 stats_display = f"High: ${high_price:,.2f} | Low: ${low_price:,.2f} | Volume: {total_volume:,} | Bars: {len(df)}"
 
-                current_time = datetime.now().strftime("%H:%M:%S")
+                current_time = format_eastern_display()
 
                 # Store data for other callbacks
                 chart_data = {

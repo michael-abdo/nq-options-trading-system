@@ -11,6 +11,8 @@ import json
 from datetime import datetime
 from typing import Dict, Any, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
+from utils.timezone_utils import format_eastern_timestamp, get_eastern_time
 
 # Add current directory to path for child task imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -120,8 +122,8 @@ class OutputGenerationEngine:
             "total_size_bytes": 0
         }
 
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        date_str = datetime.now().strftime('%Y%m%d')
+        timestamp = format_eastern_timestamp()
+        date_str = get_eastern_time().strftime('%Y%m%d')
         base_output_dir = save_config.get("output_dir", "outputs")
 
         # Create organized output directories

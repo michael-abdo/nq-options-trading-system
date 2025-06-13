@@ -9,6 +9,8 @@ import sys
 import os
 import logging
 from datetime import datetime
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from utils.timezone_utils import format_eastern_timestamp, get_eastern_time
 
 # Configure logging for trading safety
 logging.basicConfig(
@@ -16,7 +18,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler(f'trading_safety_{datetime.now().strftime("%Y%m%d")}.log')
+        logging.FileHandler(f'trading_safety_{get_eastern_time().strftime("%Y%m%d")}.log')
     ]
 )
 
@@ -109,7 +111,7 @@ def main():
 
         else:  # static
             print(f"\n📈 GENERATING STATIC CHART...")
-            output_file = f"outputs/trading_safe_{args.symbol}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
+            output_file = f"outputs/trading_safe_{args.symbol}_{format_eastern_timestamp()}.html"
 
             from nq_5m_chart import NQFiveMinuteChart
 

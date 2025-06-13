@@ -18,6 +18,8 @@ import argparse
 import logging
 from datetime import datetime, timedelta
 from pathlib import Path
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from utils.timezone_utils import format_eastern_timestamp, get_eastern_time
 
 # Add project directories to path
 script_dir = Path(__file__).parent
@@ -41,7 +43,7 @@ def setup_logging(log_level: str = "INFO"):
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
             logging.StreamHandler(sys.stdout),
-            logging.FileHandler(f'outputs/shadow_trading_logs/shadow_trading_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
+            logging.FileHandler(f'outputs/shadow_trading_logs/shadow_trading_{format_eastern_timestamp()}.log')
         ]
     )
 
@@ -65,8 +67,8 @@ def create_default_config(start_date: str = None, duration_days: int = 7) -> dic
     """Create default shadow trading configuration"""
 
     if start_date is None:
-        # Default to next Monday
-        today = datetime.now()
+        # Default to next Monday (using Eastern Time)
+        today = get_eastern_time()
         days_until_monday = (7 - today.weekday()) % 7
         if days_until_monday == 0:  # If today is Monday
             days_until_monday = 7   # Use next Monday

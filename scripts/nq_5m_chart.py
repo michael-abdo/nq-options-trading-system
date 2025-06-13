@@ -18,7 +18,9 @@ import pytz
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from databento_5m_provider import Databento5MinuteProvider
+from utils.timezone_utils import format_eastern_timestamp
 
 # Configure logging
 logging.basicConfig(
@@ -255,7 +257,7 @@ class NQFiveMinuteChart:
     def save_chart(self, filename=None):
         """Save the chart as an HTML file"""
         if filename is None:
-            filename = f"nq_5m_chart_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
+            filename = f"nq_5m_chart_{format_eastern_timestamp()}.html"
 
         if self.update_chart():
             self.fig.write_html(filename)

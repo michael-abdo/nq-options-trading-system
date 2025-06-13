@@ -9,6 +9,10 @@ import numpy as np
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict, Tuple
 import logging
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from utils.timezone_utils import get_eastern_time
 
 logger = logging.getLogger(__name__)
 
@@ -165,8 +169,8 @@ def test_aggregation():
     """Test the aggregation functionality"""
     print("🧪 Testing 1-minute to 5-minute aggregation...")
 
-    # Create sample 1-minute data
-    start_time = datetime.now().replace(hour=9, minute=30, second=0, microsecond=0)
+    # Create sample 1-minute data starting at market open (Eastern Time)
+    start_time = get_eastern_time().replace(hour=9, minute=30, second=0, microsecond=0)
     one_min_bars = []
 
     base_price = 21800
