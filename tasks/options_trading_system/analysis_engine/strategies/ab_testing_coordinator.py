@@ -25,8 +25,8 @@ from dataclasses import dataclass, asdict
 import statistics
 from collections import defaultdict
 
-from config_manager import ConfigManager, AlgorithmVersion
-from integration import AnalysisEngine
+from ..config_manager import ConfigManager, AlgorithmVersion
+from ..integration import AnalysisEngine
 
 
 @dataclass
@@ -632,7 +632,7 @@ class ABTestingCoordinator:
 def create_ab_coordinator(config_manager: ConfigManager = None) -> ABTestingCoordinator:
     """Create A/B testing coordinator instance"""
     if config_manager is None:
-        from config_manager import get_config_manager
+        from ..config_manager import get_config_manager
         config_manager = get_config_manager()
 
     return ABTestingCoordinator(config_manager)
@@ -641,7 +641,7 @@ def create_ab_coordinator(config_manager: ConfigManager = None) -> ABTestingCoor
 def run_quick_ab_test(duration_minutes: int = 30) -> ABTestResults:
     """Run a quick A/B test for specified duration"""
 
-    from config_manager import get_config_manager
+    from ..config_manager import get_config_manager
 
     coordinator = create_ab_coordinator(get_config_manager())
 
@@ -670,7 +670,7 @@ def run_quick_ab_test(duration_minutes: int = 30) -> ABTestResults:
 
 if __name__ == "__main__":
     # Example usage
-    from config_manager import get_config_manager
+    from ..config_manager import get_config_manager
 
     # Create coordinator
     coordinator = create_ab_coordinator()

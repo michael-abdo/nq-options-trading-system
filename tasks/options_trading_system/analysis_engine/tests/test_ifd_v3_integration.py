@@ -11,7 +11,8 @@ from datetime import datetime
 
 # Add project root to path
 current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, current_dir)
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir)
 
 from integration import AnalysisEngine, run_analysis_engine
 

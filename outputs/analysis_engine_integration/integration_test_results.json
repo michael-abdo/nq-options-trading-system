@@ -1,0 +1,64 @@
+{
+  "test": "analysis_engine_integration",
+  "timestamp": "2025-06-12T20:23:39.882456",
+  "scenarios_tested": 3,
+  "integration_results": [
+    {
+      "scenario": "Conflict Resolution Test",
+      "execution_time_ms": 46.33021354675293,
+      "status": "success",
+      "successful_analyses": 1,
+      "recommendations_count": 0,
+      "conflict_resolution": "NO_SIGNALS",
+      "conflicts_detected": 0,
+      "cache_performance": {
+        "pressure_cache_items": 1,
+        "baseline_cache_items": 3
+      }
+    },
+    {
+      "scenario": "Performance Optimization Test",
+      "execution_time_ms": 39.769887924194336,
+      "status": "success",
+      "successful_analyses": 1,
+      "recommendations_count": 0,
+      "conflict_resolution": "NO_SIGNALS",
+      "conflicts_detected": 0,
+      "cache_performance": {
+        "pressure_cache_items": 1,
+        "baseline_cache_items": 3
+      }
+    },
+    {
+      "scenario": "Parallel Execution Test",
+      "execution_time_ms": 29.55174446105957,
+      "status": "success",
+      "successful_analyses": 1,
+      "recommendations_count": 0,
+      "conflict_resolution": "NO_SIGNALS",
+      "conflicts_detected": 0,
+      "cache_performance": {
+        "pressure_cache_items": 1,
+        "baseline_cache_items": 3
+      }
+    }
+  ],
+  "performance_summary": {
+    "success_rate": 1.0,
+    "avg_execution_time_ms": 38.550615310668945,
+    "total_recommendations": 0,
+    "conflict_resolutions": [
+      "NO_SIGNALS",
+      "NO_SIGNALS",
+      "NO_SIGNALS"
+    ],
+    "total_conflicts": 0,
+    "cache_performance": {
+      "pressure_cache_items": 1,
+      "baseline_cache_items": 3
+    }
+  },
+  "performance_score": 4,
+  "recommendation": "INTEGRATION MOSTLY SUCCESSFUL - MINOR OPTIMIZATIONS NEEDED",
+  "status": "PASSED"
+}

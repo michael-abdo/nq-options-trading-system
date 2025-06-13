@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-06-12T16:52:50.315869",
+  "database_created": true,
+  "database_path": "outputs/ifd_v3_baselines.db",
+  "tables_created": [
+    "historical_pressure",
+    "sqlite_sequence",
+    "baseline_stats"
+  ],
+  "indexes_created": [
+    "sqlite_autoindex_historical_pressure_1",
+    "sqlite_autoindex_baseline_stats_1",
+    "idx_pressure_strike_date",
+    "idx_baseline_lookup"
+  ],
+  "baseline_test": {
+    "strike": 21900.0,
+    "option_type": "C",
+    "mean_pressure_ratio": 1.5,
+    "data_quality": 0.0
+  },
+  "test_status": "PASSED"
+}

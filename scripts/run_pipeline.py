@@ -83,13 +83,13 @@ def main():
 
         # Create standard profiles if they don't exist
         try:
-            config = config_manager.load_profile("databento_only")
-            print("📋 Loaded 'databento_only' configuration profile")
+            config = config_manager.load_profile("all_sources")
+            print("📋 Loaded 'all_sources' configuration profile")
         except FileNotFoundError:
             print("📋 Creating standard configuration profiles...")
             config_manager.create_standard_profiles()
-            config = config_manager.load_profile("databento_only")
-            print("📋 Created and loaded 'databento_only' configuration profile")
+            config = config_manager.load_profile("all_sources")
+            print("📋 Created and loaded 'all_sources' configuration profile")
 
         # Validate configuration
         validation_issues = config_manager.validate_config(config)

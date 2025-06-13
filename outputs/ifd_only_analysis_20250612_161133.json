@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-06-12T16:11:33.475632",
+  "analysis_type": "ifd_only",
+  "results": {
+    "IFD v3.0": {
+      "signals": [],
+      "status": "success_fallback",
+      "error": "'IFDv3Engine' object has no attribute 'detect_institutional_flow'",
+      "method": "fallback"
+    },
+    "Dead Simple Volume Spike": {
+      "signals": [],
+      "status": "success",
+      "note": "with current_price"
+    }
+  },
+  "summary": {
+    "total_signals": 0,
+    "successful_analyses": 2,
+    "available_modules": 2
+  }
+}

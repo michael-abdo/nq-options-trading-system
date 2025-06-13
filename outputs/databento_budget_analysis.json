@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-06-12T16:48:00",
+  "budget_analysis": {
+    "monthly_budget": 600,
+    "currency": "USD",
+    "ifd_v3_estimates": {
+      "mbo_streaming": {
+        "cost_per_minute": 0.01,
+        "hourly_rate": 0.60,
+        "daily_rate": 3.90,
+        "monthly_estimate": 78.00,
+        "description": "MBO streaming for NQ options (6.5 hours/day, 20 days/month)"
+      },
+      "historical_data": {
+        "monthly_estimate": 50.00,
+        "description": "Historical data for baseline calculations"
+      },
+      "buffer": {
+        "monthly_estimate": 25.00,
+        "description": "Buffer for additional queries and testing"
+      },
+      "total_ifd_v3_estimate": 153.00
+    },
+    "other_usage": {
+      "barchart_api": {
+        "monthly_estimate": 0,
+        "description": "Free tier usage"
+      },
+      "polygon_api": {
+        "monthly_estimate": 50.00,
+        "description": "Options data backup source"
+      },
+      "tradovate_api": {
+        "monthly_estimate": 0,
+        "description": "Account-based, no per-query costs"
+      },
+      "total_other_estimate": 50.00
+    },
+    "summary": {
+      "total_monthly_estimate": 203.00,
+      "budget_utilization_percent": 33.83,
+      "remaining_budget": 397.00,
+      "budget_status": "HEALTHY",
+      "recommendation": "Budget is sufficient for IFD v3 implementation with significant headroom"
+    }
+  }
+}

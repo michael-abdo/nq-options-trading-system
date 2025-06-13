@@ -31,6 +31,7 @@ class DataIngestionPipeline:
         self.config = config
         self.sources = {}
         self.normalized_data = None
+        self.mbo_pressure_metrics = []  # For IFD v3 MBO streaming
         self.pipeline_metadata = {
             "pipeline_version": "1.0",
             "created_at": datetime.now().isoformat(),
@@ -263,6 +264,17 @@ class DataIngestionPipeline:
 
         return summary
 
+    def get_mbo_pressure_metrics(self) -> List[Any]:
+        """Get MBO pressure metrics for IFD v3 analysis"""
+        # Check if databento is enabled and has MBO streaming
+        if "databento" in self.sources:
+            databento_data = self.sources.get("databento", {})
+            if databento_data.get("mbo_pressure_metrics"):
+                return databento_data["mbo_pressure_metrics"]
+
+        # Return empty list if no MBO data available
+        return self.mbo_pressure_metrics
+
     def run_full_pipeline(self) -> Dict[str, Any]:
         """Execute the complete data ingestion pipeline"""
         # Step 1: Load all sources
@@ -274,12 +286,16 @@ class DataIngestionPipeline:
         # Step 3: Get summary
         summary = self.get_pipeline_summary()
 
+        # Step 4: Extract MBO pressure metrics if available
+        mbo_metrics = self.get_mbo_pressure_metrics()
+
         return {
             "pipeline_status": "success",
             "load_results": load_results,
             "normalized_data": normalized["normalized_data"],
             "quality_metrics": normalized["quality_metrics"],
-            "summary": summary
+            "summary": summary,
+            "mbo_pressure_metrics": mbo_metrics  # For IFD v3
         }
 
 

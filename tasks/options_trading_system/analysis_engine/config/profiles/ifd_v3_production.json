@@ -6,7 +6,7 @@
   "testing_mode": "production",
   "config": {
     "institutional_flow_v3": {
-      "db_path": "outputs/ifd_v3_production.db",
+      "db_path": "outputs/ifd_v3_baselines.db",
       "pressure_thresholds": {
         "min_pressure_ratio": 2.0,
         "min_volume_concentration": 0.4,

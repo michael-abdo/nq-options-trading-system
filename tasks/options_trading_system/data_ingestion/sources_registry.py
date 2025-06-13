@@ -116,11 +116,11 @@ class DataSourcesRegistry:
         """Initialize the registry with all available sources"""
         self._sources = {}
         self._source_priorities = {
-            "barchart": 1,      # Primary - free web scraping
-            "barchart_live": 1, # Same as barchart
-            "polygon": 2,       # Secondary - free tier with limits
-            "tradovate": 3,     # Tertiary - demo mode
-            "databento": 4,     # Last - no GLBX.MDP3 access
+            "databento": 1,     # Primary - MBO streaming for IFD v3
+            "barchart": 2,      # Secondary - free web scraping
+            "barchart_live": 2, # Same as barchart
+            "polygon": 3,       # Tertiary - free tier with limits
+            "tradovate": 4,     # Quaternary - demo mode
             "barchart_saved": 5 # Fallback - offline data
         }
         self._register_all_sources()

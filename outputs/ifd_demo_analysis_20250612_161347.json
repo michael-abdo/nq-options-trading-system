@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-06-12T16:13:47.528678",
+  "analysis_type": "ifd_demo",
+  "current_price": 21050.0,
+  "options_chain": [
+    {
+      "strike": 21100.0,
+      "option_type": "CALL",
+      "volume": 2500,
+      "open_interest": 150,
+      "last_price": 125.0,
+      "expiration": "2025-06-20"
+    },
+    {
+      "strike": 21000.0,
+      "option_type": "PUT",
+      "volume": 3000,
+      "open_interest": 200,
+      "last_price": 110.0,
+      "expiration": "2025-06-20"
+    },
+    {
+      "strike": 21200.0,
+      "option_type": "CALL",
+      "volume": 100,
+      "open_interest": 500,
+      "last_price": 80.0,
+      "expiration": "2025-06-20"
+    },
+    {
+      "strike": 20950.0,
+      "option_type": "PUT",
+      "volume": 1800,
+      "open_interest": 120,
+      "last_price": 90.0,
+      "expiration": "2025-06-20"
+    },
+    {
+      "strike": 21150.0,
+      "option_type": "CALL",
+      "volume": 5000,
+      "open_interest": 100,
+      "last_price": 75.0,
+      "expiration": "2025-06-20"
+    }
+  ],
+  "signals": [],
+  "criteria": {
+    "min_vol_oi_ratio": 10,
+    "min_volume": 500,
+    "min_dollar_size": 100000,
+    "contract_multiplier": 20
+  }
+}

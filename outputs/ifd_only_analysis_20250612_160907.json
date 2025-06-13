@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-06-12T16:09:07.608381",
+  "analysis_type": "ifd_only",
+  "results": {
+    "IFD v3.0": {
+      "status": "failed",
+      "error": "IFDv3Engine.__init__() missing 1 required positional argument: 'config'"
+    },
+    "Dead Simple Volume Spike": {
+      "status": "failed",
+      "error": "DeadSimpleVolumeSpike.find_institutional_flow() missing 1 required positional argument: 'current_price'"
+    }
+  },
+  "summary": {
+    "total_signals": 0,
+    "successful_analyses": 0,
+    "available_modules": 2
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "test": "latency_monitor_validation",
+  "timestamp": "2025-06-12T17:34:36.754665",
+  "status": "PASSED",
+  "overview": {
+    "timestamp": "2025-06-13T00:34:31.734887+00:00",
+    "components": {
+      "data_ingestion": {
+        "mean_latency": 18.52525,
+        "p95_latency": 34.364,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "data_processing": {
+        "mean_latency": 0.0,
+        "p95_latency": 0.0,
+        "sla_compliance": 0.0,
+        "performance_grade": "F",
+        "trend": "unknown"
+      },
+      "pressure_analysis": {
+        "mean_latency": 55.46575,
+        "p95_latency": 85.735,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "baseline_lookup": {
+        "mean_latency": 26.894750000000002,
+        "p95_latency": 45.362,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "market_making_detection": {
+        "mean_latency": 22.273,
+        "p95_latency": 35.474,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "confidence_scoring": {
+        "mean_latency": 0.0,
+        "p95_latency": 0.0,
+        "sla_compliance": 0.0,
+        "performance_grade": "F",
+        "trend": "unknown"
+      },
+      "signal_generation": {
+        "mean_latency": 17.55125,
+        "p95_latency": 31.815,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "decision_making": {
+        "mean_latency": 0.0,
+        "p95_latency": 0.0,
+        "sla_compliance": 0.0,
+        "performance_grade": "F",
+        "trend": "unknown"
+      },
+      "end_to_end": {
+        "mean_latency": 140.71,
+        "p95_latency": 221.24694999999997,
+        "sla_compliance": 25.0,
+        "performance_grade": "F",
+        "trend": "improving"
+      }
+    },
+    "overall_status": "fair",
+    "active_alerts": 0,
+    "active_requests": 0
+  },
+  "alerts_count": 0,
+  "notes": "Latency monitoring system validated for IFD v3"
+}

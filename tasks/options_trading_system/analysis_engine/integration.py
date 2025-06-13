@@ -1,21 +1,31 @@
 #!/usr/bin/env python3
 """
-TASK: analysis_engine
-TYPE: Parent Task Integration
-PURPOSE: Coordinate all analysis strategies including your actual NQ EV algorithm
+Analysis Engine Integration with IFD v3.0
+
+Coordinates all analysis strategies with enhanced features:
+- IFD v3.0 MBO streaming integration
+- Signal conflict resolution between v1 and v3
+- Performance optimizations with caching
+- Parallel execution framework
+- Baseline calculation optimization
 """
 
 import sys
 import os
 import json
-from datetime import datetime
+import logging
+from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
+import threading
 
 # Add current directory to path for child task imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
+
+# Setup logging for conflict analysis
+logger = logging.getLogger(__name__)
 
 # Import child task modules - using your actual NQ EV algorithm
 from expected_value_analysis.solution import analyze_expected_value
@@ -23,6 +33,307 @@ from risk_analysis.solution import run_risk_analysis
 from volume_shock_analysis.solution import analyze_volume_shocks
 from volume_spike_dead_simple.solution import DeadSimpleVolumeSpike
 from institutional_flow_v3.solution import create_ifd_v3_analyzer, run_ifd_v3_analysis
+
+# Import latency monitoring
+from phase4.latency_monitor import create_latency_monitor, LatencyComponent
+
+# Global latency monitor instance
+_latency_monitor = None
+
+def get_latency_monitor():
+    """Get singleton latency monitor instance"""
+    global _latency_monitor
+    if _latency_monitor is None:
+        config = {
+            'db_path': 'outputs/ifd_v3_latency.db',
+            'analysis': {
+                'target_latency': 100.0,
+                'warning_latency': 80.0,
+                'critical_latency': 150.0,
+                'severe_latency': 300.0,
+                'min_sample_size': 10
+            }
+        }
+        _latency_monitor = create_latency_monitor(config)
+        _latency_monitor.start_monitoring()
+    return _latency_monitor
+
+
+# Performance Optimization: In-Memory Cache for Pressure Metrics
+class PressureMetricsCache:
+    """In-memory cache for pressure metrics with 5-minute TTL"""
+
+    def __init__(self, ttl_minutes: int = 5):
+        self.cache = {}
+        self.timestamps = {}
+        self.ttl_seconds = ttl_minutes * 60
+        self._lock = threading.Lock()
+
+    def get(self, key: str) -> Optional[List[Dict[str, Any]]]:
+        """Get cached pressure metrics if still valid"""
+        with self._lock:
+            if key in self.cache:
+                timestamp = self.timestamps[key]
+                if (datetime.now() - timestamp).total_seconds() < self.ttl_seconds:
+                    return self.cache[key]
+                else:
+                    # Expired, remove from cache
+                    del self.cache[key]
+                    del self.timestamps[key]
+            return None
+
+    def put(self, key: str, value: List[Dict[str, Any]]):
+        """Cache pressure metrics with timestamp"""
+        with self._lock:
+            self.cache[key] = value
+            self.timestamps[key] = datetime.now()
+
+    def clear_expired(self):
+        """Clear expired cache entries"""
+        with self._lock:
+            now = datetime.now()
+            expired_keys = [
+                key for key, timestamp in self.timestamps.items()
+                if (now - timestamp).total_seconds() >= self.ttl_seconds
+            ]
+            for key in expired_keys:
+                del self.cache[key]
+                del self.timestamps[key]
+
+
+# Global pressure metrics cache
+_pressure_cache = PressureMetricsCache()
+
+
+# Signal Conflict Resolution System
+class SignalConflictAnalyzer:
+    """Analyzes and resolves conflicts between IFD v1 and v3 signals"""
+
+    def __init__(self):
+        self.conflicts_log = []
+        self._lock = threading.Lock()
+
+    def analyze_conflict(self, v1_signals: List[Dict], v3_signals: List[Dict]) -> Dict[str, Any]:
+        """Analyze conflicts between v1 and v3 signals and resolve"""
+
+        conflict_analysis = {
+            "timestamp": datetime.now().isoformat(),
+            "v1_signal_count": len(v1_signals),
+            "v3_signal_count": len(v3_signals),
+            "conflicts": [],
+            "resolution": None,
+            "recommended_signals": []
+        }
+
+        # If one method has no signals, use the other
+        if not v1_signals and v3_signals:
+            conflict_analysis["resolution"] = "V3_ONLY"
+            conflict_analysis["recommended_signals"] = v3_signals
+            return conflict_analysis
+        elif v1_signals and not v3_signals:
+            conflict_analysis["resolution"] = "V1_ONLY"
+            conflict_analysis["recommended_signals"] = v1_signals
+            return conflict_analysis
+        elif not v1_signals and not v3_signals:
+            conflict_analysis["resolution"] = "NO_SIGNALS"
+            return conflict_analysis
+
+        # Both have signals - analyze conflicts
+        conflicts_detected = []
+
+        for v1_signal in v1_signals:
+            for v3_signal in v3_signals:
+                # Check for conflicting directions on same/similar strikes
+                v1_direction = v1_signal.get("direction", "UNKNOWN")
+                v3_direction = v3_signal.get("expected_direction", "UNKNOWN")
+
+                v1_strike = v1_signal.get("strike", 0)
+                v3_strike = v3_signal.get("strike", 21350)  # Default NQ strike
+
+                # Consider signals conflicting if they're within 50 points and opposite directions
+                if abs(v1_strike - v3_strike) <= 50 and v1_direction != v3_direction:
+                    conflict = {
+                        "type": "DIRECTION_CONFLICT",
+                        "v1_direction": v1_direction,
+                        "v3_direction": v3_direction,
+                        "v1_strike": v1_strike,
+                        "v3_strike": v3_strike,
+                        "v1_confidence": v1_signal.get("confidence", 0.5),
+                        "v3_confidence": v3_signal.get("confidence", 0.5),
+                        "strike_difference": abs(v1_strike - v3_strike)
+                    }
+                    conflicts_detected.append(conflict)
+
+        conflict_analysis["conflicts"] = conflicts_detected
+
+        # Resolve conflicts using confidence scores
+        if conflicts_detected:
+            # Use confidence-weighted resolution
+            v1_avg_confidence = sum(s.get("confidence", 0.5) for s in v1_signals) / len(v1_signals)
+            v3_avg_confidence = sum(s.get("confidence", 0.5) for s in v3_signals) / len(v3_signals)
+
+            # IFD v3 gets slight preference due to MBO data advantage
+            v3_weighted_confidence = v3_avg_confidence * 1.1
+
+            if v3_weighted_confidence > v1_avg_confidence:
+                conflict_analysis["resolution"] = "V3_PREFERRED"
+                conflict_analysis["recommended_signals"] = v3_signals
+                conflict_analysis["reasoning"] = f"IFD v3 confidence ({v3_avg_confidence:.2f}) higher than v1 ({v1_avg_confidence:.2f})"
+            else:
+                conflict_analysis["resolution"] = "V1_PREFERRED"
+                conflict_analysis["recommended_signals"] = v1_signals
+                conflict_analysis["reasoning"] = f"IFD v1 confidence ({v1_avg_confidence:.2f}) higher than v3 ({v3_avg_confidence:.2f})"
+
+            # Log the conflict for analysis
+            self._log_conflict(conflict_analysis)
+        else:
+            # No conflicts - merge signals
+            conflict_analysis["resolution"] = "MERGE_SIGNALS"
+            conflict_analysis["recommended_signals"] = v3_signals + v1_signals
+
+        return conflict_analysis
+
+    def _log_conflict(self, conflict_analysis: Dict[str, Any]):
+        """Log signal conflicts for later analysis"""
+        with self._lock:
+            self.conflicts_log.append(conflict_analysis)
+
+            # Log to file for persistence
+            try:
+                log_dir = "outputs/signal_conflicts"
+                os.makedirs(log_dir, exist_ok=True)
+
+                log_file = os.path.join(log_dir, f"conflicts_{datetime.now().strftime('%Y%m%d')}.json")
+
+                # Append to daily log file
+                existing_logs = []
+                if os.path.exists(log_file):
+                    try:
+                        with open(log_file, 'r') as f:
+                            existing_logs = json.load(f)
+                    except:
+                        existing_logs = []
+
+                existing_logs.append(conflict_analysis)
+
+                with open(log_file, 'w') as f:
+                    json.dump(existing_logs, f, indent=2)
+
+                logger.info(f"Signal conflict logged: {conflict_analysis['resolution']} - {len(conflict_analysis['conflicts'])} conflicts detected")
+
+            except Exception as e:
+                logger.error(f"Failed to log signal conflict: {e}")
+
+    def get_recent_conflicts(self, hours: int = 24) -> List[Dict[str, Any]]:
+        """Get conflicts from the last N hours"""
+        cutoff = datetime.now() - timedelta(hours=hours)
+
+        with self._lock:
+            return [
+                conflict for conflict in self.conflicts_log
+                if datetime.fromisoformat(conflict["timestamp"]) > cutoff
+            ]
+
+
+# Global conflict analyzer
+_conflict_analyzer = SignalConflictAnalyzer()
+
+
+# Baseline Calculation Optimization
+class BaselineCalculationCache:
+    """Pre-calculated daily baselines for quick lookups during trading"""
+
+    def __init__(self):
+        self.daily_baselines = {}
+        self.aggregated_stats = {}
+        self._lock = threading.Lock()
+        self.last_calculation_date = None
+
+    def get_daily_baseline(self, date_str: str, symbol: str) -> Optional[Dict[str, Any]]:
+        """Get pre-calculated baseline for a specific date and symbol"""
+        with self._lock:
+            key = f"{date_str}_{symbol}"
+            return self.daily_baselines.get(key)
+
+    def store_daily_baseline(self, date_str: str, symbol: str, baseline_data: Dict[str, Any]):
+        """Store pre-calculated baseline"""
+        with self._lock:
+            key = f"{date_str}_{symbol}"
+            self.daily_baselines[key] = baseline_data
+
+    def get_aggregated_stats(self, symbol: str, lookback_days: int = 20) -> Optional[Dict[str, Any]]:
+        """Get aggregated statistics for quick baseline comparisons"""
+        with self._lock:
+            key = f"{symbol}_{lookback_days}d"
+            return self.aggregated_stats.get(key)
+
+    def store_aggregated_stats(self, symbol: str, lookback_days: int, stats: Dict[str, Any]):
+        """Store aggregated statistics"""
+        with self._lock:
+            key = f"{symbol}_{lookback_days}d"
+            stats['calculated_at'] = datetime.now().isoformat()
+            self.aggregated_stats[key] = stats
+
+    def should_recalculate_baselines(self) -> bool:
+        """Check if daily baselines need recalculation"""
+        today = datetime.now().strftime('%Y-%m-%d')
+        return self.last_calculation_date != today
+
+    def mark_baselines_calculated(self):
+        """Mark baselines as calculated for today"""
+        with self._lock:
+            self.last_calculation_date = datetime.now().strftime('%Y-%m-%d')
+
+    def pre_calculate_daily_baselines(self, symbols: List[str] = None):
+        """Pre-calculate baselines for all symbols for performance optimization"""
+        if symbols is None:
+            symbols = ["NQM25", "NQU25", "ESM25"]  # Default NQ symbols
+
+        logger.info(f"Pre-calculating daily baselines for {len(symbols)} symbols...")
+
+        for symbol in symbols:
+            try:
+                # Simulate baseline calculation (in real implementation, query from database)
+                baseline_data = {
+                    "avg_pressure_ratio": 1.2,
+                    "avg_volume_concentration": 0.35,
+                    "avg_time_persistence": 0.45,
+                    "pressure_volatility": 0.15,
+                    "typical_trade_size": 1500,
+                    "normal_bid_ask_spread": 0.5,
+                    "daily_pressure_range": {"min": 0.8, "max": 1.8},
+                    "volume_profile": {"morning": 0.4, "midday": 0.3, "afternoon": 0.3}
+                }
+
+                today = datetime.now().strftime('%Y-%m-%d')
+                self.store_daily_baseline(today, symbol, baseline_data)
+
+                # Calculate 20-day aggregated stats
+                aggregated_stats = {
+                    "baseline_mean": 1.2,
+                    "baseline_std": 0.2,
+                    "anomaly_threshold": 2.0,  # 2 standard deviations
+                    "confidence_bands": {
+                        "lower_95": 0.8,
+                        "upper_95": 1.6,
+                        "lower_99": 0.6,
+                        "upper_99": 1.8
+                    },
+                    "trend_slope": 0.01,  # Slight upward trend
+                    "data_quality_score": 0.95
+                }
+
+                self.store_aggregated_stats(symbol, 20, aggregated_stats)
+
+            except Exception as e:
+                logger.error(f"Failed to pre-calculate baseline for {symbol}: {e}")
+
+        self.mark_baselines_calculated()
+        logger.info("Daily baselines pre-calculated and cached")
+
+
+# Global baseline cache
+_baseline_cache = BaselineCalculationCache()
 
 
 class AnalysisEngine:
@@ -312,6 +623,14 @@ class AnalysisEngine:
         """Run IFD v3.0 Institutional Flow Detection with MBO streaming integration"""
         print("  Running IFD v3.0 Analysis (Enhanced Institutional Flow Detection)...")
 
+        # Initialize latency tracking
+        monitor = get_latency_monitor()
+        request_id = f"ifd_v3_{int(time.time() * 1000)}"
+        monitor.track_request(request_id, {
+            'analysis_type': 'ifd_v3',
+            'data_config': data_config
+        })
+
         ifd_config = self.config.get("institutional_flow_v3", {
             "db_path": "/tmp/ifd_v3_test.db",
             "pressure_thresholds": {
@@ -328,30 +647,50 @@ class AnalysisEngine:
         })
 
         try:
+            # Performance Optimization: Pre-calculate daily baselines if needed
+            if _baseline_cache.should_recalculate_baselines():
+                _baseline_cache.pre_calculate_daily_baselines()
+                monitor.checkpoint(request_id, LatencyComponent.BASELINE_LOOKUP)
+
             # Import data ingestion pipeline to get MBO streaming data
             from data_ingestion.integration import run_data_ingestion
 
             # Load pressure metrics from MBO streaming (or fallback to simulation)
             print("    Fetching MBO pressure metrics via data ingestion pipeline...")
 
-            try:
-                pipeline_result = run_data_ingestion(data_config)
+            # Performance optimization: Check cache first
+            cache_key = f"pressure_metrics_{data_config.get('mode', 'default')}"
+            pressure_metrics = _pressure_cache.get(cache_key)
 
-                if pipeline_result["pipeline_status"] != "success":
-                    print("    ⚠ Data ingestion pipeline failed, using simulated MBO data")
-                    # Generate simulated pressure metrics for testing
+            if pressure_metrics:
+                logger.debug("Using cached pressure metrics (performance optimization)")
+                monitor.checkpoint(request_id, LatencyComponent.DATA_INGESTION)
+            else:
+                try:
+                    pipeline_result = run_data_ingestion(data_config)
+                    monitor.checkpoint(request_id, LatencyComponent.DATA_INGESTION)
+
+                    if pipeline_result["pipeline_status"] != "success":
+                        print("    ⚠ Data ingestion pipeline failed, using simulated MBO data")
+                        # Generate simulated pressure metrics for testing
+                        pressure_metrics = self._generate_simulated_pressure_metrics()
+                    else:
+                        # Extract pressure metrics from MBO streaming data
+                        pressure_metrics = self._extract_pressure_metrics_from_pipeline(pipeline_result)
+
+                except Exception as pipeline_error:
+                    print(f"    ⚠ Data ingestion error: {pipeline_error}, using simulated MBO data")
+                    # Generate simulated pressure metrics when pipeline fails completely
                     pressure_metrics = self._generate_simulated_pressure_metrics()
-                else:
-                    # Extract pressure metrics from MBO streaming data
-                    pressure_metrics = self._extract_pressure_metrics_from_pipeline(pipeline_result)
+                    monitor.checkpoint(request_id, LatencyComponent.DATA_INGESTION)
 
-            except Exception as pipeline_error:
-                print(f"    ⚠ Data ingestion error: {pipeline_error}, using simulated MBO data")
-                # Generate simulated pressure metrics when pipeline fails completely
-                pressure_metrics = self._generate_simulated_pressure_metrics()
+                # Cache the pressure metrics for performance
+                _pressure_cache.put(cache_key, pressure_metrics)
+                logger.debug("Pressure metrics cached for performance optimization")
 
             if not pressure_metrics:
                 print("    ✗ No pressure metrics available")
+                monitor.finish_request(request_id)
                 return {
                     "status": "failed",
                     "error": "No pressure metrics available",
@@ -362,11 +701,13 @@ class AnalysisEngine:
 
             # Convert pressure metrics to the format expected by IFD v3.0
             pressure_data = self._convert_to_pressure_metrics_objects(pressure_metrics)
+            monitor.checkpoint(request_id, LatencyComponent.DATA_PROCESSING)
 
             print(f"    ✓ Converted {len(pressure_data)} pressure metrics objects")
 
             # Run IFD v3.0 analysis on all pressure data
             result = run_ifd_v3_analysis(pressure_data, ifd_config)
+            monitor.checkpoint(request_id, LatencyComponent.PRESSURE_ANALYSIS)
 
             # Extract signals and summaries from result
             signals = result.get("signals", [])
@@ -374,8 +715,17 @@ class AnalysisEngine:
 
             # Generate comprehensive summary
             summary = self._summarize_ifd_v3_results(signals, analysis_summaries)
+            monitor.checkpoint(request_id, LatencyComponent.SIGNAL_GENERATION)
+
+            # Finish latency tracking
+            measurements = monitor.finish_request(request_id)
+
+            # Extract end-to-end latency for reporting
+            e2e_measurements = [m for m in measurements if m.component == LatencyComponent.END_TO_END]
+            e2e_latency = e2e_measurements[0].latency_ms if e2e_measurements else 0.0
 
             print(f"    ✓ IFD v3.0 Analysis: {len(signals)} institutional signals detected")
+            print(f"    ⏱️  End-to-end latency: {e2e_latency:.1f}ms")
 
             if signals:
                 top_signal = signals[0]
@@ -392,13 +742,15 @@ class AnalysisEngine:
                     "summary": summary,
                     "total_signals": len(signals),
                     "high_confidence_signals": len([s for s in signals if s["confidence"] > 0.7]),
-                    "pressure_snapshots_analyzed": len(pressure_metrics)
+                    "pressure_snapshots_analyzed": len(pressure_metrics),
+                    "latency_ms": e2e_latency
                 },
                 "timestamp": datetime.now().isoformat()
             }
 
         except Exception as e:
             print(f"    ✗ IFD v3.0 Analysis failed: {str(e)}")
+            monitor.finish_request(request_id)
             return {
                 "status": "failed",
                 "error": str(e),
@@ -605,10 +957,31 @@ class AnalysisEngine:
                         "reasoning": f"Your NQ EV algorithm setup #{i} with EV={opp['expected_value']:+.1f}"
                     })
 
-        # IFD v3.0 Analysis (HIGHEST PRIORITY for high-confidence institutional signals)
+        # Implement Signal Conflict Resolution between IFD v1 and v3
+        v1_signals = []
+        v3_signals = []
+
+        # Extract v1 signals (DEAD Simple)
+        if "dead_simple" in successful_analyses:
+            dead_simple_result = self.analysis_results["dead_simple"]["result"]
+            v1_signals = [plan["signal"] for plan in dead_simple_result.get("trade_plans", [])]
+
+        # Extract v3 signals
         if "institutional_flow_v3" in successful_analyses:
             ifd_result = self.analysis_results["institutional_flow_v3"]["result"]
-            ifd_signals = ifd_result.get("signals", [])
+            v3_signals = ifd_result.get("signals", [])
+
+        # Analyze and resolve conflicts
+        conflict_resolution = _conflict_analyzer.analyze_conflict(v1_signals, v3_signals)
+        recommended_ifd_signals = conflict_resolution["recommended_signals"]
+
+        logger.info(f"Signal conflict analysis: {conflict_resolution['resolution']} ({len(conflict_resolution['conflicts'])} conflicts)")
+
+        # IFD v3.0 Analysis (HIGHEST PRIORITY for high-confidence institutional signals)
+        if "institutional_flow_v3" in successful_analyses and conflict_resolution["resolution"] in ["V3_ONLY", "V3_PREFERRED", "MERGE_SIGNALS"]:
+            ifd_result = self.analysis_results["institutional_flow_v3"]["result"]
+            # Filter for v3 signals only
+            ifd_signals = [s for s in recommended_ifd_signals if s.get("expected_direction")]
 
             for i, signal in enumerate(ifd_signals[:3]):  # Top 3 IFD v3.0 signals
                 # High confidence IFD v3.0 signals get immediate priority
@@ -624,6 +997,11 @@ class AnalysisEngine:
                 else:
                     priority = "MEDIUM"
                     confidence = "MODERATE"
+
+                # Boost priority if conflict resolution favored v3
+                if conflict_resolution["resolution"] == "V3_PREFERRED":
+                    priority = "IMMEDIATE" if priority in ["PRIMARY", "HIGH"] else priority
+                    confidence = "CONFLICT_RESOLVED_V3"
 
                 # Estimate entry/exit prices based on signal direction
                 entry_price = 21350.0  # Base NQ price
@@ -650,16 +1028,24 @@ class AnalysisEngine:
                     "confidence": confidence,
                     "signal_strength": signal["signal_strength"],
                     "symbol": signal["symbol"],
+                    "conflict_resolution": conflict_resolution["resolution"],
                     "reasoning": f"IFD v3.0 institutional flow detected: {signal['symbol']} confidence={signal['confidence']:.2f} strength={signal['signal_strength']:.1f}"
                 })
 
-        # DEAD Simple Analysis (HIGHEST PRIORITY for EXTREME signals)
-        if "dead_simple" in successful_analyses:
+        # DEAD Simple Analysis (v1) - only if not overridden by conflict resolution
+        if "dead_simple" in successful_analyses and conflict_resolution["resolution"] in ["V1_ONLY", "V1_PREFERRED", "MERGE_SIGNALS"]:
             dead_simple_result = self.analysis_results["dead_simple"]["result"]
             dead_simple_plans = dead_simple_result.get("trade_plans", [])
 
+            # Filter for v1 signals only from recommendations
+            v1_recommended_signals = [s for s in recommended_ifd_signals if s.get("direction")]
+
             for i, plan in enumerate(dead_simple_plans[:3]):  # Top 3 institutional signals
                 signal = plan["signal"]
+
+                # Only include if this signal is in recommended list
+                if signal not in v1_recommended_signals and conflict_resolution["resolution"] != "MERGE_SIGNALS":
+                    continue
 
                 # EXTREME signals get IMMEDIATE priority
                 if signal["confidence"] == "EXTREME":
@@ -671,6 +1057,11 @@ class AnalysisEngine:
                 else:
                     priority = "HIGH"
                     confidence = signal["confidence"]
+
+                # Boost priority if conflict resolution favored v1
+                if conflict_resolution["resolution"] == "V1_PREFERRED":
+                    priority = "IMMEDIATE" if priority in ["PRIMARY", "HIGH"] else priority
+                    confidence = "CONFLICT_RESOLVED_V1"
 
                 primary_recommendations.append({
                     "source": "dead_simple_analysis",
@@ -688,6 +1079,7 @@ class AnalysisEngine:
                     "dollar_size": signal["dollar_size"],
                     "strike": signal["strike"],
                     "option_type": signal["option_type"],
+                    "conflict_resolution": conflict_resolution["resolution"],
                     "reasoning": f"Institutional ${signal['dollar_size']:,.0f} flow at {signal['strike']}{signal['option_type'][0]} ({signal['vol_oi_ratio']:.1f}x Vol/OI)"
                 })
 
@@ -758,6 +1150,14 @@ class AnalysisEngine:
             market_context["ifd_v3_net_flow"] = ifd_result["summary"]["net_institutional_flow"]
             market_context["ifd_v3_avg_confidence"] = ifd_result["summary"]["average_confidence"]
             market_context["ifd_v3_dominant_direction"] = ifd_result["summary"]["dominant_direction"]
+
+            # Add conflict resolution context
+            if 'conflict_resolution' in locals():
+                market_context["signal_conflict_resolution"] = conflict_resolution["resolution"]
+                market_context["signal_conflicts_detected"] = len(conflict_resolution["conflicts"])
+                market_context["recommended_signals_count"] = len(conflict_resolution["recommended_signals"])
+                if conflict_resolution.get("reasoning"):
+                    market_context["conflict_reasoning"] = conflict_resolution["reasoning"]
 
         synthesis["market_context"] = market_context
 

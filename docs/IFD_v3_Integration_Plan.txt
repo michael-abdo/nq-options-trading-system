@@ -1,0 +1,279 @@
+IFD v3.0 Integration Plan
+
+Prerequisites and Dependencies
+    Databento API Setup
+        Verify API credentials in environment variables
+            Check DATABENTO_API_KEY exists
+            Validate credentials with test connection
+        Confirm GLBX.MDP3 dataset access
+            Test MBO streaming permissions
+            Verify NQ futures symbols available
+        Review monthly usage limits
+            Current: $600/month budget
+            Estimated v3 usage: ~$450/month
+            Buffer: $150 for other data needs
+    Infrastructure Requirements
+        SQLite database setup
+            Path: outputs/ifd_v3_baselines.db
+            Schema already defined in solution.py
+            20-day historical data storage
+        Monitoring infrastructure
+            Latency tracking (<100ms requirement)
+            Usage monitoring (API costs)
+            Signal quality metrics
+    Package Dependencies
+        databento-python (REQUIRED - not currently installed)
+            pip install databento
+            Version: latest stable
+        Other packages already satisfied
+            sqlite3 (built-in)
+            dataclasses (built-in)
+            statistics (built-in)
+
+Configuration Changes
+    Update Main Config Files
+        Modify config/databento_only.json
+            Enable MBO streaming
+            Set appropriate time windows
+            Configure pressure thresholds
+        Update config/all_sources.json
+            Add databento to primary sources
+            Set priority order: databento, barchart, polygon
+            Configure fallback behavior
+    Create IFD v3 Specific Configs
+        Use existing config/profiles/ifd_v3_production.json
+            Review pressure thresholds
+                min_pressure_ratio: 2.0
+                min_volume_concentration: 0.4
+                min_time_persistence: 0.5
+            Validate confidence thresholds
+                min_baseline_anomaly: 2.0
+                min_overall_confidence: 0.7
+            Set market making penalty: 0.4
+        Create testing profile: ifd_v3_testing.json
+            Lower thresholds for more signals
+            Shorter baseline lookback for testing
+            Debug logging enabled
+
+Data Pipeline Integration
+    Enable MBO Streaming
+        Activate databento_api in sources_registry.py
+            Currently commented out or disabled
+            Need to register with SourcesRegistry
+            Set priority level: 1 (highest)
+        Configure MBO processor
+            File: data_ingestion/mbo_event_processor.py
+            Set processing window: 1 minute
+            Configure aggregation logic
+        Implement websocket management
+            File: data_ingestion/websocket_backfill_manager.py
+            Handle reconnections
+            Manage backfill on disconnect
+    Connect to IFD v3 Analysis
+        Modify data_ingestion/integration.py
+            Route MBO PressureMetrics to IFD v3
+            Ensure proper data transformation
+            Add error handling for missing data
+        Update baseline calculation engine
+            File: data_ingestion/baseline_calculation_engine.py
+            Schedule hourly baseline updates
+            Implement 20-day rolling window
+
+Analysis Engine Integration
+    Activate IFD v3 in Pipeline
+        Update analysis_engine/integration.py
+            Enable run_ifd_v3_analysis() call
+            Currently lines 311-406
+            Add to main analysis flow
+        Configure parallel execution
+            Run alongside Expected Value analysis
+            Share data context efficiently
+            Minimize redundant calculations
+    Signal Synthesis Updates
+        Modify synthesize_signals() function
+            Lines 460-543 in integration.py
+            Prioritize IFD v3 signals by confidence
+            Merge with other signal types
+        Implement conflict resolution
+            When v1 and v3 disagree
+            Use confidence scores
+            Log disagreements for analysis
+    Performance Optimization
+        Cache pressure metrics
+            In-memory cache for recent data
+            Reduce database queries
+            5-minute TTL
+        Optimize baseline calculations
+            Pre-calculate daily
+            Store aggregated stats
+            Quick lookups during trading
+
+Testing and Validation
+    Unit Testing
+        Test IFD v3 components
+            File: tests/test_ifd_v3_integration.py
+            Test pressure analysis
+            Test baseline calculations
+            Test market making detection
+        Test data flow
+            MBO -> PressureMetrics
+            PressureMetrics -> InstitutionalSignalV3
+            Signal -> Trade recommendations
+    Integration Testing
+        End-to-end pipeline test
+            Use test data in run_ifd_demo.py
+            Verify signal generation
+            Check performance metrics
+        A/B testing framework
+            File: strategies/ab_testing_coordinator.py
+            Compare v1 vs v3 signals
+            Track accuracy metrics
+            30-day test period
+    Performance Testing
+        Latency requirements
+            Target: <100ms per analysis
+            Current v1: ~50ms
+            Expected v3: ~80-90ms
+        Throughput testing
+            Handle 100+ strikes simultaneously
+            Process streaming updates
+            Maintain responsiveness
+
+Performance Monitoring
+    Real-time Metrics
+        Implement latency tracking
+            File: phase4/latency_monitor.py
+            Track MBO -> Signal latency
+            Alert on >100ms delays
+        Monitor API usage
+            File: phase4/historical_download_cost_tracker.py
+            Track Databento costs
+            Daily/monthly summaries
+            Alert at 80% budget
+    Quality Metrics
+        Signal accuracy tracking
+            File: phase4/success_metrics_tracker.py
+            Track hit rate (target: >65%)
+            False positive rate (<20%)
+            Risk-adjusted returns
+        Baseline quality monitoring
+            Data completeness scores
+            Anomaly detection rates
+            Historical consistency
+
+Rollout Strategy
+    Phase 1: Shadow Mode (Week 1-2)
+        Run v3 alongside v1
+            Log all signals
+            No trading execution
+            Compare performance
+        Monitor and adjust
+            Tune thresholds
+            Fix edge cases
+            Optimize performance
+    Phase 2: Limited Live (Week 3-4)
+        Enable for 20% of signals
+            File: phase4/staged_rollout_framework.py
+            Start with high-confidence only
+            Monitor P&L impact
+        Gradual increase
+            Move to 50% by end of week 4
+            Full comparison data
+            Risk assessment
+    Phase 3: Full Production (Week 5+)
+        Complete transition
+            File: strategies/gradual_transition_manager.py
+            100% IFD v3 signals
+            v1 as fallback only
+            Full monitoring active
+        Emergency rollback ready
+            File: strategies/emergency_rollback_system.py
+            One-command rollback
+            Preserve v1 functionality
+            15-minute recovery time
+
+Documentation Updates
+    Update Technical Docs
+        Modify docs/analysis/IFD/IFD_v3_Architecture_Design.md
+            Current implementation details
+            Configuration examples
+            Troubleshooting guide
+        Create operational runbook
+            Daily checks
+            Common issues
+            Escalation procedures
+    Update User Documentation
+        Trading strategy guide
+            How to interpret v3 signals
+            Risk management updates
+            Position sizing changes
+        Configuration guide
+            How to adjust thresholds
+            A/B testing setup
+            Performance tuning
+
+Maintenance and Optimization
+    Regular Tasks
+        Baseline maintenance
+            Weekly cleanup of old data
+            Monthly performance review
+            Quarterly threshold review
+        Cost optimization
+            Review Databento usage
+            Optimize streaming windows
+            Reduce unnecessary data
+    Future Enhancements
+        Cross-strike coordination
+            Implement in Phase 5
+            Cluster analysis
+            Pattern recognition
+        Machine learning integration
+            Adaptive thresholds
+            Pattern learning
+            Predictive adjustments
+
+Files to Keep (Critical for v3)
+    Core Implementation
+        analysis_engine/institutional_flow_v3/solution.py
+        data_ingestion/databento_api/solution.py
+        data_ingestion/mbo_event_processor.py
+    Integration Files
+        analysis_engine/integration.py
+        data_ingestion/integration.py
+        tasks/options_trading_system/integration.py
+    Configuration
+        config_manager.py
+        config/profiles/ifd_v3_production.json
+        config/databento_only.json
+    Monitoring
+        phase4/latency_monitor.py
+        phase4/success_metrics_tracker.py
+        monitoring/performance_tracker.py
+
+Files to Remove/Archive (Not needed for v3)
+    Legacy Task-Based Files
+        All evidence.json files
+        evidence_rollup.json files
+        test_validation.py in task folders
+    Redundant Implementations
+        Old IFD implementations if any
+        Duplicate analysis functions
+        Unused test files
+
+Critical Success Factors
+    Data Quality
+        Reliable MBO streaming
+        Complete historical baselines
+        Accurate pressure calculations
+    Performance
+        <100ms latency maintained
+        No impact on other analyses
+        Efficient resource usage
+    Risk Management
+        Proper position sizing
+        Stop loss integration
+        Maximum exposure limits
+    Monitoring
+        Real-time alerting
+        Performance dashboards
+        Cost tracking

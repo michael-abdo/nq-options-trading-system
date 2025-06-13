@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-06-12T16:06:15.172465",
+  "analysis_type": "ifd_only",
+  "results": {
+    "Dead Simple Volume Spike": {
+      "status": "failed",
+      "error": "'DeadSimpleVolumeSpike' object has no attribute 'detect_institutional_signals'"
+    }
+  },
+  "summary": {
+    "total_signals": 0,
+    "successful_analyses": 0,
+    "available_modules": 1
+  }
+}

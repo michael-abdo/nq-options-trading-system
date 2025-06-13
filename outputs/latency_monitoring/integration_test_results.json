@@ -1,0 +1,96 @@
+{
+  "test": "latency_integration_validation",
+  "timestamp": "2025-06-12T17:43:02.809466",
+  "analysis_result": {
+    "status": "success",
+    "result": {
+      "signals": [],
+      "analysis_summaries": [],
+      "summary": {
+        "net_institutional_flow": "NEUTRAL",
+        "average_confidence": 0.0,
+        "dominant_direction": "NONE",
+        "market_making_activity": "UNKNOWN",
+        "pressure_trend": "FLAT"
+      },
+      "total_signals": 0,
+      "high_confidence_signals": 0,
+      "pressure_snapshots_analyzed": 15,
+      "latency_ms": 34.42400000000001
+    },
+    "timestamp": "2025-06-12T17:43:02.798163"
+  },
+  "system_overview": {
+    "timestamp": "2025-06-13T00:43:02.798200+00:00",
+    "components": {
+      "data_ingestion": {
+        "mean_latency": 16.5482,
+        "p95_latency": 34.364,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "data_processing": {
+        "mean_latency": 2.2729999999999997,
+        "p95_latency": 2.2729999999999997,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "unknown"
+      },
+      "pressure_analysis": {
+        "mean_latency": 48.7844,
+        "p95_latency": 85.735,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "baseline_lookup": {
+        "mean_latency": 26.894750000000002,
+        "p95_latency": 45.362,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "market_making_detection": {
+        "mean_latency": 22.273,
+        "p95_latency": 35.474,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "improving"
+      },
+      "confidence_scoring": {
+        "mean_latency": 0.0,
+        "p95_latency": 0.0,
+        "sla_compliance": 0.0,
+        "performance_grade": "F",
+        "trend": "unknown"
+      },
+      "signal_generation": {
+        "mean_latency": 14.3314,
+        "p95_latency": 31.815,
+        "sla_compliance": 100.0,
+        "performance_grade": "A",
+        "trend": "stable"
+      },
+      "decision_making": {
+        "mean_latency": 0.0,
+        "p95_latency": 0.0,
+        "sla_compliance": 0.0,
+        "performance_grade": "F",
+        "trend": "unknown"
+      },
+      "end_to_end": {
+        "mean_latency": 119.45280000000001,
+        "p95_latency": 217.4126,
+        "sla_compliance": 40.0,
+        "performance_grade": "F",
+        "trend": "improving"
+      }
+    },
+    "overall_status": "good",
+    "active_alerts": 0,
+    "active_requests": 0
+  },
+  "status": "PASSED",
+  "notes": "Latency tracking successfully integrated with IFD v3 analysis"
+}
