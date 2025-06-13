@@ -133,29 +133,29 @@ class OptimizedBaselineManager(HistoricalBaselineManager):
     def _calculate_baseline_from_data(self, data: List[Dict[str, Any]]) -> BaselineContext:
         """
         Calculate baseline context from historical data points
-        
+
         Args:
             data: List of historical data points with pressure_ratio, volume_total, confidence
-            
+
         Returns:
             BaselineContext object with statistical measures
         """
         if not data:
             return self._create_default_baseline()
-        
+
         # Extract pressure ratios for statistical calculation
         pressure_ratios = [d['pressure_ratio'] for d in data]
         volume_totals = [d['volume_total'] for d in data]
         confidences = [d['confidence'] for d in data]
-        
+
         # Calculate statistics
         mean_pressure = sum(pressure_ratios) / len(pressure_ratios)
         squared_diffs = [(p - mean_pressure) ** 2 for p in pressure_ratios]
         std_pressure = (sum(squared_diffs) / len(squared_diffs)) ** 0.5
-        
+
         mean_volume = sum(volume_totals) / len(volume_totals)
         mean_confidence = sum(confidences) / len(confidences)
-        
+
         # Create baseline context (using dataclass fields)
         from .solution import BaselineContext
         return BaselineContext(
@@ -171,11 +171,11 @@ class OptimizedBaselineManager(HistoricalBaselineManager):
             data_quality=min(len(data) / 20.0, 1.0),  # 20 days for full quality
             confidence=mean_confidence
         )
-    
+
     def _create_default_baseline(self) -> BaselineContext:
         """
         Create a default baseline context when no historical data is available
-        
+
         Returns:
             BaselineContext with default statistical measures
         """

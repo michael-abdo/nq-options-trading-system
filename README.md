@@ -8,11 +8,17 @@
 # Run live trading pipeline with real market data
 python3 scripts/run_pipeline.py
 
+# 🔴 NEW: Real-time NQ futures price streaming
+python3 scripts/nq_live_stream.py
+
+# 🔴 NEW: Live price display (simplified view)
+python3 scripts/nq_realtime_display.py
+
+# 🔴 NEW: NQ volume and trading analysis
+python3 scripts/nq_volume_analysis.py
+
 # Run Shadow Trading Mode (validation without real positions)
 python3 scripts/run_shadow_trading.py
-
-# Run Limited Live Trading (small position sizes with strict risk controls)
-python3 -c "from tasks.options_trading_system.analysis_engine.strategies.limited_live_trading_orchestrator import *; print('Limited Live Trading Ready')"
 
 # Test system readiness and validation
 python3 tests/run_comprehensive_validation.py
@@ -52,6 +58,8 @@ Final Results: Top-ranked trading opportunities
 
 ### ✅ Live Data Streaming
 - **Databento Integration**: CME Globex MBO streaming for NQ options with real-time pressure metrics
+- **Real-Time Price Streaming**: Live NQ futures prices with sub-second latency
+- **Volume Analysis**: Real-time volume tracking and institutional flow detection
 - **Multi-Source Pipeline**: Priority-based data loading with automatic fallbacks
 - **Cache Optimization**: 100% hit rate on Barchart data with intelligent cache management
 - **Real-Time Validation**: Comprehensive data quality and availability monitoring
@@ -71,12 +79,43 @@ Final Results: Top-ranked trading opportunities
 ## Core Components
 
 - **Analysis Pipeline**: `scripts/run_pipeline.py` - Traditional analysis execution
+- **Live Streaming**: `scripts/nq_live_stream.py` - Real-time NQ futures price streaming
+- **Volume Analysis**: `scripts/nq_volume_analysis.py` - Real-time trading volume and flow analysis
 - **Shadow Trading**: `scripts/run_shadow_trading.py` - Live market validation system
 - **Limited Live Trading**: `limited_live_trading_orchestrator.py` - Risk-controlled live position testing
 - **Pipeline System**: `tasks/options_trading_system/` - Modular analysis framework
 - **Trading Engine**: `tasks/options_trading_system/analysis_engine/strategies/` - Live validation and trading components
 - **Configuration**: Multiple profile-based configurations for different trading modes
 - **Documentation**: `docs/` - Comprehensive system and strategy documentation
+
+## Real-Time Market Data Streaming
+
+**Live NQ Futures Data with Sub-Second Latency**:
+
+### Features
+- **Real-Time Prices**: Live NQ futures streaming via Databento WebSocket API
+- **Volume Analysis**: Comprehensive trade volume and institutional flow tracking
+- **Market Hours**: 24/5 futures trading (Sunday 6 PM - Friday 5 PM ET)
+- **Multiple Contracts**: Support for NQM5, NQZ5, and other contract months
+- **Performance**: Sub-second latency directly from CME Globex exchange
+
+### Quick Start
+```bash
+# Stream live NQ futures prices
+python3 scripts/nq_live_stream.py
+
+# Display simplified live prices
+python3 scripts/nq_realtime_display.py
+
+# Analyze trading volume patterns
+python3 scripts/nq_volume_analysis.py
+```
+
+### Current Market Data (Example)
+- **NQ Price**: $21,742.50 (live)
+- **Volume**: 69,546 contracts (session)
+- **Options**: Put/Call ratio 0.33 (bullish sentiment)
+- **Most Active Strike**: 21,800 CALL (40 contracts)
 
 ## Project Structure
 
