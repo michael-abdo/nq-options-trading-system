@@ -181,12 +181,11 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 
 ```
 /Users/Mike/trading/algos/EOD/
-├── CLAUDE.md                           # Project instructions (in docs/)
-├── README.md                           # This file
-├── .env                                # Environment variables (API keys)
-├── .env.example                        # Example environment configuration
-├── .gitignore                          # Git ignore patterns
-├── .pre-commit-config.yaml             # Pre-commit hooks configuration
+├── README.md                           # 📖 Main project documentation
+├── .env                                # 🔐 Environment variables (API keys - not in git)
+├── .env.example                        # 📋 Example environment configuration
+├── .gitignore                          # 🚫 Git ignore patterns (includes outputs/ security)
+├── .pre-commit-config.yaml             # 🔍 Pre-commit hooks configuration
 ├── config/                             # 📋 CONFIGURATION PROFILES
 │   ├── databento_only.json            # Databento-only configuration
 │   ├── barchart_only.json             # Barchart-only configuration (default)
@@ -194,9 +193,11 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │   ├── shadow_trading.json            # Shadow trading configuration
 │   ├── testing.json                   # Testing configuration
 │   └── profiles/                       # Algorithm-specific profiles
-├── scripts/                            # 🔧 UTILITY SCRIPTS & ENTRY POINTS
+├── scripts/                            # 🔧 UTILITY SCRIPTS & ENTRY POINTS (ORGANIZED)
 │   ├── run_pipeline.py                # 🚀 ANALYSIS PIPELINE ENTRY POINT
 │   ├── run_shadow_trading.py          # 🎯 SHADOW TRADING ENTRY POINT
+│   ├── setup_trading_environment.sh   # 🛠️ Environment setup script (moved from root)
+│   ├── requirements_chart.txt         # 📋 Chart system requirements (moved from root)
 │   ├── start_trading_safe_chart.py    # 🔥 5-MINUTE CHART DASHBOARD ENTRY POINT
 │   ├── nq_5m_chart.py                 # 📊 Static 5-minute chart generator
 │   ├── nq_5m_dash_app.py              # Real-time dashboard application
@@ -222,13 +223,17 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │   ├── test_api_authentication.py     # API authentication tests
 │   └── ... (30+ more test files)      # Complete test coverage
 ├── archive/                            # Legacy files (archived)
-├── docs/                               # 📚 DOCUMENTATION
+├── docs/                               # 📚 DOCUMENTATION (ORGANIZED)
+│   ├── CRITICAL_SAFETY_CHANGES.md      # Critical safety changes documentation
+│   ├── security_audit_results.txt      # Security vulnerability audit results
+│   ├── security_fix_implementation_plan.txt # Security fix implementation plan
 │   ├── SHADOW_TRADING_IMPLEMENTATION_SUMMARY.md # Complete implementation guide
 │   ├── analysis/                       # Strategy documentation
 │   ├── data_sources/                   # Data source guides
 │   ├── live_trading_test_plan.txt     # Comprehensive test plan
 │   └── *.md                           # System documentation
 ├── outputs/                            # 📁 OUTPUT STRUCTURE (GIT IGNORED - SECURE)
+│   ├── trading_safety_*.log           # 🛡️ Trading safety logs (moved from root)
 │   ├── YYYYMMDD/                       # Date-based organization
 │   │   ├── analysis_exports/           # JSON analysis outputs (may contain API data)
 │   │   ├── api_data/                   # API responses (sensitive data)
