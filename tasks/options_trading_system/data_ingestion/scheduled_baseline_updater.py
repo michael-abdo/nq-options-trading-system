@@ -16,6 +16,7 @@ import threading
 import time
 import schedule
 from datetime import datetime, timedelta, timezone, time as datetime_time
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -212,7 +213,7 @@ class BaselineUpdateJob:
 
     def execute(self) -> JobExecutionRecord:
         """Execute baseline update job"""
-        job_id = f"baseline_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        job_id = f"baseline_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
         record = JobExecutionRecord(
             job_id=job_id,
             job_type="baseline_update",
@@ -427,7 +428,7 @@ class ScheduledBaselineUpdater:
         while self.is_running:
             try:
                 # Check if today is enabled
-                if datetime.now().weekday() in self.enabled_days:
+                if get_eastern_time().weekday() in self.enabled_days:
                     schedule.run_pending()
 
                 time.sleep(60)  # Check every minute

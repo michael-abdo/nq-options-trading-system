@@ -24,6 +24,7 @@ import sqlite3
 import threading
 import time
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Tuple, Callable
 from dataclasses import dataclass, asdict
 from collections import defaultdict, deque
@@ -460,7 +461,7 @@ class ThresholdOptimizer:
         Returns:
             OptimizationResult with recommendations
         """
-        optimization_id = f"opt_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        optimization_id = f"opt_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
 
         if len(performance_history) < self.min_data_points:
             logger.warning(f"Insufficient data for optimization: {len(performance_history)} < {self.min_data_points}")

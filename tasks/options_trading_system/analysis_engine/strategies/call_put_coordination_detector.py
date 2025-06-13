@@ -11,6 +11,7 @@ This module detects coordinated institutional activity between calls and puts:
 
 import logging
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Tuple, Set
 from dataclasses import dataclass, field
 from enum import Enum
@@ -520,7 +521,7 @@ class CoordinationDetector:
                              if p.pattern_type == pattern.pattern_type)
 
         alert = CoordinationAlert(
-            alert_id=f"coord_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            alert_id=f"coord_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}",
             timestamp=pattern.timestamp,
             severity=severity,
             pattern=pattern,

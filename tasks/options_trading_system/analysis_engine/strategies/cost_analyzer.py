@@ -16,6 +16,7 @@ Features:
 import json
 import os
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict, field
 from enum import Enum
@@ -234,7 +235,7 @@ class CostAnalyzer:
         """
         record = UsageRecord(
             provider=provider,
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             cost_type=CostType(usage_data.get("cost_type", "API_CALL")),
             api_calls=usage_data.get("api_calls", 0),
             streaming_minutes=usage_data.get("streaming_minutes", 0.0),
@@ -307,9 +308,9 @@ class CostAnalyzer:
             Cost summary with breakdowns
         """
         if start_date is None:
-            start_date = datetime.now() - timedelta(days=30)
+            start_date = get_eastern_time() - timedelta(days=30)
         if end_date is None:
-            end_date = datetime.now()
+            end_date = get_eastern_time()
 
         # Filter records
         period_records = [
@@ -454,7 +455,7 @@ class CostAnalyzer:
                 if savings > 100:  # Significant savings
                     recommendations.append(
                         CostOptimizationRecommendation(
-                            recommendation_id=f"opt_{datetime.now().strftime('%Y%m%d_%H%M%S')}_provider",
+                            recommendation_id=f"opt_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}_provider",
                             priority="HIGH",
                             category="PROVIDER_SWITCH",
                             title="Switch high-volume API calls to Databento",
@@ -486,7 +487,7 @@ class CostAnalyzer:
         # Analyze recent API calls for patterns
         recent_records = [
             r for r in self.usage_records
-            if r.timestamp > datetime.now() - timedelta(days=7)
+            if r.timestamp > get_eastern_time() - timedelta(days=7)
             and r.api_calls > 0
         ]
 
@@ -514,7 +515,7 @@ class CostAnalyzer:
 
                 recommendations.append(
                     CostOptimizationRecommendation(
-                        recommendation_id=f"opt_{datetime.now().strftime('%Y%m%d_%H%M%S')}_batch_{operation}",
+                        recommendation_id=f"opt_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}_batch_{operation}",
                         priority="MEDIUM",
                         category="BATCHING",
                         title=f"Batch API calls for {operation}",
@@ -560,7 +561,7 @@ class CostAnalyzer:
 
                 recommendations.append(
                     CostOptimizationRecommendation(
-                        recommendation_id=f"opt_{datetime.now().strftime('%Y%m%d_%H%M%S')}_cache_{operation}",
+                        recommendation_id=f"opt_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}_cache_{operation}",
                         priority="MEDIUM" if monthly_savings > 50 else "LOW",
                         category="CACHING",
                         title=f"Implement caching for {operation}",
@@ -592,7 +593,7 @@ class CostAnalyzer:
             provider_records = [
                 r for r in self.usage_records
                 if r.provider == provider and
-                r.timestamp > datetime.now() - timedelta(days=7)
+                r.timestamp > get_eastern_time() - timedelta(days=7)
             ]
 
             if not provider_records:
@@ -611,7 +612,7 @@ class CostAnalyzer:
             if peak_rate > cost_structure.rate_limit_per_second * 0.8:
                 recommendations.append(
                     CostOptimizationRecommendation(
-                        recommendation_id=f"opt_{datetime.now().strftime('%Y%m%d_%H%M%S')}_ratelimit_{provider.value}",
+                        recommendation_id=f"opt_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}_ratelimit_{provider.value}",
                         priority="HIGH",
                         category="API_USAGE",
                         title=f"Optimize {provider.value} rate limit usage",
@@ -653,7 +654,7 @@ class CostAnalyzer:
 
                 recommendations.append(
                     CostOptimizationRecommendation(
-                        recommendation_id=f"opt_{datetime.now().strftime('%Y%m%d_%H%M%S')}_algo_efficiency",
+                        recommendation_id=f"opt_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}_algo_efficiency",
                         priority="MEDIUM",
                         category="API_USAGE",
                         title="Optimize IFD v3.0 data efficiency",
@@ -681,7 +682,7 @@ class CostAnalyzer:
 
     def _check_budget_alerts(self):
         """Check and generate budget alerts"""
-        now = datetime.now()
+        now = get_eastern_time()
 
         # Daily budget check
         today_key = now.strftime("%Y-%m-%d")
@@ -726,7 +727,7 @@ class CostAnalyzer:
         Returns:
             Tuple of (allowed, reason_if_denied)
         """
-        now = datetime.now()
+        now = get_eastern_time()
         today_key = now.strftime("%Y-%m-%d")
 
         # Check daily budget
@@ -760,7 +761,7 @@ class CostAnalyzer:
             Complete cost analysis report
         """
         report = {
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": get_eastern_time().isoformat(),
             "summary": self.get_cost_summary(),
             "recommendations": [
                 asdict(rec) for rec in self.generate_optimization_recommendations()
@@ -787,7 +788,7 @@ class CostAnalyzer:
         }
 
         # Update budget status
-        now = datetime.now()
+        now = get_eastern_time()
         today_cost = sum(
             provider_data["estimated_cost"]
             for provider_data in self.daily_usage.get(now.strftime("%Y-%m-%d"), {}).values()

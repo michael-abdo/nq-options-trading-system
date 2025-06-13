@@ -3,6 +3,7 @@ import json
 import logging
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 import requests
@@ -183,7 +184,7 @@ class BarchartWebScraper:
                 underlying_price=underlying_info['price'],
                 contracts=contracts,
                 source='web_scrape',
-                timestamp=datetime.now(),
+                timestamp=get_eastern_time(),
                 total_contracts=len(contracts)
             )
 
@@ -274,7 +275,7 @@ class BarchartWebScraper:
             underlying_price=underlying_price,
             contracts=contracts,
             source='web_scrape',
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             total_contracts=len(contracts)
         )
 
@@ -347,13 +348,13 @@ class BarchartWebScraper:
             # Create directory structure
             base_dir = os.path.dirname(os.path.abspath(__file__))
             screenshot_dir = os.path.join(base_dir, 'screenshots')
-            date_dir = os.path.join(screenshot_dir, datetime.now().strftime('%Y%m%d'))
+            date_dir = os.path.join(screenshot_dir, get_eastern_time().strftime('%Y%m%d'))
 
             # Create directories if they don't exist
             os.makedirs(date_dir, exist_ok=True)
 
             # Generate filename with timestamp
-            timestamp = datetime.now().strftime('%H%M%S')
+            timestamp = get_eastern_time().strftime('%H%M%S')
             filename = f'barchart_{symbol}_{timestamp}.png'
             filepath = os.path.join(date_dir, filename)
 
@@ -373,7 +374,7 @@ class BarchartWebScraper:
             metadata = {
                 'url': url,
                 'symbol': symbol,
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': get_eastern_time().isoformat(),
                 'page_title': self.driver.title,
                 'screenshot_path': filepath,
                 'window_size': {'width': 1920, 'height': total_height}
@@ -479,7 +480,7 @@ class BarchartWebScraper:
                 expiration_date=expiration_date,
                 underlying_price=underlying_price,
                 source='web_scrape',
-                timestamp=datetime.now()
+                timestamp=get_eastern_time()
             )
 
             # Parse remaining cells based on typical barchart layout
@@ -535,9 +536,10 @@ class BarchartAPIComparator:
         Returns:
             Symbol like "MC1M25" for Monday June 2025 daily options
         """
-        from datetime import datetime, timedelta
+        from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time, timedelta
 
-        now = datetime.now()
+        now = get_eastern_time()
 
         # Determine expiration date and day code
         if now.weekday() < 5:  # Monday = 0, Friday = 4
@@ -656,7 +658,7 @@ class BarchartAPIComparator:
                     expiration_date="2025-06-20",  # Extract from symbol if needed
                     underlying_price=21534.38,  # Approximate from the data
                     source='barchart_api',
-                    timestamp=datetime.now()
+                    timestamp=get_eastern_time()
                 )
 
                 contracts.append(contract)
@@ -693,7 +695,7 @@ class BarchartAPIComparator:
                         expiration_date="2025-06-20",
                         underlying_price=21534.38,
                         source='barchart_api',
-                        timestamp=datetime.now()
+                        timestamp=get_eastern_time()
                     )
                     contracts.append(contract)
 
@@ -705,7 +707,7 @@ class BarchartAPIComparator:
                 underlying_price=21534.38,
                 contracts=contracts,
                 source='barchart_api',
-                timestamp=datetime.now(),
+                timestamp=get_eastern_time(),
                 total_contracts=len(contracts)
             )
 
@@ -722,7 +724,7 @@ class BarchartAPIComparator:
                 expiration_date="2025-06-20",
                 underlying_price=19100.0,
                 source='fallback_mock',
-                timestamp=datetime.now()
+                timestamp=get_eastern_time()
             )
 
             return OptionsChainData(
@@ -731,7 +733,7 @@ class BarchartAPIComparator:
                 underlying_price=19100.0,
                 contracts=[mock_contract],
                 source='fallback_mock',
-                timestamp=datetime.now(),
+                timestamp=get_eastern_time(),
                 total_contracts=1
             )
 
@@ -752,13 +754,13 @@ class BarchartAPIComparator:
             # Create directory structure
             base_dir = os.path.dirname(os.path.abspath(__file__))
             api_data_dir = os.path.join(base_dir, 'api_data')
-            date_dir = os.path.join(api_data_dir, datetime.now().strftime('%Y%m%d'))
+            date_dir = os.path.join(api_data_dir, get_eastern_time().strftime('%Y%m%d'))
 
             # Create directories if they don't exist
             os.makedirs(date_dir, exist_ok=True)
 
             # Generate filename with timestamp
-            timestamp = datetime.now().strftime('%H%M%S')
+            timestamp = get_eastern_time().strftime('%H%M%S')
             filename = f'barchart_api_{symbol}_{timestamp}.json'
             filepath = os.path.join(date_dir, filename)
 
@@ -771,7 +773,7 @@ class BarchartAPIComparator:
             # Also save a metadata file
             metadata = {
                 'symbol': symbol,
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': get_eastern_time().isoformat(),
                 'source_file': '/data/api_responses/options_data_20250602_141553.json',
                 'contracts_count': len(api_response.get('data', {}).get('Call', [])) +
                                  len(api_response.get('data', {}).get('Put', [])),
@@ -814,7 +816,7 @@ class BarchartAPIComparator:
         """
 
         comparison = {
-            'comparison_timestamp': datetime.now().isoformat(),
+            'comparison_timestamp': get_eastern_time().isoformat(),
             'web_data_summary': {
                 'source': web_data.source,
                 'contract_count': web_data.total_contracts,
@@ -978,8 +980,8 @@ def main():
         comparison_results = comparator.compare_data_sources(web_data, api_data)
 
         # Save results to organized directory structure
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        date_str = datetime.now().strftime("%Y%m%d")
+        timestamp = get_eastern_time().strftime("%Y%m%d_%H%M%S")
+        date_str = get_eastern_time().strftime("%Y%m%d")
 
         # Create organized directories
         outputs_dir = f"outputs/{date_str}"

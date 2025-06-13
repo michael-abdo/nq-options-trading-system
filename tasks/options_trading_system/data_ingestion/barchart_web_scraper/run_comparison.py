@@ -9,6 +9,7 @@ import os
 import logging
 import argparse
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add current directory to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -22,12 +23,12 @@ def setup_logging(verbose: bool = False):
     level = logging.DEBUG if verbose else logging.INFO
 
     # Create organized log directory
-    date_str = datetime.now().strftime("%Y%m%d")
+    date_str = get_eastern_time().strftime("%Y%m%d")
     log_dir = f"outputs/{date_str}/logs"
     os.makedirs(log_dir, exist_ok=True)
 
     # Create log filename
-    log_file = os.path.join(log_dir, f'barchart_comparison_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
+    log_file = os.path.join(log_dir, f'barchart_comparison_{get_eastern_time().strftime("%Y%m%d_%H%M%S")}.log')
 
     logging.basicConfig(
         level=level,
@@ -235,8 +236,8 @@ def main_runner():
         comparison_results = comparator.compare_data_sources(web_data, api_data)
 
         # Save results to organized structure
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        date_str = datetime.now().strftime("%Y%m%d")
+        timestamp = get_eastern_time().strftime("%Y%m%d_%H%M%S")
+        date_str = get_eastern_time().strftime("%Y%m%d")
 
         # Create organized directories
         outputs_dir = f"outputs/{date_str}"

@@ -8,6 +8,7 @@ import os
 import sys
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 
 # Add parent directory to path
@@ -19,11 +20,11 @@ sys.path.insert(0, os.path.join(parent_dir, 'tasks', 'options_trading_system', '
 def test_source_availability():
     print("📊 Data Source Availability Report")
     print("=" * 60)
-    print(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Generated: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
 
     results = {
-        "report_timestamp": datetime.now().isoformat(),
+        "report_timestamp": get_eastern_time().isoformat(),
         "sources": {},
         "summary": {
             "total_sources": 0,
@@ -189,7 +190,7 @@ def test_source_availability():
     output_dir = Path("outputs/live_trading_tests")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = get_eastern_time().strftime("%Y%m%d_%H%M%S")
     output_file = output_dir / f"source_availability_report_{timestamp}.json"
 
     with open(output_file, 'w') as f:

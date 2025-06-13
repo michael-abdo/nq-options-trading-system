@@ -13,6 +13,7 @@ import time
 import psutil
 import logging
 from datetime import datetime, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, asdict
 from collections import deque, defaultdict
@@ -258,7 +259,7 @@ class RealCostTracker:
         self.cost_history.append(cost_metrics)
 
         # Update daily and provider totals
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = get_eastern_time().strftime('%Y-%m-%d')
         self.daily_costs[today] += estimated_cost
         self.provider_costs[provider] += estimated_cost
 
@@ -286,14 +287,14 @@ class RealCostTracker:
         self.cost_history.append(cost_metrics)
 
         # Update totals
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = get_eastern_time().strftime('%Y-%m-%d')
         self.daily_costs[today] += estimated_cost
         self.provider_costs[provider] += estimated_cost
 
     def get_daily_cost(self, date: str = None) -> float:
         """Get total cost for a specific date"""
         if date is None:
-            date = datetime.now().strftime('%Y-%m-%d')
+            date = get_eastern_time().strftime('%Y-%m-%d')
         return self.daily_costs.get(date, 0.0)
 
     def get_provider_costs(self) -> Dict[str, float]:
@@ -302,7 +303,7 @@ class RealCostTracker:
 
     def get_cost_summary(self) -> Dict[str, Any]:
         """Get comprehensive cost summary"""
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = get_eastern_time().strftime('%Y-%m-%d')
         total_cost = sum(self.daily_costs.values())
 
         return {

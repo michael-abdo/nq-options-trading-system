@@ -18,6 +18,7 @@ import json
 import os
 import sqlite3
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple, Union
 from dataclasses import dataclass, asdict, field
 from enum import Enum
@@ -297,7 +298,7 @@ class HistoricalBacktester:
         Returns:
             BacktestResults object
         """
-        backtest_id = f"backtest_{algorithm_version}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        backtest_id = f"backtest_{algorithm_version}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
 
         print(f"🚀 Starting backtest: {backtest_id}")
         print(f"   Algorithm: {algorithm_version}")
@@ -1079,8 +1080,8 @@ def run_standard_backtest(algorithm_version: str = "v3.0",
     backtester = create_backtester()
 
     config = BacktestConfig(
-        start_date=datetime.now() - timedelta(days=days_back),
-        end_date=datetime.now(),
+        start_date=get_eastern_time() - timedelta(days=days_back),
+        end_date=get_eastern_time(),
         initial_capital=100000.0,
         position_sizing="kelly",
         max_positions=10,

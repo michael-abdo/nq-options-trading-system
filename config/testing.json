@@ -1,7 +1,7 @@
 {
   "data_sources": {
     "databento": {
-      "enabled": false,
+      "enabled": true,
       "config": {
         "api_key": "${DATABENTO_API_KEY}",
         "symbols": [
@@ -12,12 +12,9 @@
       }
     },
     "barchart": {
-      "enabled": true,
+      "enabled": false,
       "config": {
-        "use_live_api": false,
-        "futures_symbol": "NQM25",
-        "headless": true,
-        "file_path": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/outputs/20250608/api_data/barchart_api_data_20250608_220140.json"
+        "DISABLED": "TRADING SAFETY - Only Databento allowed"
       }
     },
     "polygon": {

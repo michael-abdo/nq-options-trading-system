@@ -6,6 +6,7 @@ Logs second-by-second NQ futures prices using Databento Live API
 
 import databento as db
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import signal
 import sys
 import os
@@ -68,7 +69,7 @@ def main():
     print("=" * 60)
     print(f"Symbol: {SYMBOL} (E-mini NASDAQ-100 June 2025)")
     print(f"Dataset: {DATASET}")
-    print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Started: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 60)
     print("TIME     | PRICE      | CHANGE    | VOLUME")
     print("-" * 60)

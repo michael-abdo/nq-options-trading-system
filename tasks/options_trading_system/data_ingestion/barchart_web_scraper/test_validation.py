@@ -2,6 +2,7 @@ import unittest
 import time
 import json
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from unittest.mock import Mock, patch, MagicMock
 import tempfile
 import os
@@ -96,7 +97,7 @@ class TestBarchartWebScraper(unittest.TestCase):
                 call_change=None, call_open_interest=None, call_implied_volatility=None,
                 put_change=None, put_open_interest=None, put_implied_volatility=None,
                 expiration_date="2025-06-20", underlying_price=19100.0,
-                source='web_scrape', timestamp=datetime.now()
+                source='web_scrape', timestamp=get_eastern_time()
             )
         ]
 
@@ -108,20 +109,20 @@ class TestBarchartWebScraper(unittest.TestCase):
                 call_change=None, call_open_interest=None, call_implied_volatility=None,
                 put_change=None, put_open_interest=None, put_implied_volatility=None,
                 expiration_date="2025-06-20", underlying_price=19105.0,  # Different underlying
-                source='api', timestamp=datetime.now()
+                source='api', timestamp=get_eastern_time()
             )
         ]
 
         web_data = OptionsChainData(
             underlying_symbol="NQM25", expiration_date="2025-06-20",
             underlying_price=19100.0, contracts=web_contracts,
-            source='web_scrape', timestamp=datetime.now(), total_contracts=1
+            source='web_scrape', timestamp=get_eastern_time(), total_contracts=1
         )
 
         api_data = OptionsChainData(
             underlying_symbol="NQM25", expiration_date="2025-06-20",
             underlying_price=19105.0, contracts=api_contracts,
-            source='api', timestamp=datetime.now(), total_contracts=1
+            source='api', timestamp=get_eastern_time(), total_contracts=1
         )
 
         # Perform comparison
@@ -151,7 +152,7 @@ class TestBarchartWebScraper(unittest.TestCase):
             call_change=5.0, call_open_interest=500, call_implied_volatility=0.25,
             put_change=-2.0, put_open_interest=300, put_implied_volatility=0.23,
             expiration_date="2025-06-20", underlying_price=19100.0,
-            source='complete', timestamp=datetime.now()
+            source='complete', timestamp=get_eastern_time()
         )
 
         # Incomplete data
@@ -162,19 +163,19 @@ class TestBarchartWebScraper(unittest.TestCase):
             call_change=None, call_open_interest=None, call_implied_volatility=None,
             put_change=None, put_open_interest=None, put_implied_volatility=None,
             expiration_date="2025-06-20", underlying_price=19100.0,
-            source='incomplete', timestamp=datetime.now()
+            source='incomplete', timestamp=get_eastern_time()
         )
 
         complete_data = OptionsChainData(
             underlying_symbol="NQM25", expiration_date="2025-06-20",
             underlying_price=19100.0, contracts=[complete_contract],
-            source='complete', timestamp=datetime.now(), total_contracts=1
+            source='complete', timestamp=get_eastern_time(), total_contracts=1
         )
 
         incomplete_data = OptionsChainData(
             underlying_symbol="NQM25", expiration_date="2025-06-20",
             underlying_price=19100.0, contracts=[incomplete_contract],
-            source='incomplete', timestamp=datetime.now(), total_contracts=1
+            source='incomplete', timestamp=get_eastern_time(), total_contracts=1
         )
 
         comparison = self.comparator.compare_data_sources(complete_data, incomplete_data)
@@ -252,7 +253,7 @@ class TestDataFormats(unittest.TestCase):
             call_change=5.0, call_open_interest=500, call_implied_volatility=0.25,
             put_change=-2.0, put_open_interest=300, put_implied_volatility=0.23,
             expiration_date="2025-06-20", underlying_price=19100.0,
-            source='test', timestamp=datetime.now()
+            source='test', timestamp=get_eastern_time()
         )
 
         try:
@@ -286,13 +287,13 @@ class TestDataFormats(unittest.TestCase):
             call_change=None, call_implied_volatility=None,
             put_change=None, put_implied_volatility=None,
             expiration_date="2025-06-20", underlying_price=19100.0,
-            source='test', timestamp=datetime.now()
+            source='test', timestamp=get_eastern_time()
         )
 
         data = OptionsChainData(
             underlying_symbol="NQM25", expiration_date="2025-06-20",
             underlying_price=19100.0, contracts=[contract],
-            source='test', timestamp=datetime.now(), total_contracts=1
+            source='test', timestamp=get_eastern_time(), total_contracts=1
         )
 
         comparator = BarchartAPIComparator()
@@ -336,14 +337,14 @@ def run_performance_test():
             call_change=None, call_open_interest=None, call_implied_volatility=None,
             put_change=None, put_open_interest=None, put_implied_volatility=None,
             expiration_date="2025-06-20", underlying_price=19100.0,
-            source='test', timestamp=datetime.now()
+            source='test', timestamp=get_eastern_time()
         )
         contracts.append(contract)
 
     large_dataset = OptionsChainData(
         underlying_symbol="NQM25", expiration_date="2025-06-20",
         underlying_price=19100.0, contracts=contracts,
-        source='test', timestamp=datetime.now(), total_contracts=len(contracts)
+        source='test', timestamp=get_eastern_time(), total_contracts=len(contracts)
     )
 
     # Test comparison performance

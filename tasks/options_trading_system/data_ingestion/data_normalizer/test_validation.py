@@ -9,6 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -29,7 +30,7 @@ def validate_data_normalizer():
 
     validation_results = {
         "task": "data_normalizer",
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "tests": [],
         "status": "FAILED",
         "evidence": {}

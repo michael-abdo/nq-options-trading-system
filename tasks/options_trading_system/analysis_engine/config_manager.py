@@ -13,6 +13,7 @@ This module provides a comprehensive configuration management system that suppor
 import json
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, Optional, List, Union
 from dataclasses import dataclass
 from enum import Enum
@@ -162,8 +163,8 @@ class ConfigManager:
                     "stop_loss_percent": 15
                 }
             },
-            created_at=datetime.now(),
-            last_modified=datetime.now()
+            created_at=get_eastern_time(),
+            last_modified=get_eastern_time()
         )
 
         # v3.0 Production Profile
@@ -205,8 +206,8 @@ class ConfigManager:
                     "confidence_scaling": True
                 }
             },
-            created_at=datetime.now(),
-            last_modified=datetime.now()
+            created_at=get_eastern_time(),
+            last_modified=get_eastern_time()
         )
 
         # A/B Testing Profile
@@ -245,8 +246,8 @@ class ConfigManager:
                     "comparison_output_dir": "outputs/ab_testing"
                 }
             },
-            created_at=datetime.now(),
-            last_modified=datetime.now()
+            created_at=get_eastern_time(),
+            last_modified=get_eastern_time()
         )
 
         # Paper Trading Profile
@@ -303,8 +304,8 @@ class ConfigManager:
                     "generate_trade_log": True
                 }
             },
-            created_at=datetime.now(),
-            last_modified=datetime.now()
+            created_at=get_eastern_time(),
+            last_modified=get_eastern_time()
         )
 
         # Conservative Testing Profile
@@ -341,8 +342,8 @@ class ConfigManager:
                     "min_signal_confidence": 0.85
                 }
             },
-            created_at=datetime.now(),
-            last_modified=datetime.now()
+            created_at=get_eastern_time(),
+            last_modified=get_eastern_time()
         )
 
         # Save all default profiles
@@ -369,8 +370,8 @@ class ConfigManager:
             data_mode=data_mode,
             testing_mode=testing_mode,
             config=config,
-            created_at=datetime.now(),
-            last_modified=datetime.now()
+            created_at=get_eastern_time(),
+            last_modified=get_eastern_time()
         )
 
         self.profiles[name] = profile
@@ -391,7 +392,7 @@ class ConfigManager:
             if hasattr(profile, key):
                 setattr(profile, key, value)
 
-        profile.last_modified = datetime.now()
+        profile.last_modified = get_eastern_time()
 
         self._save_profile(profile)
         return profile
@@ -535,7 +536,7 @@ class ConfigManager:
             }
         }
 
-        profile_name = f"ab_test_{v1_profile}_vs_{v3_profile}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        profile_name = f"ab_test_{v1_profile}_vs_{v3_profile}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
 
         return self.create_profile(
             name=profile_name,

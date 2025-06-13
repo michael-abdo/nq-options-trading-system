@@ -21,6 +21,7 @@ import os
 import time
 import threading
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict, field
 from collections import deque, defaultdict
@@ -158,7 +159,7 @@ class SignalAccuracyTracker:
     def get_accuracy_metrics(self, algorithm_version: str = None,
                            timeframe_hours: int = 24) -> Dict[str, Any]:
         """Get accuracy metrics for time period"""
-        cutoff_time = datetime.now() - timedelta(hours=timeframe_hours)
+        cutoff_time = get_eastern_time() - timedelta(hours=timeframe_hours)
 
         # Filter signals
         relevant_signals = [
@@ -200,7 +201,7 @@ class SignalAccuracyTracker:
 
     def get_hourly_accuracy_trend(self, hours: int = 24) -> List[Dict[str, Any]]:
         """Get hourly accuracy trend"""
-        end_time = datetime.now()
+        end_time = get_eastern_time()
         start_time = end_time - timedelta(hours=hours)
 
         hourly_data = []
@@ -263,7 +264,7 @@ class CostMonitor:
 
     def get_cost_summary(self, timeframe_hours: int = 24) -> Dict[str, Any]:
         """Get cost summary for timeframe"""
-        cutoff_time = datetime.now() - timedelta(hours=timeframe_hours)
+        cutoff_time = get_eastern_time() - timedelta(hours=timeframe_hours)
 
         relevant_costs = [
             c for c in self.cost_records
@@ -294,7 +295,7 @@ class CostMonitor:
 
     def get_budget_status(self) -> Dict[str, Any]:
         """Get current budget utilization"""
-        now = datetime.now()
+        now = get_eastern_time()
 
         # Daily budget
         day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -333,8 +334,8 @@ class CostMonitor:
                 level = AlertLevel.CRITICAL if status["percentage"] >= 0.95 else AlertLevel.WARNING
 
                 alert = DashboardAlert(
-                    alert_id=f"budget_{period}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                    timestamp=datetime.now(),
+                    alert_id=f"budget_{period}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}",
+                    timestamp=get_eastern_time(),
                     level=level,
                     metric_type=MetricType.COST_CONSUMPTION,
                     title=f"{period.title()} Budget Alert",
@@ -362,7 +363,7 @@ class SystemHealthMonitor:
 
     def get_component_health(self, component: str, minutes: int = 30) -> Dict[str, Any]:
         """Get health metrics for component"""
-        cutoff_time = datetime.now() - timedelta(minutes=minutes)
+        cutoff_time = get_eastern_time() - timedelta(minutes=minutes)
 
         component_metrics = [
             m for m in self.metrics
@@ -405,7 +406,7 @@ class SystemHealthMonitor:
     def get_system_overview(self) -> Dict[str, Any]:
         """Get overall system health overview"""
         overview = {
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "components": {},
             "overall_status": "HEALTHY",
             "alerts": []
@@ -422,8 +423,8 @@ class SystemHealthMonitor:
 
                 # Generate alert for unhealthy components
                 alert = DashboardAlert(
-                    alert_id=f"health_{component}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                    timestamp=datetime.now(),
+                    alert_id=f"health_{component}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}",
+                    timestamp=get_eastern_time(),
                     level=AlertLevel.CRITICAL,
                     metric_type=MetricType.SYSTEM_PERFORMANCE,
                     title=f"Component Health Alert: {component}",
@@ -435,8 +436,8 @@ class SystemHealthMonitor:
             elif health["status"] == "DEGRADED":
                 # Generate warning for degraded components
                 alert = DashboardAlert(
-                    alert_id=f"degraded_{component}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                    timestamp=datetime.now(),
+                    alert_id=f"degraded_{component}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}",
+                    timestamp=get_eastern_time(),
                     level=AlertLevel.WARNING,
                     metric_type=MetricType.SYSTEM_PERFORMANCE,
                     title=f"Component Performance Warning: {component}",
@@ -483,7 +484,7 @@ class PerformanceDashboard:
         """Setup dashboard logging"""
         import logging
 
-        log_file = os.path.join(self.output_dir, f"dashboard_{datetime.now().strftime('%Y%m%d')}.log")
+        log_file = os.path.join(self.output_dir, f"dashboard_{get_eastern_time().strftime('%Y%m%d')}.log")
 
         self.logger = logging.getLogger("PerformanceDashboard")
         if not self.logger.handlers:
@@ -514,10 +515,10 @@ class PerformanceDashboard:
                      response_time_ms: float = 0):
         """Record signal for accuracy tracking"""
         signal = SignalMetric(
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             algorithm_version=algorithm_version,
             symbol=signal_data.get("symbol", ""),
-            signal_id=signal_data.get("signal_id", f"sig_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"),
+            signal_id=signal_data.get("signal_id", f"sig_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}"),
             confidence=signal_data.get("confidence", 0.0),
             predicted_direction=signal_data.get("direction", ""),
             response_time_ms=response_time_ms,
@@ -535,7 +536,7 @@ class PerformanceDashboard:
                    streaming_minutes: float = 0, total_cost: float = 0):
         """Record cost consumption"""
         cost_metric = CostMetric(
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             provider=provider,
             algorithm_version=algorithm_version,
             api_calls=api_calls,
@@ -550,7 +551,7 @@ class PerformanceDashboard:
                            success_rate: float = 1.0):
         """Record system performance metric"""
         metric = SystemMetric(
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             component=component,
             cpu_usage_percent=cpu_usage,
             memory_usage_mb=memory_usage_mb,
@@ -564,7 +565,7 @@ class PerformanceDashboard:
     def get_dashboard_data(self) -> Dict[str, Any]:
         """Get complete dashboard data"""
         dashboard_data = {
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "signal_accuracy": {
                 "v1.0": self.signal_tracker.get_accuracy_metrics("v1.0", 24),
                 "v3.0": self.signal_tracker.get_accuracy_metrics("v3.0", 24),
@@ -595,7 +596,7 @@ class PerformanceDashboard:
         cost_records_list = list(self.cost_monitor.cost_records)
         v3_cost_data = [c for c in cost_records_list
                        if c.algorithm_version == "v3.0" and
-                       c.timestamp >= datetime.now() - timedelta(hours=24)]
+                       c.timestamp >= get_eastern_time() - timedelta(hours=24)]
         v3_cost_total = sum(c.total_cost for c in v3_cost_data)
 
         comparison = {
@@ -659,7 +660,7 @@ class PerformanceDashboard:
 
         snapshot_file = os.path.join(
             self.output_dir,
-            f"dashboard_snapshot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            f"dashboard_snapshot_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
         )
 
         # Convert datetime objects to strings
@@ -691,7 +692,7 @@ class PerformanceDashboard:
         if alert_id in self.active_alerts:
             alert = self.active_alerts[alert_id]
             alert.resolved = True
-            alert.resolution_time = datetime.now()
+            alert.resolution_time = get_eastern_time()
             del self.active_alerts[alert_id]
             self.logger.info(f"Alert resolved: {alert_id}")
 

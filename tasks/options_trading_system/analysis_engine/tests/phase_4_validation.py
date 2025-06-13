@@ -10,6 +10,7 @@ import os
 import json
 import logging
 from datetime import datetime, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any
 
 logging.basicConfig(level=logging.INFO)
@@ -329,7 +330,7 @@ if __name__ == "__main__":
         print(report)
 
         # Save results
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
 
         # Save JSON results
         json_file = f"phase4_validation_results_{timestamp}.json"

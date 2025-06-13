@@ -6,6 +6,7 @@ Minimal test for Databento API - NQ Future Options data retrieval
 import os
 import json
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Try to load dotenv, but continue if not available
 try:
@@ -90,7 +91,7 @@ def test_nq_options_data():
         print("\n2. Testing NQ Future Options data retrieval...")
 
         # Date range (last trading day)
-        end_date = datetime.now()
+        end_date = get_eastern_time()
         start_date = end_date - timedelta(days=1)
 
         # Parameters for NQ options query

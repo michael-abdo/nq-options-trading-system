@@ -18,6 +18,7 @@ import os
 import time
 import threading
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -191,7 +192,7 @@ class PerformanceAnalyzer:
         """Record algorithm execution result"""
         with self._lock:
             metric_record = {
-                "timestamp": datetime.now(),
+                "timestamp": get_eastern_time(),
                 "algorithm": algorithm_version,
                 "accuracy": result.get("accuracy", 0.0),
                 "response_time_ms": result.get("response_time_ms", 0.0),
@@ -203,7 +204,7 @@ class PerformanceAnalyzer:
 
     def get_performance_comparison(self) -> Dict[str, Any]:
         """Compare v1.0 vs v3.0 performance in analysis window"""
-        cutoff_time = datetime.now() - self.analysis_window
+        cutoff_time = get_eastern_time() - self.analysis_window
 
         # Filter recent metrics
         recent_metrics = [
@@ -276,7 +277,7 @@ class RiskMonitor:
         """Record position and P&L"""
         with self._lock:
             record = {
-                "timestamp": datetime.now(),
+                "timestamp": get_eastern_time(),
                 "algorithm": algorithm_version,
                 "position_value": position_value,
                 "pnl": pnl
@@ -357,7 +358,7 @@ class ProductionRolloutStrategy:
         # Rollout state
         self.current_phase = RolloutPhase.PREPARATION
         self.rollout_status = RolloutStatus.PENDING
-        self.rollout_id = f"rollout_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        self.rollout_id = f"rollout_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
         self.phase_start_time: Optional[datetime] = None
 
         # Event tracking
@@ -375,7 +376,7 @@ class ProductionRolloutStrategy:
         """Setup rollout logging"""
         import logging
 
-        log_file = os.path.join(self.output_dir, f"rollout_{datetime.now().strftime('%Y%m%d')}.log")
+        log_file = os.path.join(self.output_dir, f"rollout_{get_eastern_time().strftime('%Y%m%d')}.log")
 
         self.logger = logging.getLogger("ProductionRollout")
         if not self.logger.handlers:
@@ -443,7 +444,7 @@ class ProductionRolloutStrategy:
 
     def route_trading_request(self, signal_data: Dict[str, Any]) -> str:
         """Route trading request to appropriate algorithm version"""
-        signal_id = signal_data.get("signal_id", f"sig_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}")
+        signal_id = signal_data.get("signal_id", f"sig_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}")
         algorithm_version = self.traffic_splitter.route_request(signal_id)
 
         # Record the routing decision
@@ -468,7 +469,7 @@ class ProductionRolloutStrategy:
         """Transition to new rollout phase"""
         old_phase = self.current_phase
         self.current_phase = new_phase
-        self.phase_start_time = datetime.now()
+        self.phase_start_time = get_eastern_time()
 
         # Set appropriate traffic split
         if new_phase == RolloutPhase.CANARY:
@@ -544,7 +545,7 @@ class ProductionRolloutStrategy:
         if not self.phase_start_time:
             return
 
-        phase_duration = datetime.now() - self.phase_start_time
+        phase_duration = get_eastern_time() - self.phase_start_time
 
         if self.current_phase == RolloutPhase.CANARY:
             if phase_duration >= timedelta(minutes=self.config.canary_duration_minutes):
@@ -573,7 +574,7 @@ class ProductionRolloutStrategy:
         if next_step:
             if self._phase_success_criteria_met():
                 self.traffic_splitter.set_traffic_split(next_step)
-                self.phase_start_time = datetime.now()  # Reset phase timer
+                self.phase_start_time = get_eastern_time()  # Reset phase timer
                 self.logger.info(f"Gradual phase progression: {current_split}% -> {next_step}%")
                 print(f"📊 Traffic split updated: {next_step}% to v3.0")
         else:
@@ -621,8 +622,8 @@ class ProductionRolloutStrategy:
                      decision: RolloutDecision = None, context: Dict[str, Any] = None):
         """Record rollout event"""
         event = RolloutEvent(
-            event_id=f"evt_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
-            timestamp=datetime.now(),
+            event_id=f"evt_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}",
+            timestamp=get_eastern_time(),
             event_type=event_type,
             phase=self.current_phase,
             description=description,
@@ -640,7 +641,7 @@ class ProductionRolloutStrategy:
         traffic_split = self.traffic_splitter.get_actual_split()
 
         metrics = RolloutMetrics(
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             phase=self.current_phase,
             traffic_percent=traffic_split.get("v3.0", 0.0),
             v1_accuracy=performance_comparison["v1.0"]["accuracy"],
@@ -684,7 +685,7 @@ class ProductionRolloutStrategy:
         """Save event to file"""
         event_file = os.path.join(
             self.output_dir,
-            f"rollout_events_{datetime.now().strftime('%Y%m%d')}.json"
+            f"rollout_events_{get_eastern_time().strftime('%Y%m%d')}.json"
         )
 
         # Load existing events

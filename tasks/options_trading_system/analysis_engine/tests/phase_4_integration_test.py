@@ -32,6 +32,7 @@ import logging
 import asyncio
 import threading
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 import unittest
@@ -1278,7 +1279,7 @@ if __name__ == "__main__":
             print(f"  {status_symbol} {test['test_name']}: {test['requirements_met']} met, {test['requirements_failed']} failed ({test['execution_time']:.2f}s)")
 
         # Save detailed results
-        output_file = f"phase4_integration_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        output_file = f"phase4_integration_test_results_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
         with open(output_file, 'w') as f:
             json.dump(results, f, indent=2, default=str)
 

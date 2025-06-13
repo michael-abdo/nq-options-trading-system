@@ -11,6 +11,7 @@ Improvements to increase signal accuracy:
 import logging
 from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from dataclasses import dataclass
 import statistics
 from collections import defaultdict
@@ -159,7 +160,7 @@ class SignalQualityEnhancer:
 
         Newer signals are more relevant
         """
-        time_since_signal = (datetime.now() - signal_time).total_seconds()
+        time_since_signal = (get_eastern_time() - signal_time).total_seconds()
 
         # Apply exponential decay (half-life of 5 minutes)
         half_life_seconds = 300

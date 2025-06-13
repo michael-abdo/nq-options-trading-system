@@ -20,6 +20,7 @@ import time
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 import statistics
@@ -200,7 +201,7 @@ class ABTestingCoordinator:
 
         # Initialize test state
         self.test_active = True
-        self.test_start_time = datetime.now()
+        self.test_start_time = get_eastern_time()
         self.test_end_time = self.test_start_time + timedelta(hours=duration_hours)
 
         # Reset metrics
@@ -243,7 +244,7 @@ class ABTestingCoordinator:
 
             # Main testing loop
             iteration = 0
-            while self.test_active and datetime.now() < self.test_end_time:
+            while self.test_active and get_eastern_time() < self.test_end_time:
                 iteration += 1
 
                 try:
@@ -259,8 +260,8 @@ class ABTestingCoordinator:
 
                     # Progress update every 10 iterations
                     if iteration % 10 == 0:
-                        elapsed = (datetime.now() - self.test_start_time).total_seconds() / 3600
-                        remaining = (self.test_end_time - datetime.now()).total_seconds() / 3600
+                        elapsed = (get_eastern_time() - self.test_start_time).total_seconds() / 3600
+                        remaining = (self.test_end_time - get_eastern_time()).total_seconds() / 3600
                         print(f"   ⏱️  Progress: {elapsed:.1f}h elapsed, {remaining:.1f}h remaining")
                         print(f"      Signals: v1.0={self.v1_metrics.total_signals}, v3.0={self.v3_metrics.total_signals}")
 
@@ -366,7 +367,7 @@ class ABTestingCoordinator:
         v3_signal = v3_signals[0] if v3_signals else None
 
         # Extract comparison data
-        timestamp = datetime.now()
+        timestamp = get_eastern_time()
         symbol = "NQM25"  # Default symbol
         strike = 21350.0  # Default strike
 
@@ -450,7 +451,7 @@ class ABTestingCoordinator:
             raise RuntimeError("No active A/B test to stop")
 
         self.test_active = False
-        self.test_end_time = datetime.now()
+        self.test_end_time = get_eastern_time()
 
         print("🛑 Stopping A/B Test...")
         print(f"   Duration: {(self.test_end_time - self.test_start_time).total_seconds() / 3600:.2f} hours")
@@ -611,8 +612,8 @@ class ABTestingCoordinator:
         if not self.test_active:
             return {"status": "inactive", "message": "No active A/B test"}
 
-        elapsed = (datetime.now() - self.test_start_time).total_seconds() / 3600
-        remaining = (self.test_end_time - datetime.now()).total_seconds() / 3600
+        elapsed = (get_eastern_time() - self.test_start_time).total_seconds() / 3600
+        remaining = (self.test_end_time - get_eastern_time()).total_seconds() / 3600
 
         return {
             "status": "active",

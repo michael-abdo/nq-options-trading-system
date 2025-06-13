@@ -9,6 +9,7 @@ import sys
 import json
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 
 # Add project paths
@@ -21,7 +22,7 @@ def test_data_quality_validation():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "data_quality_tests": {},
         "contract_completeness": {},
         "validation_framework": {},
@@ -92,7 +93,7 @@ def test_data_quality_validation():
         },
         "metadata": {
             "source": "test_data",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
     }
 
@@ -298,7 +299,7 @@ def test_data_quality_validation():
     freshness_tests = {}
 
     # Check timestamp validation
-    current_time = datetime.now()
+    current_time = get_eastern_time()
     data_timestamp = datetime.fromisoformat(mock_options_data["metadata"]["timestamp"].replace("Z", "+00:00"))
 
     # Calculate data age
@@ -373,7 +374,7 @@ def test_data_quality_validation():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/data_quality_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

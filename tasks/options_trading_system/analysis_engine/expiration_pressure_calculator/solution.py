@@ -1,6 +1,7 @@
 import math
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Optional, Tuple, NamedTuple
 from dataclasses import dataclass
 from enum import Enum
@@ -564,7 +565,7 @@ if __name__ == "__main__":
 
     # Calculate pressure
     current_price = 15010.0
-    current_time = datetime.now()
+    current_time = get_eastern_time()
     expiration_date = current_time + timedelta(minutes=45)
 
     alerts = calculator.calculate_expiration_pressure(

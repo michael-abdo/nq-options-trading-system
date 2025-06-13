@@ -13,6 +13,9 @@ import logging
 import pytz
 from data_aggregation import aggregate_1min_to_5min, MinuteToFiveMinuteAggregator
 from databento_auth import ensure_trading_safe_databento_client, DatabentoCriticalAuthError
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from utils.timezone_utils import get_eastern_time, get_utc_time, to_eastern_time
 
 logger = logging.getLogger(__name__)
 
@@ -61,15 +64,15 @@ class Databento5MinuteProvider:
         Returns:
             DataFrame with 5-minute OHLCV bars
         """
-        # Set default times (timezone-aware UTC)
+        # Set default times (timezone-aware UTC for API)
         if end is None:
-            end = datetime.now(pytz.UTC)
+            end = get_utc_time()
         if start is None:
             start = end - timedelta(hours=hours_back)
 
         # Auto-adjust end time if beyond data availability (safety feature)
         # Databento data typically has a few minutes delay
-        max_available_end = datetime.now(pytz.UTC) - timedelta(minutes=15)
+        max_available_end = get_utc_time() - timedelta(minutes=15)
         if end > max_available_end:
             logger.info(f"Adjusting end time from {end} to {max_available_end} (data availability)")
             end = max_available_end

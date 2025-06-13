@@ -14,6 +14,7 @@ import sys
 import os
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any
 
 # Add project paths
@@ -250,7 +251,7 @@ def main():
     """Run comprehensive databento live API validation"""
     print("🧪 DATABENTO LIVE API INTEGRATION TEST")
     print("=" * 60)
-    print(f"Test started: {datetime.now().isoformat()}")
+    print(f"Test started: {get_eastern_time().isoformat()}")
 
     tests = [
         ("Databento API Connectivity", test_databento_connectivity),

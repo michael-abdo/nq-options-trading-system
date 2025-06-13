@@ -9,6 +9,7 @@ import os
 import time
 import json
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import List, Dict, Any
 
 # Add project paths
@@ -116,7 +117,7 @@ def validate_data_flow_fixes():
                 "symbol": "NQM25",
                 "strike": 21350.0,
                 "option_type": "CALL",
-                "window_start": datetime.now().isoformat(),
+                "window_start": get_eastern_time().isoformat(),
                 "total_volume": 2000,
                 "buy_pressure": 0.65,
                 "sell_pressure": 0.35,
@@ -126,7 +127,7 @@ def validate_data_flow_fixes():
                 "symbol": "NQM25",
                 "strike": 21400.0,
                 "option_type": "PUT",
-                "window_start": datetime.now().isoformat(),
+                "window_start": get_eastern_time().isoformat(),
                 "total_volume": 1500,
                 "buy_pressure": 0.45,
                 "sell_pressure": 0.55,
@@ -181,7 +182,7 @@ def validate_signal_quality_improvements():
             print(f"   ✅ Volume {volume}: Weight = {weight:.2f}")
 
         # Test time relevance
-        current_time = datetime.now()
+        current_time = get_eastern_time()
         test_times = [current_time, current_time - timedelta(minutes=5), current_time - timedelta(minutes=15)]
         for test_time in test_times:
             relevance = enhancer._calculate_time_relevance(test_time)
@@ -227,7 +228,7 @@ def generate_validation_report(results: Dict[str, bool]):
 
     # Save results
     report = {
-        "validation_timestamp": datetime.now().isoformat(),
+        "validation_timestamp": get_eastern_time().isoformat(),
         "test_results": results,
         "summary": {
             "total_tests": total_tests,

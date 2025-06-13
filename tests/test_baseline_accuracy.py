@@ -10,6 +10,7 @@ import json
 import time
 import math
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import random
 
 sys.path.append('.')
@@ -20,7 +21,7 @@ def test_baseline_accuracy():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "baseline_metrics": {},
         "accuracy_analysis": {},
         "overall_status": "UNKNOWN"
@@ -33,7 +34,7 @@ def test_baseline_accuracy():
     baseline_data = []
     for i in range(20):
         day_data = {
-            "date": (datetime.now() - timedelta(days=20-i)).strftime("%Y-%m-%d"),
+            "date": (get_eastern_time() - timedelta(days=20-i)).strftime("%Y-%m-%d"),
             "volume": random.randint(1000, 50000),
             "price_change": random.uniform(-0.05, 0.05),
             "volatility": random.uniform(0.15, 0.45)
@@ -83,7 +84,7 @@ def test_baseline_accuracy():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/baseline_accuracy_test_{timestamp}.json'
     with open(results_file, 'w') as f:
         json.dump(test_results, f, indent=2)

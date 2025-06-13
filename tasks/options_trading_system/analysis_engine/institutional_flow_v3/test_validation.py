@@ -17,6 +17,7 @@ import os
 import json
 import sqlite3
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 import sys
 import logging
@@ -735,7 +736,7 @@ def run_all_tests():
 
     # Generate evidence
     evidence = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "implementation": "institutional_flow_detection_v3",
         "version": "3.0",
         "test_results": {

@@ -8,6 +8,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -47,7 +48,7 @@ def run_test_file(test_file):
 def main():
     """Run all tests"""
     print("=== ANALYSIS ENGINE TEST SUITE ===")
-    print(f"Started at: {datetime.now().isoformat()}")
+    print(f"Started at: {get_eastern_time().isoformat()}")
 
     # Get all test files
     test_dir = os.path.join(os.path.dirname(__file__), 'tests')
@@ -99,7 +100,7 @@ def main():
 
     with open(results_file, 'w') as f:
         json.dump({
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': get_eastern_time().isoformat(),
             'total_tests': len(test_files),
             'passed': passed,
             'failed': failed,

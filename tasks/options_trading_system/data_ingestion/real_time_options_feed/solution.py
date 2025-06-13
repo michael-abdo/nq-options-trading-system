@@ -2,6 +2,7 @@ import asyncio
 import json
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Optional, Callable
 import websocket
 import threading
@@ -173,7 +174,7 @@ class RealTimeOptionsDataFeed:
                     if processing_time > 0.05:  # 50ms threshold
                         logging.warning(f"Slow processing: {processing_time:.3f}s")
 
-            self.last_update_time = datetime.now()
+            self.last_update_time = get_eastern_time()
 
         except json.JSONDecodeError:
             logging.error("Invalid JSON in message")

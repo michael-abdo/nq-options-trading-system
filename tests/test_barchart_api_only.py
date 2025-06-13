@@ -8,6 +8,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add the barchart_web_scraper directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'tasks/options_trading_system/data_ingestion/barchart_web_scraper'))
@@ -79,7 +80,7 @@ def test_api_data_only():
 
     # Save sample data
     print(f"\n💾 Saving sample data...")
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = get_eastern_time().strftime("%Y%m%d_%H%M%S")
     sample_file = f"barchart_api_sample_{timestamp}.json"
 
     sample_data = {

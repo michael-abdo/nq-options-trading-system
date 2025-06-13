@@ -15,6 +15,7 @@ import subprocess
 import time
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 
 def run_test_suite(test_file, description, timeout=300):
@@ -154,11 +155,11 @@ def save_performance_report(results, output_dir):
     """Save performance test results to a JSON report"""
     os.makedirs(output_dir, exist_ok=True)
 
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     report_file = os.path.join(output_dir, f'performance_report_{timestamp}.json')
 
     report = {
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': get_eastern_time().isoformat(),
         'summary': {
             'total_suites': len(results),
             'suites_passed': sum(1 for r in results if r['success']),
@@ -186,7 +187,7 @@ def main():
     """Run all performance test suites"""
     print("🚀 COMPREHENSIVE PERFORMANCE TESTING SUITE")
     print("=" * 70)
-    print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Started at: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Test suites in order of execution
     test_suites = [
@@ -263,7 +264,7 @@ def main():
         print(f"\n⚠️ Some performance tests failed. Review the detailed output above.")
         print(f"   Check the report at: {report_file}")
 
-    print(f"\nCompleted at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"\nCompleted at: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
 
     return 0 if overall_success else 1
 

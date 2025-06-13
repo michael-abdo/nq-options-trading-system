@@ -17,6 +17,7 @@ import os
 import time
 import threading
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List
 
 # Add the current directory to Python path for imports
@@ -35,7 +36,7 @@ class Phase4IntegrationTest:
 
     def __init__(self):
         self.test_results = {}
-        self.test_start_time = datetime.now()
+        self.test_start_time = get_eastern_time()
 
         # Initialize all components
         self.error_handler = create_error_handler()
@@ -566,7 +567,7 @@ class Phase4IntegrationTest:
 
     def generate_final_report(self, passed_tests: int, total_tests: int):
         """Generate comprehensive test report"""
-        test_duration = datetime.now() - self.test_start_time
+        test_duration = get_eastern_time() - self.test_start_time
 
         print(f"\n{'='*60}")
         print("📋 PHASE 4 INTEGRATION TEST RESULTS")

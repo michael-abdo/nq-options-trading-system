@@ -9,6 +9,7 @@ import os
 import json
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any
 
 # Add project root to path
@@ -351,7 +352,7 @@ def run_all_tests():
     print("=" * 60)
 
     test_results = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "tests": [],
         "overall_status": "FAILED"
     }
@@ -403,7 +404,7 @@ def run_all_tests():
     print("=" * 60)
 
     # Save results
-    results_file = f"outputs/phase3_validation_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    results_file = f"outputs/phase3_validation_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
     os.makedirs("outputs", exist_ok=True)
 
     with open(results_file, 'w') as f:

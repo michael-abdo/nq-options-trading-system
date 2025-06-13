@@ -15,6 +15,7 @@ import json
 import sqlite3
 import logging
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, asdict
 from collections import defaultdict
@@ -754,7 +755,7 @@ if __name__ == "__main__":
     from datetime import datetime, timedelta
 
     # Generate sample daily costs for current month
-    start_date = datetime.now().replace(day=1)
+    start_date = get_eastern_time().replace(day=1)
 
     for day in range(1, 16):  # First 15 days
         date = start_date + timedelta(days=day-1)

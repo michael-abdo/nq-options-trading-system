@@ -16,6 +16,7 @@ import os
 import json
 import sqlite3
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 import sys
 import logging
@@ -53,7 +54,7 @@ class TestMBOEventProcessor(unittest.TestCase):
     def test_process_valid_trade_event(self):
         """Test processing a valid trade event"""
         raw_event = {
-            'ts_event': int(datetime.now().timestamp() * 1_000_000_000),  # nanoseconds
+            'ts_event': int(get_eastern_time().timestamp() * 1_000_000_000),  # nanoseconds
             'instrument_id': 123456,
             'bid_px_00': 16_000_000,  # $16.00 scaled
             'ask_px_00': 17_000_000,  # $17.00 scaled
@@ -410,7 +411,7 @@ def run_all_tests():
 
     # Generate evidence
     evidence = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "implementation": "databento_mbo_streaming",
         "version": "v3.0",
         "test_results": {

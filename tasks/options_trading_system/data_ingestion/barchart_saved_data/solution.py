@@ -8,6 +8,7 @@ PURPOSE: Load saved Barchart API data from JSON file
 import json
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional
 
 
@@ -51,7 +52,7 @@ class BarchartSavedDataLoader:
             "source": "barchart_saved",
             "file_path": self.file_path,
             "file_size": os.path.getsize(self.file_path),
-            "loaded_at": datetime.now().isoformat()
+            "loaded_at": get_eastern_time().isoformat()
         }
 
         return self.data

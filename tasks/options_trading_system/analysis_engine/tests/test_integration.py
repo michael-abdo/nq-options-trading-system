@@ -9,6 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -30,7 +31,7 @@ def validate_options_trading_system():
     validation_results = {
         "task": "options_trading_system",
         "type": "root",
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "integration_tests": [],
         "status": "FAILED",
         "evidence": {}

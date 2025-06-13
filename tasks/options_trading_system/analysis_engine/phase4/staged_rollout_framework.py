@@ -29,6 +29,7 @@ import threading
 import time
 import random
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Tuple, Callable, Union
 from dataclasses import dataclass, asdict
 from collections import defaultdict, deque
@@ -252,7 +253,7 @@ class StatisticalValidator:
             ValidationTest with statistical analysis results
         """
 
-        test_id = f"{metric_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        test_id = f"{metric_name}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
         timestamp = datetime.now(timezone.utc)
 
         # Check sample sizes

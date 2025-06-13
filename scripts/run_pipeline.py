@@ -14,6 +14,7 @@ import sys
 import os
 import argparse
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time
 
 # Add pipeline system to path
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -68,7 +69,7 @@ def main():
 
     print("🚀 NQ Options Hierarchical Pipeline Analysis Framework")
     print("=" * 60)
-    print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Started: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S %Z')}")
 
     print("Primary Data Source: Databento (Standard E-mini NQ Options)")
     print()
@@ -81,15 +82,16 @@ def main():
         # Use configuration manager with databento_only profile
         config_manager = get_config_manager()
 
-        # Create standard profiles if they don't exist
+        # TRADING SAFETY: Only use databento_only profile
         try:
-            config = config_manager.load_profile("all_sources")
-            print("📋 Loaded 'all_sources' configuration profile")
+            config = config_manager.load_profile("databento_only")
+            print("🔒 TRADING SAFETY: Loaded 'databento_only' configuration")
+            print("🚫 NO FALLBACKS - Only live Databento data allowed")
         except FileNotFoundError:
-            print("📋 Creating standard configuration profiles...")
+            print("⚠️ Creating databento_only configuration...")
             config_manager.create_standard_profiles()
-            config = config_manager.load_profile("all_sources")
-            print("📋 Created and loaded 'all_sources' configuration profile")
+            config = config_manager.load_profile("databento_only")
+            print("🔒 Created and loaded 'databento_only' configuration")
 
         # Validate configuration
         validation_issues = config_manager.validate_config(config)

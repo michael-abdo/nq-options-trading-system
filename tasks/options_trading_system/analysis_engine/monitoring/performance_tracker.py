@@ -24,6 +24,7 @@ try:
 except ImportError:
     PSUTIL_AVAILABLE = False
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict, field
 from collections import defaultdict, deque
@@ -191,7 +192,7 @@ class PerformanceTracker:
         """
         with self._lock:
             self.tracking_active = True
-            self.tracking_start_time = datetime.now()
+            self.tracking_start_time = get_eastern_time()
 
             # Initialize algorithm performance tracking
             for version in algorithm_versions:
@@ -220,7 +221,7 @@ class PerformanceTracker:
 
             # Update final metrics
             for version, performance in self.algorithm_performance.items():
-                performance.last_updated = datetime.now()
+                performance.last_updated = get_eastern_time()
                 self._update_overall_metrics(performance)
 
         print("🛑 Performance tracking stopped")
@@ -243,7 +244,7 @@ class PerformanceTracker:
         Returns:
             Signal ID for future updates
         """
-        signal_id = f"{algorithm_version}_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
+        signal_id = f"{algorithm_version}_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}"
 
         # Extract signal information
         symbol = signal_data.get("symbol", "UNKNOWN")
@@ -255,7 +256,7 @@ class PerformanceTracker:
         # Create signal performance record
         signal_perf = SignalPerformance(
             signal_id=signal_id,
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             algorithm_version=algorithm_version,
             symbol=symbol,
             strike=strike,
@@ -281,7 +282,7 @@ class PerformanceTracker:
                     performance.total_processing_time / performance.total_signals_generated
                 )
 
-                performance.last_updated = datetime.now()
+                performance.last_updated = get_eastern_time()
 
         return signal_id
 
@@ -339,7 +340,7 @@ class PerformanceTracker:
                     # Losing trade
                     pass  # Will be calculated in metrics update
 
-            performance.last_updated = datetime.now()
+            performance.last_updated = get_eastern_time()
 
             # Update overall metrics
             self._update_overall_metrics(performance)
@@ -403,7 +404,7 @@ class PerformanceTracker:
                     memory_mb = memory_info.rss / 1024 / 1024
 
                     resource_data = {
-                        "timestamp": datetime.now(),
+                        "timestamp": get_eastern_time(),
                         "cpu_percent": cpu_percent,
                         "memory_mb": memory_mb
                     }
@@ -445,7 +446,7 @@ class PerformanceTracker:
         performance = self.algorithm_performance[algorithm_version]
 
         # Get recent signals (last hour)
-        recent_cutoff = datetime.now() - timedelta(hours=1)
+        recent_cutoff = get_eastern_time() - timedelta(hours=1)
         recent_signals = [s for s in self.signal_history
                          if s.algorithm_version == algorithm_version
                          and s.timestamp >= recent_cutoff]
@@ -585,7 +586,7 @@ class PerformanceTracker:
     def _save_performance_data(self):
         """Save performance data to files"""
 
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = get_eastern_time().strftime("%Y%m%d_%H%M%S")
 
         # Save algorithm performance
         performance_file = os.path.join(self.output_dir, f"algorithm_performance_{timestamp}.json")

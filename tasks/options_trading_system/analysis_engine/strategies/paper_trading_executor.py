@@ -16,6 +16,7 @@ Features:
 import json
 import os
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict, field
 from enum import Enum
@@ -99,7 +100,7 @@ class Position:
         self.current_price = new_price
         if self.quantity != 0:
             self.unrealized_pnl = (new_price - self.average_cost) * self.quantity
-        self.last_updated = datetime.now()
+        self.last_updated = get_eastern_time()
 
 
 @dataclass
@@ -180,12 +181,12 @@ class PaperTradingExecutor:
         Returns:
             Session ID
         """
-        session_id = f"paper_{algorithm_version}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        session_id = f"paper_{algorithm_version}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
 
         with self._lock:
             session = TradingSession(
                 session_id=session_id,
-                start_time=datetime.now(),
+                start_time=get_eastern_time(),
                 algorithm_version=algorithm_version,
                 starting_capital=starting_capital,
                 current_capital=starting_capital,
@@ -233,7 +234,7 @@ class PaperTradingExecutor:
             return None
 
         # Create order
-        order_id = f"ORD_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
+        order_id = f"ORD_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}"
 
         order = Order(
             order_id=order_id,
@@ -337,7 +338,7 @@ class PaperTradingExecutor:
             order.status = OrderStatus.FILLED
             order.filled_quantity = order.quantity
             order.average_fill_price = fill_price
-            order.filled_time = datetime.now()
+            order.filled_time = get_eastern_time()
 
             # Update position
             self._update_position(order)
@@ -444,7 +445,7 @@ class PaperTradingExecutor:
         return {
             "session_id": session.session_id,
             "algorithm_version": algorithm_version,
-            "duration_hours": (datetime.now() - session.start_time).total_seconds() / 3600,
+            "duration_hours": (get_eastern_time() - session.start_time).total_seconds() / 3600,
             "starting_capital": session.starting_capital,
             "current_capital": session.current_capital,
             "total_pnl": total_realized + total_unrealized,
@@ -462,7 +463,7 @@ class PaperTradingExecutor:
     def compare_sessions(self) -> Dict[str, Any]:
         """Compare performance across all active sessions"""
         comparison = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "sessions": {},
             "winner": None,
             "summary": {}
@@ -490,7 +491,7 @@ class PaperTradingExecutor:
 
     def _log_execution(self, event_data: Dict[str, Any]):
         """Log execution events"""
-        event_data["timestamp"] = datetime.now().isoformat()
+        event_data["timestamp"] = get_eastern_time().isoformat()
         self.execution_log.append(event_data)
 
         # Save to file periodically
@@ -501,7 +502,7 @@ class PaperTradingExecutor:
         """Save execution log to file"""
         log_file = os.path.join(
             self.output_dir,
-            f"execution_log_{datetime.now().strftime('%Y%m%d')}.json"
+            f"execution_log_{get_eastern_time().strftime('%Y%m%d')}.json"
         )
 
         with open(log_file, 'w') as f:
@@ -510,7 +511,7 @@ class PaperTradingExecutor:
     def stop_all_sessions(self) -> Dict[str, Any]:
         """Stop all trading sessions and save final results"""
         final_results = {
-            "stop_time": datetime.now().isoformat(),
+            "stop_time": get_eastern_time().isoformat(),
             "sessions": {}
         }
 
@@ -521,7 +522,7 @@ class PaperTradingExecutor:
         # Save final results
         results_file = os.path.join(
             self.output_dir,
-            f"paper_trading_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            f"paper_trading_results_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
         )
 
         with open(results_file, 'w') as f:
@@ -579,8 +580,8 @@ def run_paper_trading_comparison(duration_hours: float = 24.0) -> Dict[str, Any]
     # For testing, we'll simulate with a shorter duration
     test_duration = min(duration_hours * 3600, 300)  # Max 5 minutes for testing
 
-    start_time = datetime.now()
-    while (datetime.now() - start_time).total_seconds() < test_duration:
+    start_time = get_eastern_time()
+    while (get_eastern_time() - start_time).total_seconds() < test_duration:
         # Get signals from A/B test
         status = ab_coordinator.get_test_status()
 

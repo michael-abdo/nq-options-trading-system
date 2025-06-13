@@ -16,6 +16,7 @@ import json
 import time
 import sqlite3
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, asdict
 import statistics
@@ -191,7 +192,7 @@ class ThirtyDayTracker:
 
         try:
             self.tracking_active = True
-            self.start_date = datetime.now().strftime('%Y-%m-%d')
+            self.start_date = get_eastern_time().strftime('%Y-%m-%d')
 
             # Record session start
             conn = sqlite3.connect(self.db_path)
@@ -218,7 +219,7 @@ class ThirtyDayTracker:
     def collect_daily_metrics(self, date: str = None) -> DailyMetrics:
         """Collect comprehensive daily metrics"""
         if date is None:
-            date = datetime.now().strftime('%Y-%m-%d')
+            date = get_eastern_time().strftime('%Y-%m-%d')
 
         print(f"📊 Collecting daily metrics for {date}")
 
@@ -695,7 +696,7 @@ class ThirtyDayTracker:
             # Generate comprehensive report
             report = {
                 "session_id": session_id,
-                "report_generated": datetime.now().isoformat(),
+                "report_generated": get_eastern_time().isoformat(),
                 "tracking_period": {
                     "start_date": daily_rows[0][0],
                     "end_date": daily_rows[-1][0],
@@ -925,7 +926,7 @@ def main():
     print("=" * 50)
 
     # Start tracking session
-    session_id = f"ifd_v3_tracking_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    session_id = f"ifd_v3_tracking_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
     success = tracker.start_tracking_session(session_id)
 
     if success:
@@ -934,11 +935,11 @@ def main():
 
         # Collect metrics for past 7 days as demonstration
         for i in range(7):
-            test_date = (datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d')
+            test_date = (get_eastern_time() - timedelta(days=i)).strftime('%Y-%m-%d')
             metrics = tracker.collect_daily_metrics(test_date)
 
         # Analyze weekly trends
-        week_start = (datetime.now() - timedelta(days=6)).strftime('%Y-%m-%d')
+        week_start = (get_eastern_time() - timedelta(days=6)).strftime('%Y-%m-%d')
         weekly_analysis = tracker.analyze_weekly_trends(week_start)
 
         # Generate sample report

@@ -12,6 +12,7 @@ This module detects volatility-related patterns and events:
 
 import logging
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
@@ -544,7 +545,7 @@ class VolatilityCrushDetector:
 
         # Create alert
         alert = VolatilityCrushAlert(
-            alert_id=f"vol_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            alert_id=f"vol_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}",
             timestamp=pattern.timestamp,
             severity=severity,
             event_type=pattern.pattern_type,

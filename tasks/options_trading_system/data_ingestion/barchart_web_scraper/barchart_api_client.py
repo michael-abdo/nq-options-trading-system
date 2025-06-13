@@ -6,6 +6,7 @@ Barchart API Client - Direct API calls using reverse-engineered endpoints
 import requests
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, Optional
 import logging
 from urllib.parse import urlencode
@@ -136,13 +137,13 @@ class BarchartAPIClient:
 
         # Create organized directory structure
         if output_dir is None:
-            date_str = datetime.now().strftime('%Y%m%d')
+            date_str = get_eastern_time().strftime('%Y%m%d')
             output_dir = f"outputs/{date_str}/api_data"
 
         os.makedirs(output_dir, exist_ok=True)
 
         # Generate filename
-        timestamp = datetime.now().strftime('%H%M%S')
+        timestamp = get_eastern_time().strftime('%H%M%S')
         filename = f'barchart_api_{symbol}_{timestamp}.json'
         filepath = os.path.join(output_dir, filename)
 
@@ -153,7 +154,7 @@ class BarchartAPIClient:
         # Save metadata
         metadata = {
             'symbol': symbol,
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': get_eastern_time().isoformat(),
             'api_endpoint': 'proxies/core-api/v1/quotes/get',
             'contracts_count': data.get('count', 0),
             'total_contracts': data.get('total', 0),

@@ -9,6 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any
 
 # Add project root to path
@@ -31,7 +32,7 @@ def validate_polygon_api_client():
 
     validation_results = {
         "task": "polygon_api",
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "tests": [],
         "status": "FAILED",
         "evidence": {}
@@ -207,10 +208,10 @@ def validate_polygon_api_client():
         client = PolygonAPIClient()
         client.min_request_interval = 1  # Set to 1 second for testing
 
-        start_time = datetime.now()
+        start_time = get_eastern_time()
         client.get_options_contracts("NDX", limit=1)
         client.get_options_contracts("QQQ", limit=1)  # Should trigger rate limiting
-        end_time = datetime.now()
+        end_time = get_eastern_time()
 
         elapsed = (end_time - start_time).total_seconds()
         rate_limiting_works = elapsed >= 1.0

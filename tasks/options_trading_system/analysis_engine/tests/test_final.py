@@ -6,12 +6,13 @@ Final test suite for Phase 4 completion
 import sys
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Setup paths
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 print("=== PHASE 4 FINAL TEST SUITE ===")
-print(f"Running at: {datetime.now().isoformat()}")
+print(f"Running at: {get_eastern_time().isoformat()}")
 print("=" * 60)
 
 results = []

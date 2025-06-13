@@ -1,6 +1,7 @@
 import unittest
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from unittest.mock import Mock, patch
 import statistics
 
@@ -42,7 +43,7 @@ class TestExpirationPressureCalculator(unittest.TestCase):
         """
 
         current_price = 15010.0
-        current_time = datetime.now()
+        current_time = get_eastern_time()
         expiration_date = current_time + timedelta(minutes=30)  # 30 minutes to expiry
 
         alerts = self.calculator.calculate_expiration_pressure(
@@ -86,7 +87,7 @@ class TestExpirationPressureCalculator(unittest.TestCase):
         ]
 
         current_price = 15000.0
-        current_time = datetime.now()
+        current_time = get_eastern_time()
 
         correct_classifications = 0
         total_tests = len(test_scenarios)
@@ -202,7 +203,7 @@ class TestExpirationPressureCalculator(unittest.TestCase):
             })
 
         current_price = 15000.0
-        current_time = datetime.now()
+        current_time = get_eastern_time()
         expiration_date = current_time + timedelta(minutes=45)
 
         # Measure calculation time
@@ -242,7 +243,7 @@ class TestExpirationPressureCalculator(unittest.TestCase):
             }
         ]
 
-        current_time = datetime.now()
+        current_time = get_eastern_time()
 
         for scenario in test_scenarios:
             expiration_date = current_time + timedelta(minutes=scenario['minutes'])
@@ -280,7 +281,7 @@ class TestPredictionValidation(unittest.TestCase):
         }]
 
         current_price = 15010.0
-        current_time = datetime.now()
+        current_time = get_eastern_time()
         expiration_date = current_time + timedelta(minutes=30)
 
         alerts = calculator.calculate_expiration_pressure(
@@ -360,7 +361,7 @@ class TestPerformanceValidation(unittest.TestCase):
         performance_results = []
 
         for current_price, minutes_to_expiry in test_scenarios:
-            current_time = datetime.now()
+            current_time = get_eastern_time()
             expiration_date = current_time + timedelta(minutes=minutes_to_expiry)
 
             # Measure performance
@@ -424,7 +425,7 @@ def run_pressure_calculation_benchmark():
             'put_oi': 800 + (j * 80)
         } for j in range(-5, 6)]  # 11 strikes around current price
 
-        current_time = datetime.now()
+        current_time = get_eastern_time()
         expiration_date = current_time + timedelta(minutes=minutes_to_expiry)
 
         # Measure calculation
@@ -462,7 +463,7 @@ def run_pressure_calculation_benchmark():
 
     # Generate evidence report
     evidence_report = {
-        'test_timestamp': datetime.now().isoformat(),
+        'test_timestamp': get_eastern_time().isoformat(),
         'sample_size': num_iterations,
         'calculation_performance': calc_time_stats,
         'mathematical_accuracy': math_accuracy_stats,

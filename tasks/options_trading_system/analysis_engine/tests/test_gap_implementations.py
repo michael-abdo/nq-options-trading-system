@@ -10,6 +10,7 @@ Integration test for all Phase 3 gap implementations:
 import os
 import sys
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -90,7 +91,7 @@ def test_extended_runner():
             algorithms=["v1.0", "v3.0"],
             test_days=3,
             data_mode="historical",
-            start_date=datetime.now() - timedelta(days=10)
+            start_date=get_eastern_time() - timedelta(days=10)
         )
 
         print(f"✓ Test session started: {session_id}")
@@ -118,8 +119,8 @@ def test_historical_backtester():
 
         # Run short backtest
         config = BacktestConfig(
-            start_date=datetime.now() - timedelta(days=30),
-            end_date=datetime.now() - timedelta(days=1),
+            start_date=get_eastern_time() - timedelta(days=30),
+            end_date=get_eastern_time() - timedelta(days=1),
             initial_capital=100000.0,
             position_sizing="kelly",
             max_positions=5
@@ -262,8 +263,8 @@ def test_all_integrations():
 
         backtester = create_backtester()
         config = BacktestConfig(
-            start_date=datetime.now() - timedelta(days=14),
-            end_date=datetime.now(),
+            start_date=get_eastern_time() - timedelta(days=14),
+            end_date=get_eastern_time(),
             initial_capital=100000.0
         )
 

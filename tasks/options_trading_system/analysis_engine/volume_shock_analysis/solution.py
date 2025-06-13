@@ -18,6 +18,7 @@ import os
 import time
 import statistics
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -261,7 +262,7 @@ class VolumeShockDetectionEngine:
         )
 
         # Create validation ID for tracking
-        validation_id = f"vs_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{strike}"
+        validation_id = f"vs_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}_{strike}"
 
         # Calculate detection latency
         detection_latency = (time.time() - detection_start_time) * 1000
@@ -278,7 +279,7 @@ class VolumeShockDetectionEngine:
             expected_magnitude_points=expected_magnitude,
             urgency_level=urgency_level,
             reasoning=reasoning,
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             validation_id=validation_id,
             detection_latency_ms=detection_latency
         )
@@ -435,7 +436,7 @@ class VolumeShockAnalysisEngine:
             Complete analysis with alerts, classifications, and trading signals
         """
 
-        analysis_start_time = datetime.now()
+        analysis_start_time = get_eastern_time()
 
         # Step 1: Detect volume shocks
         volume_alerts = self.detection_engine.detect_volume_shocks(options_data)
@@ -487,7 +488,7 @@ class VolumeShockAnalysisEngine:
         return {
             "underlying_symbol": underlying_symbol,
             "underlying_price": underlying_price,
-            "market_timestamp": datetime.now().isoformat(),
+            "market_timestamp": get_eastern_time().isoformat(),
             "total_strikes_analyzed": total_contracts,
             "volume_shock_intensity": {
                 "total_alerts": total_alerts,
@@ -715,7 +716,7 @@ class VolumeShockAnalysisEngine:
                                    start_time: datetime) -> Dict[str, Any]:
         """Calculate performance metrics for the analysis"""
 
-        execution_time = (datetime.now() - start_time).total_seconds()
+        execution_time = (get_eastern_time() - start_time).total_seconds()
 
         return {
             "analysis_execution_time_seconds": execution_time,
@@ -775,7 +776,7 @@ class VolumeShockAnalysisEngine:
         max_response_time = max(alert.response_time_estimate for alert in alerts)
 
         # Optimal window is before the earliest expected hedging
-        optimal_window_end = datetime.now() + timedelta(minutes=min_response_time - 1)
+        optimal_window_end = get_eastern_time() + timedelta(minutes=min_response_time - 1)
 
         return {
             "status": "active_window",
@@ -830,7 +831,7 @@ def analyze_volume_shocks(data_config: Dict[str, Any],
         # Add metadata
         result_dict.update({
             "status": "success",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "analysis_type": "volume_shock_analysis",
             "strategy": "front_running_market_maker_hedging",
             "config_used": analysis_config
@@ -842,6 +843,6 @@ def analyze_volume_shocks(data_config: Dict[str, Any],
         return {
             "status": "failed",
             "error": str(e),
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "analysis_type": "volume_shock_analysis"
         }

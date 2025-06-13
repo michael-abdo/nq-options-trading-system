@@ -11,6 +11,7 @@ import time
 import threading
 import queue
 from datetime import datetime, timezone, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 
 sys.path.append('.')
@@ -36,7 +37,7 @@ class MBOStreamingTest:
         self.disconnection_simulated = False
         self.event_queue = queue.Queue(maxsize=10000)
         self.test_results = {
-            "test_timestamp": datetime.now().isoformat(),
+            "test_timestamp": get_eastern_time().isoformat(),
             "market_status": {},
             "streaming_test": {},
             "reconnection_test": {},
@@ -90,7 +91,7 @@ class MBOStreamingTest:
         print(f"\n📡 Testing live MBO streaming for {duration_seconds} seconds...")
 
         streaming_results = {
-            "start_time": datetime.now().isoformat(),
+            "start_time": get_eastern_time().isoformat(),
             "duration_seconds": duration_seconds,
             "events_received": 0,
             "unique_instruments": set(),
@@ -111,7 +112,7 @@ class MBOStreamingTest:
             def process_event(event):
                 self.events_received += 1
                 events_collected.append({
-                    "timestamp": datetime.now().isoformat(),
+                    "timestamp": get_eastern_time().isoformat(),
                     "event_type": type(event).__name__,
                     "instrument_id": getattr(event, 'instrument_id', None)
                 })
@@ -156,7 +157,7 @@ class MBOStreamingTest:
                 if e.get("instrument_id")
             ))
             streaming_results["connection_quality"] = "GOOD" if self.events_received > 0 else "POOR"
-            streaming_results["end_time"] = datetime.now().isoformat()
+            streaming_results["end_time"] = get_eastern_time().isoformat()
 
             if self.events_received > 0:
                 print(f"✅ Received {self.events_received} MBO events")
@@ -356,7 +357,7 @@ class MBOStreamingTest:
         output_dir = Path("outputs/live_trading_tests")
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = get_eastern_time().strftime("%Y%m%d_%H%M%S")
         filename = output_dir / f"mbo_live_streaming_test_{timestamp}.json"
 
         with open(filename, 'w') as f:

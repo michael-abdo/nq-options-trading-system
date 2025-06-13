@@ -22,6 +22,9 @@ import os
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
 
+# Import timezone utilities
+from utils.timezone_utils import get_eastern_time
+
 class ProductionMonitor:
     """Production monitoring system for IFD v3.0"""
 
@@ -50,7 +53,7 @@ class ProductionMonitor:
 
         # Initialize metrics storage
         self.metrics = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "system_health": {},
             "trading_metrics": {},
             "cost_metrics": {},
@@ -90,7 +93,7 @@ class ProductionMonitor:
     def collect_system_health(self) -> Dict[str, Any]:
         """Collect system health metrics"""
         health_metrics = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "cpu_usage": self._get_cpu_usage(),
             "memory_usage": self._get_memory_usage(),
             "disk_usage": self._get_disk_usage(),
@@ -104,7 +107,7 @@ class ProductionMonitor:
     def collect_trading_metrics(self) -> Dict[str, Any]:
         """Collect trading performance metrics"""
         trading_metrics = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "signals_generated": self._count_signals_today(),
             "signal_accuracy": self._calculate_signal_accuracy(),
             "average_latency": self._calculate_average_latency(),
@@ -119,7 +122,7 @@ class ProductionMonitor:
     def collect_cost_metrics(self) -> Dict[str, Any]:
         """Collect cost and budget metrics"""
         cost_metrics = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "daily_cost": self._calculate_daily_cost(),
             "monthly_budget_used": self._calculate_monthly_budget_usage(),
             "cost_per_signal": self._calculate_cost_per_signal(),
@@ -133,7 +136,7 @@ class ProductionMonitor:
     def collect_error_metrics(self) -> Dict[str, Any]:
         """Collect error and reliability metrics"""
         error_metrics = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "error_rate": self._calculate_error_rate(),
             "critical_errors": self._count_critical_errors(),
             "warnings": self._count_warnings(),
@@ -148,7 +151,7 @@ class ProductionMonitor:
     def collect_business_metrics(self) -> Dict[str, Any]:
         """Collect business performance metrics"""
         business_metrics = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "roi_today": self._calculate_roi_today(),
             "roi_this_month": self._calculate_roi_month(),
             "profit_loss": self._calculate_profit_loss(),
@@ -228,7 +231,7 @@ class ProductionMonitor:
     def generate_dashboard(self) -> Dict[str, Any]:
         """Generate monitoring dashboard data"""
         dashboard = {
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": get_eastern_time().isoformat(),
             "summary": {
                 "status": self._get_overall_status(),
                 "active_alerts": len(self.check_alerts()),
@@ -445,7 +448,7 @@ class ProductionMonitor:
     def _save_alerts(self, alerts: List[Dict[str, Any]]):
         """Save alerts to file"""
         alert_data = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "alerts": alerts
         }
         with open(self.alerts_file, 'w') as f:

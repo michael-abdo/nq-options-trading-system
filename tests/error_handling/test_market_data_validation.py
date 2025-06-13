@@ -14,6 +14,7 @@ import os
 import sys
 import unittest
 from datetime import datetime, timezone, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from unittest.mock import Mock, patch
 
 # Add necessary paths
@@ -54,7 +55,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "ask": 52.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         score = self.data_monitor.check_data_quality(invalid_data_negative, "test_source")
@@ -70,7 +71,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "ask": 0.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         score = self.data_monitor.check_data_quality(invalid_data_zero, "test_source")
@@ -86,7 +87,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "ask": 100010.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         score = self.data_monitor.check_data_quality(invalid_data_extreme, "test_source")
@@ -102,7 +103,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "last_price": 51.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": (datetime.now() - timedelta(hours=2)).isoformat()  # 2 hours old
+            "timestamp": (get_eastern_time() - timedelta(hours=2)).isoformat()  # 2 hours old
         }
 
         score = self.data_monitor.check_data_quality(stale_data, "test_source")
@@ -115,7 +116,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "last_price": 51.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": (datetime.now() + timedelta(minutes=10)).isoformat()  # Future timestamp
+            "timestamp": (get_eastern_time() + timedelta(minutes=10)).isoformat()  # Future timestamp
         }
 
         score = self.data_monitor.check_data_quality(future_data, "test_source")
@@ -131,7 +132,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "last_price": 51.0,
             "volume": -100,  # Invalid negative volume
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         score = self.data_monitor.check_data_quality(negative_volume_data, "test_source")
@@ -145,7 +146,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "last_price": 51.0,
             "volume": 10000000,  # Unrealistically high volume
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         # Should pass basic validation but flag for review
@@ -163,7 +164,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "ask": 50.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         # This should trigger data quality issues
@@ -178,7 +179,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "ask": 100.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         # Should flag as suspicious quality
@@ -192,7 +193,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "last_price": 51.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         score = self.data_monitor.check_data_quality(missing_symbol_data, "test_source")
@@ -201,7 +202,7 @@ class TestMarketDataValidation(unittest.TestCase):
         # Test multiple missing fields
         sparse_data = {
             "symbol": "NQM25",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         score = self.data_monitor.check_data_quality(sparse_data, "test_source")
@@ -219,7 +220,7 @@ class TestMarketDataValidation(unittest.TestCase):
             "ask": 52.0,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         # This type of inconsistency would be caught by enhanced validation

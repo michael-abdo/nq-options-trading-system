@@ -7,12 +7,13 @@ Tests only what's actually working
 import sys
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add current directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 print("=== SIMPLE ANALYSIS ENGINE TEST ===")
-print(f"Running at: {datetime.now().isoformat()}")
+print(f"Running at: {get_eastern_time().isoformat()}")
 print("=" * 50)
 
 # Test 1: Core analysis modules

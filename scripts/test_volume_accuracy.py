@@ -12,6 +12,7 @@ from databento_5m_provider import Databento5MinuteProvider
 from databento_auth import ensure_trading_safe_databento_client
 import pandas as pd
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 def test_volume_accuracy():
     """Test volume aggregation accuracy"""
@@ -23,7 +24,7 @@ def test_volume_accuracy():
         client = ensure_trading_safe_databento_client()
 
         # Get 1 hour of data for detailed analysis
-        end = datetime.now()
+        end = get_eastern_time()
         start = end - timedelta(hours=1)
 
         print(f"\n📊 Fetching raw 1-minute data...")

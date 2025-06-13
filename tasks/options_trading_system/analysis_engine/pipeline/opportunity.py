@@ -7,6 +7,7 @@ The common data format that flows through the analysis pipeline
 from dataclasses import dataclass, field
 from typing import Dict, Any, Optional, List
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 
 @dataclass
@@ -55,8 +56,8 @@ class TradingOpportunity:
     confidence_level: str = "UNKNOWN"         # "HIGH", "MEDIUM", "LOW"
 
     # === METADATA ===
-    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
-    last_updated: str = field(default_factory=lambda: datetime.now().isoformat())
+    created_at: str = field(default_factory=lambda: get_eastern_time().isoformat())
+    last_updated: str = field(default_factory=lambda: get_eastern_time().isoformat())
     pipeline_stage: str = "raw"               # Current pipeline stage
     analysis_history: List[str] = field(default_factory=list)  # Track which analyses processed this
 
@@ -64,13 +65,13 @@ class TradingOpportunity:
         """Add analysis-specific data to this opportunity"""
         self.analysis_data[analysis_name] = data
         self.analysis_history.append(analysis_name)
-        self.last_updated = datetime.now().isoformat()
+        self.last_updated = get_eastern_time().isoformat()
         self.pipeline_stage = analysis_name.lower()
 
     def add_score(self, analysis_name: str, score: float):
         """Add analysis-specific score"""
         self.scores[analysis_name] = score
-        self.last_updated = datetime.now().isoformat()
+        self.last_updated = get_eastern_time().isoformat()
 
     def get_analysis_data(self, analysis_name: str) -> Dict[str, Any]:
         """Get analysis-specific data"""
@@ -137,7 +138,7 @@ class TradingOpportunity:
     def from_normalized_contract(cls, contract: Dict[str, Any], underlying_price: float) -> 'TradingOpportunity':
         """Create TradingOpportunity from normalized contract data"""
         return cls(
-            opportunity_id=f"strike_{contract['strike']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            opportunity_id=f"strike_{contract['strike']}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}",
             strike_price=contract['strike'],
             underlying_price=underlying_price,
             expiration_date=contract.get('expiration', 'unknown'),

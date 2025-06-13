@@ -8,6 +8,7 @@ PURPOSE: NQ Options Expected Value Analysis using actual algorithm from nq_optio
 import sys
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple
 
 # Add parent task to path for data access
@@ -288,7 +289,7 @@ class ExpectedValueAnalyzer:
         """Generate trading report (adapted from your algorithm)"""
 
         report_data = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "current_nq_price": current_price,
             "total_setups": len(setups),
             "top_opportunities": [],
@@ -349,7 +350,7 @@ class ExpectedValueAnalyzer:
 
         # Results
         self.analysis_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "underlying_symbol": "NQ",
             "underlying_price": data["underlying_price"],
             "data_quality": data["quality"],

@@ -8,6 +8,7 @@ import os
 import json
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, Optional, Tuple
 import hashlib
 import logging
@@ -81,10 +82,10 @@ class BarchartCacheManager:
             return False
 
         cached_time = datetime.fromisoformat(cache_entry["timestamp"])
-        age_seconds = (datetime.now() - cached_time).total_seconds()
+        age_seconds = (get_eastern_time() - cached_time).total_seconds()
 
         # During market hours (9:30 AM - 4:00 PM ET), use shorter TTL
-        now = datetime.now()
+        now = get_eastern_time()
         market_open = now.replace(hour=9, minute=30, second=0, microsecond=0)
         market_close = now.replace(hour=16, minute=0, second=0, microsecond=0)
 
@@ -143,7 +144,7 @@ class BarchartCacheManager:
             return "unknown"
 
         cached_time = datetime.fromisoformat(cache_entry["timestamp"])
-        age_seconds = (datetime.now() - cached_time).total_seconds()
+        age_seconds = (get_eastern_time() - cached_time).total_seconds()
 
         if age_seconds < 60:
             return f"{int(age_seconds)}s"
@@ -167,7 +168,7 @@ class BarchartCacheManager:
         cache_entry = {
             "symbol": symbol,
             "futures_symbol": futures_symbol,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "data": data
         }
 

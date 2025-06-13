@@ -9,6 +9,7 @@ import sys
 import json
 import argparse
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
@@ -21,7 +22,7 @@ class PhaseValidator:
         self.analysis_engine_path = self.base_path / "tasks/options_trading_system/analysis_engine"
         self.validation_results = {
             "phase": phase_number,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "checks": {},
             "passed": 0,
             "failed": 0,
@@ -290,7 +291,7 @@ class PhaseValidator:
         output_dir = self.base_path / "outputs" / "validation"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        output_file = output_dir / f"phase{self.phase_number}_validation_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        output_file = output_dir / f"phase{self.phase_number}_validation_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
 
         with open(output_file, 'w') as f:
             json.dump(self.validation_results, f, indent=2)

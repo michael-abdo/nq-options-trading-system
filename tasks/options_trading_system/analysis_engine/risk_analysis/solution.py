@@ -8,6 +8,7 @@ PURPOSE: Analyze options positioning risk to identify institutional commitments 
 import sys
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional
 
 # Add project root to path for data model imports
@@ -105,7 +106,7 @@ class RiskAnalyzer:
                     return {
                         "status": "failed",
                         "error": "Data ingestion pipeline failed for risk analysis",
-                        "timestamp": datetime.now().isoformat()
+                        "timestamp": get_eastern_time().isoformat()
                     }
 
                 # Extract normalized data
@@ -117,7 +118,7 @@ class RiskAnalyzer:
                 return {
                     "status": "failed",
                     "error": "No contract data available for risk analysis",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
 
             # Initialize risk containers
@@ -272,14 +273,14 @@ class RiskAnalyzer:
                     "immediate_threats": immediate_threats,
                     "total_risk_exposure": total_call_risk + total_put_risk
                 },
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
         except Exception as e:
             return {
                 "status": "failed",
                 "error": f"Risk analysis failed: {str(e)}",
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
 

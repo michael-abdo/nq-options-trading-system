@@ -8,12 +8,13 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add current directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 print("=== ANALYSIS ENGINE TEST SUITE ===")
-print(f"Running at: {datetime.now().isoformat()}")
+print(f"Running at: {get_eastern_time().isoformat()}")
 print("=" * 60)
 
 test_results = []
@@ -152,7 +153,7 @@ for test_name, success, detail in test_results:
 
 # Save results
 results_output = {
-    "timestamp": datetime.now().isoformat(),
+    "timestamp": get_eastern_time().isoformat(),
     "total_tests": total,
     "passed": passed,
     "failed": total - passed,

@@ -10,6 +10,7 @@ import time
 import json
 import traceback
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 
 # Add project paths
@@ -21,7 +22,7 @@ class LiveTradingReadinessTest:
 
     def __init__(self):
         self.test_results = {
-            "test_run_timestamp": datetime.now().isoformat(),
+            "test_run_timestamp": get_eastern_time().isoformat(),
             "tests_passed": 0,
             "tests_failed": 0,
             "critical_failures": [],
@@ -250,7 +251,7 @@ class LiveTradingReadinessTest:
         """Run complete test suite"""
         print("🚀 Live Trading Readiness Test Suite")
         print("=" * 60)
-        print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"Started: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
         print()
 
         # Core Infrastructure Tests (Critical)
@@ -306,7 +307,7 @@ class LiveTradingReadinessTest:
         """Save test results to file"""
         os.makedirs('outputs/live_trading_tests', exist_ok=True)
 
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
         results_file = f'outputs/live_trading_tests/readiness_test_{timestamp}.json'
 
         with open(results_file, 'w') as f:

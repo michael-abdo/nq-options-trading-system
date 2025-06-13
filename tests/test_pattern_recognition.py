@@ -8,6 +8,7 @@ import os
 import sys
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import random
 
 sys.path.append('.')
@@ -31,7 +32,7 @@ def test_pattern_recognition():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/pattern_recognition_test_{timestamp}.json'
     with open(results_file, 'w') as f:
         json.dump({"accuracy": accuracy, "status": status}, f)

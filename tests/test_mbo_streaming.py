@@ -10,6 +10,7 @@ import json
 import time
 import threading
 from datetime import datetime, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 
 # Add project paths
@@ -22,7 +23,7 @@ def test_mbo_streaming_connectivity():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "streaming_tests": {},
         "connectivity_checks": {},
         "configuration_validation": {},
@@ -382,7 +383,7 @@ def test_mbo_streaming_connectivity():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/mbo_streaming_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

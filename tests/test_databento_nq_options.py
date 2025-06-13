@@ -7,6 +7,7 @@ Shows how to get options chains, filter by strike/expiry, and analyze volume
 import os
 import json
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import pandas as pd
 
 # Try to load dotenv
@@ -53,7 +54,7 @@ def test_nq_options_definitions():
     print("\n=== Testing NQ Options Contract Definitions ===")
 
     # Get definitions for NQ options
-    end_date = datetime.now()
+    end_date = get_eastern_time()
     start_date = end_date - timedelta(days=1)
 
     params = {
@@ -112,7 +113,7 @@ def test_nq_options_prices():
     print("\n=== Testing NQ Options Price Data ===")
 
     # Get recent trading data
-    end_date = datetime.now()
+    end_date = get_eastern_time()
     start_date = end_date - timedelta(days=1)
 
     # Test different schemas
@@ -215,7 +216,7 @@ def main():
     output_dir = "outputs/databento_test"
     os.makedirs(output_dir, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = get_eastern_time().strftime("%Y%m%d_%H%M%S")
 
     # Save results
     results = {

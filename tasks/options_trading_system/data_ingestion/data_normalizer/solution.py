@@ -8,6 +8,7 @@ PURPOSE: Normalize data from different sources into standard format
 import sys
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional
 
 # Add project root to path
@@ -79,7 +80,7 @@ class DataNormalizer:
             "bid": None,
             "ask": None,
             "underlying_price": underlying_price,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         if source == "barchart":
@@ -166,7 +167,7 @@ class DataNormalizer:
             "summary": {
                 "total_contracts": 0,
                 "sources_count": 0,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
         }
 
@@ -231,7 +232,7 @@ class DataNormalizer:
         normalized["summary"]["by_source"] = by_source
 
         self.normalized_data = normalized
-        self.metadata["normalized_at"] = datetime.now().isoformat()
+        self.metadata["normalized_at"] = get_eastern_time().isoformat()
 
         return normalized
 

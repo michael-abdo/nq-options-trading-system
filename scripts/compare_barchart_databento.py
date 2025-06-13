@@ -8,6 +8,7 @@ import os
 import sys
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from collections import defaultdict
 
 # Add project paths
@@ -233,14 +234,14 @@ def compare_volume_pricing(barchart_data, databento_data):
 def save_detailed_comparison(barchart_data, databento_data, normalized):
     """Save detailed comparison to file"""
 
-    output_dir = f"outputs/{datetime.now().strftime('%Y%m%d')}"
+    output_dir = f"outputs/{get_eastern_time().strftime('%Y%m%d')}"
     os.makedirs(output_dir, exist_ok=True)
 
-    timestamp = datetime.now().strftime('%H%M%S')
+    timestamp = get_eastern_time().strftime('%H%M%S')
     output_file = f"{output_dir}/barchart_databento_comparison_{timestamp}.json"
 
     comparison_data = {
-        "comparison_time": datetime.now().isoformat(),
+        "comparison_time": get_eastern_time().isoformat(),
         "barchart_summary": {
             "total_contracts": barchart_data.get('options_summary', {}).get('total_contracts', 0),
             "calls": len(barchart_data.get('options_summary', {}).get('calls', [])),

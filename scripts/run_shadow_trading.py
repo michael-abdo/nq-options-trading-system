@@ -310,7 +310,7 @@ def save_validation_success(results, config: dict):
 
     summary = {
         "validation_status": "PASSED",
-        "completion_timestamp": datetime.now().isoformat(),
+        "completion_timestamp": get_eastern_time().isoformat(),
         "key_metrics": {
             "total_signals": results.total_signals,
             "overall_accuracy": results.overall_accuracy,
@@ -348,7 +348,7 @@ def save_validation_failure(results, config: dict):
 
     analysis = {
         "validation_status": "FAILED",
-        "completion_timestamp": datetime.now().isoformat(),
+        "completion_timestamp": get_eastern_time().isoformat(),
         "failure_reasons": results.recommendations,
         "key_metrics": {
             "total_signals": results.total_signals,
@@ -432,7 +432,7 @@ def main():
             config = create_default_config(args.start_date, args.duration)
 
             # Save default config for reference
-            config_file = f"config/shadow_trading_default_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            config_file = f"config/shadow_trading_default_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
             os.makedirs(os.path.dirname(config_file), exist_ok=True)
             with open(config_file, 'w') as f:
                 json.dump(config, f, indent=2)

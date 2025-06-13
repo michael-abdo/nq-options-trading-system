@@ -8,6 +8,7 @@ PURPOSE: Fetch options data from Tradovate API (or simulate for demo)
 import json
 import os
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional
 import hashlib
 
@@ -88,7 +89,7 @@ class TradovateAPIDataLoader:
             "source": "tradovate_api",
             "mode": self.mode,
             "use_mock": self.use_mock,
-            "loaded_at": datetime.now().isoformat(),
+            "loaded_at": get_eastern_time().isoformat(),
             "data_hash": self._calculate_data_hash()
         })
 
@@ -149,7 +150,7 @@ class TradovateAPIDataLoader:
             "underlying": {
                 "symbol": "NQ",
                 "price": current_price,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             },
             "options": {
                 "calls": calls,

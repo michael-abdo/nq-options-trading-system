@@ -9,6 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional
 
 # Add parent task to path for analysis access
@@ -57,8 +58,8 @@ class JSONExporter:
 
         for i, rec in enumerate(trading_recs):
             signal = {
-                "signal_id": f"nq_ev_{i+1}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                "timestamp": datetime.now().isoformat(),
+                "signal_id": f"nq_ev_{i+1}_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}",
+                "timestamp": get_eastern_time().isoformat(),
                 "source": rec.get("source", "nq_ev_algorithm"),
                 "priority": rec.get("priority", "UNKNOWN"),
                 "confidence": rec.get("confidence", "UNKNOWN"),
@@ -98,7 +99,7 @@ class JSONExporter:
     def extract_market_analysis(self, analysis_results: Dict[str, Any]) -> Dict[str, Any]:
         """Extract market analysis data"""
         market_data = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "underlying": {
                 "symbol": "NQ",
                 "price": 0,
@@ -173,7 +174,7 @@ class JSONExporter:
 
         export_data = {
             "metadata": {
-                "export_timestamp": datetime.now().isoformat(),
+                "export_timestamp": get_eastern_time().isoformat(),
                 "export_version": "1.0",
                 "data_source": "nq_options_trading_system",
                 "exporter_config": self.config
@@ -184,7 +185,7 @@ class JSONExporter:
                 "total_signals": 0,
                 "high_priority_signals": 0,
                 "recommended_action": "hold",
-                "next_analysis_recommended": datetime.now().isoformat()
+                "next_analysis_recommended": get_eastern_time().isoformat()
             }
         }
 
@@ -238,7 +239,7 @@ class JSONExporter:
             "json_data": export_data,
             "json_string": json_output,
             "metadata": {
-                "export_timestamp": datetime.now().isoformat(),
+                "export_timestamp": get_eastern_time().isoformat(),
                 "total_signals": len(export_data["trading_signals"]),
                 "json_size_bytes": len(json_output),
                 "recommended_action": export_data["execution_summary"]["recommended_action"]

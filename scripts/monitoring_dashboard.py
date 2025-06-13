@@ -17,6 +17,9 @@ import os
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
 
+# Import timezone utilities
+from utils.timezone_utils import get_eastern_time
+
 class MonitoringDashboard:
     """Web-based monitoring dashboard"""
 
@@ -75,7 +78,7 @@ class MonitoringDashboard:
     <div class="header">
         <h1>IFD v3.0 Production Monitor</h1>
         <p>Real-time monitoring dashboard for the trading system</p>
-        <div class="timestamp">Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
+        <div class="timestamp">Last updated: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S %Z')}</div>
     </div>
 
     <div class="status-grid">
@@ -129,7 +132,7 @@ class MonitoringDashboard:
             pass
 
         return {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "system_health": {},
             "trading_metrics": {},
             "cost_metrics": {},

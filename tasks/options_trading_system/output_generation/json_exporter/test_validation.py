@@ -9,6 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -29,7 +30,7 @@ def validate_json_exporter():
 
     validation_results = {
         "task": "json_exporter",
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "tests": [],
         "status": "FAILED",
         "evidence": {}
@@ -252,7 +253,7 @@ def validate_json_exporter():
     try:
         if 'export_result' in locals():
             # Save JSON to file
-            json_filename = f"test_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            json_filename = f"test_export_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
             json_path = os.path.join(os.path.dirname(__file__), json_filename)
 
             with open(json_path, 'w', encoding='utf-8') as f:

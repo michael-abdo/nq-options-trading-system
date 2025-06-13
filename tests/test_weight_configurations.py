@@ -9,6 +9,7 @@ import sys
 import json
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 import random
 
@@ -22,7 +23,7 @@ def test_weight_configurations():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "backtest_period": "6 months",
         "weight_configurations": {},
         "performance_analysis": {},
@@ -101,7 +102,7 @@ def test_weight_configurations():
 
     # Generate simulated historical scenarios for 6 months
     historical_scenarios = []
-    start_date = datetime.now() - timedelta(days=180)
+    start_date = get_eastern_time() - timedelta(days=180)
 
     # Create 50 simulated trading scenarios
     for i in range(50):
@@ -404,7 +405,7 @@ def test_weight_configurations():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/weight_configurations_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

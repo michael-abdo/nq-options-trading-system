@@ -16,6 +16,7 @@ import json
 import unittest
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from dataclasses import dataclass
 from typing import List, Dict, Any, Optional
 
@@ -71,7 +72,7 @@ class TestIFDv3Components(unittest.TestCase):
 
     def _create_sample_pressure_metrics(self) -> List[MockPressureMetrics]:
         """Create sample pressure metrics for testing"""
-        base_time = datetime.now()
+        base_time = get_eastern_time()
 
         return [
             MockPressureMetrics(
@@ -203,7 +204,7 @@ class TestIFDv3Components(unittest.TestCase):
                 MockPressureMetrics(
                     strike=21350.0,
                     option_type="CALL",
-                    time_window=datetime.now() - timedelta(minutes=i),
+                    time_window=get_eastern_time() - timedelta(minutes=i),
                     bid_volume=500,  # Consistent volume
                     ask_volume=500,  # Balanced bid/ask
                     pressure_ratio=1.0,  # Neutral pressure
@@ -234,7 +235,7 @@ class TestIFDv3Components(unittest.TestCase):
                 MockPressureMetrics(
                     strike=21350.0,
                     option_type="CALL",
-                    time_window=datetime.now() - timedelta(minutes=i),
+                    time_window=get_eastern_time() - timedelta(minutes=i),
                     bid_volume=2000,  # Large volume
                     ask_volume=500,   # Imbalanced
                     pressure_ratio=4.0,  # High pressure
@@ -287,7 +288,7 @@ class TestIFDv3Components(unittest.TestCase):
                 MockPressureMetrics(
                     strike=21350.0,
                     option_type="CALL",
-                    time_window=datetime.now() - timedelta(minutes=i),
+                    time_window=get_eastern_time() - timedelta(minutes=i),
                     bid_volume=3000,
                     ask_volume=1000,
                     pressure_ratio=3.0,  # Strong pressure
@@ -353,7 +354,7 @@ class TestIFDv3Components(unittest.TestCase):
                     MockPressureMetrics(
                         strike=float(strike),
                         option_type="CALL",
-                        time_window=datetime.now(),
+                        time_window=get_eastern_time(),
                         bid_volume=1000,
                         ask_volume=800,
                         pressure_ratio=1.25,
@@ -406,8 +407,8 @@ class TestIFDv3Components(unittest.TestCase):
             mbo_data = [
                 {
                     "symbol": "NQM25",
-                    "window_start": (datetime.now() - timedelta(minutes=5)).isoformat(),
-                    "window_end": datetime.now().isoformat(),
+                    "window_start": (get_eastern_time() - timedelta(minutes=5)).isoformat(),
+                    "window_end": get_eastern_time().isoformat(),
                     "total_trades": 100,
                     "buy_pressure": 0.6,
                     "sell_pressure": 0.4,
@@ -469,7 +470,7 @@ class TestResultCollector:
     def __init__(self):
         self.results = {
             "test_suite": "ifd_v3_comprehensive",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "tests": [],
             "summary": {},
             "status": "UNKNOWN"

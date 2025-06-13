@@ -17,6 +17,7 @@ import time
 import logging
 import threading
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, asdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -332,7 +333,7 @@ class LiveHistoricalValidator:
         }
 
         # Check signal frequency patterns
-        current_hour = datetime.now().hour
+        current_hour = get_eastern_time().hour
         expected_frequency = self.signal_patterns['signal_frequency']['hourly_avg']
         # Implementation would track actual vs expected frequency
 
@@ -783,7 +784,7 @@ class ShadowTradingOrchestrator:
 
     def _is_trading_hours(self) -> bool:
         """Check if current time is within trading hours"""
-        now = datetime.now()
+        now = get_eastern_time()
 
         # Parse trading hours
         start_time = datetime.strptime(self.config.trading_hours_start, "%H:%M").time()
@@ -799,7 +800,7 @@ class ShadowTradingOrchestrator:
 
     def _is_day_complete(self) -> bool:
         """Check if current trading day is complete"""
-        now = datetime.now()
+        now = get_eastern_time()
         end_time = datetime.strptime(self.config.trading_hours_end, "%H:%M").time()
 
         return now.time() > end_time
@@ -1114,7 +1115,7 @@ class ShadowTradingOrchestrator:
 
         # Create daily validation result
         daily_result = DailyValidationResult(
-            date=datetime.now().strftime('%Y-%m-%d'),
+            date=get_eastern_time().strftime('%Y-%m-%d'),
             trading_day=self.current_day,
             signals_generated=daily_performance.get('signals_generated', 0),
             signals_validated=daily_performance.get('signals_validated', 0),

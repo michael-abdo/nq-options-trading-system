@@ -10,6 +10,7 @@ import json
 import time
 import math
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import random
 
 sys.path.append('.')
@@ -20,7 +21,7 @@ def test_mbo_pressure_analysis():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "pressure_metrics": {},
         "analysis_accuracy": {},
         "overall_status": "UNKNOWN"
@@ -77,7 +78,7 @@ def test_mbo_pressure_analysis():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/mbo_pressure_test_{timestamp}.json'
     with open(results_file, 'w') as f:
         json.dump(test_results, f, indent=2)

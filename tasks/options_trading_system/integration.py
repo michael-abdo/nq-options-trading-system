@@ -9,6 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List
 
 # Add current directory to path for child task imports
@@ -73,14 +74,14 @@ class NQOptionsTradingSystem:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
         except Exception as e:
             print(f"    ✗ Data Pipeline failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def run_analysis_pipeline(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -104,14 +105,14 @@ class NQOptionsTradingSystem:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
         except Exception as e:
             print(f"    ✗ Analysis Pipeline failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def run_output_pipeline(self, data_config: Dict[str, Any], analysis_results: Dict[str, Any] = None) -> Dict[str, Any]:
@@ -136,21 +137,21 @@ class NQOptionsTradingSystem:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
         except Exception as e:
             print(f"    ✗ Output Pipeline failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def create_system_summary(self) -> Dict[str, Any]:
         """Create comprehensive system execution summary"""
 
         summary = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "system_version": self.version,
             "execution_status": {
                 "data": self.system_results.get("data", {}).get("status", "not_attempted"),
@@ -235,10 +236,10 @@ class NQOptionsTradingSystem:
         print("=" * 60)
         print(f"System Version: {self.version}")
         print(f"Primary Algorithm: Your NQ Options EV Algorithm")
-        print(f"Execution Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"Execution Started: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
         print("=" * 60)
 
-        start_time = datetime.now()
+        start_time = get_eastern_time()
 
         # Step 1: Configuration validation
         config_validation = self.validate_configuration()
@@ -247,7 +248,7 @@ class NQOptionsTradingSystem:
                 "status": "failed",
                 "error": "Invalid configuration",
                 "config_validation": config_validation,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
         # Step 2: Data pipeline
@@ -275,11 +276,11 @@ class NQOptionsTradingSystem:
         system_summary = self.create_system_summary()
 
         # Calculate total execution time
-        execution_time = (datetime.now() - start_time).total_seconds()
+        execution_time = (get_eastern_time() - start_time).total_seconds()
 
         # Final system results
         final_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "execution_time_seconds": execution_time,
             "system_version": self.version,
             "status": "success",
@@ -312,7 +313,7 @@ class NQOptionsTradingSystem:
         return {
             "status": "failed",
             "error": reason,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "pipeline_results": self.system_results,
             "system_summary": self.create_system_summary()
         }

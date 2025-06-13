@@ -13,6 +13,7 @@ import sys
 import os
 import json
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any
 
 # Add project root to path
@@ -47,7 +48,7 @@ def validate_volume_shock_analysis():
 
     validation_results = {
         "task": "volume_shock_analysis",
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "tests": [],
         "status": "FAILED",
         "evidence": {}
@@ -340,13 +341,13 @@ def validate_volume_shock_analysis():
     print("\\n6. Testing execution timing requirements...")
     try:
         # Test detection latency with time measurement
-        start_time = datetime.now()
+        start_time = get_eastern_time()
 
         # Run detection on mock data
         mock_data = create_mock_volume_shock_scenario()
         alerts = detection_engine.detect_volume_shocks(mock_data)
 
-        detection_time = (datetime.now() - start_time).total_seconds() * 1000  # ms
+        detection_time = (get_eastern_time() - start_time).total_seconds() * 1000  # ms
 
         # Strategy requires <5 minute total latency for effectiveness
         # We'll test for <1 second detection time as a proxy
@@ -517,7 +518,7 @@ def create_mock_volume_shock_scenario() -> Dict[str, Any]:
         "contracts": contracts,
         "total_contracts": len(contracts),
         "source": "mock_volume_shock_scenario",
-        "timestamp": datetime.now().isoformat()
+        "timestamp": get_eastern_time().isoformat()
     }
 
 

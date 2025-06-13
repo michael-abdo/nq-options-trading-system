@@ -27,6 +27,7 @@ import json
 import logging
 import sqlite3
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
 from dataclasses import dataclass, asdict
@@ -280,21 +281,21 @@ class HistoricalBaselineManager:
         # Check cache first
         if cache_key in self.baseline_cache:
             cached_data, cache_time = self.baseline_cache[cache_key]
-            if datetime.now() - cache_time < self.cache_expiry:
+            if get_eastern_time() - cache_time < self.cache_expiry:
                 return cached_data
 
         # Calculate baseline from database
         baseline = self._calculate_baseline_stats(strike, option_type)
 
         # Cache result
-        self.baseline_cache[cache_key] = (baseline, datetime.now())
+        self.baseline_cache[cache_key] = (baseline, get_eastern_time())
 
         return baseline
 
     def _calculate_baseline_stats(self, strike: float, option_type: str) -> BaselineContext:
         """Calculate baseline statistics from historical data"""
         # Get recent historical data
-        cutoff_date = (datetime.now() - timedelta(days=self.lookback_days)).strftime('%Y-%m-%d')
+        cutoff_date = (get_eastern_time() - timedelta(days=self.lookback_days)).strftime('%Y-%m-%d')
 
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
@@ -341,7 +342,7 @@ class HistoricalBaselineManager:
                 percentiles[p] = mean_pressure
 
         # Data quality assessment
-        expected_days = min(self.lookback_days, (datetime.now() - datetime.now().replace(day=1)).days)
+        expected_days = min(self.lookback_days, (get_eastern_time() - get_eastern_time().replace(day=1)).days)
         data_quality = len(rows) / max(expected_days, 1)
         data_quality = min(data_quality, 1.0)
 

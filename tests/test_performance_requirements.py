@@ -17,6 +17,7 @@ import time
 import threading
 import statistics
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, Any, List
 import psutil
@@ -38,7 +39,7 @@ class PerformanceRequirementsTest:
     def __init__(self):
         self.test_results = {
             "test_suite": "performance_requirements",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "requirements": {
                 "max_latency_ms": 100,
                 "min_throughput_strikes": 100,
@@ -449,7 +450,7 @@ class PerformanceRequirementsTest:
 
         # Generate mock MBO data
         mbo_data = []
-        base_time = datetime.now()
+        base_time = get_eastern_time()
 
         for i in range(count):
             mbo_data.append({
@@ -472,8 +473,8 @@ class PerformanceRequirementsTest:
 
         mbo_data = [{
             "symbol": "NQM25",
-            "window_start": datetime.now().isoformat(),
-            "window_end": (datetime.now() + timedelta(minutes=5)).isoformat(),
+            "window_start": get_eastern_time().isoformat(),
+            "window_end": (get_eastern_time() + timedelta(minutes=5)).isoformat(),
             "total_trades": 100,
             "buy_pressure": confidence,
             "sell_pressure": 1.0 - confidence,

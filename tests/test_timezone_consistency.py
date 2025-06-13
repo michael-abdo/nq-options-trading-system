@@ -107,7 +107,7 @@ def test_critical_files_timezone_consistency():
             has_utils = 'from utils.timezone_utils import' in content
 
             # Check for old problematic patterns
-            has_naive_datetime_now = 'datetime.now()' in content and 'strftime' in content
+            has_naive_datetime_now = 'get_eastern_time()' in content and 'strftime' in content
 
             if has_utils:
                 print(f"✅ {file_path}: Uses timezone utilities")
@@ -115,7 +115,7 @@ def test_critical_files_timezone_consistency():
                 print(f"⚠️  {file_path}: Missing timezone utilities import")
 
             if has_naive_datetime_now:
-                print(f"❌ {file_path}: Still has naive datetime.now() usage")
+                print(f"❌ {file_path}: Still has naive get_eastern_time() usage")
         else:
             print(f"❌ {file_path}: File not found")
 

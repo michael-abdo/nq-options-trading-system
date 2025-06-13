@@ -9,6 +9,7 @@ import sys
 import json
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add project paths
 sys.path.append('.')
@@ -20,7 +21,7 @@ def test_api_authentication():
     print("=" * 50)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "authentication_tests": {},
         "environment_variables": {},
         "security_checks": {},
@@ -337,7 +338,7 @@ def test_api_authentication():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/api_auth_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

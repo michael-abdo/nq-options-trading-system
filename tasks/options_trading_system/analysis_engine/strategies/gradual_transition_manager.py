@@ -19,6 +19,7 @@ import os
 import time
 import threading
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Callable, Tuple
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -169,7 +170,7 @@ class ParameterSynchronizer:
 
         # Record interpolated config
         self.interpolated_configs.append({
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "blend_ratio": blend_ratio,
             "config": interpolated
         })
@@ -327,7 +328,7 @@ class SignalBlender:
                            v3_result: Dict[str, Any]):
         """Record signal results for performance tracking"""
         performance_record = {
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "v1_accuracy": v1_result.get("accuracy", 0.0),
             "v3_accuracy": v3_result.get("accuracy", 0.0),
             "blended_accuracy": blended_signal.get("accuracy", 0.0),
@@ -374,7 +375,7 @@ class GradualTransitionManager:
 
         # Transition state
         self.current_state = TransitionState.PREPARING
-        self.transition_id = f"transition_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        self.transition_id = f"transition_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
         self.transition_start_time: Optional[datetime] = None
         self.state_start_time: Optional[datetime] = None
 
@@ -402,7 +403,7 @@ class GradualTransitionManager:
         """Setup transition logging"""
         import logging
 
-        log_file = os.path.join(self.output_dir, f"transition_{datetime.now().strftime('%Y%m%d')}.log")
+        log_file = os.path.join(self.output_dir, f"transition_{get_eastern_time().strftime('%Y%m%d')}.log")
 
         self.logger = logging.getLogger("GradualTransition")
         if not self.logger.handlers:
@@ -416,7 +417,7 @@ class GradualTransitionManager:
         """Start gradual transition process"""
         self.v1_config = v1_config.copy()
         self.v3_config = v3_config.copy()
-        self.transition_start_time = datetime.now()
+        self.transition_start_time = get_eastern_time()
         self.transition_active = True
 
         self._record_event("TRANSITION_STARTED", "Gradual transition initiated")
@@ -504,7 +505,7 @@ class GradualTransitionManager:
         """Transition to new state"""
         old_state = self.current_state
         self.current_state = new_state
-        self.state_start_time = datetime.now()
+        self.state_start_time = get_eastern_time()
 
         self._record_event("STATE_TRANSITION", f"Transitioned from {old_state.value} to {new_state.value}")
 
@@ -530,7 +531,7 @@ class GradualTransitionManager:
         if not self.state_start_time:
             return
 
-        state_duration = datetime.now() - self.state_start_time
+        state_duration = get_eastern_time() - self.state_start_time
 
         if self.current_state == TransitionState.PARAMETER_SYNC:
             if state_duration >= timedelta(hours=self.config.parameter_sync_duration_hours):
@@ -564,7 +565,7 @@ class GradualTransitionManager:
         if not self.state_start_time:
             return
 
-        state_duration = datetime.now() - self.state_start_time
+        state_duration = get_eastern_time() - self.state_start_time
         total_duration = timedelta(hours=self.config.blend_duration_hours)
 
         progress = min(1.0, state_duration.total_seconds() / total_duration.total_seconds())
@@ -642,7 +643,7 @@ class GradualTransitionManager:
         if not self.transition_start_time:
             return
 
-        total_duration = datetime.now() - self.transition_start_time
+        total_duration = get_eastern_time() - self.transition_start_time
         total_hours = self.config.total_transition_duration_hours
         progress_percent = min(100.0, (total_duration.total_seconds() / (total_hours * 3600)) * 100)
 
@@ -667,7 +668,7 @@ class GradualTransitionManager:
         confidence_score = (stability_score * 0.5) + (min(1.0, v3_accuracy / max(0.01, v1_accuracy)) * 0.5)
 
         metrics = TransitionMetrics(
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             state=self.current_state,
             progress_percent=progress_percent,
             v1_weight=self.current_v1_weight,
@@ -685,8 +686,8 @@ class GradualTransitionManager:
     def _record_event(self, event_type: str, description: str, context: Dict[str, Any] = None):
         """Record transition event"""
         event = {
-            "event_id": f"evt_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
-            "timestamp": datetime.now(),
+            "event_id": f"evt_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}",
+            "timestamp": get_eastern_time(),
             "event_type": event_type,
             "description": description,
             "state": self.current_state.value,
@@ -700,7 +701,7 @@ class GradualTransitionManager:
         """Save event to file"""
         event_file = os.path.join(
             self.output_dir,
-            f"transition_events_{datetime.now().strftime('%Y%m%d')}.json"
+            f"transition_events_{get_eastern_time().strftime('%Y%m%d')}.json"
         )
 
         # Load existing events
@@ -726,7 +727,7 @@ class GradualTransitionManager:
         if not self.transition_start_time:
             return {"status": "Not started"}
 
-        total_duration = datetime.now() - self.transition_start_time
+        total_duration = get_eastern_time() - self.transition_start_time
 
         return {
             "transition_id": self.transition_id,

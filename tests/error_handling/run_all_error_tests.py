@@ -16,6 +16,7 @@ import sys
 import subprocess
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 
 def run_test_suite(test_file, description):
@@ -130,7 +131,7 @@ def main():
     """Run all error handling test suites"""
     print("🛡️ COMPREHENSIVE ERROR HANDLING & RECOVERY TEST SUITE")
     print("=" * 70)
-    print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Started at: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Test suites in order of execution
     test_suites = [
@@ -223,7 +224,7 @@ def main():
     else:
         print(f"\n⚠️ Some tests failed. Review the detailed output above for specific issues.")
 
-    print(f"\nCompleted at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"\nCompleted at: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}")
 
     return 0 if overall_success else 1
 

@@ -3,6 +3,7 @@ import time
 import json
 from unittest.mock import Mock, patch, MagicMock
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import threading
 import queue
 
@@ -179,7 +180,7 @@ class TestRealTimeOptionsDataFeed(unittest.TestCase):
             expiration_date="2024-01-19",
             calls=[],
             puts=[],
-            timestamp=datetime.now()
+            timestamp=get_eastern_time()
         )
 
         # Simulate data reception (bypass queue for direct testing)
@@ -207,7 +208,7 @@ class TestRealTimeOptionsDataFeed(unittest.TestCase):
                 expiration_date="2024-01-19",
                 calls=[],
                 puts=[],
-                timestamp=datetime.now()
+                timestamp=get_eastern_time()
             )
 
             try:
@@ -248,11 +249,11 @@ class TestRealTimeOptionsDataFeed(unittest.TestCase):
                     theta=-0.1,
                     vega=0.2,
                     implied_volatility=0.25,
-                    timestamp=datetime.now()
+                    timestamp=get_eastern_time()
                 )
             ],
             puts=[],
-            timestamp=datetime.now()
+            timestamp=get_eastern_time()
         )
 
         # Low quality data (missing prices)
@@ -276,11 +277,11 @@ class TestRealTimeOptionsDataFeed(unittest.TestCase):
                     theta=0.0,
                     vega=0.0,
                     implied_volatility=0.0,
-                    timestamp=datetime.now()
+                    timestamp=get_eastern_time()
                 )
             ],
             puts=[],
-            timestamp=datetime.now()
+            timestamp=get_eastern_time()
         )
 
         # Score both chains
@@ -512,7 +513,7 @@ def run_performance_benchmark():
 
     # Generate evidence report
     evidence_report = {
-        'test_timestamp': datetime.now().isoformat(),
+        'test_timestamp': get_eastern_time().isoformat(),
         'sample_size': num_iterations,
         'processing_latency_stats': processing_stats,
         'requirements_validation': {

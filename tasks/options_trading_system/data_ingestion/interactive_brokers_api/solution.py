@@ -9,6 +9,7 @@ import os
 import time
 from typing import Optional, Dict, Any
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 try:
     import databento as db
@@ -75,7 +76,7 @@ class DatabentoAPIConnection:
 
         try:
             # Test with a simple data request (small sample)
-            end_date = datetime.now().date()
+            end_date = get_eastern_time().date()
             start_date = end_date - timedelta(days=1)
 
             # Request minimal data to test connection
@@ -123,7 +124,7 @@ class DatabentoAPIConnection:
             return {"error": "Not connected to Databento API"}
 
         try:
-            end_date = datetime.now().date()
+            end_date = get_eastern_time().date()
             start_date = end_date - timedelta(days=1)
 
             # Request options data

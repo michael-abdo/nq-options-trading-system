@@ -19,6 +19,7 @@ import os
 import time
 import threading
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Callable, Tuple
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -159,7 +160,7 @@ class PositionManager:
         """Capture current position state"""
         with self._lock:
             position_snapshot = {
-                "timestamp": datetime.now(),
+                "timestamp": get_eastern_time(),
                 "positions": self.positions.copy(),
                 "total_exposure": sum(abs(p.get("value", 0)) for p in self.positions.values()),
                 "position_count": len(self.positions)
@@ -178,7 +179,7 @@ class PositionManager:
                 if position.get("algorithm") == "v3.0":
                     # Mark for v1.0 management
                     position["algorithm"] = "v1.0"
-                    position["transferred_at"] = datetime.now().isoformat()
+                    position["transferred_at"] = get_eastern_time().isoformat()
                     position["transfer_reason"] = "v3.0_rollback"
 
                     transfer_log.append({
@@ -211,7 +212,7 @@ class PositionManager:
                         "symbol": position.get("symbol"),
                         "hedge_size": position.get("quantity", 0) * 0.5,  # 50% hedge
                         "hedge_type": "protective_put" if position.get("direction") == "LONG" else "protective_call",
-                        "timestamp": datetime.now().isoformat()
+                        "timestamp": get_eastern_time().isoformat()
                     }
                     hedge_actions.append(hedge_action)
 
@@ -251,7 +252,7 @@ Immediate action required to verify system state.
 
         # Record notification
         self.notification_history.append({
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "type": "immediate_alert",
             "event_id": event.event_id,
             "channels": self.config.immediate_alerts
@@ -273,7 +274,7 @@ Error: {event.error_message or 'Unknown error'}
 IMMEDIATE HUMAN INTERVENTION REQUIRED
 System may be in unstable state.
 
-Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Time: {get_eastern_time().strftime('%Y-%m-%d %H:%M:%S')}
         """.strip()
 
         self._send_to_channels(escalation_message, self.config.escalation_alerts)
@@ -334,7 +335,7 @@ class StatePreserver:
                            performance_data: Dict[str, Any]) -> SystemState:
         """Capture comprehensive system state"""
         state = SystemState(
-            timestamp=datetime.now(),
+            timestamp=get_eastern_time(),
             active_algorithm="v3.0" if traffic_split.get("v3.0", 0) > 50 else "v1.0",
             traffic_split=traffic_split.copy(),
             configuration=configuration.copy(),
@@ -438,7 +439,7 @@ class EmergencyRollbackSystem:
 
     def _setup_logging(self):
         """Setup rollback logging"""
-        log_file = os.path.join(self.output_dir, f"rollback_{datetime.now().strftime('%Y%m%d')}.log")
+        log_file = os.path.join(self.output_dir, f"rollback_{get_eastern_time().strftime('%Y%m%d')}.log")
 
         logging.basicConfig(
             level=logging.INFO,
@@ -534,8 +535,8 @@ class EmergencyRollbackSystem:
 
         # Create rollback event
         event = RollbackEvent(
-            event_id=f"rollback_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
-            timestamp=datetime.now(),
+            event_id=f"rollback_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}",
+            timestamp=get_eastern_time(),
             trigger=trigger,
             severity=severity,
             description=reason,
@@ -567,7 +568,7 @@ class EmergencyRollbackSystem:
             return False
 
         # Rate limiting check
-        current_time = datetime.now()
+        current_time = get_eastern_time()
         one_hour_ago = current_time - timedelta(hours=1)
 
         recent_rollbacks = [
@@ -590,7 +591,7 @@ class EmergencyRollbackSystem:
 
     def _execute_rollback(self, event: RollbackEvent) -> bool:
         """Execute the rollback process"""
-        event.execution_start = datetime.now()
+        event.execution_start = get_eastern_time()
         event.status = RollbackStatus.EXECUTING
         self.rollback_status = RollbackStatus.EXECUTING
 
@@ -635,13 +636,13 @@ class EmergencyRollbackSystem:
                 print("⚠️ Configuration restoration failed but continuing")
 
             # Rollback completed successfully
-            event.execution_end = datetime.now()
+            event.execution_end = get_eastern_time()
             event.execution_duration_ms = (event.execution_end - event.execution_start).total_seconds() * 1000
             event.status = RollbackStatus.COMPLETED
             event.success = True
 
             self.rollback_status = RollbackStatus.COMPLETED
-            self.last_rollback_time = datetime.now()
+            self.last_rollback_time = get_eastern_time()
 
             self.logger.info(f"Rollback completed successfully in {event.execution_duration_ms:.0f}ms")
             print(f"✅ Rollback completed in {event.execution_duration_ms:.0f}ms")
@@ -660,7 +661,7 @@ class EmergencyRollbackSystem:
 
         except Exception as e:
             # Rollback failed
-            event.execution_end = datetime.now()
+            event.execution_end = get_eastern_time()
             event.execution_duration_ms = (event.execution_end - event.execution_start).total_seconds() * 1000
             event.status = RollbackStatus.FAILED
             event.success = False
@@ -719,7 +720,7 @@ class EmergencyRollbackSystem:
             "last_rollback": self.last_rollback_time.isoformat() if self.last_rollback_time else None,
             "rollbacks_1h": len([
                 e for e in self.rollback_events
-                if e.timestamp >= datetime.now() - timedelta(hours=1)
+                if e.timestamp >= get_eastern_time() - timedelta(hours=1)
             ]),
             "total_rollbacks": len(self.rollback_events),
             "monitoring_active": self.monitoring_active,
@@ -736,7 +737,7 @@ class EmergencyRollbackSystem:
 
         recent_events = [
             event for event in self.rollback_events
-            if event.timestamp >= datetime.now() - timedelta(hours=24)
+            if event.timestamp >= get_eastern_time() - timedelta(hours=24)
         ]
 
         report = f"""

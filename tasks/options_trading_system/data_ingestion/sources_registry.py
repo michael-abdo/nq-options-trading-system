@@ -7,6 +7,7 @@ Central registry for all available data sources and their loader functions
 import logging
 from typing import Dict, Callable, Any, List
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +93,7 @@ def load_barchart_live_data(config: Dict[str, Any]) -> Dict[str, Any]:
             "raw_data": api_data,
             "source": "barchart_live_api",
             "symbol": eod_symbol if api_data.get('total', 0) > 0 else "MC6M25",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "total_contracts": api_data.get('total', 0)
         }
 
@@ -116,12 +117,13 @@ class DataSourcesRegistry:
         """Initialize the registry with all available sources"""
         self._sources = {}
         self._source_priorities = {
-            "databento": 1,     # Primary - MBO streaming for IFD v3
-            "barchart": 2,      # Secondary - free web scraping
-            "barchart_live": 2, # Same as barchart
-            "polygon": 3,       # Tertiary - free tier with limits
-            "tradovate": 4,     # Quaternary - demo mode
-            "barchart_saved": 5 # Fallback - offline data
+            "databento": 1,     # ONLY ALLOWED SOURCE - MBO streaming for IFD v3
+            # ALL OTHER SOURCES DISABLED FOR TRADING SAFETY
+            "barchart": 999,      # DISABLED - not allowed
+            "barchart_live": 999, # DISABLED - not allowed
+            "polygon": 999,       # DISABLED - not allowed
+            "tradovate": 999,     # DISABLED - not allowed
+            "barchart_saved": 999 # DISABLED - not allowed
         }
         self._register_all_sources()
 
@@ -189,22 +191,8 @@ class DataSourcesRegistry:
             }
 
     def _load_barchart_hybrid(self, config: Dict[str, Any]) -> Dict[str, Any]:
-        """Load Barchart data using hybrid approach (live API with saved fallback)"""
-        use_live_api = config.get("use_live_api", True)
-
-        if use_live_api and BARCHART_LIVE_AVAILABLE:
-            try:
-                return load_barchart_live_data(config)
-            except Exception as e:
-                if config.get("file_path"):
-                    print(f"⚠️ Live API failed, falling back to saved data: {e}")
-                    return load_barchart_saved_data(config["file_path"])
-                else:
-                    raise e
-        elif config.get("file_path") and BARCHART_SAVED_AVAILABLE:
-            return load_barchart_saved_data(config["file_path"])
-        else:
-            raise ValueError("No valid Barchart configuration provided")
+        """DISABLED - NO FALLBACKS ALLOWED FOR TRADING SAFETY"""
+        raise ValueError("Barchart data source is DISABLED. Only live Databento data is allowed for trading safety.")
 
     def get_available_sources(self) -> List[str]:
         """Get list of all available source names"""
@@ -219,83 +207,66 @@ class DataSourcesRegistry:
     def load_first_available(self, config_by_source: Dict[str, Dict[str, Any]],
                            log_attempts: bool = True) -> Dict[str, Any]:
         """
-        Try to load data from sources in priority order, returning first successful result
+        TRADING SAFETY: Only load from Databento. NO FALLBACKS ALLOWED.
 
         Args:
             config_by_source: Dict mapping source names to their configs
             log_attempts: Whether to log loading attempts
 
         Returns:
-            Data from first successful source
+            Data from Databento only
 
         Raises:
-            Exception if all sources fail
+            Exception if Databento fails - NO FALLBACKS
         """
-        # Check for databento-only mode with live streaming
-        enabled_sources = [name for name, config in config_by_source.items()
-                          if config.get('enabled', True)]
+        # CRITICAL: Only allow Databento for trading safety
+        if 'databento' not in config_by_source:
+            raise Exception("❌ CRITICAL: Databento configuration missing. NO OTHER DATA SOURCES ALLOWED.")
 
-        if len(enabled_sources) == 1 and 'databento' in enabled_sources:
-            databento_config = config_by_source['databento']
+        databento_config = config_by_source['databento']
+        if not databento_config.get('enabled', True):
+            raise Exception("❌ CRITICAL: Databento is disabled. Cannot proceed without live data.")
+
+        # Check for any other enabled sources - this is NOT allowed
+        other_enabled = [name for name, config in config_by_source.items()
+                        if name != 'databento' and config.get('enabled', False)]
+        if other_enabled:
+            raise Exception(f"❌ CRITICAL: Other data sources are enabled: {other_enabled}. " +
+                          "Only Databento is allowed for trading safety. DISABLE ALL OTHER SOURCES.")
+
+        if log_attempts:
+            print("🔒 TRADING SAFETY MODE: Only live Databento data allowed")
+            print("🎯 Loading from Databento (NO FALLBACKS)...")
+
+        try:
+            # Check for streaming mode
             if databento_config.get('streaming_mode', False):
-                if log_attempts:
-                    print("🎯 Databento-only live streaming mode detected - direct load")
                 return self._load_databento_direct(databento_config, log_attempts)
+            else:
+                result = self.load_source('databento', databento_config)
 
-        sources_to_try = self.get_sources_by_priority(only_available=True)
-        errors = []
-
-        for source_name in sources_to_try:
-            if source_name not in config_by_source:
-                continue
-
-            if not config_by_source[source_name].get('enabled', True):
-                if log_attempts:
-                    print(f"⏭️  Skipping {source_name} (disabled in config)")
-                continue
-
-            try:
-                if log_attempts:
-                    priority = self._source_priorities.get(source_name, 999)
-                    print(f"🔍 Trying {source_name} (priority {priority})...")
-
-                result = self.load_source(source_name, config_by_source[source_name])
-
-                # Check for data in different formats
+                # Verify we got real data
                 has_data = False
                 if result:
-                    # Standard format
                     if result.get('options_summary', {}).get('total_contracts', 0) > 0:
                         has_data = True
-                    # Live API format (barchart)
                     elif result.get('total_contracts', 0) > 0:
                         has_data = True
-                    # Check raw_data
                     elif result.get('raw_data', {}).get('total', 0) > 0:
                         has_data = True
 
                 if has_data:
                     if log_attempts:
-                        print(f"✅ Successfully loaded data from {source_name}")
+                        print("✅ Successfully loaded LIVE data from Databento")
                     return result
                 else:
-                    if log_attempts:
-                        print(f"⚠️  {source_name} returned no data")
+                    raise Exception("Databento returned no data")
 
-            except Exception as e:
-                error_msg = str(e)
-                errors.append(f"{source_name}: {error_msg}")
-
-                # Special handling for Databento access issues
-                if source_name == "databento" and "GLBX.MDP3" in error_msg:
-                    if log_attempts:
-                        print(f"🚫 {source_name}: No GLBX.MDP3 access (subscription required)")
-                else:
-                    if log_attempts:
-                        print(f"❌ {source_name} failed: {error_msg}")
-
-        # All sources failed
-        raise Exception(f"All data sources failed:\n" + "\n".join(errors))
+        except Exception as e:
+            # NO FALLBACKS - fail immediately
+            error_msg = f"❌ CRITICAL: Databento failed: {str(e)}\n" + \
+                       "NO FALLBACK ALLOWED. Cannot proceed without live data."
+            raise Exception(error_msg)
 
     def _load_databento_direct(self, config: Dict[str, Any], log_attempts: bool = True) -> Dict[str, Any]:
         """Load databento data directly without fallbacks for live streaming mode"""

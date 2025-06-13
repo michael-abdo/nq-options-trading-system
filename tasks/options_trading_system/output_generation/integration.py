@@ -58,14 +58,14 @@ class OutputGenerationEngine:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
         except Exception as e:
             print(f"    ✗ Trading Report failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def generate_json_export(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -93,14 +93,14 @@ class OutputGenerationEngine:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
         except Exception as e:
             print(f"    ✗ JSON Export failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def save_outputs(self, save_config: Dict[str, Any] = None) -> Dict[str, Any]:
@@ -201,7 +201,7 @@ class OutputGenerationEngine:
         """Create a summary of all generated outputs"""
 
         summary = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "generation_status": {
                 "report": self.generation_results.get("report", {}).get("status", "not_attempted"),
                 "json": self.generation_results.get("json", {}).get("status", "not_attempted")
@@ -245,7 +245,7 @@ class OutputGenerationEngine:
         print("EXECUTING OUTPUT GENERATION ENGINE")
         print("-" * 40)
 
-        start_time = datetime.now()
+        start_time = get_eastern_time()
 
         # Generate both output formats in parallel
         print("  Generating all outputs simultaneously...")
@@ -269,7 +269,7 @@ class OutputGenerationEngine:
                     self.generation_results[output_type] = {
                         "status": "failed",
                         "error": str(e),
-                        "timestamp": datetime.now().isoformat()
+                        "timestamp": get_eastern_time().isoformat()
                     }
 
         # Save outputs to files
@@ -279,11 +279,11 @@ class OutputGenerationEngine:
         output_summary = self.create_output_summary()
 
         # Calculate execution time
-        execution_time = (datetime.now() - start_time).total_seconds()
+        execution_time = (get_eastern_time() - start_time).total_seconds()
 
         # Final results
         final_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "execution_time_seconds": execution_time,
             "output_config": self.config,
             "generation_results": self.generation_results,

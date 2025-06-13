@@ -6,6 +6,7 @@ Hybrid Barchart Scraper - Uses Selenium for auth, then API for data
 import logging
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, Optional
 
 from .solution import BarchartWebScraper
@@ -226,11 +227,11 @@ def main():
         if args.save:
             # Save the data using organized structure
             import os
-            date_str = datetime.now().strftime('%Y%m%d')
+            date_str = get_eastern_time().strftime('%Y%m%d')
             output_dir = f"outputs/{date_str}/api_data"
             os.makedirs(output_dir, exist_ok=True)
 
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
             filename = f"barchart_api_data_{timestamp}.json"
             filepath = os.path.join(output_dir, filename)
 

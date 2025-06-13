@@ -9,6 +9,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -29,7 +30,7 @@ def validate_report_generator():
 
     validation_results = {
         "task": "report_generator",
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "tests": [],
         "status": "FAILED",
         "evidence": {}
@@ -91,7 +92,7 @@ def validate_report_generator():
     try:
         # Mock analysis results for testing
         mock_analysis_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "execution_time_seconds": 1.5,
             "primary_algorithm": "nq_ev_analysis",
             "summary": {"successful_analyses": 3, "primary_recommendations": 1},
@@ -268,7 +269,7 @@ def validate_report_generator():
     try:
         if 'report_result' in locals():
             # Save report to file
-            report_filename = f"test_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+            report_filename = f"test_report_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.txt"
             report_path = os.path.join(os.path.dirname(__file__), report_filename)
 
             with open(report_path, 'w', encoding='utf-8') as f:

@@ -20,6 +20,7 @@ import sqlite3
 import threading
 import time
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional, Callable
 from pathlib import Path
 from dataclasses import dataclass, asdict
@@ -455,7 +456,7 @@ class UsageMonitor:
         self.events_processed = 0
         self.bytes_processed = 0
         self.estimated_cost = 0.0
-        self.start_time = datetime.now()
+        self.start_time = get_eastern_time()
 
         # Cost estimation (rough estimates based on Databento pricing)
         self.cost_per_mb = 0.01  # $0.01 per MB
@@ -468,7 +469,7 @@ class UsageMonitor:
 
         # Update cost estimate
         data_cost = (self.bytes_processed / 1024 / 1024) * self.cost_per_mb
-        time_cost = ((datetime.now() - self.start_time).total_seconds() / 3600) * self.cost_per_hour
+        time_cost = ((get_eastern_time() - self.start_time).total_seconds() / 3600) * self.cost_per_hour
         self.estimated_cost = data_cost + time_cost
 
     def should_continue_streaming(self) -> bool:
@@ -482,7 +483,7 @@ class UsageMonitor:
             'bytes_processed': self.bytes_processed,
             'estimated_cost': self.estimated_cost,
             'budget_remaining': self.daily_budget - self.estimated_cost,
-            'runtime_hours': (datetime.now() - self.start_time).total_seconds() / 3600
+            'runtime_hours': (get_eastern_time() - self.start_time).total_seconds() / 3600
         }
 
 class MBOStreamingClient:
@@ -792,7 +793,7 @@ class DatabentoMBOIngestion:
                 'quality_metrics': {
                     'data_source': 'databento_mbo',
                     'streaming': True,
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': get_eastern_time().isoformat()
                 },
                 'raw_data_available': True,
                 'total_contracts': 0  # Will be updated as streaming progresses
@@ -831,7 +832,7 @@ class DatabentoMBOIngestion:
                 'quality_metrics': {
                     'data_source': 'databento_mbo',
                     'historical': True,
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': get_eastern_time().isoformat()
                 },
                 'raw_data_available': True
             }

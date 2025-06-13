@@ -11,6 +11,7 @@ Optimizations to reduce latency for processing 100+ strikes:
 import logging
 from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import defaultdict
@@ -59,7 +60,7 @@ class OptimizedBaselineManager(HistoricalBaselineManager):
 
                 if cache_key in self.baseline_cache:
                     cached_data, cache_time = self.baseline_cache[cache_key]
-                    if datetime.now() - cache_time < self.cache_expiry:
+                    if get_eastern_time() - cache_time < self.cache_expiry:
                         results[cache_key] = cached_data
                         continue
 
@@ -73,7 +74,7 @@ class OptimizedBaselineManager(HistoricalBaselineManager):
             with self._cache_lock:
                 for (strike, option_type), baseline in batch_baselines.items():
                     cache_key = f"{strike}_{option_type}"
-                    self.baseline_cache[cache_key] = (baseline, datetime.now())
+                    self.baseline_cache[cache_key] = (baseline, get_eastern_time())
                     results[cache_key] = baseline
 
         return results
@@ -83,7 +84,7 @@ class OptimizedBaselineManager(HistoricalBaselineManager):
         Calculate baseline statistics for multiple strikes in a single database query
         """
         results = {}
-        cutoff_date = (datetime.now() - timedelta(days=self.lookback_days)).strftime('%Y-%m-%d')
+        cutoff_date = (get_eastern_time() - timedelta(days=self.lookback_days)).strftime('%Y-%m-%d')
 
         with sqlite3.connect(self.db_path) as conn:
             # Build query for all strikes
@@ -216,7 +217,7 @@ class OptimizedBaselineManager(HistoricalBaselineManager):
                     pm.pressure_ratio,
                     total_volume,
                     pm.confidence,
-                    datetime.now().isoformat()
+                    get_eastern_time().isoformat()
                 ))
 
             cursor.executemany("""

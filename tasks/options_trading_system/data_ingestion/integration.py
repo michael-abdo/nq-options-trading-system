@@ -9,6 +9,7 @@ import sys
 import os
 from datetime import datetime
 from typing import Dict, Any, List, Optional
+from utils.timezone_utils import get_eastern_time
 
 # Add child tasks to path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -34,7 +35,7 @@ class DataIngestionPipeline:
         self.mbo_pressure_metrics = []  # For IFD v3 MBO streaming
         self.pipeline_metadata = {
             "pipeline_version": "1.0",
-            "created_at": datetime.now().isoformat(),
+            "created_at": get_eastern_time().isoformat(),
             "sources_configured": list(config.keys())
         }
 
@@ -318,7 +319,7 @@ class DataIngestionPipeline:
             "sources_failed": len([s for s in self.sources.values() if isinstance(s, dict) and s.get("status") == "failed"]),
             "total_contracts": self.normalized_data["normalized_data"]["summary"]["total_contracts"],
             "data_quality": self.normalized_data["quality_metrics"],
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         # Add per-source summaries

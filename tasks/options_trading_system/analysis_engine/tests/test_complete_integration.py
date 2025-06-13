@@ -18,6 +18,7 @@ import time
 import unittest
 import threading
 from datetime import datetime, timedelta, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Any, Optional
 from unittest.mock import Mock, patch, MagicMock
 from dataclasses import dataclass
@@ -717,7 +718,7 @@ class IFDv3IntegrationTest(unittest.TestCase):
             ]
         }
 
-        report_file = f"outputs/integration_test_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        report_file = f"outputs/integration_test_report_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}.json"
         os.makedirs(os.path.dirname(report_file), exist_ok=True)
 
         with open(report_file, 'w') as f:

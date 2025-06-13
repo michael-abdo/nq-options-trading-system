@@ -19,6 +19,7 @@ import os
 import time
 import threading
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -125,7 +126,7 @@ class StreamRecoveryManager:
             self.streams[stream_name] = StreamHealth(
                 stream_name=stream_name,
                 connected=False,
-                last_data_received=datetime.now(),
+                last_data_received=get_eastern_time(),
                 connection_uptime=timedelta(0)
             )
             self.recovery_callbacks[stream_name] = recovery_callback
@@ -139,7 +140,7 @@ class StreamRecoveryManager:
             stream = self.streams[stream_name]
             was_connected = stream.connected
             stream.connected = connected
-            stream.last_data_received = datetime.now() if data_received else stream.last_data_received
+            stream.last_data_received = get_eastern_time() if data_received else stream.last_data_received
 
             # Detect disconnection
             if was_connected and not connected:
@@ -235,7 +236,7 @@ class DataQualityMonitor:
         if "timestamp" in data:
             try:
                 timestamp = datetime.fromisoformat(str(data["timestamp"]))
-                age_ms = (datetime.now() - timestamp).total_seconds() * 1000
+                age_ms = (get_eastern_time() - timestamp).total_seconds() * 1000
 
                 if age_ms > self.quality_thresholds["max_latency_ms"]:
                     quality_score -= 0.2
@@ -254,7 +255,7 @@ class DataQualityMonitor:
 
         # Record quality check
         quality_record = {
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "source": source,
             "score": quality_score,
             "issues": issues
@@ -271,7 +272,7 @@ class DataQualityMonitor:
         """Generate data quality alert"""
         alert = {
             "type": "DATA_QUALITY_ALERT",
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "source": source,
             "quality_score": score,
             "issues": issues,
@@ -310,8 +311,8 @@ class AutomaticFailoverManager:
             self.component_states[component_name] = ComponentHealth(
                 component_name=component_name,
                 status=ComponentStatus.HEALTHY,
-                last_healthy=datetime.now(),
-                last_check=datetime.now()
+                last_healthy=get_eastern_time(),
+                last_check=get_eastern_time()
             )
             self.failover_callbacks[component_name] = failover_callback
 
@@ -323,11 +324,11 @@ class AutomaticFailoverManager:
 
         with self._lock:
             component = self.component_states[component_name]
-            component.last_check = datetime.now()
+            component.last_check = get_eastern_time()
 
             if success:
                 component.consecutive_failures = 0
-                component.last_healthy = datetime.now()
+                component.last_healthy = get_eastern_time()
                 component.response_time_ms = response_time_ms
 
                 # Check if we can recover from degraded state
@@ -429,7 +430,7 @@ class ProductionErrorHandler:
 
     def _setup_logging(self):
         """Setup production logging"""
-        log_file = os.path.join(self.output_dir, f"production_{datetime.now().strftime('%Y%m%d')}.log")
+        log_file = os.path.join(self.output_dir, f"production_{get_eastern_time().strftime('%Y%m%d')}.log")
 
         logging.basicConfig(
             level=logging.INFO,
@@ -477,8 +478,8 @@ class ProductionErrorHandler:
                     context: Dict[str, Any] = None):
         """Record an error event"""
         error_event = ErrorEvent(
-            error_id=f"err_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
-            timestamp=datetime.now(),
+            error_id=f"err_{get_eastern_time().strftime('%Y%m%d_%H%M%S_%f')}",
+            timestamp=get_eastern_time(),
             component=component,
             error_type=error_type,
             severity=severity,
@@ -559,7 +560,7 @@ class ProductionErrorHandler:
         """Perform periodic health check"""
         # Check component health
         for component_name, component in self.failover_manager.component_states.items():
-            age_minutes = (datetime.now() - component.last_check).total_seconds() / 60
+            age_minutes = (get_eastern_time() - component.last_check).total_seconds() / 60
 
             if age_minutes > 5:  # No activity for 5 minutes
                 self.logger.warning(f"Component {component_name} inactive for {age_minutes:.1f} minutes")
@@ -567,7 +568,7 @@ class ProductionErrorHandler:
         # Check stream health
         for stream_name, stream in self.stream_recovery.streams.items():
             if stream.connected:
-                age_minutes = (datetime.now() - stream.last_data_received).total_seconds() / 60
+                age_minutes = (get_eastern_time() - stream.last_data_received).total_seconds() / 60
 
                 if age_minutes > 2:  # No data for 2 minutes
                     self.logger.warning(f"Stream {stream_name} no data for {age_minutes:.1f} minutes")
@@ -577,7 +578,7 @@ class ProductionErrorHandler:
         """Save alert to file"""
         alert_file = os.path.join(
             self.output_dir,
-            f"alerts_{datetime.now().strftime('%Y%m%d')}.json"
+            f"alerts_{get_eastern_time().strftime('%Y%m%d')}.json"
         )
 
         # Load existing alerts
@@ -599,12 +600,12 @@ class ProductionErrorHandler:
     def get_system_health(self) -> Dict[str, Any]:
         """Get overall system health status"""
         health_report = {
-            "timestamp": datetime.now(),
+            "timestamp": get_eastern_time(),
             "overall_status": "HEALTHY",
             "components": {},
             "streams": {},
             "recent_errors": len([e for e in self.error_history if
-                                (datetime.now() - e.timestamp).total_seconds() < 3600]),
+                                (get_eastern_time() - e.timestamp).total_seconds() < 3600]),
             "active_alerts": len(self.active_alerts)
         }
 
@@ -627,7 +628,7 @@ class ProductionErrorHandler:
             health_report["streams"][name] = {
                 "connected": stream.connected,
                 "reconnection_attempts": stream.reconnection_attempts,
-                "last_data_age_minutes": (datetime.now() - stream.last_data_received).total_seconds() / 60
+                "last_data_age_minutes": (get_eastern_time() - stream.last_data_received).total_seconds() / 60
             }
 
             if not stream.connected:

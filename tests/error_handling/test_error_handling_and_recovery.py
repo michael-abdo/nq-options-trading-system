@@ -17,6 +17,7 @@ import json
 import unittest
 import threading
 from datetime import datetime, timezone, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from unittest.mock import Mock, patch, MagicMock
 from contextlib import contextmanager
 
@@ -188,7 +189,7 @@ class TestDataFeedInterruptions(unittest.TestCase):
         recovery_attempts = []
 
         def mock_recovery_callback():
-            recovery_attempts.append(datetime.now())
+            recovery_attempts.append(get_eastern_time())
             # Simulate successful recovery on 2nd attempt
             return len(recovery_attempts) >= 2
 
@@ -228,7 +229,7 @@ class TestDataFeedInterruptions(unittest.TestCase):
             "strike": 21350,
             "volume": 1000,
             "open_interest": 5000,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_eastern_time().isoformat()
         }
 
         good_score = data_quality_monitor.check_data_quality(good_data, "test_feed")
@@ -240,7 +241,7 @@ class TestDataFeedInterruptions(unittest.TestCase):
             "symbol": None,  # Missing symbol
             "strike": 21350,
             "volume": None,  # Missing volume
-            "timestamp": (datetime.now() - timedelta(minutes=10)).isoformat()  # Stale data
+            "timestamp": (get_eastern_time() - timedelta(minutes=10)).isoformat()  # Stale data
         }
 
         bad_score = data_quality_monitor.check_data_quality(bad_data, "test_feed")
@@ -381,7 +382,7 @@ class TestNetworkConnectivityRecovery(unittest.TestCase):
         connection_attempts = []
 
         def failing_connect():
-            connection_attempts.append(datetime.now())
+            connection_attempts.append(get_eastern_time())
             if len(connection_attempts) < 3:
                 executor.broker_connected = False
                 return False
@@ -426,7 +427,7 @@ class TestAPIFailureGracefulDegradation(unittest.TestCase):
         failover_triggered = []
 
         def mock_failover_callback():
-            failover_triggered.append(datetime.now())
+            failover_triggered.append(get_eastern_time())
             return True
 
         # Register component for failover

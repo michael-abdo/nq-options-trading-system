@@ -9,6 +9,7 @@ import sys
 import json
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
@@ -22,7 +23,7 @@ def test_rate_limiting():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "data_sources": {},
         "rate_limit_tests": {},
         "throttling_mechanisms": {},
@@ -306,7 +307,7 @@ def test_rate_limiting():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/rate_limiting_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

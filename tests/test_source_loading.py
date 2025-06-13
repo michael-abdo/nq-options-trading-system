@@ -9,6 +9,7 @@ import sys
 import json
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 
 # Add project paths
@@ -21,7 +22,7 @@ def test_dynamic_source_loading():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "source_registry": {},
         "availability_checks": {},
         "dynamic_loading": {},
@@ -262,7 +263,7 @@ def test_dynamic_source_loading():
                 "last_response_time_ms": 150 + (hash(source_name) % 300),  # Simulated
                 "error_rate_24h": (hash(source_name) % 5) / 100,  # 0-4% error rate
                 "availability_score": 95 + (hash(source_name) % 5),  # 95-99%
-                "last_check": datetime.now().isoformat()
+                "last_check": get_eastern_time().isoformat()
             }
 
             print(f"✅ {source_name}: Health check completed")
@@ -320,7 +321,7 @@ def test_dynamic_source_loading():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/source_loading_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

@@ -18,6 +18,7 @@ import json
 import os
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict, field
 import threading
@@ -179,10 +180,10 @@ class ExtendedTestRunner:
             Session ID
         """
         # Create session
-        session_id = f"extended_test_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        session_id = f"extended_test_{get_eastern_time().strftime('%Y%m%d_%H%M%S')}"
 
         if start_date is None:
-            start_date = datetime.now() - timedelta(days=test_days) if data_mode == "historical" else datetime.now()
+            start_date = get_eastern_time() - timedelta(days=test_days) if data_mode == "historical" else get_eastern_time()
 
         end_date = start_date + timedelta(days=test_days)
 
@@ -444,10 +445,10 @@ class ExtendedTestRunner:
 
     def _daily_market_close(self):
         """Daily market close processing for real-time tests"""
-        print(f"📊 Daily market close processing - {datetime.now().date()}")
+        print(f"📊 Daily market close processing - {get_eastern_time().date()}")
 
         # Collect metrics
-        self._collect_daily_metrics(datetime.now())
+        self._collect_daily_metrics(get_eastern_time())
 
         # Update progress
         self.current_session.current_day += 1
@@ -461,8 +462,8 @@ class ExtendedTestRunner:
 
     def _weekly_summary(self):
         """Generate weekly summary for real-time tests"""
-        print(f"📈 Generating weekly summary - Week ending {datetime.now().date()}")
-        self._generate_weekly_report(datetime.now())
+        print(f"📈 Generating weekly summary - Week ending {get_eastern_time().date()}")
+        self._generate_weekly_report(get_eastern_time())
 
     def _generate_final_report(self):
         """Generate comprehensive final report"""

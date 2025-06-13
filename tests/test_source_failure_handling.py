@@ -9,6 +9,7 @@ import sys
 import json
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 import tempfile
 
@@ -22,7 +23,7 @@ def test_source_failure_handling():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "failure_scenarios": {},
         "fallback_chains": {},
         "recovery_mechanisms": {},
@@ -380,7 +381,7 @@ def test_source_failure_handling():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/source_failure_handling_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

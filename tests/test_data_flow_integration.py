@@ -13,6 +13,7 @@ import os
 import json
 import time
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import List, Dict, Any
 from dataclasses import dataclass
 
@@ -46,7 +47,7 @@ class DataFlowIntegrationTest:
     def __init__(self):
         self.test_results = {
             "test_suite": "data_flow_integration",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "stages": [],
             "performance_metrics": {},
             "status": "UNKNOWN"
@@ -56,7 +57,7 @@ class DataFlowIntegrationTest:
 
     def _generate_sample_mbo_data(self) -> List[MBOTestData]:
         """Generate realistic MBO test data"""
-        base_time = datetime.now() - timedelta(minutes=30)
+        base_time = get_eastern_time() - timedelta(minutes=30)
         mbo_data = []
 
         # Generate 300 ticks over 30 minutes (10 ticks per minute)

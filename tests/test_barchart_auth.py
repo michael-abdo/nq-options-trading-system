@@ -9,6 +9,7 @@ import sys
 import json
 import time
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from pathlib import Path
 
 # Add project paths
@@ -21,7 +22,7 @@ def test_barchart_authentication():
     print("=" * 60)
 
     test_results = {
-        "test_timestamp": datetime.now().isoformat(),
+        "test_timestamp": get_eastern_time().isoformat(),
         "authentication_methods": {},
         "cookie_management": {},
         "session_persistence": {},
@@ -238,7 +239,7 @@ def test_barchart_authentication():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/barchart_auth_test_{timestamp}.json'
 
     with open(results_file, 'w') as f:

@@ -20,6 +20,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 import threading
 
+# Add project root to path for imports
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
+from utils.timezone_utils import get_eastern_time
+
 # Add current directory to path for child task imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
@@ -75,7 +79,7 @@ class PressureMetricsCache:
         with self._lock:
             if key in self.cache:
                 timestamp = self.timestamps[key]
-                if (datetime.now() - timestamp).total_seconds() < self.ttl_seconds:
+                if (get_eastern_time() - timestamp).total_seconds() < self.ttl_seconds:
                     return self.cache[key]
                 else:
                     # Expired, remove from cache
@@ -87,12 +91,12 @@ class PressureMetricsCache:
         """Cache pressure metrics with timestamp"""
         with self._lock:
             self.cache[key] = value
-            self.timestamps[key] = datetime.now()
+            self.timestamps[key] = get_eastern_time()
 
     def clear_expired(self):
         """Clear expired cache entries"""
         with self._lock:
-            now = datetime.now()
+            now = get_eastern_time()
             expired_keys = [
                 key for key, timestamp in self.timestamps.items()
                 if (now - timestamp).total_seconds() >= self.ttl_seconds
@@ -118,7 +122,7 @@ class SignalConflictAnalyzer:
         """Analyze conflicts between v1 and v3 signals and resolve"""
 
         conflict_analysis = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "v1_signal_count": len(v1_signals),
             "v3_signal_count": len(v3_signals),
             "conflicts": [],
@@ -204,7 +208,7 @@ class SignalConflictAnalyzer:
                 log_dir = "outputs/signal_conflicts"
                 os.makedirs(log_dir, exist_ok=True)
 
-                log_file = os.path.join(log_dir, f"conflicts_{datetime.now().strftime('%Y%m%d')}.json")
+                log_file = os.path.join(log_dir, f"conflicts_{get_eastern_time().strftime('%Y%m%d')}.json")
 
                 # Append to daily log file
                 existing_logs = []
@@ -227,7 +231,7 @@ class SignalConflictAnalyzer:
 
     def get_recent_conflicts(self, hours: int = 24) -> List[Dict[str, Any]]:
         """Get conflicts from the last N hours"""
-        cutoff = datetime.now() - timedelta(hours=hours)
+        cutoff = get_eastern_time() - timedelta(hours=hours)
 
         with self._lock:
             return [
@@ -272,18 +276,18 @@ class BaselineCalculationCache:
         """Store aggregated statistics"""
         with self._lock:
             key = f"{symbol}_{lookback_days}d"
-            stats['calculated_at'] = datetime.now().isoformat()
+            stats['calculated_at'] = get_eastern_time().isoformat()
             self.aggregated_stats[key] = stats
 
     def should_recalculate_baselines(self) -> bool:
         """Check if daily baselines need recalculation"""
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = get_eastern_time().strftime('%Y-%m-%d')
         return self.last_calculation_date != today
 
     def mark_baselines_calculated(self):
         """Mark baselines as calculated for today"""
         with self._lock:
-            self.last_calculation_date = datetime.now().strftime('%Y-%m-%d')
+            self.last_calculation_date = get_eastern_time().strftime('%Y-%m-%d')
 
     def pre_calculate_daily_baselines(self, symbols: List[str] = None):
         """Pre-calculate baselines for all symbols for performance optimization"""
@@ -306,7 +310,7 @@ class BaselineCalculationCache:
                     "volume_profile": {"morning": 0.4, "midday": 0.3, "afternoon": 0.3}
                 }
 
-                today = datetime.now().strftime('%Y-%m-%d')
+                today = get_eastern_time().strftime('%Y-%m-%d')
                 self.store_daily_baseline(today, symbol, baseline_data)
 
                 # Calculate 20-day aggregated stats
@@ -379,14 +383,14 @@ class AnalysisEngine:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
         except Exception as e:
             print(f"    ✗ NQ EV Analysis failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def run_risk_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -409,21 +413,21 @@ class AnalysisEngine:
                 return {
                     "status": "success",
                     "result": result,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
             else:
                 print(f"    ✗ Risk Analysis failed: {result.get('error', 'Unknown error')}")
                 return {
                     "status": "failed",
                     "error": result.get('error', 'Unknown error'),
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
         except Exception as e:
             print(f"    ✗ Risk Analysis failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def run_volume_shock_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -457,21 +461,21 @@ class AnalysisEngine:
                 return {
                     "status": "success",
                     "result": result,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
             else:
                 print(f"    ✗ Volume Shock Analysis failed: {result.get('error', 'Unknown error')}")
                 return {
                     "status": "failed",
                     "error": result.get('error', 'Unknown error'),
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
         except Exception as e:
             print(f"    ✗ Volume Shock Analysis failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def run_dead_simple_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -504,7 +508,7 @@ class AnalysisEngine:
                 return {
                     "status": "failed",
                     "error": "Data ingestion pipeline failed",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
 
             # Extract normalized contracts
@@ -515,7 +519,7 @@ class AnalysisEngine:
                 return {
                     "status": "failed",
                     "error": "No options contracts available",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
 
             # Estimate underlying price from contracts
@@ -566,7 +570,7 @@ class AnalysisEngine:
                     "total_signals": len(signals),
                     "extreme_signals": len([s for s in signals if s.confidence == "EXTREME"])
                 },
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
         except Exception as e:
@@ -574,7 +578,7 @@ class AnalysisEngine:
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
@@ -715,7 +719,7 @@ class AnalysisEngine:
                 return {
                     "status": "failed",
                     "error": "No pressure metrics available",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_eastern_time().isoformat()
                 }
 
             print(f"    ✓ Loaded {len(pressure_metrics)} pressure metric snapshots")
@@ -766,7 +770,7 @@ class AnalysisEngine:
                     "pressure_snapshots_analyzed": len(pressure_metrics),
                     "latency_ms": e2e_latency
                 },
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
         except Exception as e:
@@ -775,7 +779,7 @@ class AnalysisEngine:
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_eastern_time().isoformat()
             }
 
     def _generate_simulated_pressure_metrics(self) -> List[Dict[str, Any]]:
@@ -785,7 +789,7 @@ class AnalysisEngine:
 
         # Generate 5 simulated pressure snapshots over 5-minute windows
         metrics = []
-        base_time = datetime.now()
+        base_time = get_eastern_time()
 
         symbols = ["NQM25", "NQU25", "ESM25"]  # NQ futures options
 
@@ -848,12 +852,12 @@ class AnalysisEngine:
 
         for metric in pressure_metrics:
             # Parse timestamp from string if needed
-            time_window = metric.get("window_start", datetime.now().isoformat())
+            time_window = metric.get("window_start", get_eastern_time().isoformat())
             if isinstance(time_window, str):
                 try:
                     time_window = datetime.fromisoformat(time_window.replace('Z', '+00:00'))
                 except:
-                    time_window = datetime.now()
+                    time_window = get_eastern_time()
 
             # Extract strike and option type from metric or use defaults
             strike = metric.get("strike", 21350.0)
@@ -928,7 +932,7 @@ class AnalysisEngine:
         print("  Synthesizing Analysis Results (NQ EV Algorithm Priority)...")
 
         synthesis = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "primary_algorithm": "nq_ev_analysis",
             "analysis_summary": {},
             "trading_recommendations": [],
@@ -1221,7 +1225,7 @@ class AnalysisEngine:
         print("EXECUTING ANALYSIS ENGINE (NQ EV + Risk + Volume Shock + DEAD Simple + IFD v3.0)")
         print("-" * 50)
 
-        start_time = datetime.now()
+        start_time = get_eastern_time()
 
         # Run all analyses in parallel for speed
         print("  Running all analyses simultaneously...")
@@ -1248,7 +1252,7 @@ class AnalysisEngine:
                     self.analysis_results[analysis_name] = {
                         "status": "failed",
                         "error": str(e),
-                        "timestamp": datetime.now().isoformat()
+                        "timestamp": get_eastern_time().isoformat()
                     }
 
         print("  All analyses complete. Synthesizing results...")
@@ -1257,11 +1261,11 @@ class AnalysisEngine:
         synthesis = self.synthesize_analysis_results()
 
         # Calculate execution time
-        execution_time = (datetime.now() - start_time).total_seconds()
+        execution_time = (get_eastern_time() - start_time).total_seconds()
 
         # Final results
         final_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "execution_time_seconds": execution_time,
             "primary_algorithm": "nq_ev_analysis",
             "analysis_config": self.config,

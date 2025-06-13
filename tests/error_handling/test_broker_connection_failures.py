@@ -15,6 +15,7 @@ import sys
 import time
 import unittest
 from datetime import datetime, timezone
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from unittest.mock import Mock, patch, MagicMock
 from contextlib import contextmanager
 
@@ -98,7 +99,7 @@ class TestBrokerConnectionFailures(unittest.TestCase):
         auth_attempts = []
 
         def mock_auth_failure():
-            auth_attempts.append(datetime.now())
+            auth_attempts.append(get_eastern_time())
             executor.broker_connected = False
             raise PermissionError("Authentication failed - invalid credentials")
 

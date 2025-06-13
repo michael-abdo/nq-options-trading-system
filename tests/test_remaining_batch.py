@@ -8,6 +8,7 @@ import os
 import sys
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 sys.path.append('.')
 
@@ -162,7 +163,7 @@ def run_all_tests():
 
     # Save results
     os.makedirs('outputs/live_trading_tests', exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    timestamp = get_eastern_time().strftime('%Y%m%d_%H%M%S')
     results_file = f'outputs/live_trading_tests/remaining_batch_test_{timestamp}.json'
     with open(results_file, 'w') as f:
         json.dump({**results, "overall": {"accuracy": total_accuracy, "status": overall_status}}, f)

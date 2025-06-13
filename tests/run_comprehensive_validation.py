@@ -17,6 +17,7 @@ import json
 import time
 import subprocess
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, Any, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -32,7 +33,7 @@ class ComprehensiveTestValidator:
     def __init__(self):
         self.validation_results = {
             "validation_suite": "comprehensive_ifd_v3_testing",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_eastern_time().isoformat(),
             "test_components": {},
             "summary": {},
             "overall_status": "UNKNOWN"
@@ -330,7 +331,7 @@ class ComprehensiveTestValidator:
         # Create detailed report
         report = {
             "report_type": "comprehensive_ifd_v3_validation",
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": get_eastern_time().isoformat(),
             "test_execution": self.validation_results,
             "requirements_compliance": self._assess_requirements_compliance(),
             "readiness_assessment": self._assess_production_readiness(),

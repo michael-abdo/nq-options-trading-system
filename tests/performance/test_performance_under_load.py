@@ -18,6 +18,7 @@ import gc
 import threading
 import multiprocessing
 from datetime import datetime, timezone, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
 from typing import Dict, List, Any, Tuple, Optional
 import unittest
@@ -796,7 +797,7 @@ class TestDiskAndLogManagement(unittest.TestCase):
             write_latencies = []
 
             for i in range(1000):
-                log_entry = f"{datetime.now().isoformat()} - Test log entry {i} with some data\n"
+                log_entry = f"{get_eastern_time().isoformat()} - Test log entry {i} with some data\n"
 
                 start_time = time.time()
                 with open(log_file, 'a') as f:

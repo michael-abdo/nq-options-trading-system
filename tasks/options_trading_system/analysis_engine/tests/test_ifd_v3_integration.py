@@ -8,6 +8,7 @@ import sys
 import os
 import json
 from datetime import datetime
+from utils.timezone_utils import get_eastern_time, get_utc_time
 
 # Add project root to path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,7 +44,7 @@ def test_ifd_v3_integration():
 
     test_results = {
         "test": "ifd_v3_integration",
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": get_eastern_time().isoformat(),
         "tests": [],
         "status": "FAILED"
     }
@@ -156,9 +157,9 @@ def test_ifd_v3_integration():
     # Test 4: Parallel execution
     print("\n4. Testing parallel execution performance...")
     try:
-        start_time = datetime.now()
+        start_time = get_eastern_time()
         result = run_analysis_engine(data_config, analysis_config)
-        execution_time = (datetime.now() - start_time).total_seconds()
+        execution_time = (get_eastern_time() - start_time).total_seconds()
 
         # Should complete within reasonable time (< 5 seconds for simulated data)
         test_passed = execution_time < 5.0 and result["status"] == "success"

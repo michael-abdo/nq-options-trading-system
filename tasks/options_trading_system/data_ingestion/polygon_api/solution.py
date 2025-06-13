@@ -13,6 +13,7 @@ import requests
 import time
 import json
 from datetime import datetime, timedelta
+from utils.timezone_utils import get_eastern_time, get_utc_time
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 
@@ -119,7 +120,7 @@ class PolygonAPIClient:
         contracts = []
 
         if 'results' in response:
-            timestamp = datetime.now().isoformat()
+            timestamp = get_eastern_time().isoformat()
             for contract_data in response['results']:
                 contract = PolygonOptionsContract(
                     ticker=contract_data.get('ticker', ''),
@@ -146,9 +147,9 @@ class PolygonAPIClient:
                       limit: int = 10) -> Dict[str, Any]:
         """Get aggregate bars for an options contract"""
         if not from_date:
-            from_date = datetime.now().strftime('%Y-%m-%d')
+            from_date = get_eastern_time().strftime('%Y-%m-%d')
         if not to_date:
-            to_date = datetime.now().strftime('%Y-%m-%d')
+            to_date = get_eastern_time().strftime('%Y-%m-%d')
 
         endpoint = f"/v2/aggs/ticker/{ticker}/range/{multiplier}/{timespan}/{from_date}/{to_date}"
 
@@ -239,7 +240,7 @@ def load_polygon_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
             'total_contracts': len(all_contracts),
             'underlying_tickers': tickers,
             'data_source': 'polygon.io',
-            'fetch_timestamp': datetime.now().isoformat()
+            'fetch_timestamp': get_eastern_time().isoformat()
         },
         'options_data': options_data,
         'source_summary': source_summary,
