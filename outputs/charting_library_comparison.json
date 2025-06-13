@@ -1,0 +1,122 @@
+{
+  "timestamp": "2025-06-13T09:08:45.866708",
+  "detailed_results": {
+    "matplotlib": {
+      "render_time": 0.792,
+      "complexity": "High - requires manual candlestick drawing",
+      "visual_quality": "Good - professional appearance",
+      "code_lines": 45,
+      "features": [
+        "Manual candlestick drawing",
+        "Volume subplot",
+        "Time formatting"
+      ],
+      "pros": [
+        "Full control",
+        "Lightweight",
+        "No dependencies"
+      ],
+      "cons": [
+        "Complex implementation",
+        "Manual OHLC logic",
+        "No financial indicators"
+      ],
+      "performance_100": 0.023,
+      "performance_500": 0.025,
+      "performance_1000": 0.022,
+      "real_time_suitability": "Possible but complex",
+      "learning_curve": "High",
+      "maintenance_effort": "High"
+    },
+    "plotly": {
+      "render_time": 0.117,
+      "complexity": "Medium - built-in candlestick support",
+      "visual_quality": "Excellent - professional interactive charts",
+      "code_lines": 25,
+      "features": [
+        "Built-in candlestick",
+        "Interactive zoom/pan",
+        "Hover tooltips",
+        "Volume subplot"
+      ],
+      "pros": [
+        "Excellent interactivity",
+        "Professional appearance",
+        "Built-in financial charts",
+        "Web-ready"
+      ],
+      "cons": [
+        "Larger file sizes",
+        "Requires kaleido for images",
+        "More dependencies"
+      ],
+      "performance_100": 0.004,
+      "performance_500": 0.003,
+      "performance_1000": 0.003,
+      "real_time_suitability": "Excellent - built for real-time updates",
+      "real_time_fps": 7788.9,
+      "update_time": 0.000128,
+      "learning_curve": "Medium",
+      "maintenance_effort": "Low"
+    },
+    "mplfinance": {
+      "render_time": 0.704,
+      "complexity": "Low - purpose-built for financial charts",
+      "visual_quality": "Excellent - professional financial appearance",
+      "code_lines": 8,
+      "features": [
+        "Built-in candlestick",
+        "Volume subplot",
+        "Financial styling",
+        "Multiple themes"
+      ],
+      "pros": [
+        "Extremely simple",
+        "Professional financial charts",
+        "Built-in indicators",
+        "Optimized for OHLCV"
+      ],
+      "cons": [
+        "Less customization",
+        "Static output only",
+        "Limited interactivity"
+      ],
+      "performance_100": 0.292,
+      "performance_500": 0.711,
+      "performance_1000": 1.087,
+      "real_time_suitability": "Limited - requires full chart regeneration",
+      "learning_curve": "Very Low",
+      "maintenance_effort": "Very Low"
+    }
+  },
+  "weighted_scores": {
+    "matplotlib": 2.15,
+    "plotly": 4.45,
+    "mplfinance": 3.3
+  },
+  "recommendation": {
+    "recommended_library": "plotly",
+    "score": 4.45,
+    "rationale": "\n\ud83d\udd0d RATIONALE FOR PLOTLY:\n\u2022 Perfect for real-time updates with 7,788 FPS capability\n\u2022 Built-in candlestick charts require minimal code (25 lines)\n\u2022 Excellent professional appearance with interactive features\n\u2022 Strong integration possibilities with existing Databento infrastructure\n\u2022 Moderate learning curve but excellent documentation\n\u2022 Best balance of simplicity, features, and real-time capability\n\n\u2705 DECISION: Plotly is the optimal choice for simple 5-minute graph implementation\n",
+    "runner_up": "mplfinance"
+  },
+  "methodology": {
+    "criteria": [
+      "simplicity",
+      "real_time_updates",
+      "professional_appearance",
+      "interactivity",
+      "performance",
+      "maintenance"
+    ],
+    "weights": {
+      "simplicity": 0.25,
+      "real_time_updates": 0.3,
+      "professional_appearance": 0.1,
+      "interactivity": 0.05,
+      "performance": 0.15,
+      "maintenance": 0.15
+    },
+    "scoring_scale": "1-5 (5 = best)"
+  }
+}

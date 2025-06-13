@@ -17,6 +17,9 @@ python3 scripts/nq_realtime_display.py
 # 🔴 NEW: NQ volume and trading analysis
 python3 scripts/nq_volume_analysis.py
 
+# 📊 NEW: Interactive 5-minute candlestick charts
+python3 scripts/nq_5m_chart.py
+
 # Run Shadow Trading Mode (validation without real positions)
 python3 scripts/run_shadow_trading.py
 
@@ -109,7 +112,17 @@ python3 scripts/nq_realtime_display.py
 
 # Analyze trading volume patterns
 python3 scripts/nq_volume_analysis.py
+
+# Interactive 5-minute candlestick charts
+python3 scripts/nq_5m_chart.py
 ```
+
+### 📊 NEW: 5-Minute Candlestick Charts
+- **Real-Time Updates**: Automatic refresh every 30 seconds
+- **Professional Charts**: Interactive Plotly candlesticks with volume
+- **Technical Indicators**: MA20 and MA50 overlays
+- **Dark Theme**: Optimized for trading screens
+- **Flexible Time Ranges**: 1 hour to full day views
 
 ### Current Market Data (Example)
 - **NQ Price**: $21,742.50 (live)
