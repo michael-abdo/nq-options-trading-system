@@ -81,16 +81,9 @@ class PhaseValidator:
         )
 
         # Check test files
-        self.check_file_exists(
-            "data_ingestion/databento_api/test_validation.py",
-            "Databento validation tests"
-        )
+        # Note: test_validation.py files removed in cleanup - tests now in tests/ directory
 
-        # Check evidence
-        self.check_file_exists(
-            "data_ingestion/databento_api/evidence.json",
-            "Performance evidence"
-        )
+        # Note: evidence.json files removed in cleanup - using integration tests instead
 
     def validate_phase2(self):
         """Validate Phase 2: IFD v3.0 Analysis Engine"""
@@ -116,16 +109,9 @@ class PhaseValidator:
         )
 
         # Check test files
-        self.check_file_exists(
-            "institutional_flow_v3/test_validation.py",
-            "IFD v3.0 validation tests"
-        )
+        # Note: test_validation.py files removed in cleanup - tests now in tests/ directory
 
-        # Check evidence
-        self.check_file_exists(
-            "institutional_flow_v3/evidence.json",
-            "Algorithm performance evidence"
-        )
+        # Note: evidence.json files removed in cleanup - using integration tests instead
 
     def validate_phase3(self):
         """Validate Phase 3: Integration and Testing"""

@@ -223,15 +223,47 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │   ├── test_api_authentication.py     # API authentication tests
 │   └── ... (30+ more test files)      # Complete test coverage
 ├── archive/                            # Legacy files (archived)
-├── docs/                               # 📚 DOCUMENTATION (ORGANIZED)
-│   ├── CRITICAL_SAFETY_CHANGES.md      # Critical safety changes documentation
-│   ├── security_audit_results.txt      # Security vulnerability audit results
-│   ├── security_fix_implementation_plan.txt # Security fix implementation plan
-│   ├── SHADOW_TRADING_IMPLEMENTATION_SUMMARY.md # Complete implementation guide
-│   ├── analysis/                       # Strategy documentation
-│   ├── data_sources/                   # Data source guides
-│   ├── live_trading_test_plan.txt     # Comprehensive test plan
-│   └── *.md                           # System documentation
+├── docs/                               # 📚 DOCUMENTATION (FULLY ORGANIZED)
+│   ├── CLAUDE.md                       # 🔧 Project instructions (essential - stays in root)
+│   ├── charts/                         # 📊 5-minute chart documentation (6 files)
+│   │   ├── 5M_CHART_DEVELOPER_EXAMPLES.md
+│   │   ├── 5M_CHART_PERFORMANCE_GUIDE.md
+│   │   └── 5_MINUTE_CHART_DOCUMENTATION.md
+│   ├── security/                       # 🔒 Security documentation (4 files)
+│   │   ├── API_KEY_SECURITY.md
+│   │   ├── CRITICAL_SAFETY_CHANGES.md
+│   │   └── security_*.txt
+│   ├── implementation/                 # 🏗️ Implementation summaries (11 files)
+│   │   ├── ANALYSIS_ENGINE_INTEGRATION_COMPLETE.md
+│   │   ├── SHADOW_TRADING_IMPLEMENTATION_SUMMARY.md
+│   │   └── *_IMPLEMENTATION_*.md
+│   ├── testing/                        # 🧪 Testing documentation (7 files)
+│   │   ├── COMPREHENSIVE_TEST_RESULTS.md
+│   │   ├── live_trading_test_plan.txt
+│   │   └── *_TEST_*.md
+│   ├── phases/                         # 📋 Phase management (8 files)
+│   │   ├── PHASE_EXECUTION_GUIDE.md
+│   │   └── PHASE_*.md
+│   ├── operations/                     # 🚀 Operations & deployment (3 files)
+│   │   ├── DEPLOYMENT_GUIDE.md
+│   │   ├── PRODUCTION_MONITORING.md
+│   │   └── ROLLBACK_PROCEDURES.md
+│   ├── project/                        # 📈 Project status (3 files)
+│   │   ├── FINAL_PROJECT_STATUS.md
+│   │   └── PROJECT_*.md
+│   ├── plans/                          # 🗺️ Architecture & plans (3 files)
+│   │   ├── IFD_v3_Implementation_Plan.txt
+│   │   └── PIPELINE_ARCHITECTURE_EXPLANATION.md
+│   ├── fixes/                          # 🔧 Gap analysis & fixes (3 files)
+│   │   ├── ROOT_CAUSE_ANALYSIS_AND_FIXES.md
+│   │   └── *_GAP_*.md
+│   ├── analysis/                       # 🎯 Strategy documentation
+│   │   ├── IFD/                        # Institutional Flow Detection
+│   │   ├── institutional_detection_v1/ # Legacy detection algorithms
+│   │   └── mechanics/                  # Market mechanics analysis
+│   └── data_sources/                   # 📡 Data source guides
+│       ├── databento.md                # Databento integration
+│       └── tradovate_integration.md    # Tradovate integration
 ├── outputs/                            # 📁 OUTPUT STRUCTURE (GIT IGNORED - SECURE)
 │   ├── trading_safety_*.log           # 🛡️ Trading safety logs (moved from root)
 │   ├── YYYYMMDD/                       # Date-based organization

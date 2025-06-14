@@ -1,129 +1,120 @@
-# AGENTIC CODER: STRUCTURED SOLUTION BUILDER
+# HIERARCHICAL PIPELINE TRADING SYSTEM
 
-## Core Rule
-**BUILD ON TRUTH, NOT CHAOS**: Every output must extend the existing file structure, not create random new files.
+## Core Architecture
+**HIERARCHICAL INTEGRATION PIPELINE**: Build on the established task-based directory structure using integration modules and comprehensive testing.
 
-## File Structure Discipline
+## System Structure
 
-### **BEFORE ANY CODE**: State the file structure truth
-```
-EXISTING STRUCTURE: [List current files/folders]
-BUILDING ON: [Specific file/folder being extended]
-NEW ADDITIONS: [Only what's essential for this task]
-```
-
-### **REQUIRED RECURSIVE STRUCTURE**:
+### **CURRENT ARCHITECTURE**:
 ```
 project_root/
-├── tasks/{task_id}/
-│   ├── solution.py          # THE working implementation
-│   ├── test_validation.py   # THE validation proof
-│   ├── evidence.json        # THE test results
-│   ├── integration.py       # THE child solution combiner (if has subtasks)
-│   ├── evidence_rollup.json # THE aggregated child evidence (if has subtasks)
-│   ├── {child_id}/         # Direct child tasks (no subtasks folder)
-│   │   ├── solution.py
-│   │   ├── test_validation.py
-│   │   └── evidence.json
-│   └── coordination.json    # Local subtask coordination
-└── coordination/
-    ├── hierarchy.json      # Task tree structure
-    └── global_status.json  # Top-level status only
+├── tasks/options_trading_system/
+│   ├── analysis_engine/
+│   │   ├── integration.py          # IFD v3.0 integration hub
+│   │   ├── pipeline_config.json    # Pipeline configuration
+│   │   ├── institutional_flow_v3/  # Core IFD v3.0 implementation
+│   │   │   ├── solution.py         # Main algorithm
+│   │   │   └── optimizations.py    # Performance enhancements
+│   │   ├── strategies/             # Trading strategies
+│   │   ├── monitoring/             # Performance tracking
+│   │   └── tests/                  # Integration tests
+│   ├── data_ingestion/
+│   │   ├── integration.py          # Data pipeline coordinator
+│   │   ├── databento_api/          # Market data feed
+│   │   └── barchart_web_scraper/   # Backup data source
+│   └── output_generation/
+│       ├── integration.py          # Output system
+│       └── report_generator/       # Trading reports
+├── scripts/                        # Execution scripts
+│   ├── run_pipeline.py            # Main pipeline runner
+│   ├── run_shadow_trading.py      # Shadow trading mode
+│   └── validate_phase.py          # Phase validation
+└── tests/                         # System-wide tests
+    └── shadow_trading/            # Shadow trading tests
 ```
 
-## Operating Protocol
+## Development Guidelines
 
-### **1. STRUCTURE CHECK**
-Before coding anything:
-- "Where does this fit in existing structure?"
-- "What file am I building on?"
-- "What minimal additions are needed?"
+### **1. INTEGRATION-FIRST APPROACH**
+- Each major component has an `integration.py` that coordinates submodules
+- Integration modules are the primary entry points
+- All components must work through the integration layer
 
-### **2. HIERARCHICAL VALIDATION**
-**For Leaf Tasks** (no subtasks):
-- **ONE** solution file + validation + evidence
+### **2. PIPELINE CONFIGURATION**
+- `pipeline_config.json` defines the data flow
+- Configuration-driven architecture for flexibility
+- Supports multiple trading profiles (production, testing, conservative)
 
-**For Parent Tasks** (has subtasks):
-- **ONE** integration file (combines child solutions)
-- **ONE** evidence_rollup file (aggregates child evidence + integration proof)
-- Validation only proceeds when ALL children validated
+### **3. TESTING STRATEGY**
+- Integration tests in `tests/` directories
+- Shadow trading for real-time validation
+- Performance monitoring built into the system
 
-### **3. RECURSIVE EVIDENCE AGGREGATION**
+### **4. MODULE STRUCTURE**
 ```
-Parent validates when:
-├── All child evidence.json show "VALIDATED"
-├── integration.py successfully combines child solutions
-├── test_validation.py proves integrated solution works
-└── evidence_rollup.json aggregates all proof
-```
-
-### **3. PROGRESSIVE BUILDING**
-```
-EXTENDING: [existing_file.py]
-REASON: [why this specific file]
-CHANGES: [minimal additions to accomplish task]
+module/
+├── solution.py      # Core implementation
+├── integration.py   # Module coordinator (if parent)
+├── __init__.py     # Package exports
+└── tests/          # Module-specific tests
 ```
 
-## Closed Feedback Loop Protocol
+## Key Components
 
-### **EVERY RESPONSE MUST EXECUTE THIS RECURSIVE LOOP**:
+### **Analysis Engine (IFD v3.0)**
+- Institutional Flow Detection version 3.0
+- Real-time market analysis
+- Signal generation and validation
+- Performance tracking and optimization
 
-**For Leaf Tasks**:
-```
-1. STRUCTURE ANALYSIS: [current files, building on specific file]
-2. IMPLEMENTATION: [solution.py - working code]
-3. VALIDATION EXECUTION: [test_validation.py - actual test run]
-4. EVIDENCE UPDATE: [evidence.json - proof of success]
-5. STRUCTURE VERIFICATION: [confirm clean structure]
-```
+### **Data Ingestion Pipeline**
+- Databento API for real-time market data
+- Barchart web scraper as backup
+- Data normalization and caching
+- MBO (Market by Order) streaming support
 
-**For Parent Tasks** (with subtasks):
-```
-1. STRUCTURE ANALYSIS: [current files, child completion status]
-2. CHILD VALIDATION CHECK: [verify all subtasks validated]
-3. INTEGRATION: [integration.py - combine child solutions]
-4. INTEGRATION TESTING: [test_validation.py - prove integration works]
-5. EVIDENCE ROLLUP: [evidence_rollup.json - aggregate all child evidence + integration proof]
-6. STRUCTURE VERIFICATION: [confirm hierarchical structure clean]
-```
+### **Output Generation**
+- JSON export for external systems
+- Human-readable trading reports
+- Performance metrics and analytics
 
-### **MANDATORY OUTPUT FORMAT**:
+## Operational Modes
 
-**For Leaf Tasks**:
-```
-EXECUTING FEEDBACK LOOP (LEAF):
+### **1. PRODUCTION MODE**
+- Full IFD v3.0 algorithm
+- Real-time data feeds
+- Live signal generation
 
-STRUCTURE: Building on tasks/{task_id}/solution.py
-IMPLEMENTATION: [working code in solution.py]
-TEST EXECUTION: [actual test run from test_validation.py]
-EVIDENCE: {"status": "VALIDATED", "proof": "[actual_results]"}
-STRUCTURE VERIFIED: [confirm clean structure maintained]
+### **2. SHADOW TRADING MODE**
+- Parallel execution without orders
+- Signal validation and comparison
+- Performance metrics collection
 
-LOOP COMPLETE: Leaf task validated, ready for parent integration.
-```
+### **3. TESTING MODE**
+- Conservative thresholds
+- Enhanced logging
+- Detailed diagnostics
 
-**For Parent Tasks**:
-```
-EXECUTING FEEDBACK LOOP (PARENT):
+## Best Practices
 
-STRUCTURE: Integrating children in tasks/{task_id}/integration.py
-CHILD STATUS: [all children validated: true/false]
-INTEGRATION: [working code that combines child solutions]
-INTEGRATION TEST: [actual test proving combined solution works]
-EVIDENCE ROLLUP: {"status": "VALIDATED", "children": [...], "integration_proof": "[results]"}
-STRUCTURE VERIFIED: [confirm hierarchical structure clean]
+### **DO**:
+- Use integration.py modules as entry points
+- Follow the hierarchical structure
+- Add comprehensive tests for new features
+- Update pipeline_config.json for flow changes
+- Monitor performance metrics
 
-LOOP COMPLETE: Parent task validated with full child evidence aggregation.
-```
+### **DON'T**:
+- Create files outside the established structure
+- Bypass the integration layer
+- Add untested code to production
+- Modify core algorithms without shadow testing
 
-## Forbidden Actions
-- Breaking the feedback loop (no untested code)
-- Creating structure chaos (random files)
-- Skipping validation execution
-- Delivering without evidence update
-
-## Success Pattern
-"I extended [specific_file], executed validation, got [proof], updated evidence.json, structure remains clean."
+## Current Status
+- **Active System**: IFD v3.0 in production
+- **Architecture**: Hierarchical Pipeline Framework
+- **Phase**: Continuous improvement and monitoring
+- **Testing**: Shadow trading validation active
 
 ## Core Truth
-**THE HIERARCHICAL FILE STRUCTURE + RECURSIVE VALIDATION LOOP IS THE SYSTEM**. Every action must complete the full loop within the disciplined structure. Parent tasks integrate children, children validate independently, evidence aggregates up the hierarchy.
+**THE HIERARCHICAL PIPELINE IS THE SYSTEM**. All components integrate through defined interfaces, data flows through configured pipelines, and shadow trading validates everything before production.
