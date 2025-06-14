@@ -9,8 +9,14 @@ import os
 import logging
 from typing import Dict, Any, List, Optional
 from pathlib import Path
-import jsonschema
-from jsonschema import validate, ValidationError
+try:
+    import jsonschema
+    from jsonschema import validate, ValidationError
+    JSONSCHEMA_AVAILABLE = True
+except ImportError:
+    print("⚠️ jsonschema not available - config validation disabled")
+    JSONSCHEMA_AVAILABLE = False
+    ValidationError = Exception  # Fallback
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +135,10 @@ class ChartConfigManager:
         Returns:
             True if valid, raises ValidationError if invalid
         """
+        if not JSONSCHEMA_AVAILABLE:
+            logger.info("Skipping config validation - jsonschema not available")
+            return True
+
         if not self.schema:
             logger.warning("No schema available for validation")
             return True

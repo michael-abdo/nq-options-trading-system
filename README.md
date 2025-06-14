@@ -10,6 +10,21 @@
 - Use templates in `outputs_safe/` for sharing examples
 - See [Security Guidelines](#security-guidelines) below for complete information
 
+## Setup
+
+**Environment Configuration**:
+
+```bash
+# 1. Copy environment template and add your API keys
+cp .env.example .env
+# Edit .env with your Databento API key:
+# DATABENTO_API_KEY=db-your-key-here
+
+# 2. Install dependencies (optional - fallback modes available)
+pip install plotly jsonschema  # For charts and config validation
+# Note: System runs in fallback mode if these are not installed
+```
+
 ## Quick Start
 
 **Live Trading System - Fully Operational**:

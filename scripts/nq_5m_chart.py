@@ -4,8 +4,13 @@ Simple 5-Minute NQ Futures Chart
 Real-time candlestick chart with volume using Plotly and Databento data
 """
 
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+try:
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+    PLOTLY_AVAILABLE = True
+except ImportError:
+    print("📊 Plotly not available - running in data export mode")
+    PLOTLY_AVAILABLE = False
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -83,13 +88,49 @@ class NQFiveMinuteChart:
         self.running = False
         sys.exit(0)
 
-    def create_chart(self, df):
+    def _create_data_export(self, df):
         """
-        Create the plotly figure with candlestick and volume
+        Export chart data when plotly is not available
 
         Args:
             df: DataFrame with OHLCV data
         """
+        print("\n📊 5-MINUTE NQ CHART DATA")
+        print("=" * 60)
+        print(f"Symbol: {self.symbol}")
+        print(f"Time Range: {df.index[0]} to {df.index[-1]}")
+        print(f"Bars: {len(df)}")
+        print("-" * 60)
+
+        # Show recent data
+        recent_bars = df.tail(10)
+        print("📈 Recent 10 Bars:")
+        print(recent_bars[['open', 'high', 'low', 'close', 'volume']].round(2))
+
+        # Summary stats
+        print("\n📊 Summary Statistics:")
+        print(f"High: ${df['high'].max():.2f}")
+        print(f"Low: ${df['low'].min():.2f}")
+        print(f"Current: ${df['close'].iloc[-1]:.2f}")
+        print(f"Volume (avg): {df['volume'].mean():.0f}")
+
+        # Save to CSV
+        filename = f"nq_5m_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        df.to_csv(filename)
+        print(f"\n💾 Data saved to: {filename}")
+        print("\n💡 To see charts, install plotly: pip install plotly")
+        return None
+
+    def create_chart(self, df):
+        """
+        Create the plotly figure with candlestick and volume
+        Or export data if plotly is not available
+
+        Args:
+            df: DataFrame with OHLCV data
+        """
+        if not PLOTLY_AVAILABLE:
+            return self._create_data_export(df)
         # Convert UTC timestamps to Eastern Time for display
         et_tz = pytz.timezone('US/Eastern')
         df_display = df.copy()
@@ -313,7 +354,7 @@ class NQFiveMinuteChart:
             return False
 
     def run_interactive(self):
-        """Run the chart in interactive mode (opens in browser)"""
+        """Run the chart in interactive mode (opens in browser) or data export mode"""
         logger.info(f"Starting {self.symbol} 5-minute chart...")
         logger.info(f"Update interval: {self.update_interval} seconds")
         logger.info(f"Time range: {self.hours} hours")
@@ -321,6 +362,11 @@ class NQFiveMinuteChart:
         # Initial chart creation
         if not self.update_chart():
             logger.error("Failed to create initial chart")
+            return
+
+        if not PLOTLY_AVAILABLE:
+            print("\n📊 Data export mode - no interactive chart available")
+            print("💡 Install plotly for interactive charts: pip install plotly")
             return
 
         # Show the chart
@@ -338,7 +384,11 @@ class NQFiveMinuteChart:
                 logger.info("Data refreshed (manual browser refresh needed)")
 
     def save_chart(self, filename=None):
-        """Save the chart as an HTML file"""
+        """Save the chart as an HTML file or CSV data"""
+        if not PLOTLY_AVAILABLE:
+            print("📊 Chart save not available without plotly - data already saved as CSV")
+            return None
+
         if filename is None:
             filename = f"nq_5m_chart_{format_eastern_timestamp()}.html"
 

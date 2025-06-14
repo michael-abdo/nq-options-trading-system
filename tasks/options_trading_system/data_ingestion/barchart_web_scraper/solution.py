@@ -537,7 +537,7 @@ class BarchartAPIComparator:
             Symbol like "MC1M25" for Monday June 2025 daily options
         """
         from datetime import datetime
-from utils.timezone_utils import get_eastern_time, get_utc_time, timedelta
+        from utils.timezone_utils import get_eastern_time, get_utc_time, timedelta
 
         now = get_eastern_time()
 

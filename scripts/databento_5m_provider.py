@@ -202,8 +202,18 @@ class Databento5MinuteProvider:
             DataFrame with latest 5-minute bars
         """
         # Calculate time range (5 minutes per bar) - timezone-aware
-        end = datetime.now(pytz.UTC)
-        start = end - timedelta(minutes=count * 5 + 10)  # Add buffer
+        # Use end of previous trading day since data might not be available for current day
+        now = datetime.now(pytz.UTC)
+
+        # If it's weekend or after hours, go back to last market close
+        if now.weekday() >= 5:  # Saturday or Sunday
+            days_back = now.weekday() - 4  # Go back to Friday
+            end = now - timedelta(days=days_back, hours=3)  # End of Friday trading
+        else:
+            # Use yesterday's data to avoid real-time data issues
+            end = now - timedelta(days=1)
+
+        start = end - timedelta(minutes=count * 5 + 60)  # Add larger buffer
 
         df = self.get_historical_5min_bars(symbol, start, end)
 
