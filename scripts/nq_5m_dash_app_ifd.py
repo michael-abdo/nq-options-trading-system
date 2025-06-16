@@ -26,7 +26,7 @@ import time
 import pytz
 
 from databento_5m_provider import Databento5MinuteProvider
-# Simple time formatting function
+
 def format_eastern_display(dt=None):
     """Format datetime for Eastern time display"""
     if dt is None:
@@ -67,6 +67,14 @@ class NQDashAppIFD:
 
         # Initialize data provider with IFD support
         self.data_provider = Databento5MinuteProvider(enable_ifd_signals=IFD_AVAILABLE)
+
+        # Start live streaming in a separate thread
+        import threading
+        self.streaming_thread = threading.Thread(
+            target=self._start_live_streaming,
+            daemon=True
+        )
+        self.streaming_thread.start()
 
         # Initialize Dash app
         self.app = dash.Dash(__name__)
@@ -696,9 +704,29 @@ class NQDashAppIFD:
             logger.warning(f"Could not create demo IFD signals: {e}")
             return []
 
+    def _start_live_streaming(self):
+        """Start live streaming in background thread"""
+        try:
+            logger.info(f"Starting live streaming for {self.symbol}")
+
+            def on_new_bar(bar):
+                """Callback for new 5-minute bars"""
+                if bar:
+                    logger.debug(f"Live bar received: ${bar.get('close', 0):,.2f}")
+
+            self.data_provider.start_live_streaming(
+                symbol=self.symbol,
+                callback=on_new_bar
+            )
+        except Exception as e:
+            logger.error(f"Live streaming failed: {e}")
+            logger.info("Dashboard will use historical data only")
+
     def _signal_handler(self, signum, frame):
         """Handle shutdown signals"""
         logger.info("Shutdown signal received")
+        # Stop live streaming
+        self.data_provider.stop_live_streaming()
         sys.exit(0)
 
     def run(self, debug=False, open_browser=True):

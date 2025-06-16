@@ -88,7 +88,25 @@ class DatabentoBulletproofAuth:
     def _load_from_env_file(self) -> Optional[str]:
         """Load API key from .env file"""
         try:
-            with open('.env', 'r') as f:
+            # Check multiple possible .env locations
+            possible_paths = [
+                '.env',
+                '../.env',
+                os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+            ]
+
+            env_path = None
+            for path in possible_paths:
+                if os.path.exists(path):
+                    env_path = path
+                    break
+
+            if not env_path:
+                logger.warning("No .env file found in any expected location")
+                return None
+
+            logger.info(f"📁 Reading .env from: {env_path}")
+            with open(env_path, 'r') as f:
                 for line in f:
                     line = line.strip()
                     if line.startswith('DATABENTO_API_KEY='):

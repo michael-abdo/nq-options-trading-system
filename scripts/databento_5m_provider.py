@@ -15,7 +15,7 @@ from data_aggregation import aggregate_1min_to_5min, MinuteToFiveMinuteAggregato
 from databento_auth import ensure_trading_safe_databento_client, DatabentoCriticalAuthError
 import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from utils.timezone_utils import get_eastern_time, get_utc_time, to_eastern_time
+from utils.timezone_utils import get_utc_time
 
 # Import IFD Chart Bridge for signal integration
 try:
@@ -58,6 +58,8 @@ class Databento5MinuteProvider:
         self.live_client = None
         self.aggregator = MinuteToFiveMinuteAggregator()
         self._cache = {}  # Simple in-memory cache
+        self._live_data_buffer = []  # Buffer for live streaming data
+        self._is_streaming = False
 
         # IFD Signal Integration
         self.enable_ifd_signals = enable_ifd_signals and IFD_BRIDGE_AVAILABLE
@@ -180,9 +182,28 @@ class Databento5MinuteProvider:
             callback: Function to call with completed 5-minute bars
         """
         if self.live_client is None:
-            self.live_client = db.Live(key=self.api_key)
+            # Get API key from client
+            api_key = os.getenv('DATABENTO_API_KEY')
+            if not api_key:
+                raise DatabentoCriticalAuthError("No Databento API key available for live streaming")
+            self.live_client = db.Live(key=api_key)
 
         logger.info(f"Starting live streaming for {symbol}")
+        self._is_streaming = True
+
+        def live_callback(completed_bar):
+            """Internal callback to handle completed 5-minute bars"""
+            if completed_bar:
+                # Add to live data buffer
+                self._live_data_buffer.append(completed_bar)
+                # Keep only last 100 bars in buffer
+                if len(self._live_data_buffer) > 100:
+                    self._live_data_buffer = self._live_data_buffer[-100:]
+
+                logger.debug(f"New live 5-min bar: Close=${completed_bar.get('close', 0):,.2f}")
+
+                if callback:
+                    callback(completed_bar)
 
         # Subscribe to 1-minute bars
         self.live_client.subscribe(
@@ -194,6 +215,9 @@ class Databento5MinuteProvider:
 
         # Process incoming bars
         for record in self.live_client:
+            if not self._is_streaming:
+                break
+
             if hasattr(record, 'open'):
                 # Convert to bar data
                 bar_data = {
@@ -207,47 +231,70 @@ class Databento5MinuteProvider:
 
                 # Add to aggregator
                 completed_5min_bar = self.aggregator.add_1min_bar(bar_data)
-
-                if completed_5min_bar and callback:
-                    callback(completed_5min_bar)
+                live_callback(completed_5min_bar)
 
     def stop_live_streaming(self):
         """Stop live streaming"""
+        self._is_streaming = False
         if self.live_client:
             logger.info("Stopping live streaming")
             self.live_client = None
 
     def get_latest_bars(self, symbol: str = "NQM5", count: int = 50) -> pd.DataFrame:
         """
-        Get the latest N 5-minute bars
+        Get the latest N 5-minute bars (combines historical + live data)
 
         Args:
             symbol: Contract symbol
             count: Number of 5-minute bars to return
 
         Returns:
-            DataFrame with latest 5-minute bars
+            DataFrame with latest 5-minute bars including live data
         """
-        # Calculate time range (5 minutes per bar) - timezone-aware
-        # Use end of previous trading day since data might not be available for current day
+        # Get historical data first
         now = datetime.now(pytz.UTC)
 
-        # If it's weekend or after hours, go back to last market close
-        if now.weekday() >= 5:  # Saturday or Sunday
-            days_back = now.weekday() - 4  # Go back to Friday
-            end = now - timedelta(days=days_back, hours=3)  # End of Friday trading
-        else:
-            # Use yesterday's data to avoid real-time data issues
-            end = now - timedelta(days=1)
+        # Get historical data up to 5 minutes ago to avoid overlaps
+        end = now - timedelta(minutes=5)
+        start = end - timedelta(minutes=count * 5 + 60)  # Add buffer for aggregation
 
-        start = end - timedelta(minutes=count * 5 + 60)  # Add larger buffer
+        df_historical = self.get_historical_5min_bars(symbol, start, end)
 
-        df = self.get_historical_5min_bars(symbol, start, end)
+        # Combine with live data if available
+        if self._live_data_buffer:
+            logger.debug(f"Combining historical data with {len(self._live_data_buffer)} live bars")
 
-        # Return only the requested number of bars
-        if len(df) > count:
-            return df.iloc[-count:]
-        return df
+            # Convert live data buffer to DataFrame
+            live_rows = []
+            for bar in self._live_data_buffer:
+                live_rows.append({
+                    'open': bar['open'],
+                    'high': bar['high'],
+                    'low': bar['low'],
+                    'close': bar['close'],
+                    'volume': bar['volume']
+                })
+
+            if live_rows:
+                live_timestamps = [bar['timestamp'] for bar in self._live_data_buffer]
+                df_live = pd.DataFrame(live_rows, index=pd.DatetimeIndex(live_timestamps, tz=pytz.UTC))
+
+                # Combine and remove duplicates
+                df_combined = pd.concat([df_historical, df_live])
+                df_combined = df_combined[~df_combined.index.duplicated(keep='last')]
+                df_combined = df_combined.sort_index()
+
+                logger.debug(f"Live data integrated: Latest close=${df_combined['close'].iloc[-1]:,.2f}")
+
+                # Return only the requested number of bars
+                if len(df_combined) > count:
+                    return df_combined.iloc[-count:]
+                return df_combined
+
+        # Fallback to historical data only
+        if len(df_historical) > count:
+            return df_historical.iloc[-count:]
+        return df_historical
 
     def clear_cache(self):
         """Clear the data cache"""

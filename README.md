@@ -55,8 +55,11 @@ python3 scripts/examples/batch_charts.py
 # Live market monitoring with alerts
 python3 scripts/examples/live_monitor.py
 
-# 🔥 NEW: Real-time 5-minute dashboard with auto-refresh
-python3 scripts/start_trading_safe_chart.py --type dashboard
+# 🔥 NEW: Real-time 5-minute dashboard with live streaming
+python3 scripts/nq_5m_dash_app_ifd.py
+
+# 🔴 NEW: Live streaming dashboard with auto-start
+./start_live_dashboard.sh
 
 # Run Shadow Trading Mode (validation without real positions)
 python3 scripts/run_shadow_trading.py
@@ -100,6 +103,8 @@ Final Results: Top-ranked trading opportunities
 ### ✅ Live Data Streaming
 - **Databento Integration**: CME Globex MBO streaming for NQ options with real-time pressure metrics
 - **Real-Time Price Streaming**: Live NQ futures prices with sub-second latency
+- **Live Dashboard**: Real-time 5-minute candlestick charts with automatic refresh
+- **Live Data Aggregation**: 1-minute to 5-minute bar conversion in real-time
 - **Volume Analysis**: Real-time volume tracking and institutional flow detection
 - **Multi-Source Pipeline**: Priority-based data loading with automatic fallbacks
 - **Cache Optimization**: 100% hit rate on Barchart data with intelligent cache management
@@ -215,8 +220,8 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │   ├── requirements_chart.txt         # 📋 Chart system requirements (moved from root)
 │   ├── start_trading_safe_chart.py    # 🔥 5-MINUTE CHART DASHBOARD ENTRY POINT
 │   ├── nq_5m_chart.py                 # 📊 Static 5-minute chart generator
-│   ├── nq_5m_dash_app.py              # Real-time dashboard application
-│   ├── databento_5m_provider.py       # 5-minute data provider with timezone handling
+│   ├── nq_5m_dash_app_ifd.py          # 🔴 LIVE STREAMING DASHBOARD WITH IFD
+│   ├── databento_5m_provider.py       # 5-minute data provider with live streaming
 │   ├── databento_auth.py              # Bulletproof API authentication system
 │   ├── data_aggregation.py            # 1-minute to 5-minute OHLCV aggregation
 │   ├── compare_barchart_databento.py  # Data source comparison

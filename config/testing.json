@@ -1,20 +1,41 @@
 {
   "data_sources": {
     "databento": {
-      "enabled": true,
+      "enabled": false,
       "config": {
         "api_key": "${DATABENTO_API_KEY}",
         "symbols": [
           "NQ"
         ],
-        "use_cache": true,
-        "cache_dir": "outputs/databento_cache"
+        "streaming_mode": true,
+        "use_cache": false,
+        "cache_dir": "outputs/databento_cache",
+        "mbo_streaming": {
+          "enabled": true,
+          "dataset": "GLBX.MDP3",
+          "schema": "trades",
+          "stype_in": "parent",
+          "symbols": [
+            "NQ.OPT"
+          ],
+          "window_size": 300,
+          "pressure_thresholds": {
+            "min_pressure_ratio": 1.2,
+            "min_volume": 50,
+            "min_confidence": 0.6
+          },
+          "daily_budget": 25.0,
+          "enable_live_streaming": true
+        }
       }
     },
     "barchart": {
-      "enabled": false,
+      "enabled": true,
       "config": {
-        "DISABLED": "TRADING SAFETY - Only Databento allowed"
+        "use_live_api": false,
+        "futures_symbol": "NQM25",
+        "headless": true,
+        "file_path": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/outputs/20250608/api_data/barchart_api_data_20250608_220140.json"
       }
     },
     "polygon": {
@@ -61,6 +82,25 @@
       "iv_skew_threshold": 0.05,
       "term_structure_slope_threshold": 0.02,
       "min_volume_for_iv": 10
+    },
+    "institutional_flow_v3": {
+      "enabled": true,
+      "db_path": "outputs/ifd_v3_live.db",
+      "pressure_thresholds": {
+        "min_pressure_ratio": 1.2,
+        "min_volume_concentration": 0.3,
+        "min_time_persistence": 0.4,
+        "min_trend_strength": 0.5
+      },
+      "confidence_thresholds": {
+        "min_baseline_anomaly": 1.5,
+        "min_overall_confidence": 0.6
+      },
+      "market_making_penalty": 0.3,
+      "historical_baselines": {
+        "lookback_days": 10,
+        "min_data_quality": 0.85
+      }
     }
   },
   "output": {

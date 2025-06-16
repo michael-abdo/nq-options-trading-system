@@ -30,7 +30,7 @@
       }
     },
     "barchart": {
-      "enabled": true,
+      "enabled": false,
       "config": {
         "use_live_api": true,
         "futures_symbol": "NQM25",
@@ -39,7 +39,7 @@
       }
     },
     "polygon": {
-      "enabled": true,
+      "enabled": false,
       "config": {
         "api_key": "${POLYGON_API_KEY}",
         "symbols": [
@@ -49,7 +49,7 @@
       }
     },
     "tradovate": {
-      "enabled": true,
+      "enabled": false,
       "config": {
         "mode": "demo",
         "cid": "6540",
