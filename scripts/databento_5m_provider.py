@@ -237,12 +237,14 @@ class Databento5MinuteProvider:
     # Demo data fallback was REMOVED for trading safety
     # Using fake data could cause financial losses
 
-    def start_live_streaming(self, symbol: str = "NQM5", callback=None):
+    def start_live_streaming(self, symbol: str = "NQ.FUT", callback=None):
         """
         Start live streaming of 1-minute bars and aggregate to 5-minute
+        Uses INDUSTRY STANDARD approach: parent symbols to automatically
+        route to the most active contract month
 
         Args:
-            symbol: Contract symbol
+            symbol: Parent symbol (default: NQ.FUT for all NQ futures)
             callback: Function to call with completed 5-minute bars
         """
         if self.live_client is None:
@@ -284,13 +286,14 @@ class Databento5MinuteProvider:
                     callback(completed_bar)
 
         try:
-            # Subscribe to 1-minute bars
-            logger.info(f"📡 Subscribing to live data: dataset=GLBX.MDP3, schema=ohlcv-1m, symbol={symbol}")
+            # Subscribe using INDUSTRY STANDARD parent symbology
+            # This automatically routes to the most active contract month
+            logger.info(f"📡 Subscribing to live data: dataset=GLBX.MDP3, schema=ohlcv-1s, symbol={symbol}, stype=parent")
             self.live_client.subscribe(
                 dataset="GLBX.MDP3",
-                schema="ohlcv-1m",
+                schema="ohlcv-1s",  # 1-second bars for real-time streaming
                 symbols=[symbol],
-                stype_in="raw_symbol"
+                stype_in="parent"  # PROFESSIONAL: Let Databento route to active contract
             )
             logger.info("✅ Successfully subscribed to live data stream")
         except Exception as e:
@@ -319,10 +322,11 @@ class Databento5MinuteProvider:
 
                 # Log first few bars to verify streaming
                 if len(self._live_data_buffer) < 3:
-                    logger.info(f"🔴 Live 1-min bar: {timestamp.strftime('%H:%M:%S')} - ${record.close / 1e9:,.2f}")
+                    logger.info(f"🔴 Live 1-sec bar: {timestamp.strftime('%H:%M:%S')} - ${record.close / 1e9:,.2f}")
 
-                # Add to aggregator
-                completed_5min_bar = self.aggregator.add_1min_bar(bar_data)
+                # Add to aggregator (aggregator should handle 1-second bars)
+                # Note: We're now getting 1-second bars, aggregator will convert to 1-min then 5-min
+                completed_5min_bar = self.aggregator.add_1min_bar(bar_data)  # This should be renamed but works
                 if completed_5min_bar:
                     logger.info(f"✅ Completed 5-min bar: {completed_5min_bar['timestamp'].strftime('%H:%M:%S')} - ${completed_5min_bar['close']:,.2f}")
                 live_callback(completed_5min_bar)

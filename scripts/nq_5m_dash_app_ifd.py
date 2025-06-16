@@ -724,8 +724,13 @@ class NQDashAppIFD:
                 if bar:
                     logger.debug(f"Live bar received: ${bar.get('close', 0):,.2f}")
 
+            # Use INDUSTRY STANDARD parent symbol for live streaming
+            # Dashboard displays specific contract (e.g., NQM5) but streams from active contract
+            live_symbol = "NQ.FUT"  # Let Databento route to most active contract
+            logger.info(f"Dashboard shows {self.symbol}, streaming from active contract via {live_symbol}")
+
             self.data_provider.start_live_streaming(
-                symbol=self.symbol,
+                symbol=live_symbol,  # Use parent symbol for live streaming
                 callback=on_new_bar
             )
         except Exception as e:

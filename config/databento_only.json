@@ -5,7 +5,7 @@
       "config": {
         "api_key": "${DATABENTO_API_KEY}",
         "symbols": [
-          "NQ"
+          "NQ.FUT"
         ],
         "use_cache": true,
         "cache_dir": "outputs/databento_cache"
