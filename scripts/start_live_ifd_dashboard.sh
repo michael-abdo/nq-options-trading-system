@@ -8,4 +8,5 @@ echo "   ✅ Signal overlay visualization"
 echo "   ✅ Dark theme"
 echo ""
 echo "Opening http://127.0.0.1:8050/"
-python3 scripts/nq_5m_dash_app_ifd.py
+# Use market-aware version that handles futures hours correctly
+python3 scripts/nq_5m_dash_app_markets_fixed.py
