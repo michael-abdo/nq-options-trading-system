@@ -101,7 +101,7 @@ class Databento5MinuteProvider:
 
         # Auto-adjust end time if beyond data availability (safety feature)
         # Databento data typically has a few minutes delay
-        max_available_end = get_utc_time() - timedelta(minutes=15)
+        max_available_end = get_utc_time() - timedelta(minutes=10)
         if end > max_available_end:
             logger.info(f"Adjusting end time from {end} to {max_available_end} (data availability)")
             end = max_available_end
@@ -182,10 +182,13 @@ class Databento5MinuteProvider:
             callback: Function to call with completed 5-minute bars
         """
         if self.live_client is None:
-            # Get API key from client
-            api_key = os.getenv('DATABENTO_API_KEY')
-            if not api_key:
-                raise DatabentoCriticalAuthError("No Databento API key available for live streaming")
+            # Get API key - prefer from authenticated client to ensure consistency
+            if hasattr(self.client, '_key') and self.client._key:
+                api_key = self.client._key
+            else:
+                api_key = os.getenv('DATABENTO_API_KEY')
+                if not api_key:
+                    raise DatabentoCriticalAuthError("No Databento API key available for live streaming")
             self.live_client = db.Live(key=api_key)
 
         logger.info(f"Starting live streaming for {symbol}")
@@ -254,8 +257,8 @@ class Databento5MinuteProvider:
         # Get historical data first
         now = datetime.now(pytz.UTC)
 
-        # Get historical data up to 5 minutes ago to avoid overlaps
-        end = now - timedelta(minutes=5)
+        # Get historical data up to 10 minutes ago to avoid overlaps
+        end = now - timedelta(minutes=10)
         start = end - timedelta(minutes=count * 5 + 60)  # Add buffer for aggregation
 
         df_historical = self.get_historical_5min_bars(symbol, start, end)

@@ -1,0 +1,83 @@
+- Fix Live Streaming Disconnects - Complete System Integration
+  - Phase 1: Fix Time Disconnect (Futures Market Hours)
+    - Analyze Current Market Hours Implementation
+      - Review timezone_utils.py is_market_hours() function
+      - Document stock vs futures market hours differences
+      - Find all files using is_market_hours()
+    - Create Futures Market Hours Function
+      - Add is_futures_market_hours() to timezone_utils.py
+      - Sunday 6PM to Friday 5PM ET logic
+      - Handle market holidays and maintenance windows
+    - Update All Market Hours Checks
+      - Replace is_market_hours() with is_futures_market_hours() in data providers
+      - Update dashboard files to use futures hours
+      - Test market hours logic for edge cases
+  - Phase 2: Fix API Disconnect (Live WebSocket Authentication)
+    - Investigate Databento Live API Requirements
+      - Review Databento documentation for live vs historical auth
+      - Check if different API endpoints are needed
+      - Test with Databento support examples
+    - Debug Current Authentication Flow
+      - Add detailed logging to live streaming auth
+      - Compare headers/params between Historical and Live clients
+      - Test with curl/postman to isolate issues
+    - Implement Proper Live Authentication
+      - Create dedicated live_auth module if needed
+      - Handle WebSocket-specific auth requirements
+      - Add retry logic with exponential backoff
+    - Test Live Streaming Connection
+      - Create standalone live streaming test script
+      - Verify data flow from WebSocket
+      - Monitor connection stability
+  - Phase 3: Fix Evolution Disconnect (Integrate All Fixes)
+    - Audit Existing Fixed Versions
+      - List all *_fixed.py files and their fixes
+      - Document which fixes are actually being used
+      - Identify conflicting implementations
+    - Create Unified Data Provider
+      - Merge all fixes into single databento_5m_provider.py
+      - Remove duplicate/abandoned fix files
+      - Ensure backward compatibility
+    - Update All Dashboards to Use Fixed Provider
+      - Update nq_5m_dash_app_ifd.py imports
+      - Remove patches and use core fixed functionality
+      - Test all dashboard variants
+  - Phase 4: Fix Data Availability Timing
+    - Analyze Databento Data Latency
+      - Test actual data availability delays
+      - Document dataset-specific latencies
+      - Create dynamic delay calculation
+    - Implement Smart Data Request Logic
+      - Start with 1-minute delay and increase if needed
+      - Cache successful delay values
+      - Different delays for different datasets
+    - Add Fallback Mechanisms
+      - Try multiple time windows if first fails
+      - Graceful degradation to older data
+      - User notification of data delays
+  - Phase 5: Integration Testing
+    - Create Comprehensive Test Suite
+      - Test all market hour scenarios
+      - Test live streaming authentication
+      - Test data availability edge cases
+    - End-to-End Dashboard Testing
+      - Test during market open (Sunday evening)
+      - Test during regular trading hours
+      - Test market close scenarios
+    - Performance Testing
+      - Measure latency improvements
+      - Monitor resource usage
+      - Stress test connection handling
+  - Phase 6: Documentation and Cleanup
+    - Update All Documentation
+      - Document futures market hours
+      - Document live streaming setup
+      - Create troubleshooting guide
+    - Remove Deprecated Code
+      - Delete empty _fixed.py files
+      - Remove commented patches
+      - Clean up duplicate functions
+    - Create Migration Guide
+      - Steps to update existing installations
+      - Configuration changes needed
+      - Common issues and solutions

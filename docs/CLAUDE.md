@@ -68,7 +68,8 @@ module/
 - Performance tracking and optimization
 
 ### **Data Ingestion Pipeline**
-- Databento API for real-time market data
+- **Databento API**: ACTIVE LIVE DATA SUBSCRIPTION with MBO streaming
+- **Live Streaming**: Real-time market data with sub-second latency
 - Barchart web scraper as backup
 - Data normalization and caching
 - MBO (Market by Order) streaming support
@@ -82,8 +83,8 @@ module/
 
 ### **1. PRODUCTION MODE**
 - Full IFD v3.0 algorithm
-- Real-time data feeds
-- Live signal generation
+- **LIVE DATABENTO STREAMING**: Real-time market data
+- Live signal generation with authenticated MBO data
 
 ### **2. SHADOW TRADING MODE**
 - Parallel execution without orders
@@ -113,8 +114,29 @@ module/
 ## Current Status
 - **Active System**: IFD v3.0 in production
 - **Architecture**: Hierarchical Pipeline Framework
+- **Data Subscription**: ACTIVE DATABENTO LIVE STREAMING SUBSCRIPTION
+- **Live Data**: Real-time market data with authenticated access
 - **Phase**: Continuous improvement and monitoring
 - **Testing**: Shadow trading validation active
 
+## Live Data Subscription Details
+
+### **DATABENTO LIVE STREAMING ACTIVE**
+- **Subscription Status**: ACTIVE AND AUTHENTICATED
+- **API Key**: Saved securely in .env file
+- **Dataset Access**: GLBX.MDP3 with full MBO streaming
+- **Live Streaming**: Real-time 1-minute bars with sub-second latency
+- **Historical Data**: Full access with 23 datasets available
+- **Authentication**: Multi-path .env fallback system implemented
+
+### **LIVE DASHBOARD CAPABILITIES**
+- Real-time NQ futures streaming with IFD v3.0 signals
+- 1-minute to 5-minute bar aggregation in real-time
+- Live data buffer with 100-bar retention
+- Automatic fallback to historical data if streaming fails
+- Dashboard available at: `./start_live_dashboard.sh`
+
 ## Core Truth
 **THE HIERARCHICAL PIPELINE IS THE SYSTEM**. All components integrate through defined interfaces, data flows through configured pipelines, and shadow trading validates everything before production.
+
+**LIVE STREAMING IS ACTIVE AND OPERATIONAL** with authenticated Databento subscription providing real-time market data for production trading.

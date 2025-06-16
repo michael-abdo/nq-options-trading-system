@@ -56,6 +56,11 @@ npm-debug.log*
 .env.test
 .env.production
 
+# Shell configuration files (contain API keys)
+.zshrc
+.bashrc
+.bash_profile
+
 # Cache files
 outputs/databento_cache/
 **/databento_cache/

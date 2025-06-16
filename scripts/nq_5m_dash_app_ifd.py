@@ -422,7 +422,6 @@ class NQDashAppIFD:
 
             except Exception as e:
                 logger.error(f"Error updating chart: {e}")
-                empty_fig = self._create_empty_chart()
                 # Create demo chart on error
                 fig, _ = self._create_demo_chart_with_data()
                 return fig, format_eastern_display(), "Error", f"Chart update failed: {str(e)}"
@@ -720,6 +719,9 @@ class NQDashAppIFD:
             )
         except Exception as e:
             logger.error(f"Live streaming failed: {e}")
+            if "authentication" in str(e).lower():
+                logger.warning("Live streaming requires different API permissions than historical data")
+                logger.info("Contact Databento support to enable live streaming on your account")
             logger.info("Dashboard will use historical data only")
 
     def _signal_handler(self, signum, frame):
