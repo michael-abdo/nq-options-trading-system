@@ -27,6 +27,10 @@ import pytz
 
 from databento_5m_provider import Databento5MinuteProvider
 
+# Import timezone utilities for proper futures market hours
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'utils'))
+from timezone_utils import is_futures_market_hours
+
 def format_eastern_display(dt=None):
     """Format datetime for Eastern time display"""
     if dt is None:
@@ -402,7 +406,13 @@ class NQDashAppIFD:
                         if demo_ifd_signals:
                             self._add_ifd_overlay(fig, df_demo, demo_ifd_signals, config_data)
 
-                    return fig, format_eastern_display(), "Demo Mode", "Markets Closed - Showing Sample Data"
+                    # Check if futures markets are actually open
+                    if is_futures_market_hours():
+                        status_msg = "No Data Available - Check Data Connection"
+                    else:
+                        status_msg = "Markets Closed - Showing Sample Data"
+
+                    return fig, format_eastern_display(), "Demo Mode", status_msg
 
                 # Create chart
                 fig = self._create_chart(df, ifd_signals, config_data)
@@ -645,9 +655,10 @@ class NQDashAppIFD:
         fig = self._create_chart(df_demo, ifd_signals=None, config_data=None)
 
         # Update title for demo mode
+        market_status = "No Data Available" if is_futures_market_hours() else "Markets Closed"
         fig.update_layout(
             title=dict(
-                text=f"{self.symbol} - Demo Mode (Markets Closed)",
+                text=f"{self.symbol} - Demo Mode ({market_status})",
                 font=dict(size=20, color='#FFFFFF')
             ),
             annotations=[
