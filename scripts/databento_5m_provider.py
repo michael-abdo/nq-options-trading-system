@@ -103,14 +103,17 @@ class Databento5MinuteProvider:
             start = end - timedelta(hours=hours_back)
 
         # Smart data availability handling with dynamic adjustment
-        # Start with conservative delay based on market hours
-        base_delay = 15 if is_futures_market_hours() else 10
+        # Databento typically has 10-12 minute delay based on error messages
+        base_delay = 12 if is_futures_market_hours() else 12
 
         # Store original end time for potential retries
         original_end = end
 
-        # Apply initial delay
+        # Apply initial delay and round down to minute boundary
         max_available_end = get_utc_time() - timedelta(minutes=base_delay)
+        # Round down to minute boundary (Databento data is minute-aligned)
+        max_available_end = max_available_end.replace(second=0, microsecond=0)
+
         if end > max_available_end:
             logger.info(f"Adjusting end time from {end} to {max_available_end} (data availability, delay={base_delay}m)")
             end = max_available_end
@@ -304,8 +307,9 @@ class Databento5MinuteProvider:
 
             if hasattr(record, 'open'):
                 # Convert to bar data
+                timestamp = datetime.fromtimestamp(record.ts_event / 1e9, tz=pytz.UTC)
                 bar_data = {
-                    'timestamp': datetime.fromtimestamp(record.ts_event / 1e9),
+                    'timestamp': timestamp,
                     'open': record.open / 1e9,
                     'high': record.high / 1e9,
                     'low': record.low / 1e9,
@@ -313,8 +317,14 @@ class Databento5MinuteProvider:
                     'volume': record.volume
                 }
 
+                # Log first few bars to verify streaming
+                if len(self._live_data_buffer) < 3:
+                    logger.info(f"🔴 Live 1-min bar: {timestamp.strftime('%H:%M:%S')} - ${record.close / 1e9:,.2f}")
+
                 # Add to aggregator
                 completed_5min_bar = self.aggregator.add_1min_bar(bar_data)
+                if completed_5min_bar:
+                    logger.info(f"✅ Completed 5-min bar: {completed_5min_bar['timestamp'].strftime('%H:%M:%S')} - ${completed_5min_bar['close']:,.2f}")
                 live_callback(completed_5min_bar)
 
     def stop_live_streaming(self):
@@ -349,8 +359,11 @@ class Databento5MinuteProvider:
         else:
             # Markets are open, get recent data
             now = get_utc_time()
-            # Use conservative delay for futures during market hours
-            end = now - timedelta(minutes=15)
+            # Databento has 10-12 minute delay in data availability
+            # Get historical data up to 12 minutes ago, live streaming fills the gap
+            end = now - timedelta(minutes=12)
+            # Round down to minute boundary
+            end = end.replace(second=0, microsecond=0)
             start = end - timedelta(minutes=count * 5 + 60)  # Add buffer for aggregation
 
         df_historical = self.get_historical_5min_bars(symbol, start, end)
