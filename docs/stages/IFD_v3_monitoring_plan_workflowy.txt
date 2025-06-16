@@ -1,0 +1,24 @@
+- Create monitoring/context.py
+  - Provide singleton instances: latency_monitor, cost_tracker, success_metrics_tracker, performance_tracker
+- Create monitoring/dashboards/cli_dashboard.py
+  - Render KPI summary to console at end-run or periodic interval
+- Create monitoring/dashboards/slack_notifier.py
+  - Send alerts and daily summary to Slack/webhook
+- Modify data_ingestion/integration.py
+  - Call context.latency_monitor.record_mbo() for every MBO event
+- Modify analysis_engine/integration.py
+  - Call context.latency_monitor.record_signal() after each trading signal
+- Enhance databento_api/solution.py
+  - Accept CostTracker via DI or pull from context
+    - After each API request, compute cost and call cost_tracker.record(cost_usd)
+- Extend configuration JSONs (ifd_v3_production.json, databento_only.json)
+  - Add "monitoring" section: daily_budget_usd, monthly_budget_usd, slack_webhook_url
+- Update tasks/options_trading_system/integration.py
+  - Initialise context trackers from config values
+    - After pipelines finish, emit cli_dashboard summary
+- Write tests (tests/test_latency_and_costs.py)
+  - Simulate 3 MBO events → 3 signals; assert latency stats & cost totals
+- Update documentation
+  - Add Slack setup & budget fields to docs/analysis/IFD/IFD_v3_Architecture_Design.md
+- Manual sanity run
+  - Execute end-to-end script; observe KPI dashboard & alert outputs

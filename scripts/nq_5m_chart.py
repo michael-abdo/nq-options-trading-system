@@ -28,6 +28,14 @@ from databento_5m_provider import Databento5MinuteProvider
 from utils.timezone_utils import format_eastern_timestamp
 from chart_config_manager import ChartConfigManager
 
+# Import IFD Chart Bridge for signal overlay
+try:
+    from ifd_chart_bridge import IFDAggregatedSignal
+    IFD_OVERLAY_AVAILABLE = True
+except ImportError:
+    logger.debug("IFD overlay not available - charts will run without IFD signals")
+    IFD_OVERLAY_AVAILABLE = False
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -74,9 +82,14 @@ class NQFiveMinuteChart:
             self.indicators_enabled = ["sma"]
             self.display_config = {}
 
-        self.data_provider = Databento5MinuteProvider()
+        # Initialize data provider with IFD support if available
+        enable_ifd = IFD_OVERLAY_AVAILABLE and "ifd_v3" in self.indicators_enabled
+        self.data_provider = Databento5MinuteProvider(enable_ifd_signals=enable_ifd)
         self.fig = None
         self.running = True
+
+        # Store current IFD signals for overlay
+        self.current_ifd_signals = []
 
         # Set up signal handlers
         signal.signal(signal.SIGINT, self._signal_handler)
@@ -292,17 +305,162 @@ class NQFiveMinuteChart:
                     row=1, col=1
                 )
 
+        # IFD v3.0 Signal Overlay
+        if "ifd_v3" in self.indicators_enabled and IFD_OVERLAY_AVAILABLE:
+            self._add_ifd_overlay(df_display)
+
+    def _add_ifd_overlay(self, df_display):
+        """Add IFD v3.0 institutional signal overlay"""
+        if not self.current_ifd_signals:
+            return
+
+        # Skip overlay if plotly not available
+        if not PLOTLY_AVAILABLE:
+            logger.debug("Plotly not available - skipping IFD overlay")
+            return
+
+        config_indicators = self.config.get("indicators", {})
+        ifd_config = config_indicators.get("ifd_v3", {})
+
+        # Configuration with smart defaults
+        show_signals = ifd_config.get("show_signals", True)
+        show_confidence = ifd_config.get("show_confidence", True)
+        min_confidence = ifd_config.get("min_confidence_display", 0.7)
+
+        # Signal visualization settings
+        signal_colors = ifd_config.get("signal_colors", {
+            "STRONG_BUY": "lime",
+            "BUY": "green",
+            "MONITOR": "orange",
+            "IGNORE": "gray"
+        })
+
+        marker_sizes = ifd_config.get("marker_sizes", {
+            "EXTREME": 20,
+            "VERY_HIGH": 16,
+            "HIGH": 12,
+            "MODERATE": 8
+        })
+
+        # Process signals for display
+        if show_signals:
+            # Separate signals by action for different trace styling
+            signal_groups = {}
+
+            for signal in self.current_ifd_signals:
+                if signal.max_confidence < min_confidence:
+                    continue  # Skip low confidence signals
+
+                action = signal.dominant_action
+                if action not in signal_groups:
+                    signal_groups[action] = {
+                        'timestamps': [],
+                        'prices': [],
+                        'hover_texts': [],
+                        'sizes': []
+                    }
+
+                # Get price level for signal placement
+                # Place above high for buy signals, below low for sell signals
+                signal_time = signal.window_timestamp
+
+                # Find matching OHLCV bar for price placement
+                matching_bar = None
+                for idx, bar_time in enumerate(df_display.index):
+                    if abs((bar_time.to_pydatetime() - signal_time).total_seconds()) < 300:  # Within 5 minutes
+                        matching_bar = df_display.iloc[idx]
+                        break
+
+                if matching_bar is not None:
+                    # Position signal relative to candlestick
+                    if action in ["STRONG_BUY", "BUY"]:
+                        price_level = matching_bar['high'] + (matching_bar['high'] - matching_bar['low']) * 0.1
+                    else:
+                        price_level = matching_bar['low'] - (matching_bar['high'] - matching_bar['low']) * 0.1
+
+                    # Create hover text with signal details
+                    hover_text = (
+                        f"IFD Signal<br>"
+                        f"Action: {action}<br>"
+                        f"Confidence: {signal.max_confidence:.1%}<br>"
+                        f"Strength: {signal.window_strength}<br>"
+                        f"Signals: {signal.signal_count}<br>"
+                        f"Time: {signal_time.strftime('%H:%M')}"
+                    )
+
+                    signal_groups[action]['timestamps'].append(signal_time)
+                    signal_groups[action]['prices'].append(price_level)
+                    signal_groups[action]['hover_texts'].append(hover_text)
+
+                    # Determine marker size based on strength
+                    size = marker_sizes.get(signal.window_strength, 8)
+                    signal_groups[action]['sizes'].append(size)
+
+            # Add trace for each signal action type
+            for action, group_data in signal_groups.items():
+                if not group_data['timestamps']:
+                    continue
+
+                color = signal_colors.get(action, "gray")
+
+                # Different marker symbols for different actions
+                marker_symbol = "triangle-up" if action in ["STRONG_BUY", "BUY"] else "triangle-down"
+
+                self.fig.add_trace(
+                    go.Scatter(
+                        x=group_data['timestamps'],
+                        y=group_data['prices'],
+                        mode='markers',
+                        name=f'IFD {action}',
+                        marker=dict(
+                            symbol=marker_symbol,
+                            size=group_data['sizes'],
+                            color=color,
+                            line=dict(width=1, color='white')
+                        ),
+                        hovertext=group_data['hover_texts'],
+                        hoverinfo='text',
+                        showlegend=True
+                    ),
+                    row=1, col=1
+                )
+
+        # Add confidence background highlighting if enabled
+        if show_confidence and ifd_config.get("show_confidence_background", False):
+            high_confidence_signals = [s for s in self.current_ifd_signals
+                                     if s.max_confidence >= ifd_config.get("high_confidence_threshold", 0.85)]
+
+            for signal in high_confidence_signals:
+                # Add subtle background highlighting for high confidence signals
+                self.fig.add_vrect(
+                    x0=signal.window_timestamp - timedelta(minutes=2.5),
+                    x1=signal.window_timestamp + timedelta(minutes=2.5),
+                    fillcolor=signal_colors.get(signal.dominant_action, "gray"),
+                    opacity=0.1,
+                    layer="below",
+                    line_width=0,
+                )
+
     def update_chart(self):
         """Update the chart with latest data"""
         try:
             # Calculate number of 5-minute bars
             bars_needed = (self.hours * 60) // 5
 
-            # Get latest data
-            df = self.data_provider.get_latest_bars(
-                symbol=self.symbol,
-                count=bars_needed
-            )
+            # Get latest data - with IFD signals if enabled
+            if "ifd_v3" in self.indicators_enabled and IFD_OVERLAY_AVAILABLE:
+                df, ifd_signals = self.data_provider.get_latest_bars_with_ifd(
+                    symbol=self.symbol,
+                    count=bars_needed
+                )
+                self.current_ifd_signals = ifd_signals
+                logger.debug(f"Retrieved {len(df)} bars and {len(ifd_signals)} IFD signals")
+            else:
+                df = self.data_provider.get_latest_bars(
+                    symbol=self.symbol,
+                    count=bars_needed
+                )
+                self.current_ifd_signals = []
 
             if df.empty:
                 logger.warning("No data available")

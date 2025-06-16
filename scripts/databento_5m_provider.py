@@ -36,7 +36,7 @@ class Databento5MinuteProvider:
 
         🚨 TRADING SAFETY: Will FAIL immediately if authentication fails
         🚫 NO DEMO DATA: Never allows fake data that could cause losses
-        
+
         Args:
             api_key: Optional API key (will use env if not provided)
             enable_ifd_signals: Whether to enable IFD signal integration
@@ -58,11 +58,11 @@ class Databento5MinuteProvider:
         self.live_client = None
         self.aggregator = MinuteToFiveMinuteAggregator()
         self._cache = {}  # Simple in-memory cache
-        
+
         # IFD Signal Integration
         self.enable_ifd_signals = enable_ifd_signals and IFD_BRIDGE_AVAILABLE
         self.ifd_bridge: Optional[IFDChartBridge] = None
-        
+
         if self.enable_ifd_signals:
             try:
                 self.ifd_bridge = create_ifd_chart_bridge()
@@ -72,7 +72,7 @@ class Databento5MinuteProvider:
                 self.enable_ifd_signals = False
         else:
             logger.info("📊 Data provider initialized without IFD signals")
-                
+
 
     def get_historical_5min_bars(self,
                                 symbol: str = "NQM5",
@@ -261,11 +261,11 @@ class Databento5MinuteProvider:
     def get_latest_bars_with_ifd(self, symbol: str = "NQM5", count: int = 50) -> Tuple[pd.DataFrame, List[IFDAggregatedSignal]]:
         """
         Get latest 5-minute bars with synchronized IFD signals
-        
+
         Args:
-            symbol: Contract symbol  
+            symbol: Contract symbol
             count: Number of 5-minute bars to return
-            
+
         Returns:
             Tuple of (OHLCV DataFrame, List of IFD signals)
         """
@@ -273,41 +273,41 @@ class Databento5MinuteProvider:
             # Return OHLCV data with empty signals list
             df = self.get_latest_bars(symbol, count)
             return df, []
-        
+
         try:
             # Get OHLCV data first
             df = self.get_latest_bars(symbol, count)
-            
+
             if df.empty:
                 return df, []
-            
+
             # Get IFD signals for the same time range
             start_time = df.index[0].to_pydatetime()
             end_time = df.index[-1].to_pydatetime()
-            
+
             ifd_signals = self.ifd_bridge.get_ifd_signals_for_chart(start_time, end_time)
-            
+
             logger.debug(f"Retrieved {len(df)} OHLCV bars and {len(ifd_signals)} IFD signals")
-            
+
             return df, ifd_signals
-            
+
         except Exception as e:
             logger.error(f"Failed to get bars with IFD signals: {e}")
             # Fallback to OHLCV only
             df = self.get_latest_bars(symbol, count)
             return df, []
 
-    def get_historical_bars_with_ifd(self, symbol: str = "NQM5", start: Optional[datetime] = None, 
+    def get_historical_bars_with_ifd(self, symbol: str = "NQM5", start: Optional[datetime] = None,
                                    end: Optional[datetime] = None, hours_back: int = 24) -> Tuple[pd.DataFrame, List[IFDAggregatedSignal]]:
         """
         Get historical 5-minute bars with synchronized IFD signals
-        
+
         Args:
             symbol: Contract symbol
             start: Start time
-            end: End time  
+            end: End time
             hours_back: Hours of history if start not specified
-            
+
         Returns:
             Tuple of (OHLCV DataFrame, List of IFD signals)
         """
@@ -315,24 +315,24 @@ class Databento5MinuteProvider:
             # Return OHLCV data with empty signals list
             df = self.get_historical_5min_bars(symbol, start, end, hours_back)
             return df, []
-        
+
         try:
             # Get OHLCV data first
             df = self.get_historical_5min_bars(symbol, start, end, hours_back)
-            
+
             if df.empty:
                 return df, []
-            
+
             # Get IFD signals for the same time range
             start_time = df.index[0].to_pydatetime()
             end_time = df.index[-1].to_pydatetime()
-            
+
             ifd_signals = self.ifd_bridge.get_ifd_signals_for_chart(start_time, end_time)
-            
+
             logger.debug(f"Retrieved {len(df)} historical OHLCV bars and {len(ifd_signals)} IFD signals")
-            
+
             return df, ifd_signals
-            
+
         except Exception as e:
             logger.error(f"Failed to get historical bars with IFD signals: {e}")
             # Fallback to OHLCV only
@@ -342,17 +342,17 @@ class Databento5MinuteProvider:
     def get_ifd_signals_only(self, start_time: datetime, end_time: datetime) -> List[IFDAggregatedSignal]:
         """
         Get IFD signals for a specific time range (chart overlay use)
-        
+
         Args:
             start_time: Start of time range
             end_time: End of time range
-            
+
         Returns:
             List of IFD signals within time range
         """
         if not self.enable_ifd_signals or not self.ifd_bridge:
             return []
-        
+
         try:
             return self.ifd_bridge.get_ifd_signals_for_chart(start_time, end_time)
         except Exception as e:
@@ -362,7 +362,7 @@ class Databento5MinuteProvider:
     def get_ifd_bridge_status(self) -> Dict[str, any]:
         """
         Get status of IFD bridge integration
-        
+
         Returns:
             Status information about IFD integration
         """
@@ -372,18 +372,18 @@ class Databento5MinuteProvider:
                 'available': IFD_BRIDGE_AVAILABLE,
                 'reason': 'IFD signals disabled' if IFD_BRIDGE_AVAILABLE else 'IFD bridge not available'
             }
-        
+
         if not self.ifd_bridge:
             return {
                 'enabled': True,
                 'available': False,
                 'reason': 'IFD bridge failed to initialize'
             }
-        
+
         try:
             bridge_stats = self.ifd_bridge.get_bridge_statistics()
             health_status = self.ifd_bridge.get_health_status()
-            
+
             return {
                 'enabled': True,
                 'available': True,
@@ -401,16 +401,16 @@ class Databento5MinuteProvider:
     def add_ifd_signal(self, signal) -> bool:
         """
         Add a real-time IFD signal to the bridge (for live streaming integration)
-        
+
         Args:
             signal: InstitutionalSignalV3 object
-            
+
         Returns:
             True if signal was added successfully
         """
         if not self.enable_ifd_signals or not self.ifd_bridge:
             return False
-        
+
         try:
             self.ifd_bridge.add_signal(signal)
             return True
@@ -421,17 +421,17 @@ class Databento5MinuteProvider:
     def toggle_ifd_signals(self, enabled: bool) -> bool:
         """
         Enable or disable IFD signal integration at runtime
-        
+
         Args:
             enabled: Whether to enable IFD signals
-            
+
         Returns:
             True if toggle was successful
         """
         if not IFD_BRIDGE_AVAILABLE:
             logger.warning("Cannot enable IFD signals - bridge not available")
             return False
-        
+
         if enabled and not self.ifd_bridge:
             # Try to initialize bridge
             try:
@@ -447,7 +447,7 @@ class Databento5MinuteProvider:
             self.enable_ifd_signals = False
             logger.info("📊 IFD signals disabled")
             return True
-        
+
         return True  # Already in desired state
 
 def test_provider():

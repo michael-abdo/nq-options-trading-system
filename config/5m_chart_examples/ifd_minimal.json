@@ -1,0 +1,94 @@
+{
+  "chart": {
+    "theme": "dark",
+    "height": 700,
+    "width": 1000,
+    "update_interval": 60,
+    "time_range_hours": 2,
+    "show_volume": false,
+    "volume_height_ratio": 0.2
+  },
+  "indicators": {
+    "enabled": ["ifd_v3"],
+    "sma": {
+      "periods": [20],
+      "colors": ["blue"]
+    },
+    "ema": {
+      "periods": [12, 26],
+      "colors": ["cyan", "magenta"]
+    },
+    "vwap": {
+      "enabled": false,
+      "color": "yellow",
+      "line_width": 2.0
+    },
+    "volume_ma": {
+      "period": 20,
+      "color": "purple"
+    },
+    "ifd_v3": {
+      "show_signals": true,
+      "show_confidence": false,
+      "min_confidence_display": 0.8,
+      "show_confidence_background": false,
+      "high_confidence_threshold": 0.9,
+      "signal_colors": {
+        "STRONG_BUY": "lime",
+        "BUY": "green",
+        "MONITOR": "orange",
+        "IGNORE": "gray"
+      },
+      "marker_sizes": {
+        "EXTREME": 16,
+        "VERY_HIGH": 12,
+        "HIGH": 10,
+        "MODERATE": 8
+      },
+      "marker_symbols": {
+        "buy_symbol": "triangle-up",
+        "sell_symbol": "triangle-down"
+      },
+      "positioning": {
+        "vertical_offset_percent": 0.08,
+        "buy_above_candle": true,
+        "sell_below_candle": true
+      },
+      "hover_info": {
+        "show_action": true,
+        "show_confidence": false,
+        "show_strength": true,
+        "show_signal_count": false,
+        "show_timestamp": false
+      },
+      "aggregation": {
+        "strategy": "highest_confidence",
+        "min_signal_confidence": 0.7,
+        "max_signals_per_window": 5
+      },
+      "performance": {
+        "max_signals_display": 100,
+        "signal_cache_size": 200
+      }
+    }
+  },
+  "data": {
+    "symbol": "NQM5",
+    "timezone": "US/Eastern",
+    "cache_enabled": true,
+    "cache_duration_minutes": 30
+  },
+  "display": {
+    "price_format": "decimal_2",
+    "volume_format": "thousands",
+    "show_current_price": true,
+    "show_statistics": false,
+    "show_update_time": false,
+    "grid_enabled": false
+  },
+  "export": {
+    "default_format": "html",
+    "include_timestamp": true,
+    "output_directory": "outputs"
+  }
+}

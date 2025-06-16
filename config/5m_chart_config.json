@@ -65,7 +65,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "enum": ["sma", "ema", "vwap", "volume_ma", "bollinger"]
+            "enum": ["sma", "ema", "vwap", "volume_ma", "bollinger", "ifd_v3"]
           },
           "default": ["sma"],
           "description": "List of enabled indicators"
@@ -151,6 +151,227 @@
               "default": "purple"
             }
           }
+        },
+        "ifd_v3": {
+          "type": "object",
+          "description": "Institutional Flow Detection v3.0 signal overlay settings",
+          "properties": {
+            "show_signals": {
+              "type": "boolean",
+              "default": true,
+              "description": "Display IFD signal markers on chart"
+            },
+            "show_confidence": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include confidence information in signal display"
+            },
+            "min_confidence_display": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 1.0,
+              "default": 0.7,
+              "description": "Minimum confidence threshold for displaying signals"
+            },
+            "show_confidence_background": {
+              "type": "boolean",
+              "default": false,
+              "description": "Add background highlighting for high confidence signals"
+            },
+            "high_confidence_threshold": {
+              "type": "number",
+              "minimum": 0.7,
+              "maximum": 1.0,
+              "default": 0.85,
+              "description": "Threshold for high confidence background highlighting"
+            },
+            "signal_colors": {
+              "type": "object",
+              "description": "Color mapping for different signal actions",
+              "properties": {
+                "STRONG_BUY": {
+                  "type": "string",
+                  "default": "lime",
+                  "description": "Color for strong buy signals"
+                },
+                "BUY": {
+                  "type": "string",
+                  "default": "green",
+                  "description": "Color for buy signals"
+                },
+                "MONITOR": {
+                  "type": "string",
+                  "default": "orange",
+                  "description": "Color for monitor signals"
+                },
+                "IGNORE": {
+                  "type": "string",
+                  "default": "gray",
+                  "description": "Color for ignore signals"
+                }
+              },
+              "additionalProperties": false
+            },
+            "marker_sizes": {
+              "type": "object",
+              "description": "Size mapping for different signal strengths",
+              "properties": {
+                "EXTREME": {
+                  "type": "integer",
+                  "minimum": 8,
+                  "maximum": 30,
+                  "default": 20,
+                  "description": "Marker size for extreme strength signals"
+                },
+                "VERY_HIGH": {
+                  "type": "integer",
+                  "minimum": 6,
+                  "maximum": 25,
+                  "default": 16,
+                  "description": "Marker size for very high strength signals"
+                },
+                "HIGH": {
+                  "type": "integer",
+                  "minimum": 5,
+                  "maximum": 20,
+                  "default": 12,
+                  "description": "Marker size for high strength signals"
+                },
+                "MODERATE": {
+                  "type": "integer",
+                  "minimum": 4,
+                  "maximum": 15,
+                  "default": 8,
+                  "description": "Marker size for moderate strength signals"
+                }
+              },
+              "additionalProperties": false
+            },
+            "marker_symbols": {
+              "type": "object",
+              "description": "Symbol mapping for different signal types",
+              "properties": {
+                "buy_symbol": {
+                  "type": "string",
+                  "enum": ["triangle-up", "arrow-up", "circle", "square", "diamond"],
+                  "default": "triangle-up",
+                  "description": "Symbol for buy signals"
+                },
+                "sell_symbol": {
+                  "type": "string",
+                  "enum": ["triangle-down", "arrow-down", "circle", "square", "diamond"],
+                  "default": "triangle-down",
+                  "description": "Symbol for sell/monitor signals"
+                }
+              },
+              "additionalProperties": false
+            },
+            "positioning": {
+              "type": "object",
+              "description": "Signal positioning relative to candlesticks",
+              "properties": {
+                "vertical_offset_percent": {
+                  "type": "number",
+                  "minimum": 0.05,
+                  "maximum": 0.5,
+                  "default": 0.1,
+                  "description": "Vertical offset from candlestick as percentage of bar range"
+                },
+                "buy_above_candle": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Position buy signals above candlesticks"
+                },
+                "sell_below_candle": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Position sell/monitor signals below candlesticks"
+                }
+              },
+              "additionalProperties": false
+            },
+            "hover_info": {
+              "type": "object",
+              "description": "Hover tooltip configuration",
+              "properties": {
+                "show_action": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Show recommended action in tooltip"
+                },
+                "show_confidence": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Show confidence percentage in tooltip"
+                },
+                "show_strength": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Show signal strength in tooltip"
+                },
+                "show_signal_count": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Show number of signals in window"
+                },
+                "show_timestamp": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Show signal timestamp in tooltip"
+                }
+              },
+              "additionalProperties": false
+            },
+            "aggregation": {
+              "type": "object",
+              "description": "Signal aggregation settings for chart display",
+              "properties": {
+                "strategy": {
+                  "type": "string",
+                  "enum": ["highest_confidence", "latest", "weighted_average"],
+                  "default": "highest_confidence",
+                  "description": "Strategy for selecting primary signal in 5-minute windows"
+                },
+                "min_signal_confidence": {
+                  "type": "number",
+                  "minimum": 0.3,
+                  "maximum": 1.0,
+                  "default": 0.6,
+                  "description": "Minimum confidence for signals to be included in aggregation"
+                },
+                "max_signals_per_window": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50,
+                  "default": 10,
+                  "description": "Maximum number of signals to consider per 5-minute window"
+                }
+              },
+              "additionalProperties": false
+            },
+            "performance": {
+              "type": "object",
+              "description": "Performance and optimization settings",
+              "properties": {
+                "max_signals_display": {
+                  "type": "integer",
+                  "minimum": 10,
+                  "maximum": 1000,
+                  "default": 200,
+                  "description": "Maximum number of signals to display on chart"
+                },
+                "signal_cache_size": {
+                  "type": "integer",
+                  "minimum": 50,
+                  "maximum": 2000,
+                  "default": 500,
+                  "description": "Maximum number of aggregated signals to keep in memory"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

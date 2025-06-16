@@ -1,0 +1,115 @@
+- IFD v3.0 → Real-Time 5-Minute Chart Integration
+  - Phase 1: Basic Integration (Data Bridge)
+    - Create IFD Chart Bridge Component
+      - Analyze existing IFD v3.0 signal output format
+      - Design time-window aggregation logic for 5-minute intervals
+      - Create ifd_chart_bridge.py with signal aggregation methods
+      - Implement get_ifd_signals_for_chart(start_time, end_time) API
+      - Add error handling and fallback modes
+      - Test signal retrieval and time alignment
+    - Extend Data Provider
+      - Analyze databento_5m_provider.py current architecture
+      - Add IFD signal data access methods to provider
+      - Integrate bridge component with existing data flow
+      - Ensure no breaking changes to existing OHLCV functionality
+      - Add configuration options for enabling IFD data
+      - Test data provider with and without IFD signals
+    - Add Basic Chart Overlay
+      - Study existing _add_indicators() pattern in nq_5m_chart.py
+      - Design _add_ifd_overlay() method following same pattern
+      - Implement basic signal markers on chart (arrows/dots)
+      - Add simple color coding for buy/sell signals
+      - Ensure overlay integrates with existing Plotly chart structure
+      - Test overlay rendering with sample IFD data
+    - Create Basic Configuration
+      - Extend 5m_chart_config.json schema for IFD settings
+      - Add IFD section to indicators configuration
+      - Create basic IFD configuration preset
+      - Test configuration loading and validation
+      - Ensure backwards compatibility with existing configs
+  - Phase 2: Enhanced Visualization
+    - Signal Strength Visualization
+      - Analyze IFD confidence and signal strength data structure
+      - Design marker sizing based on signal strength
+      - Implement confidence-based color gradients
+      - Add signal strength legend to chart
+      - Test visualization with various signal strengths
+    - Confidence-Based Filtering
+      - Design confidence threshold filtering mechanism
+      - Add configuration options for min confidence levels
+      - Implement dynamic filtering in chart overlay
+      - Add confidence indicator to chart display
+      - Test filtering with different threshold values
+    - Multiple Chart Presets
+      - Create ifd_scalping.json preset for high-frequency signals
+      - Create ifd_swing.json preset for swing trading signals
+      - Create ifd_minimal.json preset for clean display
+      - Test all presets with live data
+      - Document preset differences and use cases
+    - Advanced Signal Display
+      - Implement background highlighting for strong signals
+      - Add signal trend arrows for directional indication
+      - Design signal clustering for busy periods
+      - Add hover tooltips with detailed signal information
+      - Test advanced display features
+  - Phase 3: Real-Time Dashboard Enhancement
+    - Extend Dash Application
+      - Analyze existing nq_5m_dash_app.py architecture
+      - Design IFD signal panel layout
+      - Add real-time IFD signal display components
+      - Integrate with existing Dash callback system
+      - Test real-time updates and performance
+    - Live Signal Alerts
+      - Design alert system for new strong signals
+      - Implement visual/audio notification options
+      - Add alert configuration and thresholds
+      - Create alert history tracking
+      - Test alert reliability and timing
+    - Signal History Table
+      - Design recent signals summary table
+      - Implement signal performance tracking
+      - Add signal outcome analysis
+      - Create exportable signal reports
+      - Test table updates and data accuracy
+    - Real-Time Monitoring Features
+      - Add current signal strength indicator
+      - Implement live confidence trending
+      - Create signal frequency monitoring
+      - Add system health indicators for IFD integration
+      - Test all monitoring features under load
+  - Testing & Validation
+    - Unit Testing
+      - Create tests for IFD chart bridge functionality
+      - Test signal aggregation accuracy
+      - Validate time synchronization logic
+      - Test configuration loading and validation
+      - Test error handling and edge cases
+    - Integration Testing
+      - Test full pipeline: IFD → Bridge → Chart → Display
+      - Validate real-time data flow
+      - Test with various market conditions
+      - Verify performance under high signal volume
+      - Test backwards compatibility
+    - User Acceptance Testing
+      - Test all chart presets with live data
+      - Validate signal accuracy and timing
+      - Test dashboard responsiveness
+      - Verify configuration flexibility
+      - Test error recovery and graceful degradation
+  - Documentation & Deployment
+    - Technical Documentation
+      - Document IFD chart integration architecture
+      - Create API documentation for bridge component
+      - Document configuration options and presets
+      - Create troubleshooting guide
+    - User Documentation
+      - Create IFD chart usage guide
+      - Document preset selection guidelines
+      - Create signal interpretation guide
+      - Add dashboard navigation instructions
+    - Deployment Preparation
+      - Verify all dependencies are met
+      - Test integration in production-like environment
+      - Create deployment checklist
+      - Prepare rollback procedures
+      - Final system integration test
