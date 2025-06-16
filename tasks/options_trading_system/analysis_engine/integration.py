@@ -42,6 +42,18 @@ from institutional_flow_v3.optimizations import run_optimized_ifd_v3_analysis
 # Import latency monitoring
 from phase4.latency_monitor import create_latency_monitor, LatencyComponent
 
+# Import live streaming components
+try:
+    from live_streaming.streaming_bridge import StreamingBridge, create_streaming_bridge
+    from live_streaming.event_processor import EventProcessor, create_standard_processor
+    from live_streaming.pressure_aggregator import RealTimePressureEngine, create_standard_engine
+    from live_streaming.data_validator import StreamingDataValidator, create_mbo_validation_rules
+    from live_streaming.baseline_context_manager import RealTimeBaselineManager, create_baseline_manager
+    LIVE_STREAMING_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Live streaming components not available: {e}")
+    LIVE_STREAMING_AVAILABLE = False
+
 # Global latency monitor instance
 _latency_monitor = None
 
@@ -926,6 +938,124 @@ class AnalysisEngine:
             "signal_strength_avg": sum(s.get("signal_strength", 0) for s in signals) / len(signals),
             "pressure_trend": "INCREASING" if avg_confidence > 0.6 else "DECREASING"
         }
+
+    def start_live_streaming(self, streaming_config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Start live streaming integration for real-time IFD v3.0 analysis"""
+        if not LIVE_STREAMING_AVAILABLE:
+            return {
+                "status": "failed",
+                "error": "Live streaming components not available",
+                "timestamp": get_eastern_time().isoformat()
+            }
+
+        print("  Starting Live Streaming Integration...")
+
+        # Load streaming config from pipeline_config.json if not provided
+        if streaming_config is None:
+            try:
+                pipeline_config_path = os.path.join(current_dir, 'pipeline_config.json')
+                with open(pipeline_config_path, 'r') as f:
+                    full_config = json.load(f)
+                    streaming_config = full_config.get('live_streaming', {})
+            except Exception as e:
+                logger.error(f"Failed to load streaming config: {e}")
+                streaming_config = {}
+
+        try:
+            # Check if live streaming is enabled
+            if not streaming_config.get('enabled', False):
+                return {
+                    "status": "disabled",
+                    "message": "Live streaming is disabled in configuration",
+                    "timestamp": get_eastern_time().isoformat()
+                }
+
+            # Check development/staging mode
+            mode = streaming_config.get('mode', 'production')
+            if streaming_config.get('development_mode', {}).get('enabled', False):
+                mode = 'development'
+            elif streaming_config.get('staging_mode', {}).get('enabled', False):
+                mode = 'staging'
+
+            print(f"    Mode: {mode}")
+
+            # Create streaming bridge with configuration
+            bridge_config = {
+                'symbols': streaming_config.get('data_source', {}).get('symbols', ['NQ.OPT']),
+                'daily_budget': streaming_config.get('cost_controls', {}).get('daily_budget', 25.0),
+                'market_hours_enforcement': streaming_config.get('market_hours', {}).get('enforce', True),
+                'cost_monitoring': True,
+                'ifd_config': streaming_config.get('ifd_integration', {}),
+                'mode': mode
+            }
+
+            # Create and initialize streaming bridge
+            self.streaming_bridge = create_streaming_bridge(bridge_config)
+
+            # Register signal callback
+            def on_ifd_signal(signal):
+                print(f"    🎯 Live Signal: {signal.strike}{signal.option_type} "
+                      f"confidence={signal.final_confidence:.2f} "
+                      f"direction={signal.expected_direction}")
+
+            self.streaming_bridge.register_signal_callback(on_ifd_signal)
+
+            # Start streaming
+            success = self.streaming_bridge.start_streaming()
+
+            if success:
+                print("    ✓ Live streaming started successfully")
+
+                # Get initial status
+                status = self.streaming_bridge.get_bridge_status()
+
+                return {
+                    "status": "success",
+                    "mode": mode,
+                    "streaming_active": status['is_running'],
+                    "components_initialized": status['components_initialized'],
+                    "market_hours": status['market_hours'],
+                    "bridge_status": status,
+                    "timestamp": get_eastern_time().isoformat()
+                }
+            else:
+                print("    ✗ Failed to start live streaming")
+                return {
+                    "status": "failed",
+                    "error": "Failed to start streaming bridge",
+                    "timestamp": get_eastern_time().isoformat()
+                }
+
+        except Exception as e:
+            print(f"    ✗ Live streaming startup failed: {e}")
+            return {
+                "status": "failed",
+                "error": str(e),
+                "timestamp": get_eastern_time().isoformat()
+            }
+
+    def stop_live_streaming(self) -> Dict[str, Any]:
+        """Stop live streaming if active"""
+        if hasattr(self, 'streaming_bridge') and self.streaming_bridge:
+            try:
+                self.streaming_bridge.stop()
+                return {
+                    "status": "success",
+                    "message": "Live streaming stopped",
+                    "timestamp": get_eastern_time().isoformat()
+                }
+            except Exception as e:
+                return {
+                    "status": "failed",
+                    "error": str(e),
+                    "timestamp": get_eastern_time().isoformat()
+                }
+        else:
+            return {
+                "status": "not_running",
+                "message": "No active streaming bridge",
+                "timestamp": get_eastern_time().isoformat()
+            }
 
     def synthesize_analysis_results(self) -> Dict[str, Any]:
         """Synthesize results prioritizing your NQ EV algorithm"""

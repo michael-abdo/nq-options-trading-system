@@ -165,5 +165,61 @@
     "execution_timeout_seconds": 30,
     "enable_pipeline_logging": true,
     "cache_intermediate_results": true
+  },
+
+  "live_streaming": {
+    "enabled": false,
+    "mode": "production",
+    "data_source": {
+      "provider": "databento",
+      "symbols": ["NQ.OPT"],
+      "dataset": "GLBX.MDP3",
+      "streaming_type": "mbo"
+    },
+    "ifd_integration": {
+      "enabled": true,
+      "version": "v3.0",
+      "baseline_db_path": "outputs/ifd_v3_baselines.db",
+      "min_confidence": 0.6,
+      "pressure_analysis": {
+        "timeframes": [1, 5, 15],
+        "min_pressure_ratio": 2.0,
+        "min_total_volume": 100,
+        "min_confidence": 0.8
+      }
+    },
+    "cost_controls": {
+      "daily_budget": 25.0,
+      "emergency_stop_threshold": 0.8,
+      "warning_threshold": 0.6,
+      "cost_per_mb": 0.01,
+      "cost_per_hour": 1.0
+    },
+    "market_hours": {
+      "enforce": true,
+      "futures_hours": {
+        "start": "Sunday 6:00 PM ET",
+        "end": "Friday 5:00 PM ET"
+      }
+    },
+    "event_processing": {
+      "min_trade_size": 10,
+      "max_events_per_second": 50,
+      "batch_size": 20,
+      "batch_timeout_ms": 2000,
+      "processing_threads": 2
+    },
+    "development_mode": {
+      "enabled": false,
+      "data_simulation": true,
+      "replay_speed": 1.0,
+      "test_data_path": "test_data/mbo_events.json"
+    },
+    "staging_mode": {
+      "enabled": false,
+      "shadow_trading": true,
+      "signal_comparison": true,
+      "alert_on_divergence": true
+    }
   }
 }

@@ -42,8 +42,14 @@ python3 scripts/nq_realtime_display.py
 # 🔴 NEW: NQ volume and trading analysis
 python3 scripts/nq_volume_analysis.py
 
-# 📊 NEW: Interactive 5-minute candlestick charts with configuration system
+# 📊 Interactive 5-minute candlestick charts with configuration system
 python3 scripts/nq_5m_chart.py --config default
+
+# 🚀 NEW: Real-time IFD Dashboard with Live Streaming
+python3 scripts/nq_realtime_ifd_dashboard.py
+
+# 🌐 NEW: Phase 2 Real-time Dashboard Demo
+python3 scripts/demo_phase2_realtime_dashboard.py
 
 # List available chart configurations
 python3 scripts/nq_5m_chart.py --list-configs
@@ -100,10 +106,14 @@ Final Results: Top-ranked trading opportunities
 - **25-35ms End-to-End Latency**: Production-grade response times for institutional flow detection
 - **Batch Processing**: Optimized database operations and parallel analysis
 
-### ✅ Live Data Streaming
+### ✅ Live Data Streaming & Real-time Dashboard
 - **Databento Integration**: CME Globex MBO streaming for NQ options with real-time pressure metrics
 - **Real-Time Price Streaming**: Live NQ futures prices with sub-second latency
 - **Live Dashboard**: Real-time 5-minute candlestick charts with automatic refresh
+- **WebSocket Server**: Real-time signal broadcasting from analysis engine to dashboard frontend
+- **Live Signal Overlay**: Real-time institutional flow signals with confidence levels and strength visualization
+- **Real-time IFD v3.0**: Live institutional flow detection with signal broadcasting
+- **Multi-mode Support**: Development, staging, and production deployment modes
 - **Live Data Aggregation**: 1-minute to 5-minute bar conversion in real-time
 - **Volume Analysis**: Real-time volume tracking and institutional flow detection
 - **Multi-Source Pipeline**: Priority-based data loading with automatic fallbacks
@@ -126,6 +136,7 @@ Final Results: Top-ranked trading opportunities
 
 - **Analysis Pipeline**: `scripts/run_pipeline.py` - Traditional analysis execution
 - **Live Streaming**: `scripts/nq_live_stream.py` - Real-time NQ futures price streaming
+- **Real-time Dashboard**: `scripts/nq_realtime_ifd_dashboard.py` - Live IFD dashboard with WebSocket integration
 - **Volume Analysis**: `scripts/nq_volume_analysis.py` - Real-time trading volume and flow analysis
 - **Shadow Trading**: `scripts/run_shadow_trading.py` - Live market validation system
 - **Limited Live Trading**: `limited_live_trading_orchestrator.py` - Risk-controlled live position testing
