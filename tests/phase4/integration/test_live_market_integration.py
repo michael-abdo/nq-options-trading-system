@@ -21,7 +21,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent.parent))
 
 from utils.timezone_utils import get_eastern_time, is_futures_market_hours
 from tasks.options_trading_system.analysis_engine.live_streaming.streaming_bridge import StreamingBridge
-from tasks.options_trading_system.analysis_engine.institutional_flow_v3.solution import IFDAnalyzerV3
+from tasks.options_trading_system.analysis_engine.institutional_flow_v3.solution import IFDv3Engine
 from tasks.options_trading_system.analysis_engine.monitoring.alert_system import AlertSystem
 from tasks.options_trading_system.analysis_engine.monitoring.performance_tracker import PerformanceTracker
 

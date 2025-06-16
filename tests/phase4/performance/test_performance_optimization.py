@@ -27,7 +27,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent.parent))
 from utils.timezone_utils import get_eastern_time
 from tasks.options_trading_system.analysis_engine.live_streaming.streaming_bridge import StreamingBridge
 from tasks.options_trading_system.analysis_engine.live_streaming.event_processor import EventProcessor
-from tasks.options_trading_system.analysis_engine.live_streaming.pressure_aggregator import PressureAggregator
+from tasks.options_trading_system.analysis_engine.live_streaming.pressure_aggregator import RealTimePressureEngine
 
 class PerformanceTestSuite:
     """Comprehensive performance testing and optimization"""
@@ -152,7 +152,7 @@ class PerformanceTestSuite:
 
         # Initialize components
         event_processor = EventProcessor()
-        pressure_aggregator = PressureAggregator()
+        pressure_aggregator = RealTimePressureEngine()
 
         # Generate baseline load (100 events/second)
         test_duration = 60
@@ -258,7 +258,7 @@ class PerformanceTestSuite:
     async def _run_load_test(self, target_throughput: int, duration_seconds: int) -> Dict[str, Any]:
         """Run a single load test at specified throughput"""
         event_processor = EventProcessor()
-        pressure_aggregator = PressureAggregator()
+        pressure_aggregator = RealTimePressureEngine()
 
         start_time = time.time()
         total_events = 0
@@ -378,7 +378,7 @@ class PerformanceTestSuite:
             if processed:
                 # Pressure aggregation
                 start = time.time()
-                pressure_aggregator = PressureAggregator()
+                pressure_aggregator = RealTimePressureEngine()
                 pressure_aggregator.aggregate_event(processed)
                 component_latencies["pressure_aggregation"].append((time.time() - start) * 1000)
 
