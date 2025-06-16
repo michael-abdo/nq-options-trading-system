@@ -1,0 +1,187 @@
+{
+  "channels": {
+    "email": {
+      "enabled": true,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "username": "${EMAIL_USERNAME}",
+      "password": "${EMAIL_PASSWORD}",
+      "from_email": "${EMAIL_USERNAME}",
+      "to_emails": [
+        "trader@company.com",
+        "ops@company.com"
+      ],
+      "severity_filter": ["WARNING", "CRITICAL", "EMERGENCY"]
+    },
+    "slack": {
+      "enabled": true,
+      "webhook_url": "${SLACK_WEBHOOK_URL}",
+      "channel": "#ifd-alerts",
+      "username": "IFD-Alert-Bot",
+      "severity_filter": ["CRITICAL", "EMERGENCY"]
+    },
+    "sms": {
+      "enabled": false,
+      "service": "twilio",
+      "account_sid": "${TWILIO_ACCOUNT_SID}",
+      "auth_token": "${TWILIO_AUTH_TOKEN}",
+      "from_number": "${TWILIO_PHONE_NUMBER}",
+      "to_numbers": [
+        "+1234567890"
+      ],
+      "severity_filter": ["EMERGENCY"]
+    },
+    "pagerduty": {
+      "enabled": false,
+      "type": "webhook",
+      "url": "https://events.pagerduty.com/v2/enqueue",
+      "integration_key": "${PAGERDUTY_INTEGRATION_KEY}",
+      "severity_filter": ["CRITICAL", "EMERGENCY"]
+    },
+    "discord": {
+      "enabled": false,
+      "type": "webhook",
+      "webhook_url": "${DISCORD_WEBHOOK_URL}",
+      "username": "IFD Trading Bot",
+      "severity_filter": ["WARNING", "CRITICAL", "EMERGENCY"]
+    }
+  },
+  "escalation": {
+    "enabled": true,
+    "escalation_time_minutes": 30,
+    "escalation_chain": [
+      {
+        "level": 1,
+        "channels": ["slack"],
+        "description": "Initial team notification"
+      },
+      {
+        "level": 2,
+        "channels": ["email"],
+        "description": "Management notification"
+      },
+      {
+        "level": 3,
+        "channels": ["sms"],
+        "description": "Emergency contact"
+      }
+    ]
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "max_alerts_per_hour": {
+      "INFO": 60,
+      "WARNING": 30,
+      "CRITICAL": 12,
+      "EMERGENCY": 6
+    },
+    "burst_allowance": {
+      "WARNING": 5,
+      "CRITICAL": 3,
+      "EMERGENCY": 2
+    }
+  },
+  "deduplication": {
+    "enabled": true,
+    "time_window_minutes": 10,
+    "grouping_keys": ["component", "severity", "title"]
+  },
+  "alert_thresholds": {
+    "trading_performance": {
+      "signal_accuracy_warning": 0.70,
+      "signal_accuracy_critical": 0.65,
+      "latency_warning_ms": 100,
+      "latency_critical_ms": 150,
+      "consecutive_failures_warning": 3,
+      "consecutive_failures_critical": 5
+    },
+    "system_health": {
+      "cpu_usage_warning": 0.80,
+      "cpu_usage_critical": 0.90,
+      "memory_usage_warning": 0.85,
+      "memory_usage_critical": 0.95,
+      "disk_usage_warning": 0.80,
+      "disk_usage_critical": 0.90,
+      "uptime_warning": 0.995,
+      "uptime_critical": 0.990
+    },
+    "cost_management": {
+      "daily_budget_warning": 8.0,
+      "daily_budget_critical": 10.0,
+      "monthly_budget_warning": 160.0,
+      "monthly_budget_critical": 200.0,
+      "cost_spike_percent": 50.0
+    },
+    "data_quality": {
+      "missing_data_warning": 0.05,
+      "missing_data_critical": 0.10,
+      "stale_data_minutes_warning": 10,
+      "stale_data_minutes_critical": 30,
+      "error_rate_warning": 0.03,
+      "error_rate_critical": 0.05
+    },
+    "security": {
+      "failed_auth_attempts_warning": 5,
+      "failed_auth_attempts_critical": 10,
+      "unusual_access_patterns": true,
+      "api_rate_limit_exceeded": true
+    }
+  },
+  "business_hours": {
+    "enabled": true,
+    "timezone": "US/Eastern",
+    "trading_hours": {
+      "start": "09:30",
+      "end": "16:00",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+    },
+    "after_hours_escalation": {
+      "enabled": true,
+      "emergency_only": true,
+      "channels": ["sms", "pagerduty"]
+    }
+  },
+  "maintenance_windows": {
+    "enabled": true,
+    "suppress_alerts": true,
+    "scheduled_windows": [
+      {
+        "name": "Daily System Maintenance",
+        "start_time": "02:00",
+        "end_time": "03:00",
+        "timezone": "US/Eastern",
+        "days": ["sunday"]
+      }
+    ]
+  },
+  "auto_resolution": {
+    "enabled": true,
+    "resolution_patterns": [
+      {
+        "pattern": "High memory usage",
+        "auto_resolve_after_minutes": 15,
+        "conditions": ["memory_usage < 0.80"]
+      },
+      {
+        "pattern": "API rate limit",
+        "auto_resolve_after_minutes": 60,
+        "conditions": ["api_calls_per_minute < 100"]
+      }
+    ]
+  },
+  "reporting": {
+    "daily_summary": {
+      "enabled": true,
+      "time": "08:00",
+      "recipients": ["ops@company.com"],
+      "include": ["alerts_count", "system_health", "trading_performance", "cost_summary"]
+    },
+    "weekly_report": {
+      "enabled": true,
+      "day": "monday",
+      "time": "09:00",
+      "recipients": ["management@company.com", "ops@company.com"],
+      "include": ["sla_compliance", "cost_analysis", "performance_trends", "incident_summary"]
+    }
+  }
+}

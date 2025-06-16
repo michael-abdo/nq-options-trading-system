@@ -28,9 +28,19 @@ class MonitoringDashboard:
         self.metrics_file = "outputs/monitoring/production_metrics.json"
         self.alerts_file = "outputs/monitoring/alerts.json"
         self.dashboard_file = "outputs/monitoring/dashboard.json"
+        self.alert_history_file = "outputs/monitoring/alert_history.json"
+        self.security_metrics_file = "outputs/monitoring/security_metrics.json"
 
         # Ensure monitoring directory exists
         os.makedirs("outputs/monitoring", exist_ok=True)
+
+        # Initialize alert system integration
+        self.alert_system = None
+        try:
+            from tasks.options_trading_system.analysis_engine.monitoring.alert_system import AlertSystem
+            self.alert_system = AlertSystem()
+        except ImportError:
+            pass
 
     def generate_html_dashboard(self) -> str:
         """Generate HTML dashboard"""
@@ -38,6 +48,9 @@ class MonitoringDashboard:
         # Load latest metrics
         metrics = self._load_metrics()
         alerts = self._load_alerts()
+        active_alerts = self._get_active_alerts()
+        security_metrics = self._load_security_metrics()
+        alert_stats = self._get_alert_statistics()
 
         html = f"""
 <!DOCTYPE html>
@@ -57,9 +70,12 @@ class MonitoringDashboard:
         .status-warning {{ color: #f39c12; }}
         .status-critical {{ color: #e74c3c; }}
         .alerts-section {{ background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
-        .alert {{ padding: 10px; margin: 10px 0; border-radius: 4px; }}
-        .alert-warning {{ background-color: #fff3cd; border: 1px solid #ffeaa7; }}
-        .alert-critical {{ background-color: #f8d7da; border: 1px solid #f5c6cb; }}
+        .alert {{ padding: 10px; margin: 10px 0; border-radius: 4px; background-color: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }}
+        .alert-success {{ background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }}
+        .alert-warning {{ background-color: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }}
+        .alert-critical {{ background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }}
+        .alert-stats {{ background: #e9ecef; padding: 10px; margin: 10px 0; border-radius: 5px; }}
+        .security-section {{ background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
         .charts-section {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }}
         .chart-card {{ background: white; padding: 20px; border-radius: 8px; }}
         .timestamp {{ color: #666; font-size: 0.8em; }}
@@ -87,7 +103,19 @@ class MonitoringDashboard:
 
     <div class="alerts-section">
         <h2>Active Alerts</h2>
-        {self._generate_alerts_html(alerts)}
+        {self._generate_alerts_html(active_alerts)}
+        <div class="alert-stats">
+            <h3>Alert Statistics (24h)</h3>
+            <p>Total Alerts: {alert_stats.get('total_alerts_24h', 0)} |
+               Active: {alert_stats.get('active_alerts', 0)} |
+               Channels: {', '.join(alert_stats.get('channels_enabled', []))}</p>
+        </div>
+    </div>
+
+    <div class="security-section">
+        <h2>Security Status</h2>
+        <p>Security Score: {security_metrics.get('security_score', 100)}/100</p>
+        <p>Security Events (24h): {security_metrics.get('events_24h', {}).get('total', 0)}</p>
     </div>
 
     <div class="charts-section">
@@ -228,20 +256,34 @@ class MonitoringDashboard:
     def _generate_alerts_html(self, alerts: List[Dict[str, Any]]) -> str:
         """Generate alerts HTML"""
         if not alerts:
-            return '<div class="alert">No active alerts - system is healthy</div>'
+            return '<div class="alert alert-success">✅ No active alerts - system is healthy</div>'
 
         alert_html = []
         for alert in alerts:
-            level = alert.get("level", "INFO").lower()
-            alert_class = f"alert-{level}" if level in ["warning", "critical"] else "alert"
-            alert_html.append(f"""
-            <div class="alert {alert_class}">
-                <strong>{alert.get('level', 'INFO')}:</strong> {alert.get('message', 'No message')}
-                <br><small>Metric: {alert.get('metric', 'unknown')} |
-                Value: {alert.get('value', 'N/A')} |
-                Threshold: {alert.get('threshold', 'N/A')}</small>
-            </div>
-            """)
+            # Handle both old format and new alert system format
+            if 'severity' in alert:  # New alert system format
+                severity = alert.get('severity', 'INFO').lower()
+                alert_class = "alert-critical" if severity in ["critical", "emergency"] else "alert-warning" if severity == "warning" else "alert"
+                alert_html.append(f"""
+                <div class="alert {alert_class}">
+                    <strong>[{alert.get('severity', 'INFO')}]</strong> {alert.get('title', 'Alert')}
+                    <br>{alert.get('message', 'No message')}
+                    <br><small>Component: {alert.get('component', 'unknown')} |
+                    Time: {alert.get('timestamp', 'N/A')} |
+                    ID: {alert.get('id', 'N/A')}</small>
+                </div>
+                """)
+            else:  # Old format
+                level = alert.get("level", "INFO").lower()
+                alert_class = f"alert-{level}" if level in ["warning", "critical"] else "alert"
+                alert_html.append(f"""
+                <div class="alert {alert_class}">
+                    <strong>{alert.get('level', 'INFO')}:</strong> {alert.get('message', 'No message')}
+                    <br><small>Metric: {alert.get('metric', 'unknown')} |
+                    Value: {alert.get('value', 'N/A')} |
+                    Threshold: {alert.get('threshold', 'N/A')}</small>
+                </div>
+                """)
 
         return "\n".join(alert_html)
 
@@ -304,6 +346,34 @@ class MonitoringDashboard:
             <li>Uptime: {errors.get('uptime_percentage', 0):.3%}</li>
         </ul>
         """
+
+    def _get_active_alerts(self) -> List[Dict[str, Any]]:
+        """Get active alerts from alert system"""
+        if self.alert_system:
+            active_alerts = self.alert_system.get_active_alerts()
+            return [alert.to_dict() for alert in active_alerts]
+        return []
+
+    def _load_security_metrics(self) -> Dict[str, Any]:
+        """Load security metrics"""
+        if os.path.exists(self.security_metrics_file):
+            try:
+                with open(self.security_metrics_file, 'r') as f:
+                    return json.load(f)
+            except:
+                pass
+        return {"security_score": 100, "events_24h": {"total": 0}}
+
+    def _get_alert_statistics(self) -> Dict[str, Any]:
+        """Get alert system statistics"""
+        if self.alert_system:
+            return self.alert_system.get_alert_stats()
+        return {
+            "active_alerts": 0,
+            "total_alerts_24h": 0,
+            "alerts_by_severity_24h": {},
+            "channels_enabled": []
+        }
 
     def save_dashboard_html(self) -> str:
         """Save dashboard as HTML file"""

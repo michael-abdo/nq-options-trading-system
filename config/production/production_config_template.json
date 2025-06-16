@@ -1,0 +1,287 @@
+{
+  "environment": "production",
+  "version": "3.0.0",
+  "deployment_date": "${DEPLOYMENT_DATE}",
+
+  "api_configuration": {
+    "databento": {
+      "api_key": "${DATABENTO_API_KEY}",
+      "gateway": "https://hist.databento.com",
+      "ws_gateway": "wss://stream.databento.com/v0/stream",
+      "dataset": "GLBX.MDP3",
+      "schema": "mbo",
+      "timeout": 30000,
+      "retry_attempts": 3,
+      "retry_delay": 1000,
+      "max_connections": 5,
+      "rate_limits": {
+        "requests_per_second": 10,
+        "burst_size": 20
+      }
+    },
+    "polygon": {
+      "api_key": "${POLYGON_API_KEY}",
+      "base_url": "https://api.polygon.io",
+      "timeout": 10000,
+      "retry_attempts": 3
+    },
+    "tradovate": {
+      "cid": "${TRADOVATE_CID}",
+      "secret": "${TRADOVATE_SECRET}",
+      "environment": "live",
+      "timeout": 30000
+    }
+  },
+
+  "monitoring": {
+    "enabled": true,
+    "interval_seconds": 60,
+    "metrics_retention_days": 90,
+    "alert_system": {
+      "enabled": true,
+      "config_file": "config/alerting.json"
+    },
+    "health_checks": {
+      "enabled": true,
+      "interval_seconds": 30,
+      "endpoints": [
+        {
+          "name": "websocket_server",
+          "url": "ws://localhost:8765/health",
+          "timeout": 5000
+        },
+        {
+          "name": "streaming_bridge",
+          "url": "http://localhost:8080/health",
+          "timeout": 5000
+        }
+      ]
+    },
+    "external_monitoring": {
+      "datadog": {
+        "enabled": "${DATADOG_ENABLED}",
+        "api_key": "${DATADOG_API_KEY}",
+        "app_key": "${DATADOG_APP_KEY}",
+        "tags": ["env:production", "service:ifd-v3", "version:3.0.0"]
+      },
+      "new_relic": {
+        "enabled": "${NEW_RELIC_ENABLED}",
+        "license_key": "${NEW_RELIC_LICENSE_KEY}",
+        "app_name": "IFD-v3-Production"
+      },
+      "prometheus": {
+        "enabled": true,
+        "metrics_port": 9090,
+        "scrape_interval": "15s"
+      }
+    }
+  },
+
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "outputs": [
+      {
+        "type": "file",
+        "path": "/var/log/ifd-v3/production.log",
+        "rotation": {
+          "enabled": true,
+          "max_size_mb": 100,
+          "max_files": 10,
+          "compress": true
+        }
+      },
+      {
+        "type": "console",
+        "format": "structured"
+      },
+      {
+        "type": "syslog",
+        "enabled": true,
+        "host": "${SYSLOG_HOST}",
+        "port": 514,
+        "protocol": "tcp"
+      },
+      {
+        "type": "elasticsearch",
+        "enabled": "${ELASTICSEARCH_ENABLED}",
+        "hosts": ["${ELASTICSEARCH_HOST}"],
+        "index": "ifd-v3-production",
+        "username": "${ELASTICSEARCH_USER}",
+        "password": "${ELASTICSEARCH_PASSWORD}"
+      }
+    ],
+    "sensitive_data_masking": true,
+    "api_key_masking": true
+  },
+
+  "security": {
+    "api_authentication": {
+      "enabled": true,
+      "type": "api_key",
+      "header_name": "X-API-Key",
+      "keys_file": "/etc/ifd-v3/api_keys.json"
+    },
+    "rate_limiting": {
+      "enabled": true,
+      "global_limit": 1000,
+      "per_ip_limit": 100,
+      "time_window_seconds": 60
+    },
+    "ip_whitelist": {
+      "enabled": false,
+      "allowed_ips": ["${ALLOWED_IPS}"]
+    },
+    "ssl": {
+      "enabled": true,
+      "cert_file": "/etc/ssl/certs/ifd-v3.crt",
+      "key_file": "/etc/ssl/private/ifd-v3.key",
+      "ca_file": "/etc/ssl/certs/ca-bundle.crt"
+    },
+    "security_monitoring": {
+      "enabled": true,
+      "config_file": "config/security_monitoring.json"
+    }
+  },
+
+  "performance": {
+    "threading": {
+      "websocket_workers": 4,
+      "analysis_workers": 8,
+      "io_workers": 2
+    },
+    "memory": {
+      "max_heap_size_mb": 4096,
+      "gc_interval_seconds": 300
+    },
+    "caching": {
+      "enabled": true,
+      "provider": "redis",
+      "redis_config": {
+        "host": "${REDIS_HOST}",
+        "port": 6379,
+        "password": "${REDIS_PASSWORD}",
+        "db": 0,
+        "ttl_seconds": 300
+      }
+    },
+    "database": {
+      "type": "postgresql",
+      "host": "${DB_HOST}",
+      "port": 5432,
+      "database": "ifd_v3_production",
+      "username": "${DB_USER}",
+      "password": "${DB_PASSWORD}",
+      "pool_size": 20,
+      "max_overflow": 10,
+      "timeout": 30000
+    }
+  },
+
+  "trading": {
+    "mode": "production",
+    "symbols": ["NQ", "ES", "YM", "RTY"],
+    "analysis_config": {
+      "ifd_version": "3.0",
+      "confidence_threshold": 0.75,
+      "signal_filters": {
+        "min_pressure_delta": 0.15,
+        "min_volume_ratio": 1.5,
+        "max_spread_ratio": 2.0
+      }
+    },
+    "risk_management": {
+      "enabled": true,
+      "max_daily_signals": 100,
+      "max_position_size": 10,
+      "stop_loss_percent": 2.0,
+      "daily_loss_limit": 1000.0
+    },
+    "execution": {
+      "enabled": false,
+      "mode": "paper",
+      "broker": "tradovate"
+    }
+  },
+
+  "backup_and_recovery": {
+    "backup": {
+      "enabled": true,
+      "schedule": "0 2 * * *",
+      "retention_days": 30,
+      "destinations": [
+        {
+          "type": "s3",
+          "bucket": "${BACKUP_S3_BUCKET}",
+          "prefix": "ifd-v3-backups/",
+          "region": "us-east-1"
+        },
+        {
+          "type": "local",
+          "path": "/backup/ifd-v3/"
+        }
+      ]
+    },
+    "disaster_recovery": {
+      "enabled": true,
+      "failover_regions": ["us-west-2", "eu-west-1"],
+      "rto_minutes": 15,
+      "rpo_minutes": 5,
+      "automated_failover": false
+    }
+  },
+
+  "cost_management": {
+    "enabled": true,
+    "daily_budget": 10.0,
+    "monthly_budget": 300.0,
+    "alert_thresholds": {
+      "warning": 0.8,
+      "critical": 0.9
+    },
+    "auto_shutdown": {
+      "enabled": false,
+      "threshold": 0.95
+    }
+  },
+
+  "deployment": {
+    "strategy": "blue_green",
+    "health_check_path": "/health",
+    "readiness_check_path": "/ready",
+    "rollback": {
+      "enabled": true,
+      "auto_rollback_on_failure": true,
+      "failure_threshold": 0.1,
+      "monitoring_period_minutes": 30
+    },
+    "canary": {
+      "enabled": true,
+      "initial_percentage": 10,
+      "increment_percentage": 20,
+      "increment_interval_minutes": 15
+    }
+  },
+
+  "maintenance": {
+    "windows": [
+      {
+        "name": "weekly_maintenance",
+        "schedule": "0 2 * * 0",
+        "duration_hours": 2,
+        "type": "rolling"
+      }
+    ],
+    "automated_tasks": {
+      "log_cleanup": {
+        "enabled": true,
+        "schedule": "0 3 * * *",
+        "retention_days": 30
+      },
+      "database_optimization": {
+        "enabled": true,
+        "schedule": "0 4 * * 0"
+      }
+    }
+  }
+}
