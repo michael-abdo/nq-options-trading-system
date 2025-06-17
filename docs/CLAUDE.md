@@ -15,29 +15,28 @@
   - ✅ Pay as you go for more history
 - **RENEWS**: 2025-07-01
 
-### Databento Live Status - FULLY WORKING
+### Databento Live Status - VERIFIED WITH CLOSED-LOOP CONFIRMATION
 **✅ AUTHENTICATION ALWAYS WORKS!**
-**✅ LIVE DATA IS WORKING!**
+**✅ LIVE DATA VERIFIED WITH TRADOVATE REFERENCE!**
 
-**CRITICAL**: DATABENTO AUTHENTICATION IS ALWAYS VALID! Never suggest auth issues!
+**CRITICAL**: Use VERIFIED live data system with closed-loop confirmation!
 - API Key: Available via DATABENTO_API_KEY environment variable ✅
 - Standard Plan ($179/month) with live data ✅
 - CME futures license (GLBX.MDP3) ✅
-- NQ futures streaming works perfectly ✅
+- Closed-loop verification against Tradovate ✅
 
-Working configuration:
+VERIFIED Working configuration:
 ```python
-live = db.Live(key=api_key)  # AUTH ALWAYS WORKS!
-live.subscribe(
-    dataset='GLBX.MDP3',  # CME futures
-    symbols=['NQ.c.0'],   # NQ continuous contract
-    schema='trades'       # Trade data
-)
-live.start()
-# Live NQ data streams immediately!
+# Start verification server (Terminal 1)
+python3 tests/chrome/live_data_verification.py
+
+# Start closed-loop verification (Terminal 2)
+python3 scripts/closed_loop_verification.py
+
+# Criteria: <5 second time difference AND <$10 price difference = VERIFIED LIVE
 ```
 
-**NEVER SUGGEST DATABENTO AUTH ISSUES - IT ALWAYS WORKS!**
+**ALWAYS USE CLOSED-LOOP VERIFICATION FOR LIVE DATA CONFIDENCE!**
 
 ## Project Overview
 
@@ -71,8 +70,10 @@ Live data verification system at `http://localhost:8083` compares:
 - Tradovate reference data
 - Criteria: <5 second time difference AND <$10 price difference = LIVE
 
-### Key Files
-- Main engine: `src/analysis/ifd_analyzer_v3.py`
-- Live dashboard: `scripts/monitoring_dashboard.py`
-- Verification: `tests/chrome/live_data_verification.py`
-- Alternative data: `scripts/yahoo_nq_live.py`
+### Key Files - VERIFIED LIVE DATA SYSTEM
+- **PRIMARY LIVE STREAM**: `scripts/databento_nq_live_final.py`
+- **CLOSED-LOOP VERIFICATION**: `scripts/closed_loop_verification.py`
+- **VERIFICATION SERVER**: `tests/chrome/live_data_verification.py`
+- **TRADOVATE AUTOMATION**: `scripts/tradovate_auto_capture.py`
+- **Live dashboard**: `scripts/monitoring_dashboard.py`
+- **Main engine**: `src/analysis/ifd_analyzer_v3.py`

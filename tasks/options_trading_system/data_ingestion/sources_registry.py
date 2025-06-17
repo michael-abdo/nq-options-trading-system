@@ -117,13 +117,12 @@ class DataSourcesRegistry:
         """Initialize the registry with all available sources"""
         self._sources = {}
         self._source_priorities = {
-            "databento": 1,     # ONLY ALLOWED SOURCE - MBO streaming for IFD v3
-            # ALL OTHER SOURCES DISABLED FOR TRADING SAFETY
-            "barchart": 999,      # DISABLED - not allowed
-            "barchart_live": 999, # DISABLED - not allowed
-            "polygon": 999,       # DISABLED - not allowed
-            "tradovate": 999,     # DISABLED - not allowed
-            "barchart_saved": 999 # DISABLED - not allowed
+            "databento": 1,       # PRIMARY - VERIFIED LIVE CME data with closed-loop verification
+            "tradovate": 2,       # REFERENCE - For closed-loop verification only
+            "barchart": 3,        # BACKUP - Fallback for non-live operations
+            "polygon": 4,         # OPTIONAL - Additional source when configured
+            "barchart_live": 5,   # FALLBACK - Live API backup
+            "barchart_saved": 6   # ARCHIVE - File-based historical data
         }
         self._register_all_sources()
 

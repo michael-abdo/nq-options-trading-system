@@ -5,7 +5,7 @@
       "config": {
         "api_key": "${DATABENTO_API_KEY}",
         "symbols": [
-          "NQ.FUT"
+          "NQ"
         ],
         "streaming_mode": true,
         "use_cache": false,

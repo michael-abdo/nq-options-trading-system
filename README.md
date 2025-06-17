@@ -135,9 +135,9 @@ Final Results: Top-ranked trading opportunities
 ## Core Components
 
 - **Analysis Pipeline**: `scripts/run_pipeline.py` - Traditional analysis execution
-- **Live Streaming**: `scripts/nq_live_stream.py` - Real-time NQ futures price streaming
+- **Live Streaming**: `scripts/databento_nq_live_final.py` - VERIFIED live NQ CME futures streaming
+- **Closed-Loop Verification**: `scripts/closed_loop_verification.py` - Live data verification against Tradovate reference
 - **Real-time Dashboard**: `scripts/nq_realtime_ifd_dashboard.py` - Live IFD dashboard with WebSocket integration
-- **Volume Analysis**: `scripts/nq_volume_analysis.py` - Real-time trading volume and flow analysis
 - **Shadow Trading**: `scripts/run_shadow_trading.py` - Live market validation system
 - **Limited Live Trading**: `limited_live_trading_orchestrator.py` - Risk-controlled live position testing
 - **Pipeline System**: `tasks/options_trading_system/` - Modular analysis framework
@@ -147,25 +147,28 @@ Final Results: Top-ranked trading opportunities
 
 ## Real-Time Market Data Streaming
 
-**Live NQ Futures Data with Sub-Second Latency**:
+**VERIFIED Live NQ Futures Data with Closed-Loop Confirmation**:
 
 ### Features
-- **Real-Time Prices**: Live NQ futures streaming via Databento WebSocket API
-- **Volume Analysis**: Comprehensive trade volume and institutional flow tracking
+- **Real-Time Prices**: Live NQ futures streaming via Databento CME GLBX.MDP3 dataset
+- **Closed-Loop Verification**: Automatic verification against Tradovate reference data
+- **Live Confirmation**: <5 second time difference AND <$10 price difference = VERIFIED LIVE
 - **Market Hours**: 24/5 futures trading (Sunday 6 PM - Friday 5 PM ET)
-- **Multiple Contracts**: Support for NQM5, NQZ5, and other contract months
-- **Performance**: Sub-second latency directly from CME Globex exchange
+- **Performance**: Sub-second latency directly from CME Globex exchange with verification
 
 ### Quick Start
 ```bash
-# Stream live NQ futures prices
+# Start VERIFIED live data streaming with closed-loop verification
+python3 scripts/closed_loop_verification.py
+
+# Start live data verification server (run in separate terminal)
+python3 tests/chrome/live_data_verification.py
+
+# Stream live NQ futures prices (Databento CME source)
 python3 scripts/databento_nq_live_final.py
 
-# Display simplified live prices
+# Display simplified live prices demonstration
 python3 scripts/final_live_demo.py
-
-# Analyze trading volume patterns
-python3 scripts/live_quotes_demo.py
 
 # Interactive 5-minute candlestick charts
 python3 scripts/nq_5m_chart.py
@@ -581,14 +584,15 @@ The root directory contains only essential files:
 - **`requirements.txt`** - Python dependencies
 
 **All scripts have been moved to `scripts/` directory:**
-- Live streaming scripts: `databento_nq_live_final.py`, `final_live_demo.py`, etc.
+- **VERIFIED Live streaming**: `closed_loop_verification.py`, `databento_nq_live_final.py`
 - Analysis pipeline: `run_pipeline.py`, `run_shadow_trading.py`
 - Utilities: `monitoring_dashboard.py`, `validate_phase.py`
 - Data testing: `compare_nq_sources.py`, `debug_databento_symbols.py`
 
 **All test files organized in `tests/` directory:**
+- **Live verification**: `tests/chrome/live_data_verification.py` (verification server)
 - Core tests: `test_databento_live.py`, `test_all_symbols.py`
-- Chrome automation: `tests/chrome/` subdirectory
+- Chrome automation: `tests/chrome/` subdirectory with Tradovate integration
 - Comprehensive testing: `ultimate_databento_test.py`
 
 **Documentation organized in `docs/` directory:**
@@ -634,42 +638,45 @@ The system supports multiple data sources with automatic priority-based selectio
 
 | Source | Status | Priority | Notes |
 |--------|---------|----------|-------|
-| **Barchart** | ✅ READY | 1 (Primary) | Free web scraping, no API key required |
-| **Polygon.io** | ⚠️ Config Required | 2 | Free tier available, add API key to .env |
-| **Tradovate** | ⚠️ Config Required | 3 | Demo mode, add credentials to .env |
-| **Databento** | ✅ LIVE STREAMING | 4 | CME Globex MDP3 subscription active - Live MBO streaming |
+| **Databento** | ✅ VERIFIED LIVE | 1 (Primary) | CME GLBX.MDP3 with closed-loop verification |
+| **Tradovate** | ✅ REFERENCE DATA | 2 | Live reference for verification (Chrome automation) |
+| **Barchart** | ✅ BACKUP | 3 | Free web scraping fallback |
+| **Polygon.io** | ⚠️ Config Required | 4 | Optional additional source |
 
-### Why Barchart is Primary
-- **Free**: No API costs, uses web scraping with smart caching
-- **Reliable**: Automatic fallback to saved data
-- **Complete**: Full options chain data for NQ
-- **Fast**: 5-minute cache reduces API calls significantly
+### Why Databento is Primary
+- **VERIFIED LIVE**: Closed-loop verification confirms real-time data
+- **CME Direct**: Direct access to CME Globex GLBX.MDP3 dataset
+- **Institutional Grade**: Sub-second latency for professional trading
+- **Reference Verified**: Automatic comparison with Tradovate ensures accuracy
 
-### Databento Live Streaming Integration ✅
-Premium CME Globex GLBX.MDP3 data source with **real-time MBO streaming**:
-- **Live MBO Streaming**: Real-time Market-By-Order data from GLBX.MDP3 dataset
-- **Databento-Only Mode**: Pure databento pipeline with no fallbacks (`databento_only.json`)
-- **Symbol Format**: Uses `NQ.OPT` with parent symbology for full option chain access
-- **Institutional Flow Detection**: Real-time pressure metrics for IFD v3.0 analysis
-- **Performance**: Sub-second streaming initialization, <15ms analysis latency
-- **Authentication**: Automatic API key validation and dataset access verification
-- **Reconnection**: Exponential backoff with automatic stream recovery
+### Closed-Loop Verified Live Streaming ✅
+VERIFIED live data with automatic reference validation:
+- **Live CME Streaming**: Real-time NQ futures from GLBX.MDP3 dataset
+- **Verification Server**: `tests/chrome/live_data_verification.py` running on port 8083
+- **Tradovate Reference**: Chrome automation extracts live reference prices
+- **Verification Criteria**: <5 second time difference AND <$10 price difference = LIVE
+- **Automatic Validation**: Continuous monitoring ensures data freshness
+- **Closed-Loop Feedback**: System automatically detects and reports stale data
+- **Performance**: Sub-second latency with real-time verification
 
-#### Quick Start - Databento-Only Mode
+#### Quick Start - Verified Live Streaming
 ```bash
-# Test databento live streaming integration
-python3 tests/test_databento_live.py
+# Start verification server (Terminal 1)
+python3 tests/chrome/live_data_verification.py
 
-# Run analysis pipeline with databento-only configuration
+# Start closed-loop verification (Terminal 2)
+python3 scripts/closed_loop_verification.py
+
+# Run analysis pipeline with verified live data
 export DATABENTO_API_KEY="your-key-here"
 python3 scripts/run_pipeline.py --config config/databento_only.json
 
-# Test results: 5/5 tests passing with live MBO streaming active
-# ✅ Databento API Connectivity
-# ✅ Configuration Loading
-# ✅ Data Ingestion Pipeline
-# ✅ IFD v3.0 Integration
-# ✅ End-to-End Performance
+# Test results: VERIFIED LIVE DATA with closed-loop confirmation
+# ✅ Databento CME Live Streaming
+# ✅ Tradovate Reference Validation
+# ✅ <5 Second Time Verification
+# ✅ <$10 Price Accuracy Verification
+# ✅ Closed-Loop Feedback Confirmed
 ```
 
 ### Configuration
@@ -680,14 +687,14 @@ POLYGON_API_KEY=your-key-here    # Optional - free tier
 TRADOVATE_CID=your-cid           # Optional - demo mode
 TRADOVATE_SECRET=your-secret     # Optional - demo mode
 
-# Test data source availability
-python3 tests/test_source_availability.py
-python3 tests/test_databento_integration.py
-python3 tests/test_mbo_live_streaming.py
+# Test VERIFIED live data system
+python3 tests/test_databento_live.py
+python3 tests/ultimate_databento_test.py
+python3 tests/chrome/live_data_verification.py
 
-# Test configuration system
-python3 tests/test_config_system.py
-python3 tests/test_barchart_caching.py
+# Test closed-loop verification
+python3 scripts/closed_loop_verification.py
+python3 tests/test_source_availability.py
 ```
 
 See [Data Sources Documentation](docs/data_sources/) for detailed setup guides.
