@@ -1,142 +1,78 @@
-# HIERARCHICAL PIPELINE TRADING SYSTEM
+# CLAUDE.md - Project Context for IFD v3.0 Trading System
 
-## Core Architecture
-**HIERARCHICAL INTEGRATION PIPELINE**: Build on the established task-based directory structure using integration modules and comprehensive testing.
+## CRITICAL INFORMATION
 
-## System Structure
+### Databento Subscription Status
+- **ACTIVE SUBSCRIPTION**: Standard Plan ($179/month)
+- **INCLUDES LIVE DATA**: Yes, live data is included in the Standard plan
+- **API KEY**: Set via DATABENTO_API_KEY environment variable
+- **PLAN FEATURES**:
+  - ✅ Live data
+  - ✅ No license fees
+  - ✅ Entire history in core schemas
+  - ✅ 1 year of L1 history
+  - ✅ 1 month of L2 and L3 history
+  - ✅ Pay as you go for more history
+- **RENEWS**: 2025-07-01
 
-### **CURRENT ARCHITECTURE**:
-```
-project_root/
-├── tasks/options_trading_system/
-│   ├── analysis_engine/
-│   │   ├── integration.py          # IFD v3.0 integration hub
-│   │   ├── pipeline_config.json    # Pipeline configuration
-│   │   ├── institutional_flow_v3/  # Core IFD v3.0 implementation
-│   │   │   ├── solution.py         # Main algorithm
-│   │   │   └── optimizations.py    # Performance enhancements
-│   │   ├── strategies/             # Trading strategies
-│   │   ├── monitoring/             # Performance tracking
-│   │   └── tests/                  # Integration tests
-│   ├── data_ingestion/
-│   │   ├── integration.py          # Data pipeline coordinator
-│   │   ├── databento_api/          # Market data feed
-│   │   └── barchart_web_scraper/   # Backup data source
-│   └── output_generation/
-│       ├── integration.py          # Output system
-│       └── report_generator/       # Trading reports
-├── scripts/                        # Execution scripts
-│   ├── run_pipeline.py            # Main pipeline runner
-│   ├── run_shadow_trading.py      # Shadow trading mode
-│   └── validate_phase.py          # Phase validation
-└── tests/                         # System-wide tests
-    └── shadow_trading/            # Shadow trading tests
-```
+### Databento Live Status - FULLY WORKING
+**✅ AUTHENTICATION ALWAYS WORKS!**
+**✅ LIVE DATA IS WORKING!**
 
-## Development Guidelines
+**CRITICAL**: DATABENTO AUTHENTICATION IS ALWAYS VALID! Never suggest auth issues!
+- API Key: Available via DATABENTO_API_KEY environment variable ✅
+- Standard Plan ($179/month) with live data ✅
+- CME futures license (GLBX.MDP3) ✅
+- NQ futures streaming works perfectly ✅
 
-### **1. INTEGRATION-FIRST APPROACH**
-- Each major component has an `integration.py` that coordinates submodules
-- Integration modules are the primary entry points
-- All components must work through the integration layer
-
-### **2. PIPELINE CONFIGURATION**
-- `pipeline_config.json` defines the data flow
-- Configuration-driven architecture for flexibility
-- Supports multiple trading profiles (production, testing, conservative)
-
-### **3. TESTING STRATEGY**
-- Integration tests in `tests/` directories
-- Shadow trading for real-time validation
-- Performance monitoring built into the system
-
-### **4. MODULE STRUCTURE**
-```
-module/
-├── solution.py      # Core implementation
-├── integration.py   # Module coordinator (if parent)
-├── __init__.py     # Package exports
-└── tests/          # Module-specific tests
+Working configuration:
+```python
+live = db.Live(key=api_key)  # AUTH ALWAYS WORKS!
+live.subscribe(
+    dataset='GLBX.MDP3',  # CME futures
+    symbols=['NQ.c.0'],   # NQ continuous contract
+    schema='trades'       # Trade data
+)
+live.start()
+# Live NQ data streams immediately!
 ```
 
-## Key Components
+**NEVER SUGGEST DATABENTO AUTH ISSUES - IT ALWAYS WORKS!**
 
-### **Analysis Engine (IFD v3.0)**
-- Institutional Flow Detection version 3.0
-- Real-time market analysis
-- Signal generation and validation
-- Performance tracking and optimization
+## Project Overview
 
-### **Data Ingestion Pipeline**
-- **Databento API**: ACTIVE LIVE DATA SUBSCRIPTION with MBO streaming
-- **Live Streaming**: Real-time market data with sub-second latency
-- Barchart web scraper as backup
-- Data normalization and caching
-- MBO (Market by Order) streaming support
+IFD v3.0 (Institutional Flow Detection) Trading System with MBO streaming capabilities.
 
-### **Output Generation**
-- JSON export for external systems
-- Human-readable trading reports
-- Performance metrics and analytics
+### Phase Status
+- ✅ Phase 1: Live Streaming Integration - COMPLETE
+- ✅ Phase 2: Real-time Dashboard - COMPLETE
+- ✅ Phase 3: Alert System - COMPLETE
+- ✅ Phase 4: Testing & Validation - COMPLETE
+- ✅ Phase 5: Documentation & Training - COMPLETE
 
-## Operational Modes
+### Current Working Branch
+`IFD-live-streaming-data`
 
-### **1. PRODUCTION MODE**
-- Full IFD v3.0 algorithm
-- **LIVE DATABENTO STREAMING**: Real-time market data
-- Live signal generation with authenticated MBO data
+### Live Data Sources
+**PRIMARY**: Databento Live (CME GLBX.MDP3) - WORKING PERFECTLY!
+**BACKUP**: Yahoo Finance NQ=F - Also working
+**REFERENCE**: Tradovate (via Chrome automation) - For verification
 
-### **2. SHADOW TRADING MODE**
-- Parallel execution without orders
-- Signal validation and comparison
-- Performance metrics collection
+**DATABENTO IS THE PRIMARY SOURCE - IT WORKS!**
 
-### **3. TESTING MODE**
-- Conservative thresholds
-- Enhanced logging
-- Detailed diagnostics
+### Chrome Remote Debugging
+- Remote Chrome debug setup available
+- Tests located in `/tests/chrome/`
+- Tradovate tab available with "Copy Trading Data" button for reference data
 
-## Best Practices
+### Verification System
+Live data verification system at `http://localhost:8083` compares:
+- System data (from any source)
+- Tradovate reference data
+- Criteria: <5 second time difference AND <$10 price difference = LIVE
 
-### **DO**:
-- Use integration.py modules as entry points
-- Follow the hierarchical structure
-- Add comprehensive tests for new features
-- Update pipeline_config.json for flow changes
-- Monitor performance metrics
-
-### **DON'T**:
-- Create files outside the established structure
-- Bypass the integration layer
-- Add untested code to production
-- Modify core algorithms without shadow testing
-
-## Current Status
-- **Active System**: IFD v3.0 in production
-- **Architecture**: Hierarchical Pipeline Framework
-- **Data Subscription**: ACTIVE DATABENTO LIVE STREAMING SUBSCRIPTION
-- **Live Data**: Real-time market data with authenticated access
-- **Phase**: Continuous improvement and monitoring
-- **Testing**: Shadow trading validation active
-
-## Live Data Subscription Details
-
-### **DATABENTO LIVE STREAMING ACTIVE**
-- **Subscription Status**: ACTIVE AND AUTHENTICATED
-- **API Key**: Saved securely in .env file
-- **Dataset Access**: GLBX.MDP3 with full MBO streaming
-- **Live Streaming**: Real-time 1-minute bars with sub-second latency
-- **Historical Data**: Full access with 23 datasets available
-- **Authentication**: Multi-path .env fallback system implemented
-
-### **LIVE DASHBOARD CAPABILITIES**
-- Real-time NQ futures streaming with IFD v3.0 signals
-- 1-minute to 5-minute bar aggregation in real-time
-- Live data buffer with 100-bar retention
-- Automatic fallback to historical data if streaming fails
-- Dashboard available at: `./start_live_dashboard.sh`
-
-## Core Truth
-**THE HIERARCHICAL PIPELINE IS THE SYSTEM**. All components integrate through defined interfaces, data flows through configured pipelines, and shadow trading validates everything before production.
-
-**LIVE STREAMING IS ACTIVE AND OPERATIONAL** with authenticated Databento subscription providing real-time market data for production trading.
+### Key Files
+- Main engine: `src/analysis/ifd_analyzer_v3.py`
+- Live dashboard: `scripts/monitoring_dashboard.py`
+- Verification: `tests/chrome/live_data_verification.py`
+- Alternative data: `scripts/yahoo_nq_live.py`

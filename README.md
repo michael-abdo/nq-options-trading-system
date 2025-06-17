@@ -34,13 +34,13 @@ pip install plotly jsonschema  # For charts and config validation
 python3 scripts/run_pipeline.py
 
 # 🔴 NEW: Real-time NQ futures price streaming
-python3 scripts/nq_live_stream.py
+python3 scripts/databento_nq_live_final.py
 
 # 🔴 NEW: Live price display (simplified view)
-python3 scripts/nq_realtime_display.py
+python3 scripts/final_live_demo.py
 
 # 🔴 NEW: NQ volume and trading analysis
-python3 scripts/nq_volume_analysis.py
+python3 scripts/live_quotes_demo.py
 
 # 📊 Interactive 5-minute candlestick charts with configuration system
 python3 scripts/nq_5m_chart.py --config default
@@ -65,7 +65,7 @@ python3 scripts/examples/live_monitor.py
 python3 scripts/nq_5m_dash_app_ifd.py
 
 # 🔴 NEW: Live streaming dashboard with auto-start
-./start_live_dashboard.sh
+./scripts/start_live_dashboard.sh
 
 # Run Shadow Trading Mode (validation without real positions)
 python3 scripts/run_shadow_trading.py
@@ -159,13 +159,13 @@ Final Results: Top-ranked trading opportunities
 ### Quick Start
 ```bash
 # Stream live NQ futures prices
-python3 scripts/nq_live_stream.py
+python3 scripts/databento_nq_live_final.py
 
 # Display simplified live prices
-python3 scripts/nq_realtime_display.py
+python3 scripts/final_live_demo.py
 
 # Analyze trading volume patterns
-python3 scripts/nq_volume_analysis.py
+python3 scripts/live_quotes_demo.py
 
 # Interactive 5-minute candlestick charts
 python3 scripts/nq_5m_chart.py
@@ -227,8 +227,9 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 ├── scripts/                            # 🔧 UTILITY SCRIPTS & ENTRY POINTS (ORGANIZED)
 │   ├── run_pipeline.py                # 🚀 ANALYSIS PIPELINE ENTRY POINT
 │   ├── run_shadow_trading.py          # 🎯 SHADOW TRADING ENTRY POINT
-│   ├── setup_trading_environment.sh   # 🛠️ Environment setup script (moved from root)
-│   ├── requirements_chart.txt         # 📋 Chart system requirements (moved from root)
+│   ├── setup_trading_environment.sh   # 🛠️ Environment setup script
+│   ├── start_live_dashboard.sh        # 🔴 Live dashboard startup script
+│   ├── requirements_chart.txt         # 📋 Chart system requirements
 │   ├── start_trading_safe_chart.py    # 🔥 5-MINUTE CHART DASHBOARD ENTRY POINT
 │   ├── nq_5m_chart.py                 # 📊 Static 5-minute chart generator
 │   ├── nq_5m_dash_app_ifd.py          # 🔴 LIVE STREAMING DASHBOARD WITH IFD
@@ -236,26 +237,58 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │   ├── databento_auth.py              # Bulletproof API authentication system
 │   ├── data_aggregation.py            # 1-minute to 5-minute OHLCV aggregation
 │   ├── compare_barchart_databento.py  # Data source comparison
+│   ├── compare_nq_sources.py          # NQ data source comparison utility
 │   ├── production_monitor.py          # Production monitoring system
 │   ├── monitoring_dashboard.py        # Web monitoring dashboard
 │   ├── validate_phase.py              # Phase validation script
 │   ├── requirements_databento.txt     # Databento dependencies
-│   └── setup_databento.sh             # Databento setup script
-├── tests/                              # 🧪 TEST SUITE (40+ test files)
+│   ├── setup_databento.sh             # Databento setup script
+│   ├── databento_live_verified.py     # Verified live Databento streaming
+│   ├── databento_live_working.py      # Working Databento live connection
+│   ├── debug_databento_symbols.py     # Symbol debugging utility
+│   ├── final_closed_loop.py           # Final closed-loop verification system
+│   ├── final_live_demo.py             # Live demo script
+│   ├── live_quotes_demo.py            # Live quotes demonstration
+│   ├── simple_live_test.py            # Simple live data test
+│   ├── tradovate_live_feed.py         # Tradovate live feed integration
+│   ├── databento_diagnostic.py        # Comprehensive Databento diagnostics
+│   ├── databento_nq_live_final.py     # Final NQ live streaming implementation
+│   ├── databento_nq_symbol_test.py    # NQ symbol format testing
+│   ├── databento_websocket_live.py    # Direct WebSocket testing
+│   ├── closed_loop_verification.py    # Closed-loop verification system
+│   ├── live_data_hunter.py            # Live data hunting utility
+│   ├── polygon_live_test.py           # Polygon.io live data testing
+│   ├── simulate_tradovate_data.py     # Tradovate data simulation
+│   ├── tradovate_auto_capture.py      # Automatic Tradovate data capture
+│   └── yahoo_nq_live.py               # Yahoo Finance NQ live data
+├── tests/                              # 🧪 TEST SUITE (50+ test files)
 │   ├── shadow_trading/                 # Shadow trading system tests
 │   │   ├── test_real_performance_metrics.py     # Performance metrics tests
 │   │   ├── test_algorithm_integration.py        # Algorithm integration tests
 │   │   ├── test_signal_validation.py            # Signal validation tests
 │   │   └── test_shadow_trading_integration.py   # Complete system tests
+│   ├── chrome/                         # Chrome automation tests
+│   │   ├── live_data_verification.py   # Live data verification system
+│   │   ├── tradovate_data_capture.py   # Tradovate data capture
+│   │   ├── feed_system_data.py         # System data feeding
+│   │   ├── screenshot_automation.py    # Screenshot automation
+│   │   └── test_dashboard_chrome.py    # Chrome dashboard testing
 │   ├── test_config_system.py          # Configuration system tests
 │   ├── test_pipeline_config.py        # Pipeline configuration tests
 │   ├── test_databento_integration.py  # Databento integration tests
 │   ├── test_live_trading_readiness.py # Live trading readiness tests
 │   ├── test_api_authentication.py     # API authentication tests
+│   ├── test_all_symbols.py            # Symbol testing utility
+│   ├── test_databento_live.py         # Live Databento connection tests
+│   ├── ultimate_databento_test.py     # Comprehensive Databento testing
 │   └── ... (30+ more test files)      # Complete test coverage
 ├── archive/                            # Legacy files (archived)
 ├── docs/                               # 📚 DOCUMENTATION (FULLY ORGANIZED)
-│   ├── CLAUDE.md                       # 🔧 Project instructions (essential - stays in root)
+│   ├── CLAUDE.md                       # 🔧 Project instructions and context
+│   ├── reports/                        # 📊 Status and progress reports
+│   │   └── ITERATION_25_STATUS_REPORT.md  # Latest system status
+│   ├── project/                        # 📈 Project management documentation
+│   │   └── PROJECT_COMPLETION_SUMMARY.md  # Project completion summary
 │   ├── architecture/                   # 🏗️ Technical architecture (Phase 5)
 │   │   └── Live_Streaming_Architecture.md
 │   ├── operations/                     # 🚀 Operations & deployment (Phase 5)
@@ -308,7 +341,10 @@ python3 scripts/examples/live_monitor.py --symbol NQM5 --verbose
 │       ├── databento.md                # Databento integration
 │       └── tradovate_integration.md    # Tradovate integration
 ├── outputs/                            # 📁 OUTPUT STRUCTURE (GIT IGNORED - SECURE)
-│   ├── trading_safety_*.log           # 🛡️ Trading safety logs (moved from root)
+│   ├── data/                           # 📊 Market data files
+│   │   ├── nq_5m_data_*.csv           # NQ 5-minute historical data
+│   │   └── market_data_exports/        # Exported market data
+│   ├── trading_safety_*.log           # 🛡️ Trading safety logs
 │   ├── YYYYMMDD/                       # Date-based organization
 │   │   ├── analysis_exports/           # JSON analysis outputs (may contain API data)
 │   │   ├── api_data/                   # API responses (sensitive data)
@@ -535,15 +571,34 @@ Edit configuration files in `config/` directory to switch strategies and data so
 
 ## File Organization
 
-### Clean Root Directory
+### Clean Root Directory ✅ ORGANIZED
 The root directory contains only essential files:
 - **`README.md`** - This documentation file
-- **`.env`** - Configuration file (API keys)
+- **`.env`** - Environment variables (API keys)
 - **`.env.example`** - Example environment configuration
 - **`.gitignore`** - Git configuration
 - **`.pre-commit-config.yaml`** - Pre-commit hooks
+- **`requirements.txt`** - Python dependencies
 
-All scripts have been moved to `scripts/` and test files are organized in `tests/` for better structure.
+**All scripts have been moved to `scripts/` directory:**
+- Live streaming scripts: `databento_nq_live_final.py`, `final_live_demo.py`, etc.
+- Analysis pipeline: `run_pipeline.py`, `run_shadow_trading.py`
+- Utilities: `monitoring_dashboard.py`, `validate_phase.py`
+- Data testing: `compare_nq_sources.py`, `debug_databento_symbols.py`
+
+**All test files organized in `tests/` directory:**
+- Core tests: `test_databento_live.py`, `test_all_symbols.py`
+- Chrome automation: `tests/chrome/` subdirectory
+- Comprehensive testing: `ultimate_databento_test.py`
+
+**Documentation organized in `docs/` directory:**
+- Project context: `CLAUDE.md`
+- Status reports: `docs/reports/ITERATION_25_STATUS_REPORT.md`
+- Project summaries: `docs/project/PROJECT_COMPLETION_SUMMARY.md`
+
+**Data files organized in `outputs/data/` directory:**
+- Historical data: `nq_5m_data_*.csv` files
+- Market data exports and analysis results
 
 ### Directory Structure
 ```
