@@ -380,6 +380,9 @@ class MonitoringDashboard:
         html = self.generate_html_dashboard()
         html_file = "outputs/monitoring/dashboard.html"
 
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(html_file), exist_ok=True)
+
         with open(html_file, 'w') as f:
             f.write(html)
 

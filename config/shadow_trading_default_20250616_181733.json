@@ -1,0 +1,51 @@
+{
+  "shadow_trading": {
+    "start_date": "2025-06-23",
+    "duration_days": 1,
+    "trading_hours_start": "09:30",
+    "trading_hours_end": "16:00",
+    "report_frequency": "daily",
+    "validation_mode": "strict",
+    "max_daily_signals": 50,
+    "confidence_threshold": 0.65,
+    "paper_trading_capital": 100000.0,
+    "save_detailed_logs": true,
+    "max_daily_loss_pct": 2.0,
+    "min_signal_accuracy": 0.7,
+    "max_false_positive_rate": 0.15
+  },
+  "market_relevance": {
+    "relevance_window_minutes": 30,
+    "min_confidence_threshold": 0.65,
+    "correlation_threshold": 0.7,
+    "max_tracking_hours": 8
+  },
+  "data_sources": {
+    "primary": "barchart",
+    "fallback": [
+      "databento",
+      "polygon"
+    ],
+    "cache_enabled": true,
+    "cache_ttl_minutes": 5
+  },
+  "algorithms": {
+    "v1_enabled": true,
+    "v3_enabled": true,
+    "comparison_mode": "parallel",
+    "allocation_split": 0.5
+  },
+  "output": {
+    "base_directory": "outputs/shadow_trading",
+    "save_daily_reports": true,
+    "save_signal_details": true,
+    "save_market_data": false,
+    "generate_charts": true
+  },
+  "monitoring": {
+    "enable_real_time_monitoring": true,
+    "dashboard_update_frequency": 300,
+    "alert_email": null,
+    "slack_webhook": null
+  }
+}

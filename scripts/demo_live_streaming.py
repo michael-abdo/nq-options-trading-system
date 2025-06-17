@@ -25,12 +25,12 @@ def simulate_live_ifd_analysis():
     """Demonstrate the complete live streaming pipeline"""
 
     # Import components
-    from tasks.options_trading_system.analysis_engine.event_processor import create_standard_processor
-    from tasks.options_trading_system.analysis_engine.pressure_aggregator import create_standard_engine
-    from tasks.options_trading_system.analysis_engine.data_validator import (
+    from tasks.options_trading_system.analysis_engine.live_streaming.event_processor import EventProcessor
+    from tasks.options_trading_system.analysis_engine.live_streaming.pressure_aggregator import RealTimePressureEngine
+    from tasks.options_trading_system.analysis_engine.live_streaming.data_validator import (
         StreamingDataValidator, create_mbo_validation_rules
     )
-    from tasks.options_trading_system.analysis_engine.baseline_context_manager import create_baseline_manager
+    from tasks.options_trading_system.analysis_engine.live_streaming.baseline_context_manager import BaselineContextManager
 
     print("\n" + "="*60)
     print("🚀 IFD LIVE STREAMING DEMO")
@@ -38,10 +38,10 @@ def simulate_live_ifd_analysis():
 
     # Create components
     print("\n📦 Initializing components...")
-    processor = create_standard_processor()
-    pressure_engine = create_standard_engine()
+    processor = EventProcessor()
+    pressure_engine = RealTimePressureEngine()
     validator = StreamingDataValidator(create_mbo_validation_rules())
-    baseline_manager = create_baseline_manager("demo_baseline.db")
+    baseline_manager = BaselineContextManager("demo_baseline.db")
 
     # Track signals
     signals_detected = []

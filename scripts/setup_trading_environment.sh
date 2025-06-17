@@ -6,7 +6,12 @@
 echo "🔐 Setting up TRADING-SAFE environment..."
 
 # Load the correct API key from .env file
-export DATABENTO_API_KEY=db-fPTHD9CmYAnDagCFgUmD5VSnLtGCH
+if [ -f .env ]; then
+    source .env
+    echo "✅ Loaded environment from .env file"
+else
+    echo "⚠️ No .env file found. Please create one with DATABENTO_API_KEY=your_key"
+fi
 
 # Verify it's set correctly
 echo "✅ DATABENTO_API_KEY set: ${DATABENTO_API_KEY:0:10}..."
