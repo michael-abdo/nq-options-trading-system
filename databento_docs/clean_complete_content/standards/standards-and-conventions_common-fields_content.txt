@@ -1,0 +1,3813 @@
+# Standards and conventions | Databento Docs
+Category: Standards
+Source: standards-and-conventions_common-fields.html
+================================================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+API keys
+Download center
+Team
+Billing
+Plans and live data
+Release notes
+0.38.1 - 2025-06-17
+0.38.0 - 2025-06-10
+0.37.1 - 2025-06-03
+0.37.0 - 2025-06-03
+0.36.0 - 2025-05-27
+0.35.1 - 2025-05-20
+0.35.0 - 2025-05-13
+0.34.2 - 2025-05-06
+0.34.1 - 2025-04-29
+0.34.0 - 2025-04-22
+0.33.0 - 2025-04-15
+0.32.1 - 2025-04-07
+0.32.0 - 2025-04-02
+0.31.0 - 2025-03-18
+0.30.0 - 2025-02-11
+0.29.0 - 2025-02-04
+0.28.0 - 2025-01-21
+0.27.0 - 2025-01-07
+0.26.0 - 2024-12-17
+0.25.0 - 2024-11-12
+0.24.0 - 2024-10-22
+0.23.0 - 2024-09-25
+0.22.0 - 2024-08-27
+0.21.0 - 2024-07-30
+0.20.1 - 2024-07-16
+0.20.0 - 2024-07-09
+0.19.1 - 2024-06-25
+0.19.0 - 2024-06-04
+0.18.1 - 2024-05-22
+0.18.0 - 2024-05-14
+0.17.1 - 2024-04-08
+0.17.0 - 2024-04-01
+0.16.0 - 2024-03-01
+0.15.0 - 2024-01-16
+0.14.1 - 2023-12-18
+0.14.0 - 2023-11-23
+0.13.1 - 2023-10-23
+0.13.0 - 2023-09-21
+0.12.0 - 2023-08-24
+0.11.0 - 2023-08-10
+0.10.0 - 2023-07-20
+0.9.1 - 2023-07-11
+0.9.0 - 2023-06-13
+0.8.0 - 2023-05-16
+0.7.0 - 2023-04-28
+0.6.1 - 2023-03-28
+0.6.0 - 2023-03-24
+0.5.0 - 2023-03-13
+0.4.0 - 2023-03-02
+0.3.0 - 2023-01-06
+0.2.0 - 2022-12-01
+0.1.0 - 2022-11-07
+Python
+0.57.1 - 2025-06-17
+0.57.0 - 2025-06-10
+0.56.0 - 2025-06-03
+0.55.1 - 2025-06-02
+0.55.0 - 2025-05-29
+0.54.0 - 2025-05-13
+0.53.0 - 2025-04-29
+0.52.0 - 2025-04-15
+0.51.0 - 2025-04-08
+0.50.0 - 2025-03-18
+0.49.0 - 2025-03-04
+0.48.0 - 2025-01-21
+0.47.0 - 2024-12-17
+0.46.0 - 2024-12-10
+0.45.0 - 2024-11-12
+0.44.1 - 2024-10-29
+0.44.0 - 2024-10-22
+0.43.1 - 2024-10-15
+0.43.0 - 2024-10-09
+0.42.0 - 2024-09-23
+0.41.0 - 2024-09-03
+0.40.0 - 2024-08-27
+0.39.3 - 2024-08-20
+0.39.2 - 2024-08-13
+0.39.1 - 2024-08-13
+0.39.0 - 2024-07-30
+0.38.0 - 2024-07-23
+0.37.0 - 2024-07-09
+0.36.3 - 2024-07-02
+0.36.2 - 2024-06-25
+0.36.1 - 2024-06-18
+0.36.0 - 2024-06-11
+0.35.0 - 2024-06-04
+0.34.1 - 2024-05-21
+0.34.0 - 2024-05-14
+0.33.0 - 2024-04-16
+0.32.0 - 2024-04-04
+0.31.1 - 2024-03-20
+0.31.0 - 2024-03-05
+0.30.0 - 2024-02-22
+0.29.0 - 2024-02-13
+0.28.0 - 2024-02-01
+0.27.0 - 2024-01-23
+0.26.0 - 2024-01-16
+0.25.0 - 2024-01-09
+0.24.1 - 2023-12-15
+0.24.0 - 2023-11-23
+0.23.1 - 2023-11-10
+0.23.0 - 2023-10-26
+0.22.1 - 2023-10-24
+0.22.0 - 2023-10-23
+0.21.0 - 2023-10-11
+0.20.0 - 2023-09-21
+0.19.1 - 2023-09-08
+0.19.0 - 2023-08-25
+0.18.1 - 2023-08-16
+0.18.0 - 2023-08-14
+0.17.0 - 2023-08-10
+0.16.1 - 2023-08-03
+0.16.0 - 2023-07-25
+0.15.2 - 2023-07-19
+0.15.1 - 2023-07-06
+0.15.0 - 2023-07-05
+0.14.1 - 2023-06-16
+0.14.0 - 2023-06-14
+0.13.0 - 2023-06-02
+0.12.0 - 2023-05-01
+0.11.0 - 2023-04-13
+0.10.0 - 2023-04-07
+0.9.0 - 2023-03-10
+0.8.1 - 2023-03-05
+0.8.0 - 2023-03-03
+0.7.0 - 2023-01-10
+0.6.0 - 2022-12-02
+0.5.0 - 2022-11-07
+0.4.0 - 2022-09-14
+0.3.0 - 2022-08-30
+HTTP API
+0.34.1 - 2025-06-17
+0.34.0 - TBD
+0.33.0 - 2024-12-10
+0.32.0 - 2024-11-26
+0.31.0 - 2024-11-12
+0.30.0 - 2024-09-24
+0.29.0 - 2024-09-03
+0.28.0 - 2024-06-25
+0.27.0 - 2024-06-04
+0.26.0 - 2024-05-14
+0.25.0 - 2024-03-26
+0.24.0 - 2024-03-06
+0.23.0 - 2024-02-15
+0.22.0 - 2024-02-06
+0.21.0 - 2024-01-30
+0.20.0 - 2024-01-18
+0.19.0 - 2023-10-17
+0.18.0 - 2023-10-11
+0.17.0 - 2023-10-04
+0.16.0 - 2023-09-26
+0.15.0 - 2023-09-19
+0.14.0 - 2023-08-29
+0.13.0 - 2023-08-23
+0.12.0 - 2023-08-10
+0.11.0 - 2023-07-25
+0.10.0 - 2023-07-06
+0.9.0 - 2023-06-01
+0.8.0 - 2023-05-01
+0.7.0 - 2023-04-07
+0.6.0 - 2023-03-10
+0.5.0 - 2023-03-03
+0.4.0 - 2022-12-02
+0.3.0 - 2022-08-30
+0.2.0 - 2021-12-10
+0.1.0 - 2021-08-30
+Raw API
+0.6.1 - TBD
+0.6.0 - 2025-05-24
+0.5.6 - 2025-04-06
+0.5.5 - 2024-12-01
+0.5.4 - 2024-10-02
+0.5.3 - 2024-10-02
+0.5.1 - 2024-07-24
+2024-07-20
+2024-06-25
+0.5.0 - 2024-05-25
+0.4.6 - 2024-04-13
+0.4.5 - 2024-03-25
+0.4.4 - 2024-03-23
+0.4.3 - 2024-02-13
+0.4.2 - 2024-01-06
+0.4.0 - 2023-11-08
+0.3.0 - 2023-10-20
+0.2.0 - 2023-07-23
+0.1.0 - 2023-05-01
+Rust
+0.27.1 - 2025-06-17
+0.27.0 - 2025-06-10
+0.26.2 - 2025-06-03
+0.26.1 - 2025-05-30
+0.26.0 - 2025-05-28
+0.25.0 - 2025-05-13
+0.24.0 - 2025-04-22
+0.23.0 - 2025-04-15
+0.22.0 - 2025-04-01
+0.21.0 - 2025-03-18
+0.20.0 - 2025-02-12
+0.19.0 - 2025-01-21
+0.18.0 - 2025-01-08
+0.17.0 - 2024-12-17
+0.16.0 - 2024-11-12
+0.15.0 - 2024-10-22
+0.14.1 - 2024-10-08
+0.14.0 - 2024-10-01
+0.13.0 - 2024-09-25
+0.12.1 - 2024-08-27
+0.12.0 - 2024-07-30
+0.11.4 - 2024-07-16
+0.11.3 - 2024-07-09
+0.11.2 - 2024-06-25
+0.11.1 - 2024-06-11
+0.11.0 - 2024-06-04
+0.10.0 - 2024-05-22
+0.9.1 - 2024-05-15
+0.9.0 - 2024-05-14
+0.8.0 - 2024-04-01
+0.7.1 - 2024-03-05
+0.7.0 - 2024-03-01
+0.6.0 - 2024-01-16
+0.5.0 - 2023-11-23
+0.4.2 - 2023-10-23
+0.4.1 - 2023-10-06
+0.4.0 - 2023-09-21
+0.3.0 - 2023-09-13
+0.2.1 - 2023-08-25
+0.2.0 - 2023-08-10
+0.1.0 - 2023-08-02
+Data
+TBD (coming soon)
+2025-06-17
+2024-10-22
+2024-05-07
+2024-06-25
+2024-06-18
+2024-01-18
+2023-11-17
+2023-10-04
+2023-08-29
+2023-07-23
+2023-05-01
+2023-04-28
+2023-03-07
+A dataset is a source of data.
+A venue can be an exchange, OTC market, ATS, ECN, or dark pool.
+A publisher is a specific venue from a specific dataset.
+See alsoRead our Venues and publishers section for a more detailed explanation.All of our schemas contain a publisher_id field, which is a numeric ID unique to each publisher.
+A full list of publishers can be found using the metadata.list_publishers endpoint.
+We also assign each publisher a string identifier (e.g., OPRA.PILLAR.XCBO).
+This string identifier is broken into two parts, dataset and venue.The first part (OPRA.PILLAR) is the dataset ID.
+The dataset ID must be passed in as the dataset argument to any API or client method.
+Dataset IDs can be found in the online portal on the details page for a dataset.
+A full list of datasets can also be found using the metadata.list_datasets endpoint.The second part (XCBO) is the venue.
+For markets—such as the Cboe Options Exchange (XCBO)—the venue string is its ISO 10383 MIC code, which is guaranteed to be four characters long.
+For non-markets and composite data—such as the OPRA NBBO (OPRA)—this string is arbitrarily assigned by Databento and will be four characters long.Instrument identifiersAll of our schemas contain an instrument_id field which is a numeric ID that maps to a given instrument.
+In most cases, this numeric ID is assigned by the publisher.
+For publishers that do not assign this value, we create a synthetic mapping for it.instrument_id is only guaranteed to be unique within a given day.
+Some publishers provide a different instrument ID on different days for the same underlying instrument.
+Other publishers may use the same instrument ID for different underlying instruments at different points in time.Depending on the use case, it may be easier to work with other symbology types such as raw_symbol.
+Our symbology documentation outlines the various symbology types we support.TimestampsAll the timestamps in our data are expressed as the number of nanoseconds
+since the UNIX epoch, i.e. UNIX
+timestamps. All timestamp fields are prefixed with ts_. Some of our timestamps are
+encoded as the difference, i.e. delta, relative to another timestamp.
+Such timestamp fields are suffixed with _delta.We provide four types of timestamps, through the following fields:
+Event timestamps, ts_event
+Publisher sending timestamp, ts_in_delta
+Databento receive timestamp, ts_recv
+Databento sending timestamp (live only), ts_out
+UNDEF_TIMESTAMP (UINT64_MAX, 18446744073709551615) is used to denote a null or undefined timestamp.The event and publisher sending timestamps are provided by the publisher (or
+market), and we provide their original values without any adjustment.ts_eventMost users will only need the event timestamp, i.e. ts_event. For market
+data, this represents the time that the event is received by the
+matching engine (tag 60 in FIX encoding).The exact location where this timestamp is taken varies with matching
+engine architecture of each market. Some markets will handle different subsets
+of instruments on independent order gateways, while other markets will load
+balance the same subset of instruments across independent order gateways.
+Some markets take the event timestamp at the time it is received on the
+independent order gateways, while others may take this timestamp at the time
+it reaches a FIFO matching queue. In the former case, the clocks on independent
+order gateways are often not properly synchronized to the same clock source.
+Since we do not adjust the publisher's timestamps, any non-monotonicity in
+the original data will remain.ts_in_deltaThe publisher sending timestamp represents the time when the data message
+associated with an event is sent (tag 52 in FIX encoding). We encode this
+information in ts_in_delta, which expresses the number of nanoseconds
+between the Databento receive timestamp (ts_recv) and the publisher sending timestamp.
+To get the sending timestamp itself, simply subtract ts_in_delta from
+ts_recv. Since the publisher and Databento are not necessarily synchronized
+to the same clock source, ts_in_delta may be negative.ts_in_delta is a 32-bit signed integer. The minimum will clamp to INT32_MIN
+and the maximum will clamp to INT32_MAX, even if the true value exceeds these limits.Some markets do not provide both match event timestamps and sending timestamps.
+Often, they will provide only one of the two. In such cases, we take it that
+the event timestamp and sending timestamp assume the same value. As such,
+ts_event will be the provided timestamp and ts_in_delta will be equal to
+the difference between ts_recv and ts_event.ts_recvUnless otherwise specified, Databento receive timestamps, i.e. ts_recv, are
+synchronized against UTC with sub-microsecond accuracy. Moreover, these receive
+timestamps are always guaranteed to be monotonic for any given symbol.These receive timestamps rely on hardware timestamping on the network adapter
+and are synchronized against a GPS clock source using PTP. The clock is
+corrected by slewing the time, which prevents discrete jumps backwards
+in time. In other words, our local receive timestamps are guaranteed
+to be monotonic for any given symbol.ts_recv is also adjusted for leap seconds. The local receive timestamp is not
+immediately adjusted intraday when a leap second is introduced. Instead, the
+leap second update is applied at the end of the market session.ts_outFor live data, we optionally include a timestamp of our data before it leaves our data gateways.
+This information is encoded as ts_out.
+Both ts_out and ts_recv are synced to the same GPS clock source.
+Subtracting ts_recv gives the number of nanoseconds spent in our system.Index timestampAll schemas have a primary timestamp that should be used for sorting records as well as indexing into any symbology data structure.
+This index timestamp will be ts_recv if it exists in the schema, otherwise it will be ts_event.When requesting historical data, the data will be filtered based on the index timestamp.When requesting data in CSV and JSON encodings, the first field will be set to this index timestamp.
+Additionally, for schemas that contain ts_recv, the second field will be set to ts_event.EncodingsWe support DBN, CSV, and JSON encodings for our data.
+DBN is an extremely fast message encoding and storage format for normalized market data.
+All official Databento client libraries use DBN under the hood, both as a data interchange format and for in-memory representation of data.
+DBN is also the default encoding for all Databento APIs, including live data streaming, historical data streaming, and batch flat files.Our batch download system also supports CSV and JSON encodings.Time zoneBy default, all of our data is set in UTC time zone.
+Likewise, our site displays all dates and times in UTC by default.Dates and timesWe use the ISO 8601 date and time format to express dates and times used as parameters to our APIs.
+All dates and times used as parameters are in UTC by default.The "reduced precision" concept in the ISO 8601 standard allows for dates and times to be represented with varying levels of detail.
+Any number of values may be dropped from any of the date and time representations, but in the order from the least to the most significant.
+For example, "2024-05" corresponds to "2024-05-01T00:00:00".Any parameter that takes an ISO 8601 timestamp can instead be given a timestamp
+in nanoseconds since the UNIX epoch, as described in the above section.All of our timestamp parameters are start-inclusive and end-exclusive.Forward filling "end" parametersFor our APIs that take an optional end parameter as an ISO 8601 string, we will implement the following behavior when the end parameter is not provided:We will forward fill any date or time components of the associated start parameter that are omitted.
+This "rounds up" the start timestamp for use as the end timestamp, and is done for more concise usage.Examples of this behavior are shown below.InfoWe will only forward fill timestamps with less than one-second resolution.
+Start timestamp
+Effective start timestamp
+Forward filled end timestamp
+"2024"
+"2024-01-01T00:00:00"
+"2025-01-01T00:00:00"
+"2024-03"
+"2024-03-01T00:00:00"
+"2024-04-01T00:00:00"
+"2024-03-10"
+"2024-03-10T00:00:00"
+"2024-03-11T00:00:00"
+"2024-03-10T01"
+"2024-03-10T01:00:00"
+"2024-03-10T02:00:00"
+"2024-03-10T00:01"
+"2024-03-10T00:01:00"
+"2024-03-10T00:02:00"
+For example, a query for the entire month of March 2024 can be specified with start="2024-03" without an end.RtypeAn rtype or record type is an unsigned 8-bit discriminant in the header of every DBN record that indicates the type of record structure.
+Each schema has one rtype and by extension one record structure associated with it.InfoSome rtypes are not associated with a schema and are only present in live data.
+Name
+Decimal
+Description
+MBP-0
+0x00
+A market-by-price record with a book depth of 0. Used for the trades schema.
+MBP-1
+0x01
+A market-by-price record with a book depth of 1. Used for the TBBO and MBP-1 schemas.
+MBP-10
+0x0A
+A market-by-price record with a book depth of 10.
+Status
+0x12
+An exchange status record.
+Definition
+0x13
+An instrument definition record.
+Imbalance
+0x14
+An order imbalance record.
+Error
+0x15
+An error record from the live gateway.
+Symbol mapping
+0x16
+A symbol mapping record from the live gateway.
+System
+0x17
+A non-error record from the live gateway.
+Statistics
+0x18
+A statistics record from the publisher.
+OHLCV-1s
+0x20
+An OHLCV record at a 1-second cadence.
+OHLCV-1m
+0x21
+An OHLCV record at a 1-minute cadence.
+OHLCV-1h
+0x22
+An OHLCV record at an hourly cadence.
+OHLCV-1d
+0x23
+An OHLCV record at a daily cadence.
+0xA0
+A market-by-order record.
+CMBP-1
+0xB1
+A consolidated market-by-price record with a book depth of 1.
+CBBO-1s
+0xC0
+A consolidated market-by-price record with a book depth of 1 at a 1-second cadence.
+CBBO-1m
+0xC1
+A consolidated market-by-price record with a book depth of 1 at a 1-minute cadence.
+TCBBO
+0xC2
+A consolidated market-by-price record with a book depth of 1 with only trades.
+BBO-1s
+0xC3
+A market-by-price record with a book depth of 1 at a 1-second cadence.
+BBO-1m
+0xC4
+A market-by-price record with a book depth of 1 at a 1-minute cadence.
+PricesPrices are expressed as signed integers in fixed-precision format, whereby every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001.
+For example, a price of 5411750000000 corresponds to 5411.75 (decimal format).When requesting data via batch download in CSV and JSON encodings, you can optionally choose for prices to be returned in decimal format.
+If you are requesting data using the online portal, you can select Decimal prices in the Advanced customization section.
+Otherwise, you can specify the pretty_px parameter in batch.submit_job using the client libraries.Additionally, our client libraries support functionality to view prices in decimal format.In certain scenarios—such as calendar spreads in futures—prices can be negative.UNDEF_PRICE is used to denote a null or undefined price.
+It will be equal to 9223372036854775807 (INT64_MAX) when using the fixed-precision integer format.
+When expressed in decimal format, it will be equal to null in JSON, or "" (an empty string) in CSV.SideThe side field contains information about the side of an order event.
+It's meaning will vary depending on the action field.
+When action is Trade:
+A - The trade aggressor was a seller
+B - The trade aggressor was a buyer
+N - No side specified
+When action is Fill:
+A - A resting sell order was filled
+B - A resting buy order was filled
+N - No side specified
+When action is Add, Modify, and Cancel:
+A - A resting sell order updated the book
+B - A resting buy order updated the book
+N - No side specified
+When action is cleaR book, side will always be N
+side can be N in the following cases:
+The source does not disseminate a side for trades.
+Trades happening during opening and closing auctions
+Trades against non-displayed orders
+Trades involving implied orders
+Off-exchange trades
+The Venues and datasets section provides more information regarding the specific cases for each dataset where no side will be specified.ActionThe action field contains information about the type of order event contained in the message.
+Name
+Value
+Action
+Insert a new order into the book.
+Modify
+Change an order's price and/or size.
+Cancel
+Fully or partially cancel an order from the book.
+Clear
+Remove all resting orders for the instrument.
+Trade
+An aggressing order traded. Does not affect the book.
+Fill
+A resting order was filled. Does not affect the book.
+None
+No action: does not affect the book, but may carry flags or other information.
+FlagsThe flags field is a bit field that contains information about the message.
+Multiple flags can be set on a single message.The meaning of each bit is as follows:
+Flag
+Value
+Decimal
+Description
+F_LAST
+1 << 7
+Marks the last record in a single event for a given  instrument_id.
+F_TOB
+1 << 6
+Top-of-book message, not an individual order.
+F_SNAPSHOT
+1 << 5
+Message sourced from a replay, such as a snapshot server.
+F_MBP
+1 << 4
+Aggregated price level message, not an individual order.
+F_BAD_TS_RECV
+1 << 3
+The ts_recv value is inaccurate due to clock issues or packet reordering.
+F_MAYBE_BAD_BOOK
+1 << 2
+An unrecoverable gap was detected in the channel.
+1 << 1
+Reserved for internal use can safely be ignored. May be set or unset.
+1 << 0
+Reserved for internal use can safely be ignored. May be set or unset.
+Top-of-book datasetsSome datasets are built on feeds from vendors that only provide top-of-book information (best bid and offer).
+Top-of-book messages are normalized into a pair of MBO records with the Add action and the F_TOB flag (0x40, 64) set.
+Typically for these datasets, there is no information available about the passive side of trades, so there are no Fill records and the side of the Trade record is always set to None.The removal of a price level is normalized as an Add action with a size of 0 and price of UNDEF_PRICE (INT64_MAX, 9223372036854775807) or NaN in Python.
+This indicates there's currently no quotes for that side.Other schemas, such as MBP-1, Trades, and OHLCV remain the same for top-of-book datasets.Market-by-price datasetsSome datasets are built on feeds from vendors that only provide market-by-price information (with limited depth).Messages adding/modifying/deleting a price level are normalized into an MBO record with the Add/Modify/Cancel action, with the size field containing the full quantity at that level and the F_MBP flag (0x10, 16) set.
+A price level can be identified from the combination of the side and the price.
+The order_id field should be ignored for those messages.If the upstream feed has a maximum depth, an additional record with Cancel action will be sent whenever a price level falls outside the maximum depth - even if there are still orders at that price level.Typically for these datasets, there is no information available about the passive side of trades, so there are no Fill records.MBP-10 will only include depth up to the depth provided by the publisher.
+The remaining levels will always be empty.Other schemas, such as Trades and OHLCV are otherwise unaffected.NormalizationNormalization refers to the process of exporting data in their various
+source formats to a single, unified format. Such a unified format is often
+called a normalization format (or normalized schema). The primary
+reason for normalizing market data is to abstract away differences between
+source formats, making the data easier to work with.The normalization process is one of the most likely places where inaccuracies
+or data errors are introduced. This article describes these issues, the
+trade-offs for addressing them, and the reasons behind the design of
+Databento's normalization schema.Examples of normalized data
+For example, Nasdaq's proprietary TotalView data feed has a protocol with its own message format and provides market-by-order data,
+while IEX's proprietary TOPS data feed has a completely different protocol with another message format and provides top-of-book data.
+These are examples of raw data formats.
+When you consume market data from a data redistributor's feed, the redistributor will have its own protocol and
+message format, distinct from the venues'. This is an example of normalized data.
+The most sophisticated trading firms will generally collect data directly
+from their sources and normalize them to a proprietary format.
+Common issues found in normalized market dataThere are many ways in which normalization can introduce data errors, lossiness
+or performance issues.
+Issue
+Definition
+Examples
+Incompatible schema
+The source schema and normalized schema are mismatched.
+A direct market feed with an order-based schema is normalized to a vendor's schema that only provides aggregated market depth.
+Truncated timestamps
+A direct market feed which originally includes nanosecond-resolution timestamps is normalized to a schema that truncates the timestamps to a lower resolution.
+Some vendors have a legacy data schema designed for older FIX dialects, forcing them to truncate nanosecond-resolution timestamps found in modern markets to millisecond resolution.
+Discarded timestamps
+A direct market feed which originally includes more than one timestamp field is normalized to a schema that discards that timestamp. This introduces imprecision when the normalized data is used for strategy backtesting.
+A proprietary exchange feed may include both match (Tag 60) and sending (Tag 52) timestamps but a vendor's schema may preserve only one of the two.
+Discarded or remapped sequence numbers
+The normalized schema either discards the original message sequence numbers or remaps them to a vendor's own message sequence numbers.
+This creates problems if you need to resolve post-trade issues with the market or your broker, as it makes it harder to identify the exact event.
+Loss of price precision
+The normalized schema represents prices in a type that loses precision.
+Many vendors use floating point representation for prices, losing precision past 6 decimal places. This can create issues for trading Japanese yen spot rates, fixed income instruments and cryptocurrencies.
+Loss of null semantics
+The normalized schema represents null values in a way that changes the meaning.
+Some data feeds will represent null prices with zeros or a negative value like -1. This can introduce errors downstream if the price is interpreted to be non-null. This is also problem if your application needs to handle both asset classes that can have negative prices (such as futures and spreads) and asset classes which cannot.
+Loss of packet structure
+The normalized schema does not preserve packet-level structure.
+Many markets publish multiple events within a packet. Without packet-level structure, it may create the appearance of artificial trading opportunities between any two events within a packet.
+Lossy or irreversible symbology mappings
+The normalized schema adopts a proprietary symbology that is different from the original source's symbology. Sometimes, such proprietary symbology cannot be mapped back to the original.
+Some vendors adopt a symbology system that only includes lead months of futures contracts, causing the far month contracts to be discarded.
+Lossy abstraction
+The normalized schema does not adequately standardize information across multiple datasets, resulting in the end user needing to understand the specifications of the various source schemas anyway in order to determine the lost information.
+This often happens when normalizing less commonly used features such as matching engine statuses or instrument definitions. This puts significant burden on the user to study the specifications of various data feeds to understand the lost information.
+Statelessness
+The normalized schema provides incremental changes but does not provide snapshots or replay of order book state.
+This presents an issue when using the normalized data in real-time, as the user loses information in the event of a disconnection or late join.
+Coalescing
+The normalized schema aggregates the information at a lower granularity.
+A vendor may coalesce a feed of tick data with second bar aggregates or subsample a source feed.
+Conflation
+A normalized feed batches multiple updates into one at some lower frequency, to alleviate bandwidth limitations. Often present along with coalescing.
+This is a common practice for retail brokerages, whose data feeds are designed more for display use and consumption over sparse WAN links.
+Dropped packets
+A normalized data feed deliberately discards data when the network or system is unable to keep up.
+This is often present when the source feed or upstream parts of the vendor's infrastructure uses UDP for transmission.
+Buffering
+The data server sends stale data either because there is insufficient network bandwidth or the client is reading too slowly. The client misinterprets the stale data, either obscuring this effect or injecting incorrect timestamps.
+This often manifests when the data feed uses TCP for transmission - which is a common practice when disseminating data over WAN links.
+Ex post cleaning
+A data source is cleaned, during the normalization process, using future information. This enhances the historical data with artificial information that may not have been actionable in real-time.
+The data may be reordered; trades that were canceled after the end of market session may be removed, or prices may be adjusted with information from a future rollover or dividend event.
+Schema bloat
+A normalized schema represents some data fields with types that take up unnecessary space or make the data more difficult to compress, which increases storage costs and reduces application performance.
+Common cases of this include representing timestamps as ISO 8601 strings or prices as strings, especially on vendor feeds that use JSON encoding.
+Our normalization schema is designed to mitigate most of these issues.Why use normalized data?Though it may seem counterintuitive, some degree of lossiness introduced
+during normalization can be preferable.A normalized schema that has too many
+data fields, as a result of trying to preserve information from too many
+different source schemas, is hard to use.Here are some ways in which lossiness can be useful:
+Discarding unnecessary data fields can reduce storage and bandwidth
+requirements, and improve application performance. For example, many
+strategies execute at time scales where extra timestamps are
+unnecessary.
+Most status or reference data events are irrelevant for any given
+business use case. For example, many users only trade during the
+regular market session and their applications do not need to be
+aware of special matching conditions that are more typically found
+outside of regular hours or during pre-market.
+Floating point prices can be easier to use and the modeling error
+introduced by them could be negligible compared to other, more
+likely sources of error for the given use case.
+Order book snapshots can be unnecessary on liquid products whose
+orders turnover very quickly, as pre-existing orders in the snapshot
+will eventually be filled or canceled - a process which is commonly
+referred to as natural refresh.
+It should be noted that normalized data is not necessarily going
+to be smaller or have a simpler specification than the source data.
+If your use case only requires a single dataset, there may be complexity using
+normalized data whose schema was designed to accommodate differences between
+multiple datasets.Moreover, normalized data will often be smaller or have a smaller
+specification.We normalize to our proprietary Databento Binary Encoding DBN.SymbologyFinancial datasets usually contain symbols or product identifiers.
+The mapping of symbols to their corresponding product names can be extracted from our definition schema
+as well as the metadata packaged with our data.Databento supports four symbology types, also referred to as stypes. They are: raw_symbol, instrument_id, parent, and continuous.We include methods for mapping between symbology types and resolving symbols under
+the symbology family of methods.We do not retroactively reassign symbols in our historical data. Symbols found in
+our historical data are exactly as they appeared in the live data at the original event
+time. For example, if a stock symbol was changed due to a corporate action, we preserve
+the original symbol for data before the event and the new symbol for data after the
+event. This approach guarantees that the historical data looks identical to the live data
+at the original time, and encourages our users to write their integration in a manner that
+handles historical and live data in the same way.A symbol can be reused and point to two different instruments on two different dates.Supported symbology combinationsWhen requesting data, such as with the timeseries.get_range or batch.submit_job endpoints, an input and output symbology type can be specified.
+Not all symbology types are supported for output and some symbology types are not available in certain datasets.
+The following table contains all currently supported stype_in and stype_out combinations per dataset.
+SType in
+SType out
+EQUS.MINI
+GLBX.MDP3
+IFEU.IMPACT
+NDEX.IMPACT
+OPRA.PILLAR
+XNAS.ITCH
+parent
+instrument_id
+continuous
+instrument_id
+raw_symbol
+instrument_id
+instrument_id
+raw_symbol
+Raw symbolRaw symbols are the original string symbols used by the publisher in the source data. This can be useful for environments with direct market connectivity.
+Examples of raw symbols include AAPL, ESH3, etc.This symbology is used by setting the stype_in=raw_symbol parameter in the API.Instrument IDInstrument IDs are the unique numeric ID assigned to each instrument by the publisher. Most venues use such numeric IDs under the hood. Numeric IDs have the benefit of taking less space than most string symbols.
+However, numeric IDs can be difficult to work with, especially as some publishers remap them daily.This symbology is used by setting the stype_in=instrument_id parameter in the API.ParentParent symbology is a smart symbology feature that allows you to easily refer to groups of related symbols using a single root symbol.
+The root symbols are sourced from the asset field of the definition schema.
+All futures for a root symbol can be referenced using the parent symbol [ROOT].FUT, for options: [ROOT].OPT.
+For example, ES.FUT refers to all E-mini S&P 500 futures and futures spreads and ES.OPT refers to all quarterly E-mini S&P 500 options and option spreads.The type of instrument will be specified in the instrument_class field.
+When requesting data using futures parent symbology, this field will indicate whether the instrument is a future or futures spread.
+When requesting data using options parent symbology, it will indicate whether the instrument is a call or put.
+A full list of variants can be found in the instrument class documentation.This symbology is used by setting the stype_in=parent parameter in the API.ContinuousInfo
+Our continuous contract symbology is a notation that maps to an actual, tradable instrument on any given date.
+The continuous contract prices returned are the original, unadjusted prices. We don't create a synthetic time
+series by back-adjusting the prices to remove jumps during rollovers.Continuous contract symbology is a smart symbology feature that allow a single symbol to refer to different instruments over time.
+For example, continuous contract symbology allows you to query a single symbol that changes or rolls forward before expiration.For futures outrights, we use the format [ROOT].[ROLL_RULE].[RANK] to refer to continuous contracts that change over time according to a roll rule and rank.
+Like with parent symbology, the root symbol corresponds with the asset field of the definition schema.RANK is a zero-indexed integer, and ROLL_RULE is either c, n, or v from the table below.This symbology is used by setting the stype_in=continuous parameter in the API.
+It is not currently possible to select continuous contracts through our web portal.
+Roll rule
+Code
+Overview
+Example
+Calendar
+Refers to the offset from the closest expiration or front month.
+On September 28, 2022 NG.c.0 referred to the October NG future (NGV2) and NG.c.1 referred to the November future (NGX2). However, because the October contract expired at the end of trading on September 28 and the continuous smart symbol would be rolled forward, on September 29, 2022, NG.c.0 then referred to the November future (NGX2) and NG.c.1 referred to the December future (NGZ2).
+Open interest
+Will rank the expirations by the open interest at the previous day's close.
+CL.n.1 refers to the CL future with the second-highest open interest.
+Volume
+Will rank the expirations by the previous day's trading volume.
+ZN.v.0 refers to the ZN future with the most volume.
+All symbolsIt is possible to request all symbols within a dataset without providing them explicitly.
+This is done by specifying ALL_SYMBOLS with stype_in=raw_symbol or stype_in=parent in the API.When requesting all symbols using timeseries.get_range symbology data is not provided.
+This means that for the CSV and JSON encodings the parameter map_symbols=True is not allowed.
+For the DBN encoding, the metadata header will not contain symbology mappings.When requesting all symbols using batch.submit_job, the symbology.json support file will not contain symbology mappings.Symbology.resolve endpointDatabento offers symbology resolution for free in our symbology.resolve endpoint and in our client libraries.
+This endpoint can be used to request mappings from one symbology type to another and contains all the data necessary to perform these conversions.
+Field
+Description
+result
+The symbology mapping result. For each requested symbol, a list of symbology mappings is provided.
+symbols
+The requested symbols.
+stype_in
+The requested input symbology type.
+stype_out
+The requested output symbology type.
+start_date
+The requested symbology start date, as an ISO 8601 date string.
+end_date
+The requested symbology end date, as an ISO 8601 date string.
+partial
+The list of symbols, if any, that partially resolved inside the start date and end date interval.
+not_found
+The list of symbols, if any, that failed to resolve inside the start date and end date interval.
+message
+A short message indicating the overall symbology result. Can be one of: "OK", "Not found", or "Partially resolved".
+status
+A numerical status field indicating the overall symbology result. Can be one of: 0 (OK), 1 (Partially resolved), or 2 (Not found).
+symbology.jsonFor batch downloads, symbology information for the job is contained in the symbology.json support file. Below is a sample symbology.json file. This is a batch support file that is included in every batch download request.
+It's contents are directly obtained from the symbology.resolve endpoint:
+"result": {
+"ES.c.0": [
+{ "d0": "2023-01-01", "d1": "2023-03-19", "s": "206299"},
+{ "d0": "2023-03-19", "d1": "2023-06-01", "s": "95414"}
+"symbols": ["ES.c.0"],
+"stype_in": "continuous",
+"stype_out": "instrument_id",
+"start_date": "2023-01-01",
+"end_date": "2023-06-01",
+"partial": [],
+"not_found": [],
+"message": "OK",
+"status": 0
+Examining this sample we can see a requested mapping of the stype_in ("continuous") symbol ("ES.c.0") to stype_out ("instrument_id") over the date range start_date ("2023-01-01") to the end_date ("2023-06-01").We can check the message ("OK") and status (0) fields to confirm that our request was successful over the entire date interval. Additionally, the not_found and partial fields are empty.Most importantly, the result field contains our symbology mappings keyed by each input symbol. Each symbol entry in the result mapping will contain a list of entries. These entries contain a start date in the d0 field, and an end date in the d1 field for the mapping. The s field contains the output symbol.
+Continuous contract
+Start date (d0)
+End date (d1)
+Instrument ID (s)
+ES.c.0
+2023-01-01
+2023-03-19
+206299
+ES.c.0
+2023-03-19
+2023-06-01
+95414
+SymbolMappingMsgDatabento's live data publishes symbology information using the SymbolMappingMsg.
+This message will always contain the input symbol and the resolved output symbol.
+The record header of the SymbolMappingMsg will always contain the instrument_id.
+See our DBN encoding article for more information on our binary format.
+Field
+Type
+Description
+stype_in
+uint8_t
+The input symbology type (DBN version 2 only).
+stype_in_symbol
+char[symbol_cstr_len]
+The input symbol from the subscription, where symbol_cstr_len is specified in the Metadata.
+stype_out
+uint8_t
+The output symbology type (DBN version 2 only).
+stype_out_symbol
+char[symbol_cstr_len]
+The output symbol from the subscription, where symbol_cstr_len is specified in the Metadata.
+start_ts
+uint64_t
+The start of the mapping interval expressed as the number of nanoseconds since the UNIX epoch. For live data this is always undefined.
+end_ts
+uint64_t
+The end of the mapping interval expressed as the number of nanoseconds since the UNIX epoch. For live data this is always undefined.
+Databento Binary EncodingDatabento Binary Encoding (DBN) is an extremely fast message encoding and
+storage format for normalized market data. The DBN specification includes a simple,
+self-describing metadata header and a fixed set of struct definitions, which
+enforce a standardized way to normalize market data.All official Databento client libraries use DBN under the hood, both as a data
+interchange format and for in-memory representation of data. DBN is also the default
+encoding for all Databento APIs, including live data streaming, historical data
+streaming, and batch flat files.Getting started with DBNThe easiest way to get started with DBN is through any of the official Databento
+client libraries, which support reading and writing DBN files. See:
+The DBNStore.from_file
+and DBNStore.to_file
+methods for Python
+The DbnFileStore::Replay
+method for C++
+The AsyncDbnStore::from_file
+method, and databento::dbn::encode
+module for Rust
+Other resources are also available:
+The dbn Rust crate is the reference implementation
+of DBN and provides a library for decoding and encoding DBN, and also for converting
+from DBN to CSV and JSON.
+dbn-cli is a command line tool that can be used
+to read DBN files; transcode DBN to CSV or JSON; print the output, or write it to
+disk.
+You can install it with cargo install dbn-cli.
+Why should you use DBN?The key advantages of using DBN are:
+End-to-end. DBN can be used to store and transport normalized data across all
+components of a typical trading system. It can fulfill the requirements of a file
+format for efficient storage; a message encoding for fast real-time streaming, and an
+in-memory representation of market data for a low latency system—all at once.
+This simplifies your trading system and eliminates the
+use of multiple serialization formats. It also ensures that market
+data is immutable, lossless, and consistent as it passes between components.
+Use the same code for historical and live. Our client libraries exploit the
+end-to-end aspect of DBN and allow you to use the same code in historical and live;
+you can write an event-driven trading platform that runs the exact same code in
+backtest and production trading.
+Zero-copy. DBN data is structured the same way whether in-memory,
+on the wire, or on disk. Thus, the data gets read and written directly as-is, without
+costly encoding or decoding steps that move the data into CPU and back out.
+Symbology metadata. The DBN protocol includes a lightweight header that
+provides metadata for interpreting and using the market data payload, such as
+symbology mappings, so a DBN file is self-sufficient for many use cases.
+Highly compressible. DBN strictly uses fixed lengths and offsets for all fields.
+This layout enables typical compression algorithms, such as zstd and lz4, to achieve
+high compression ratios.
+Optimized for modern CPUs. The predictable layout of DBN records also allows for
+highly-optimized, sequential access patterns that take advantage of instruction
+pipelining and prefetching on modern CPUs. The struct definitions are also
+deliberately designed so that most records fit into a single cache line.
+Extremely fast. DBN achieves extremely fast speeds on reads and writes. Most use
+cases of DBN are compression-bound or I/O-bound while only using a single CPU core.
+DBN has been used in environments with 6.1 microseconds median internal latency; we've
+also seen user-reported benchmarks of full order book replay over 19.1 million
+messages per second using our C++ client library on a Google Cloud VM.
+Normalization format. Using DBN also automatically means you're adopting its
+normalization format. While there are many ways to normalize data, our team arrived at
+these best practices after many years of combined experience at top-tier trading firms
+and integrating dozens of trading venues. For example, DBN allows you to replay full
+order book data at I/O bound, backtest with passive orders in precise sequence,
+and losslessly achieve much of what's possible with raw packet captures with several
+factors of improvement in speed and storage requirements.
+LayoutA valid DBN stream or file has two parts, beginning with metadata,
+and immediately followed by records.The following diagram shows the field layout of the DBN encoding:Version 1
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             magic string = "DBN"              |  version = 1  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            length                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                            dataset                            +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             schema            |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                       start (UNIX nanos)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                        end (UNIX nanos)                       |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                      limit (max records)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                            reserved                           |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |   stype_in    |   stype_out   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    ts_out     |                                               |
++-+-+-+-+-+-+-+-+                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                 reserved (47 bytes of padding)                |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    schema_definition_length                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  schema_definition (variable)                 |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         symbols_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       symbols (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         partial_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       partial (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        not_found_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      not_found (variable)                     |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         mappings_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      mappings (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-end metadata; begin body--+-+-+-+-+-+-+-+-+-+
+|                            records                            |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Versions 2 and above
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             magic string = "DBN"              |    version    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            length                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                            dataset                            +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             schema            |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                       start (UNIX nanos)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                        end (UNIX nanos)                       |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                      limit (max records)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |   stype_in    |   stype_out   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    ts_out     |        symbol_cstr_len        |               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                 reserved (53 bytes of padding)                |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    schema_definition_length                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  schema_definition (variable)                 |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         symbols_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       symbols (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         partial_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       partial (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        not_found_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      not_found (variable)                     |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         mappings_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      mappings (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-end metadata; begin body--+-+-+-+-+-+-+-+-+-+
+|                            records                            |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+MetadataMetadata is included at the beginning of every DBN stream or file. Basic information
+is found at the start of the metadata, followed by optional symbology
+mappings.The metadata contains all of the parameters needed to construct a request for the exact
+same data via Databento's historical API. Likewise, if you fetched DBN-encoded data
+from Databento's historical API, the metadata header will contain the parameters of
+your original request.The following table describes the metadata fields, in the order of appearance.
+All fields are little-endian.
+Field
+Type
+Description
+version
+char[4]
+"DBN" followed by the version of DBN the file is encoded in as a u8.
+length
+uint32_t
+The length of the remaining metadata header, i.e. excluding version and length.
+dataset
+char[16]
+The dataset code (string identifier).
+schema
+uint16_t
+The data record schema. u16::MAX indicates a potential mix of schemas and record types, which will always be the case for live data.
+start
+uint64_t
+The start time of query range in UNIX epoch nanoseconds.
+uint64_t
+The end time of query range in UNIX epoch nanoseconds. u64::MAX indicates no end time was provided.
+limit
+uint64_t
+The maximum number of records to return. 0 indicates no limit.
+stype_in
+uint8_t
+The symbology type of input symbols. u8::MAX indicates a potential mix of types, such as with live data.
+stype_out
+uint8_t
+The symbology type of output symbols.
+ts_out
+uint8_t
+Whether each record has an appended gateway send timestamp.
+symbol_cstr_len
+uint16_t
+The number of bytes in fixed-length string symbols, including a null terminator byte. Version 2 only, symbol strings are always 22 in version 1.
+schema_definition_length
+uint32_t
+Number of bytes in the schema definition.
+schema_definition
+uint8_t[schema_definition_length]
+Self-describing schema to be implemented in the future.
+symbols_length
+uint32_t
+Number of symbols in the original query.
+symbols
+char[symbols_length][symbol_cstr_len]
+The symbols from the original query.
+partial_length
+uint32_t
+The number of symbols partially resolved.
+partial
+char[partial_length][symbol_cstr_len]
+The partially resolved symbols.
+not_found_length
+uint32_t
+The number of unresolved symbols.
+not_found
+char[not_found_length][symbol_cstr_len]
+The unresolved symbols.
+mappings_length
+uint32_t
+The number of symbols at least partially resolved.
+mappings
+SymbolMapping[mappings_length]
+The SymbolMappings, one for each resolved symbol.
+where SymbolMapping has the following structure:
+Field
+Type
+Description
+raw_symbol
+char[symbol_cstr_len]
+The symbol requested symbol stype_in.
+interval_length
+uint32_t
+The number of MappingIntervals in intervals.
+intervals
+MappingInterval[interval_length]
+The MappingIntervals associated with raw_symbol.
+and where MappingInterval has the following structure:
+Field
+Type
+Description
+start_date
+uint32_t
+The start date of the interval, as a YYYYMMDD integer.
+end_date
+uint32_t
+The end date of the interval, as a YYYYMMDD integer.
+symbol
+char[symbol_cstr_len]
+The symbol in stype_out to which raw_symbol corresponds for the interval between start_date and end_date, where symbol_cstr_len is specified earlier in the Metadata. This is often instrument_id because it is the default stype_out.
+RecordsThe metadata is immediately followed by DBN records. A valid DBN stream or file
+contains zero or more records.All records begin with the same 16-byte RecordHeader with the following structure:
+Field
+Type
+Description
+length
+uint8_t
+The length of the record in 32-bit words.
+rtype
+uint8_t
+The record type. Each schema corresponds with a single rtype value. See Rtype.
+publisher_id
+uint16_t
+The publisher ID assigned by Databento, which denotes the dataset and venue.
+instrument_id
+uint32_t
+The numeric instrument ID.
+ts_event
+uint64_t
+The event timestamp as the number of nanoseconds since the UNIX epoch.
+See the Schemas and data formats section for a full list of fields for the record associated with each schema.VersioningWe use the version field in the metadata header to signal changes to the structure of record types and metadata.Version 2The following was changed:
+Metadata:
+Sets version to 2
+Adds symbol_cstr_len field
+Rearranges padding
+The fixed-length strings for symbology are now defined to have symbol_cstr_len characters (currently 71), whereas in version 1 they always had 22
+InstrumentDefMsg (definition schema):
+raw_symbol now has symbol_cstr_len characters (71)
+Rearranges padding
+SymbolMappingMsg (live symbology):
+stype_in_symbol and stype_out_symbol now have symbol_cstr_len characters (71)
+Adds stype_in and stype_out fields
+Removes padding
+ErrorMsg (gateway errors in live)
+Adds space to err for longer error messages
+Adds code and is_last fields
+SystemMsg (non-error gateway messages in live)
+Add space to msg for longer messages
+Adds code field
+Version 3This set of changes adds support for strategy legs to the definition schema
+and an expanded quantity field in the statistics schemas.
+Added 8-byte alignment padding to the end of metadata
+Expanded quantity to 64 bits in StatMsg (statistics schema)
+InstrumentDefMsg (definition schema):
+A definition record will be created for each strategy leg
+Adds the following leg fields:
+leg_count
+leg_index
+leg_instrument_id
+leg_raw_symbol
+leg_side
+leg_underlying_id
+leg_instrument_class
+leg_ratio_qty_numerator
+leg_ratio_qty_denominator
+leg_ratio_price_numerator
+leg_ratio_price_denominator
+leg_price
+leg_delta
+Expands asset to 11 bytes
+Expands raw_instrument_id to 64 bits to support publishers that use larger IDs
+Removal of statistics-schema related fields trading_reference_price,
+trading_reference_date, and settl_price_type
+Removal of the status-schema related field md_security_trading_status
+Info
+CSV and JSON are affected by the new fields.Currently, version 2 is used for the IFEU.IMPACT and NDEX.IMPACT datasets.
+The DBN crate and client libraries will continue to support decoding version 1 data.Upgrading to versionsDBN version 1 files can be upgraded to version 2 with the dbn CLI tool by passing the --upgrade or -u flag.
+dbn version1.dbn --output version2.dbn --upgrade
+Comparison with other encodings and formatsDBN is designed specifically for normalized market data. It adopts a fixed
+set of struct definitions, also called message schemas, for this purpose. It's
+important to note that DBN is not a general-purpose serialization format like
+Simple Binary Encoding (SBE) or Google Protocol Buffers (protobufs), which provide a
+flexible schema definition language. Unlike these formats, DBN doesn't offer tools for
+generating decoders or encoders from any user-specified schema.When comparing DBN to most encodings or serialization formats, a critical
+difference is that DBN is a zero-copy encoding. Moreover, what makes DBN most unique is
+that it's simultaneously intended for three common use cases in a trading system:
+file format, real-time messaging format, and in-memory representation. This is a very
+specific convergence of use cases that manifests frequently in financial trading
+systems.Other encodings or formats typically used in situations where DBN would be a suitable
+replacement include:
+Apache Parquet
+Apache Arrow
+Feather
+Comparing to these, DBN is intended to be good at all three abovementioned use cases of
+a trading system—so you don't have to mix multiple serialization formats in one
+system—while the others tend to excel only in one or two use cases.A single format for all use cases carries a more important benefit for
+trading than just the performance upside that comes with minimizing copies; it ensures
+that market data is immutable when it passes through your trading system. The following
+diagram helps you visualize the difference between a potential trading system that uses
+DBN compared to a typical trading system that doesn't.
+Typical trading environment (top chart)
+Trading environment using DBN (bottom chart)
+Market data in multiple message, file, and in-memory formats
+Market data in a single format
+Multiple layers of serialization and deserialization
+No transformation of data
+Incurs risk of inconsistent state between components using market data
+Eliminates risk of inconsistent state between components using market data
+Complex, slow code
+Simple, fast code
+Typical trading environmentTrading environment using DBNImmutable market data makes it easy to align live trading with post-production logs and
+historical data; it makes it easy to use the same code for live trading, backtesting,
+and exploratory research; it also makes it easy to write GUIs that need accurately
+synchronize order events with market data events, especially market data events that
+triggered those order events. In short, using the same encoding or format everywhere
+ensures that state is synchronized throughout distributed parts of your trading system.For these reasons, most mature trading firms eventually end up implementing their own
+proprietary encoding that resembles DBN.The following table summarizes other key comparisons:
+Parquet
+Arrow
+Schema definition
+Fixed schemas
+Thrift, Avro, Protobuf
+Arrow object model
+Layout
+Sequential
+Sequential
+Column-oriented
+Column-oriented
+Zero copy
+Limited support
+Suitable for real-time messaging
+Suitable as file format
+Through Feather
+Metadata
+No, user-defined
+No, user-defined
+Sequential read
+Fastest
+Fast
+Moderate
+Moderate
+Sequential write
+Fastest
+Fast
+Slowest
+Moderate (Feather)
+Compressed size
+Small
+Moderate
+Smallest
+Largest (Feather)
+Transcoding to CSV
+Through pandas
+Transcoding to JSON
+Through pandas
+Mapping to pandas
+Package size (lines of code)
+16.0k (v0.14.0)
+55.7k (v1.27.0)
+108.5k (v1.12.3)
+1.6M (v12.0.0)
+Language support
+Python, C++, Rust, C bindings
+C++, Java, C#
+11+ languages
+11+ languages
+Use case
+Market data (storage, replay, research, real-time messaging, normalization, OMS, EMS, GUIs)
+Direct venue connectivity
+Storage file format
+Data exploration
+Frequently asked questionsIsn't this basically a bunch of raw structs? What's so special about this?Yes, pretty much! And it's not exactly novel—in our experience, most top-tier trading
+firms will have something similar already implemented, along with proprietary tooling
+to support it. The significance of DBN is that we're open sourcing the whole toolset,
+with many best practices for normalization and performance optimization, so that you
+don't have to reinvent the wheel.Another purpose of DBN is that it provides a standardized data interchange format that
+can be used for high-throughput, low latency streaming between a data provider like us
+and you. At the time of the initial release of DBN, we're not aware of any data
+provider that adopts a binary flat file or messaging format with similar zero-copy
+semantics.Even if you don't want to use DBN exactly, it's a lightweight specification so
+it's easy to mimic some of its practices or fork our reference implementation for
+your own use case.When should you not use DBN?
+When you depend on many tools and frameworks in the Apache ecosystem.
+Many data processing tools have native support for Apache Parquet and Arrow.
+However in our experience, mature trading environments generally use fewer
+general-purpose computation frameworks. In these cases, DBN is still an excellent as
+an interchange format for receiving and storing data from Databento, and we still
+support converting DBN to pandas dataframes
+and hence Arrow format.
+If you don't use Databento, only ever plan on trading on one trading venue,
+have already written parsers for the raw feeds, and have direct extranet connectivity,
+then there's a strong argument for just using the original wire protocol like ITCH and
+even rolling your own, thinner normalization format.
+If you have an academic or toy project and only plan on working with historical data.
+Many such projects employ relatively small amounts of data and don't require
+live data. In these circumstances, it makes sense to just store the data in your own,
+thinner binary format or a binary format with some structure like Parquet or HDF5.
+If you have to support many teams with one platform, with different trading styles
+and business functions, of which many of them only require low frequency data. In this
+situation, the performance benefits of fixed schemas become much less important within
+your organization, and the flexibility becomes more important. It's also quite likely
+in this situation that you have to constantly update your normalization format for new
+exploratory workflows. In those cases, DBN is still an excellent as an interchange
+format for receiving and storing data from Databento, but your firm will likely benefit
+from converting DBN data into flexible formats downstream.
+Encoding, serialization format, protocol—what's the difference?There are slight differences in these terms but DBN is all three at once.One way to look at DBN is that it's an OSI layer 6 presentation protocol, much like
+SBE—except that DBN is much stricter about message schemas, whereas SBE is flexible.Data written in accordance to such a protocol can be persisted to disk, so it can also
+serve as a storage format; it can also be written on the wire as a message encoding
+or wire format. SBE excels as a message encoding but is less often used as a storage
+format, whereas DBN accommodates both equally well.Why is the reference implementation written in Rust? Can I use it?The majority of Databento's infrastructure is written in Rust, C, and Python, and the
+reference implementation of DBN is a rewrite of the original C implementation
+and was originally written with internal use in mind.Rust's C ABI makes it interoperable across multiple languages with thin bindings,
+and its memory management model makes it safe and performant. It's simple to integrate
+the Rust DBN library into your Python application, as seen in our Python
+client library.Why is DBN sequential and not column-oriented? Aren't modern column-oriented layouts
+more optimized for querying?The sequential layout of DBN makes it more performant for real-time messaging use
+cases.Column-oriented formats do have the theoretical potential for more optimization in
+non-real time use cases, but this depends on the actual implementation. Our reference
+DBN implementation is heavily optimized and still on par with column-oriented formats
+like Apache Arrow on common use cases for historical market data.Am I locked-in to a proprietary binary format here?No, the DBN reference implementation is open-sourced under the permissive Apache 2.0
+License. We also provide
+transcoders to convert your DBN data into CSV and JSON.How is DBN being used currently?We store upwards of 4 PB and over 30 trillion records of normalized historical data in
+DBN internally at Databento. Every single message that passes through our
+infrastructure gets encoded in DBN—over billions of messages per day, at single-port
+peak messaging rates over 60 Gbps, spanning multiple asset classes and over 1.8 million
+instruments on any given day. It is used for all of our data schemas, including full
+order book, tick-by-tick trades, top of the book, OHLCV aggregates, venue statistics,
+instrument definitions, and more.Most of users, including some of the world's largest hedge funds and market making
+firms, are already using DBN through our client libraries, putting it
+through multiple production use cases that involve real-time streaming and historical
+flat files.Zstandard (zstd)Zstandard is a fast, lossless compression algorithm that offers high compression ratios,
+making it suitable for storing and transmitting large amounts of data.This compression algorithm is recommended by Databento for all historical streaming and batch downloads, as it
+minimizes the amount of data transmitted over the network and stored on file systems.
+You can select Zstandard compression by using the zstd option through the client libraries or the HTTP API.Once you have obtained Zstandard compressed data from Databento, you have a number of options for
+decompressing:
+Databento client libraries. Decompression from Zstandard is handled internally. Refer to the API reference for usage details
+dbn-cli. The Databento CLI tool for working with DBN data also includes support for decompressing .zst files
+zstd CLI. Used directly from the command line (described below), or via your own bash scripts
+Installing dbn-cliTo install the dbn-cli (dbn) library, ensure you have Cargo (the Rust package manager) installed.
+Then, run the following command:
+cargo install dbn-cli
+For more details, visit dbn-cli on crates.io.Installing ZstandardThe Zstandard (zstd) library can be installed on most operating systems, as detailed below:macOS
+brew install zstd
+LinuxDebian/Ubuntu:
+sudo apt-get update
+sudo apt-get install zstd
+CentOS/RHEL:
+sudo dnf install zstd
+Arch:
+sudo pacman -S zstd
+WindowsUsing Chocolatey:
+choco install zstd
+Alternatively, you can also download the Zstandard binaries from the official releases page on GitHub and add the directory to your PATH.
+You can also install from source by following the instructions in the Zstandard GitHub repository.Verify your installation by checking the version of Zstandard:
+zstd --version
+DecompressingOnce Zstandard is installed on your machine, you can utilize its command line interface (CLI) for
+various operations, including decompression and recompression. Below, we'll explore commands
+specifically for decompressing Zstandard-compressed files in different scenarios.To view all available options in the Zstandard CLI, you can run the help command:
+zstd -h
+Decompress to a fileTo decompress a file that has been compressed with Zstandard, use the -d (or --decompress)
+option followed by the filename. For example, if you have a file named data.zst, you can
+decompress it with the following command:
+zstd -d data.zst
+This will create a decompressed file named data in the same directory.TipYou can decompress a Zstandard-compressed Databento batched data file by running the following command:zstd -d glbx-mdp3-20231201.trades.csv.zstThis will result in the decompressed file, glbx-mdp3-20231201.trades.csv, being created in the current directory.If you want to decompress the file to a specific output file, you can use the -o option:
+zstd -d data.zst -o decompressed_data.txt
+This command will decompress data.zst into a file named decompressed_data.txt.By default, zstd will not overwrite existing files. If you need to decompress and overwrite any
+existing files, you can use the -f (force) option:
+zstd -d -f data.zst
+This will decompress data.zst and overwrite any existing file with the same name as the output.Decompressing multiple filesYou can also decompress multiple files at once by specifying multiple filenames:
+zstd -d file1.zst file2.zst file3.zst
+Using wildcards for batch decompressionIn a directory with multiple .zst files, you can decompress all of them using a wildcard (*).
+This is particularly useful for batch processing:
+zstd -d *.zst
+This command will decompress all files in the current directory with the .zst extension.TipRunning this command in a batch download directory will decompress all .zst files at once.Decompressing to standard outputIf you want to decompress a file and output the contents directly to the terminal (standard output),
+use the --stdout option:
+zstd -d --stdout data.zst
+This could be useful for piping the decompressed output to other programs in bash scripts.MBO snapshotsAn MBO snapshot represents the order book at a specific point in time, including all outstanding buy and sell orders.
+The snapshot is streamed as a sequence of MBO records to insert new orders in the book (a sequence of Add Actions).
+The snapshot records preserve the priority order (per instrument) at each price level, enabling accurate reconstruction of the order book.All snapshot records are marked with the F_SNAPSHOT and F_BAD_TS_RECV flags (ts_recv is set to the snapshot generation timestamp).
+An instrument's snapshot starts with a cleaR action, followed by zero or more Add Actions.The snippet below shows the result of a snapshot request for 2 instruments.
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 4916, ts_event: 1718539204593519451 }, order_id: 0, price: UNDEF_PRICE, size: 0, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'R', side: 'N', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 0 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 4916, ts_event: 1718539204593519451 }, order_id: 6413364814613, price: 5560.000000000, size: 1, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 752 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 4916, ts_event: 1718582343502504063 }, order_id: 6413384952694, price: 5655.000000000, size: 2, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 175066 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 4916, ts_event: 1718582343502957759 }, order_id: 6413384952695, price: 5691.000000000, size: 2, flags: LAST | SNAPSHOT | BAD_TS_RECV (168), channel_id: 0, action: 'A', side: 'A', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 175067 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 5002, ts_event: 1718539204593519451 }, order_id: 0, price: UNDEF_PRICE, size: 0, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'R', side: 'N', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 0 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 5002, ts_event: 1718539204593519451 }, order_id: 6413256341927, price: 4650.000000000, size: 1, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 519 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 5002, ts_event: 1718582366242085265 }, order_id: 6413384879630, price: 5612.500000000, size: 1, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 175633 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 5002, ts_event: 1718582366260973309 }, order_id: 6413384879629, price: 5632.500000000, size: 1, flags: LAST | SNAPSHOT | BAD_TS_RECV (168), channel_id: 0, action: 'A', side: 'A', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 175760 }
+The snapshot for an empty order book has a single MBO record with cleaR action, marked with the flags F_SNAPSHOT and F_LAST, as in the snippet below.
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 14160, ts_event: 1718117495809255541 }, order_id: 0, price: UNDEF_PRICE, size: 0, flags: LAST | SNAPSHOT | BAD_TS_RECV (168), channel_id: 0, action: 'R', side: 'N', ts_recv: 18446744073709551615, ts_in_delta: 0, sequence: 0 }
+MBO snapshots are available from both the historical and live APIs.Historical APIWe offer MBO snapshot through the Historical API for venues that follow a weekly session structure (CME Globex MDP 3.0), and for venues whose daily trading sessions cross 00:00:00 UTC (ICE Europe Commodities iMpact).
+The order book snapshot is generated at 00:00:00 UTC each weekday (Monday-Friday).Snapshot records are streamed through the Historical API when the requested interval includes midnight UTC for a given weekday.
+The snippet below shows an example of a timeseries request in Python whose result includes an MBO snapshot.
+client.timeseries.get_range(
+dataset="GLBX.MDP3",
+symbols="ES.c.2",
+stype_in="continuous",
+schema="mbo",
+start="2024-06-16T23:58:50",
+end="2024-06-17T00:00:10",
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718582336782043745 }, order_id: 6413384952478, price: 5564.750000000, size: 1, flags: LAST (130), channel_id: 0, action: 'A', side: 'A', ts_recv: 1718582336782569129, ts_in_delta: 12306, sequence: 174718 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718582336782045281 }, order_id: 6413384879627, price: 5560.500000000, size: 1, flags: LAST (130), channel_id: 0, action: 'M', side: 'B', ts_recv: 1718582336782613211, ts_in_delta: 12838, sequence: 174721 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718582388400474957 }, order_id: 6413384953470, price: 5562.750000000, size: 1, flags: LAST (130), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582388400587693, ts_in_delta: 14247, sequence: 176276 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718539204593519451 }, order_id: 0, price: UNDEF_PRICE, size: 0, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'R', side: 'N', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 0 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718539204593519451 }, order_id: 6413383913050, price: 5500.000000000, size: 1, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 936 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718539204593519451 }, order_id: 6413373623913, price: 5475.000000000, size: 1, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 936 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718582388400474957 }, order_id: 6413384953470, price: 5562.750000000, size: 1, flags: LAST | SNAPSHOT | BAD_TS_RECV (168), channel_id: 0, action: 'A', side: 'B', ts_recv: 1718582400000000000, ts_in_delta: 0, sequence: 176276 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718582400066482471 }, order_id: 6413384953619, price: 5564.750000000, size: 1, flags: LAST (130), channel_id: 0, action: 'A', side: 'A', ts_recv: 1718582400066580869, ts_in_delta: 14145, sequence: 176515 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718582401163834877 }, order_id: 6413384953619, price: 5564.750000000, size: 1, flags: LAST (130), channel_id: 0, action: 'C', side: 'A', ts_recv: 1718582401163946845, ts_in_delta: 13326, sequence: 176774 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 183748, ts_event: 1718582409155703017 }, order_id: 6413384953440, price: 5413.250000000, size: 1, flags: LAST (130), channel_id: 0, action: 'M', side: 'B', ts_recv: 1718582409155796258, ts_in_delta: 12560, sequence: 178707 }
+Live APIUsers can request an MBO snapshot through the live API to obtain the recent order book state without replaying the whole trading session.
+The following sequence of messages is streamed from a live session after a snapshot subscription.
+Symbol mapping messages
+Snapshot records (clear book and outstanding orders at each price level)
+Real-time records
+WarningThe order book of a given instrument is not guaranteed to be in a complete and valid state after the last snapshot record because it might not correspond to the final event record (indicated with the F_LAST flag).
+If the last snapshot record does not have the F_LAST flag set, the order book will not be valid until the next MBO record with the F_LAST flag set.The example below shows the live stream for a snapshot subscription for a single instrument, followed by a real-time record.
+SymbolMappingMsg { hd: RecordHeader { length: 44, rtype: SymbolMapping, publisher_id: 0, instrument_id: 118, ts_event: 1721732190956747490 }, stype_in: 255, stype_in_symbol: "ES.c.0", stype_out: 255, stype_out_symbol: "ESU4", start_ts: 18446744073709551615, end_ts: 18446744073709551615 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721732152358684229 }, order_id: 0, price: UNDEF_PRICE, size: 0, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'R', side: 'N', ts_recv: 1721732152358684229, ts_in_delta: 0, sequence: 0 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721579296070204729 }, order_id: 6413514530616, price: 5547.500000000, size: 8, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1721732152358684229, ts_in_delta: 0, sequence: 1022 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721579296070204729 }, order_id: 6413514530330, price: 5547.250000000, size: 7, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'B', ts_recv: 1721732152358684229, ts_in_delta: 0, sequence: 1022 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721579296070204729 }, order_id: 6413506441952, price: 5628.000000000, size: 1, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'A', ts_recv: 1721732152358684229, ts_in_delta: 0, sequence: 1101 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721579296070204729 }, order_id: 6413500305436, price: 5628.250000000, size: 6, flags: SNAPSHOT | BAD_TS_RECV (40), channel_id: 0, action: 'A', side: 'A', ts_recv: 1721732152358684229, ts_in_delta: 0, sequence: 1058 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721732152290217707 }, order_id: 6413522310536, price: 5613.250000000, size: 3, flags: SNAPSHOT | BAD_TS_RECV (42), channel_id: 0, action: 'A', side: 'A', ts_recv: 1721732152358684229, ts_in_delta: 0, sequence: 13076493 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721732152290632121 }, order_id: 6413522309988, price: 5512.500000000, size: 6, flags: LAST | SNAPSHOT | BAD_TS_RECV (170), channel_id: 0, action: 'A', side: 'B', ts_recv: 1721732152358684229, ts_in_delta: 0, sequence: 13076496 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721732152365904111 }, order_id: 6413522310535, price: 5613.250000000, size: 1, flags: LAST (130), channel_id: 0, action: 'C', side: 'A', ts_recv: 1721732152366001513, ts_in_delta: 14406, sequence: 13076497 }
+MboMsg { hd: RecordHeader { length: 14, rtype: Mbo, publisher_id: GlbxMdp3Glbx, instrument_id: 118, ts_event: 1721732152365916169 }, order_id: 6413522310537, price: 5613.000000000, size: 1, flags: LAST (130), channel_id: 0, action: 'A', side: 'B', ts_recv: 1721732152366014389, ts_in_delta: 12865, sequence: 13076498 }
+Timestamp fields on snapshot messagesThe timestamp fields for snapshot messages are described below.
+ts_event: unchanged. The cleaR book MBO record from the Live API snapshot contains the snapshot generation timestamp instead
+ts_in_delta: always 0
+ts_recv: set to the snapshot generation timestamp (indicated with the F_BAD_TS_RECV flag)
+ts_out: unchanged
+Public client support for MBO snapshotLive and historical snapshot features are available on all our official client libraries (Python, C++, Rust), as well as through our Raw API.An example of a live snapshot subscription using our client libraries can be found in this article.Reference data enumsExchanges, event types, other fields included in Databento's corporate actions data and reference
+data API. Over 60 event types, including splits, dividends, adjustment factors, and listings.The following tables specify the descriptions for all reference data enums found in responses.See alsoCorporate actions dataset guide for further details.ACTION
+Value
+Description
+Cancelled
+Deleted
+Inserted
+Payment details Cancelled by Issuer
+Payment details Deleted by Data Supplier
+Updated
+CNTRY
+Value
+Description
+Supranational
+Andorra
+United Arab Emirates
+Afghanistan
+Antigua and Barbuda
+Anguilla
+Albania
+Armenia
+Netherlands Antilles
+Angola
+Argentina
+American Samoa
+Austria
+Australia
+Aruba
+Azerbaijan
+Bosnia and Herzegovina
+Barbados
+Bangladesh
+Belgium
+Burkina Faso
+Bulgaria
+Bahrain
+Burundi
+Benin
+Bermuda
+Brunei Darussalam
+Bolivia
+Brazil
+Bahamas
+Bhutan
+Bouvet Island
+Botswana
+Belarus
+Belize
+Canada
+Cocos Islands
+Congo Democratic Republic
+Central African Republic
+Congo
+Switzerland
+Ivory Coast
+Cook Islands
+Chile
+Cameroon
+China
+Colombia
+Costa Rica
+Czechoslovakia
+Cuba
+Cape Verde
+Curacao
+Christmas Islands
+Cyprus
+Czech Republic
+Germany
+Djibouti
+Denmark
+Dominica
+Dominican Republic
+Algeria
+Ecuador
+Estonia
+Egypt
+Western Sahara
+Spain
+Ethiopia
+Europe
+Finland
+Fiji
+Falkland Islands
+Micronesia
+Faroe Islands
+France
+French Metropolitan
+Gabon
+United Kingdom
+Grenada
+Georgia
+French Guyana
+Channel Island
+Ghana
+Gibraltar
+Greenland
+Gambia
+Guinea
+Guadeloupe
+Equatorial Guinea
+Greece
+Guatemala
+Guam
+Guinea-Bissau
+Guyana
+Hong Kong
+Heard Island & McDonald Island
+Honduras
+Croatia
+Haiti
+Hungary
+Indonesia
+Ireland
+Israel
+Isle of Man
+India
+British Indian Ocean territory
+Iraq
+Iran
+Iceland
+Italy
+Jersey
+Jamaica
+Jordan
+Japan
+Kenya
+Kyrgyz Republic
+Cambodia
+Kiribati
+Comores
+St. Kitts & Nevis
+Korea (North)
+Korea (South)
+Kuwait
+Cayman Islands
+Kazakhstan
+Laos
+Lebanon
+St. Lucia
+Liechtenstein
+Sri Lanka
+Liberia
+Lesotho
+Lithuania
+Luxembourg
+Latvia
+Libya
+Morocco
+Monaco
+Moldova
+Montenegro
+Madagascar
+Marshall Islands
+Macedonia
+Mali
+Myanmar
+Mongolia
+Macao
+Northern Mariana Islands
+Martinique
+Mauritania
+Montserrat
+Malta
+Mauritius
+Maldives
+Malawi
+Mexico
+Malaysia
+Mozambique
+Namibia
+New Caledonia
+Niger
+Norfolk Island
+Nigeria
+Nicaragua
+Netherlands
+Norway
+Nepal
+Nauru
+Niue
+New Zealand
+Oman
+Panama
+Peru
+French Polynesia
+Papua New Guinea
+Philippines
+Pakistan
+Poland
+St. Pierre and Miquelon
+Pitcairn
+Puerto Rico
+Palestine
+Portugal
+Palau
+Paraguay
+Qatar
+Reunion
+Romania
+Serbia
+Russia
+Rwanda
+Saudi Arabia
+Solomon Islands
+Seychelles
+Sudan
+Sweden
+Singapore
+St. Helena
+Slovenia
+Svalbard and Jan Mayen
+Slovak Republic
+Sierra Leone
+San Marino
+Senegal
+Somalia
+Suriname
+Sao Tome and Principe
+USSR
+El Salvador
+Syria
+Swaziland
+Turks and Caicos Islands
+Chad
+French Southern Territories
+Togo
+Thailand
+Tajikistan
+Tokelau
+Turkmenistan
+Tunisia
+Tonga
+East Timor
+Turkey
+Trinidad and Tobago
+Tuvalu
+Taiwan
+Tanzania
+Ukraine
+Uganda
+United States Minor Outlying
+United States of America
+Uruguay
+Uzbekistan
+Vatican City
+St. Vincent & the Grenadines
+Venezuela
+Virgin Islands (UK)
+Virgin Islands (US)
+Vietnam
+Vanuatu
+Wallis & Futuna Islands
+Samoa
+Yemen
+Mayotte
+South Africa
+Zambia
+Zimbabwe
+Unclassified
+CUREN
+Value
+Description
+Andorra Peseta
+UAE Dirham
+Afghanis
+Albanian Lek
+Armenian Dram
+Netherlands Antilles Guilders
+Angola Kwanza
+Argentine Peso
+Austrian Schilling
+Australian Dollar
+Aruban Guilder
+Azerbaijani Manat
+Convertible Marks
+Barbados Dollar
+Bangladesh Taka
+Belgian Franc
+Bulgarian Lev
+Bahraini Dinar
+Burundi Franc
+Bermuda Dollar
+Brunei Dollar
+Boliviano
+Mvdol
+Brazilian Real
+Bahamas Dollar
+Bhutanese Ngultrum
+Botswana Pula
+Belarusian Ruble (New)
+Belarussian Ruble
+Belize Dollar
+Canadian Dollar
+Congolese Franc
+Swiss Francs
+Chilean Unidad de Fomento
+Chilean Peso
+Chinese Yuan Renminbi
+Colombian Peso
+Colombian (Unidad de Valor Real)
+Costa Rican Colon
+Cuban Peso
+Cape Verde Escudo
+Cypriot Pound
+Czech Koruna
+Deutschmark
+Djibouti Franc
+Danish Kroner
+Dominican Peso
+Algerian Dinar
+Ecuador Sucre
+Estonian Kroon
+Egyptian Pound
+Eritrean Nakfa
+Spanish Pesetas
+Ethiopian Birr
+Euros
+Finnish Markka
+Fiji Dollar
+Falklands Pounds
+French Francs
+Pound Sterling
+GB Pence
+Georgian Lari
+Ghana Cedi
+Ghanaian Cedi
+Gibraltar Pounds
+Gambian Dalasi
+Guinean Franc
+Greek Drachma
+Guatamala Quetzal
+Guyana Dollar
+Hong Kong Dollar
+Honduras Lempira
+Croatian Kuna
+Haiti Gourde
+Hungarian Forint
+Indonesian Rupiah
+Irish Punt
+Israeli New Shekel
+Indian Rupees
+Iraqi Dinar
+Iranian Rial
+Icelandic Krona
+Italian Lire
+Jersey Pounds
+Jamaican Dollar
+Jordanian Dinar
+Japanese Yen
+Kenyan Shilling
+Kyrgyzstan Som
+Cambodian Riel
+Comoro Franc
+North Korean Won
+Korean Won
+Kuwaiti Dinar
+Cayman Islands Dollar
+Kazakhstan Tenge
+Lao Liberation Kip
+Lebanese Pound
+Sri Lankan Rupee
+Liberian Dollar
+Lesotho Loti
+Lithuanian Litas
+Luxembourg Francs
+Latvian Lats
+Libyan Dinar
+Moroccan Dirham
+Moldovan Leu
+Malagasy Ariary
+Macedonian Denar
+Myanmar Kyat
+Mongolian Tugrik
+Macau Pataca
+Mauritanian Ouguiya
+Maltese Lira
+Mauritius Rupee
+Maldivian Rufiyaa
+Malawi Kwacha
+Mexican Nuevo Peso
+Mexican Unidad de Inversion (UDI)
+Malaysian Ringgit
+Mozambique Metical
+Namibian Dollar
+Nigerian Naira
+Nicaraguan Cordoba Oro
+Netherlands Guilder
+Norwegian Krone
+Nepalese Rupee
+New Zealand Dollar
+Omani Rial
+Panama Balboa
+Peruvian Nuevo Sol
+Papua New Guinea Kina
+Philippines Peso
+Pakistan Rupee
+Polish Zloty (New)
+Portugese Escudo
+Paraguay Guarani
+Qatar Rial
+Romanian Leu
+Romanian Leu (New)
+Serbian Dinars
+Russian Ruble (New)
+Russian Ruble
+Rwandan Franc
+Saudi Arabian Riyal
+Solomon Islands Dollar
+Seychelles Rupee
+Sudanese Dinar
+Sudanese Pound
+Swedish Kroner
+Singapore Dollar
+St. Helena Pounds
+Slovenian Tolar
+Slovak Koruna
+Sierra Leone
+Somalia Shilling
+Surinam Dollar
+Sao Tome and Principe Dobra
+El Salvador Colon
+Syrian Pound
+Swaziland Lilangeni
+Thai Baht
+Tajikistani Somoni
+Turkmenistan Manat
+Tunisian Dinar
+Tonga Pa`anga
+Turkish Lira
+Turkish Lira (New)
+Trinidad and Tobago Dollar
+Taiwan Dollar
+Tanzanian Shilling
+Ukrainian Hryvnia
+Ugandan Shilling
+US Dollar
+US Cents
+Uruguay Peso (Index Linked)
+Uruguayan Peso
+Uruguayan Unidad Previsional (Pension Unit)
+Uzbekistan Sum
+Venezuala Bolivar
+Venezuala Bolivares Fuertes
+Venezuela Sovereign Bolivar
+Vietnamese Dong
+Vanuatu Vatu
+Samoan Tala
+CFA Franc (BEAC)
+Caribbean Dollar
+International Monetary Fund
+UIC-Franc
+CFA Franc (BCEAO)
+CFP Franc
+Codes for testing purposes
+Codes for transactions/no currencies involved
+North Yemen Rial
+Yugoslavian Dinar
+South African Cents
+South African Rand
+Zambian Kwacha
+Zambian New Kwacha
+New Zaire
+Zimbabwe Dollar
+Zimbabwean Dollar
+DRTYPE
+Value
+Description
+American DR
+Belgium DR
+Chess Depository Interest
+Cedear
+Generic DR
+European DR
+Finland DR
+Global DR
+Ghanian DR
+International DR
+Netherland Bearer DR
+Non-Voting DR
+New York Shares
+Philippine DR
+Russian DR
+Swedish DR
+Singapore DR
+Taiwan DR
+United Kingdom DR
+Zimbabwe DR
+EVENT
+Value
+Description
+Company Meeting
+Announcement
+Arrangement
+ASSM
+Assimilation
+Buyback
+BBCC
+Bloomberg Composite ID Change
+BBEC
+Bloomberg Exchange ID Change
+BKRP
+Bankruptcy
+Bonus Issue
+Bonus Rights
+CALL
+Call
+CAPRD
+Capital Reduction
+CLSAC
+Class Action
+CONSD
+Consolidation
+CONV
+Conversion
+Certificate of Exchange
+CURRD
+Currency Redenomination
+DIST
+Distribution
+Dividend
+DIVRC
+Dividend Reclassification
+DMRGR
+Demerger
+DRCHG
+Depository Receipt Change
+DRIP
+Dividend Reinvestment Plan
+DVST
+Divestment
+Entitlement Issue
+FRANK
+Franking
+FSPLT
+Forward Split
+Financial Transaction Tax
+FYCHG
+Financial Year Change
+International Code Change
+INCHG
+Country of Incorporation Change
+ISCHG
+Issuer Name Change
+Local Code Change
+Liquidation
+LSTAT
+Listing Status
+LTCHG
+Lot Change
+MKCHG
+Market Segment Change
+MRGR
+Merger
+NLIST
+New Listing
+ODDLT
+Odd Lot Offer
+Property Income Distribution
+Purchase Offer
+PRCHG
+Primary Exchange Change
+Preferential Offer
+PVRD
+Par Value Redenomination
+RCAP
+Return of Capital
+Record Date
+REDEM
+Redemption
+RSPLT
+Reverse Split
+Rights
+SCCHG
+Security Name Change
+SCSWP
+Security Swap
+Sub Division
+SDCHG
+Sedol Change
+SECRC
+Security Re-classification
+SHOCH
+Shares Outstanding Change
+SOFF
+Spin-Off
+TKOVR
+Takeover
+WAREX
+Warrant Exercise
+EVENTSUBTYPE
+Event
+Value
+Description
+Annual General Meeting
+Bond Holder Meeting
+Court Ordered General Meeting
+Extraordinary General Meeting
+General Meeting
+Special General Meeting
+DUTCHAUCT
+Dutch Auction
+DPRCPDIV
+Depository Receipt Dividend
+CONSD
+CONSD
+Reverse Split
+CONV
+Buyback
+CONV
+CALL
+Call Option Exercised
+CONV
+Drawings by lottery
+CONV
+ECONV
+Early Conversion
+CONV
+Maturity
+CONV
+Ordinary
+CONV
+Put Option Exercised
+DIST
+DIST
+Spin-Off
+CAPDIST
+Capital Distribution
+Forward Split
+INTDIV
+Derived from Interest Payment
+DMRGR
+DMRGR
+Spin-Off
+NRENRTS
+Non Renounceable Rights
+OPOFF
+Open Offer
+POFF
+Priority Offer
+Share Purchase Plan
+FRANK
+Fully franked
+FRANK
+Partially franked
+FRANK
+Unfranked
+RCAP
+CAPRD
+Capital Reduction
+RCAP
+Liquidation
+RCAP
+Reserves
+RCAP
+Sale of Assets
+RCAP
+Share Premium Account
+REDEM
+Amortisation
+REDEM
+Early Redemption
+REDEM
+Make Whole Call
+Forward Split
+TKOVR
+MRGR
+Merger
+TKOVR
+TEND
+Tender Offer
+TKOVR
+TENDMRGR
+Tender resulting in Merger
+TKOVR
+TKOVRMINI
+Mini-Takeover
+EXCHANGE
+Name
+Country
+Exchange
+A2X Markets
+South Africa
+ZAA2X
+A2XX
+AIAF - Fixed Income Market
+Spain
+ESAIAF
+XDRF
+Abu Dhabi Securities Exchange
+United Arab Emirates
+AEADSM
+XADS
+Algiers Stock Exchange
+Algeria
+DZASE
+XALG
+Amman Stock Exchange
+Jordan
+JOASE
+XAMM
+Angola Securities Exchange
+Angola
+AOASE
+XBDV
+Aquis Stock Exchange
+United Kingdom
+GBOFX
+AQSE
+Argentina Open Electronic Exchange
+Argentina
+AROEX
+XMAB
+Armenia Securities Exchange
+Armenia
+AMASE
+XARM
+Astana International Exchange
+Kazakhstan
+KZAIX
+AIXK
+Asuncion Stock Exchange
+Paraguay
+PYBVA
+XVPA
+Athens Exchange
+Greece
+GRASE
+ASEX
+Australian Securities Exchange
+Australia
+AUASX
+XASX
+B3 - Brasil Bolsa Balcao
+Brazil
+BRBVSP
+BVMF
+BME Growth
+Spain
+ESMAB
+GROW
+India
+INBSE
+XBOM
+BX Swiss
+Switzerland
+CHBRN
+XBRN
+Bahamas International Securities Exchange
+Bahamas
+BSBSE
+XBAA
+Bahrain Bourse
+Bahrain
+BHBSE
+XBAH
+Baku Stock Exchange
+Azerbaijan
+AZBSE
+BSEX
+Banja Luka Stock Exchange
+Bosnia and Herzegovina
+BABLSX
+XBLB
+Barbados Stock Exchange
+Barbados
+BBSEB
+XBAB
+Barcelona Stock Exchange
+Spain
+ESBSE
+XBAR
+Beijing Stock Exchange
+China
+CNBJSE
+BJSE
+Beirut Stock Exchange
+Lebanon
+LBBSE
+XBEY
+Belarus Currency and Stock Exchange
+Belarus
+BYBCSE
+BCSE
+Belgrade Stock Exchange
+Serbia
+RSBEL
+XBEL
+Berlin Stock Exchange
+Germany
+DEBSE
+XBER
+Bermuda Stock Exchange
+Bermuda
+BMBSE
+XBDA
+Bilbao Stock Exchange
+Spain
+ESBBSE
+XBIL
+Bolivian Stock Exchange
+Bolivia
+BOBVB
+XBOL
+Bolsa Electronica de Chile
+Chile
+CLBEC
+XBCL
+Bolsa Mexicana de Valores
+Mexico
+MXMSE
+XMEX
+Bolsa Nacional de Valores
+Costa Rica
+CRBNV
+XBNV
+Bolsa de Valores de Lima
+Peru
+PEBVL
+XLIM
+Borsa Italiana
+Italy
+ITMSE
+XMIL
+Botswana Stock Exchange
+Botswana
+BWBSE
+XBOT
+Bratislava Stock Exchange
+Slovakia
+SKBSE
+XBRA
+Bucharest Stock Exchange
+Romania
+ROBSE
+XBSE
+Budapest Stock Exchange
+Hungary
+HUBSE
+XBUD
+Buenos Aires Stock Exchange
+Argentina
+ARMVB
+XBUE
+Bulgarian Stock Exchange
+Bulgaria
+BGBSE
+XBUL
+Cambodia Securities Exchange
+Cambodia
+KHCSX
+XCSX
+Canadian Securities Exchange
+Canada
+CACNQ
+XCNQ
+Cape Town Stock Exchange
+South Africa
+ZA4AX
+4AXE
+Cape Verde Stock Exchange
+Cape Verde
+CVCVSX
+XBVC
+Caracas Stock Exchange
+Venezuela
+VECSE
+BVCA
+Casablanca Stock Exchange
+Morocco
+MABVC
+XCAS
+Cayman Islands Stock Exchange
+Cayman Islands
+KYSX
+XCAY
+Cboe Australia
+Australia
+AUCBOE
+CHIA
+Cboe BZX
+United States
+USBATS
+BATS
+Cboe Canada
+Canada
+CANEO
+NEOE
+Central American Securities Exchange
+Honduras
+HNCASE
+XBCV
+China Interbank Bond Market
+China
+CNIBBM
+Chittagong Stock Exchange
+Bangladesh
+BDCSE
+XCHG
+Colombian Stock Exchange
+Colombia
+COCSX
+XBOG
+Colombo Stock Exchange
+Sri Lanka
+LKCSE
+XCOL
+Cyprus Stock Exchange
+Cyprus
+CYCSE
+XCYS
+Damascus Securities Exchange
+Syria
+SYDSE
+XDSE
+Dar es Salaam Stock Exchange
+Tanzania
+TZTSE
+XDAR
+Dhaka Stock Exchange
+Bangladesh
+BDDSE
+XDHA
+Dominican Republic Stock Exchange
+Dominican Republic
+DODRSX
+XBVR
+Douala Stock Exchange
+Cameroon
+CMDSX
+XDSX
+Dubai Financial Market
+United Arab Emirates
+AEDFM
+XDFM
+Dusseldorf Stock Exchange
+Germany
+DEDSE
+XDUS
+Dutch Caribbean Securities Exchange
+Curacao
+CWDCSE
+DCSX
+Eastern Caribbean Securities Exchange
+St. Kitts & Nevis
+KNECSE
+XECS
+Egyptian Exchange
+Egypt
+EGCASE
+XCAI
+El Salvador Stock Exchange
+El Salvador
+SVMVSV
+XSVA
+Eswatini Stock Exchange
+Eswatini
+SZSS
+XSWA
+Euronext Amsterdam
+Netherlands
+NLENA
+XAMS
+Euronext Brussels
+Belgium
+BEENB
+XBRU
+Euronext Dublin
+Ireland
+IEISE
+XDUB
+Euronext Lisbon
+Portugal
+PTBVL
+XLIS
+Euronext London
+United Kingdom
+GBENLN
+XLDN
+Euronext NOTC
+Norway
+NOOTC
+NOTC
+Euronext Paris
+France
+FRPEN
+XPAR
+FINRA OTCBB
+United States
+USFNBB
+XOTC
+FINRA TRACE
+United States
+USTRCE
+FINR
+Faroese Securities Market
+Faroe Islands
+FOFSM
+VMFX
+Frankfurt Stock Exchange
+Germany
+DEFSX
+XFRA
+Fukuoka Stock Exchange
+Japan
+JPFSE
+XFKA
+Georgian Stock Exchange
+Georgia
+GEGSE
+XGSE
+Ghana Stock Exchange
+Ghana
+GHGSE
+XGHA
+Gibraltar Stock Exchange
+Gibraltar
+GIGSX
+GSXL
+Guatemala National Stock Exchange
+Guatemala
+GTGSE
+XGTG
+Guayaquil Stock Exchange
+Ecuador
+ECGSE
+XGUA
+Guyana Stock Exchange
+Guyana
+GYGSX
+GSCI
+Hamburg Stock Exchange
+Germany
+DEHSE
+XHAM
+Hanoi Stock Exchange
+Vietnam
+VNHSTC
+HSTC
+Hanover Stock Exchange
+Germany
+DEHNSE
+XHAN
+Ho Chi Minh Stock Exchange
+Vietnam
+VNSTC
+XSTC
+Hong Kong Shanghai Stock Connect - Southbound
+Hong Kong
+HKHKSG
+SHSC
+Hong Kong Shenzhen Stock Connect - Southbound
+Hong Kong
+HKHKSZ
+SZSC
+Hong Kong Stock Exchange
+Hong Kong
+HKSEHK
+XHKG
+Indonesian Stock Exchange
+Indonesia
+IDJSE
+XIDX
+Innex Stock Exchange
+Ukraine
+UAINX
+XDFB
+Institutional Stock Exchange
+Mexico
+MXBIVA
+BIVA
+Investors Exchange
+United States
+USIEX
+IEXG
+Iran Fara Exchange
+Iran
+IRIFX
+IFBX
+Iraq Stock Exchange
+Iraq
+IQISX
+XIQS
+Istanbul Stock Exchange
+Turkey
+TRIMKB
+XIST
+Jamaica Stock Exchange
+Jamaica
+JMJSE
+XJAM
+Johannesburg Stock Exchange
+South Africa
+ZAJSE
+XJSE
+Kazakhstan Stock Exchange
+Kazakhstan
+KZKASE
+XKAZ
+Kiev International Stock Exchange
+Ukraine
+UAKISE
+XKIS
+Korea New Exchange
+South Korea
+KRKNX
+XKON
+Korea Stock Exchange
+South Korea
+KRKSE
+XKRX
+Kuwait Stock Exchange
+Kuwait
+KWKSE
+XKUW
+Kyrgyz Stock Exchange
+Kyrgyz Republic
+KGKSE
+XKSE
+Labuan International Financial Exchange
+Malaysia
+MYLFX
+XLFX
+Lao Securities Exchange
+Laos
+LALSX
+XLAO
+Latin American Stock Exchange
+Panama
+PABVP
+XPTY
+Libyan Stock Market
+Libya
+LYLSM
+XLSM
+Ljubljana Stock Exchange
+Slovenia
+SILSE
+XLJU
+London Stock Exchange
+United Kingdom
+GBLSE
+XLON
+Lusaka Stock Exchange
+Zambia
+ZMZSE
+XLUS
+Luxembourg Stock Exchange
+Luxembourg
+LULSE
+XLUX
+MERJ Exchange
+Seychelles
+SCSSE
+TRPX
+Macedonian Stock Exchange
+North Macedonia
+MKMSE
+XMAE
+Madrid Stock Exchange
+Spain
+ESMSE
+XMAD
+Malawi Stock Exchange
+Malawi
+MWMSE
+XMSW
+Malaysian Exchange
+Malaysia
+MYKLSE
+XKLS
+Maldives Stock Exchange
+Maldives
+MVMAL
+MALX
+Malta Stock Exchange
+Malta
+MTMSE
+XMAL
+Metropolitan Stock Exchange of India
+India
+INMCX
+MCXX
+Moldova Stock Exchange
+Moldova
+MDMSE
+XMOL
+Mongolian Stock Exchange
+Mongolia
+MNSE
+XULA
+Montenegro Stock Exchange
+Montenegro
+MEMSE
+XMNX
+Montevideo Stock Exchange
+Uruguay
+UYBVM
+XMNT
+Moscow Exchange
+Russia
+RUMICX
+MISX
+Mozambique Stock Exchange
+Mozambique
+MZMSX
+XBVM
+Munich Stock Exchange
+Germany
+DEMSE
+XMUN
+Muscat Securities Market
+Oman
+OMMSM
+XMUS
+NYSE American
+United States
+USAMEX
+XASE
+NYSE Arca
+United States
+USPAC
+ARCX
+NYSE National
+United States
+USCIN
+XCIS
+New Zealand
+NZSE
+XNZE
+Nagoya Stock Exchange
+Japan
+JPNSE
+XNGO
+Nairobi Securities Exchange
+Kenya
+KENSE
+XNAI
+Namibian Stock Exchange
+Namibia
+NANSE
+XNAM
+Nasdaq
+United States
+USNASD
+XNAS
+Nasdaq Copenhagen
+Denmark
+DKCSE
+XCSE
+Nasdaq Dubai
+United Arab Emirates
+AEDIFX
+DIFX
+Nasdaq Helsinki
+Finland
+FIHSE
+XHEL
+Nasdaq Iceland
+Iceland
+ISISE
+XICE
+Nasdaq Nordic Stockholm
+Sweden
+SESSE
+XSTO
+Nasdaq Riga
+Latvia
+LVRSE
+XRIS
+Nasdaq Tallinn
+Estonia
+EETSE
+XTAL
+Nasdaq Vilnius
+Lithuania
+LTNSE
+XLIT
+National Stock Exchange of Australia
+Australia
+AUNSE
+XNEC
+National Stock Exchange of India
+India
+INNSE
+XNSE
+Nepal Stock Exchange
+Nepal
+NPNSE
+XNEP
+New York Stock Exchange
+United States
+USNYSE
+XNYS
+Nicaragua Stock Exchange
+Nicaragua
+NINSX
+XMAN
+Nigerian Stock Exchange
+Nigeria
+NGLSE
+XNSA
+Nordic Derivatives Exchange
+Sweden
+SENDX
+XNDX
+Nordic Growth Market
+Sweden
+SENGM
+XNGM
+OTC Markets Group
+United States
+USOTC
+OTCM
+Oslo Bors
+Norway
+NOOB
+XOSL
+PFTS Stock Exchange
+Ukraine
+UAPFTS
+PFTS
+Pakistan Stock Exchange
+Pakistan
+PKKSE
+XKAR
+Palestine Exchange
+Palestine
+PSAFM
+XPAE
+Papua New Guinea National Stock Exchange
+Papua New Guinea
+PGNSE
+XPOM
+Perspektiva Stock Exchange
+Ukraine
+UAPSX
+SEPE
+Philippine Stock Exchange
+Philippines
+PHPSE
+XPHS
+Prague Stock Exchange
+Czech Republic
+CZPSE
+XPRA
+Qatar Exchange
+Qatar
+QADSM
+DSMD
+Quito Stock Exchange
+Ecuador
+ECQSE
+XQUI
+Regional Stock Exchange of West Africa
+Ivory Coast
+CIBVA
+XBRV
+Rosario Commerce Exchange
+Argentina
+ARRCX
+XROS
+Russian Trading System
+Russia
+RURTS
+RTSX
+Rwanda OTC
+Rwanda
+RWOTC
+ROTC
+Rwanda Stock Exchange
+Rwanda
+RWRSE
+RSEX
+SIM Venture Securities Exchange
+Australia
+AUSIMV
+SIMV
+SIX Structured Products Exchange
+Switzerland
+CHSCH
+XQMH
+SIX Swiss Exchange
+Switzerland
+CHSSX
+XSWX
+Santiago Stock Exchange
+Chile
+CLBCS
+XSGO
+Sapporo Securities Exchange
+Japan
+JPSSE
+XSAP
+Sarajevo Stock Exchange
+Bosnia and Herzegovina
+BASASE
+XSSE
+Saudi Stock Exchange
+Saudi Arabia
+SARSE
+XSAU
+Shanghai Hong Kong Stock Connect - Northbound
+China
+CNSGHK
+XSSC
+Shanghai Stock Exchange
+China
+CNSGSE
+XSHG
+Shenzhen Hong Kong Stock Connect - Northbound
+China
+CNSZHK
+XSEC
+Shenzhen Stock Exchange
+China
+CNSSE
+XSHE
+Singapore Exchange
+Singapore
+SGSSE
+XSES
+South Pacific Stock Exchange
+Fiji
+FJSPSX
+XSPS
+Spanish Stock Exchange Interconnection System
+Spain
+ESSIBE
+XMCE
+Spotlight Stock Market
+Sweden
+SESSM
+XSAT
+Stock Exchange of Mauritius
+Mauritius
+MUSEM
+XMAU
+Stock Exchange of Thailand
+Thailand
+THSET
+XBKK
+Stuttgart Stock Exchange
+Germany
+DESSE
+XSTU
+Sydney Stock Exchange
+Australia
+AUSSX
+APXL
+TSX Venture Exchange
+Canada
+CACVE
+XTSX
+Taipei Exchange
+Taiwan
+TWOTC
+ROCO
+Taiwan Stock Exchange
+Taiwan
+TWTSE
+XTAI
+Tashkent Republican Stock Exchange
+Uzbekistan
+UZTRSX
+XSTE
+Tehran Stock Exchange
+Iran
+IRTSE
+XTEH
+Tel-Aviv Stock Exchange
+Israel
+ILTSE
+XTAE
+The International Stock Exchange
+Guernsey
+GGCISX
+XCIE
+Tirana Stock Exchange
+Albania
+ALTSE
+XTIR
+Tokyo Stock Exchange
+Japan
+JPTSE
+XJPX
+Toronto Stock Exchange
+Canada
+CATSE
+XTSE
+Trinidad & Tobago Stock Exchange
+Trinidad and Tobago
+TTTTSE
+XTRN
+Tunis Stock Exchange
+Tunisia
+TNTSE
+XTUN
+Uganda Securities Exchange
+Uganda
+UGKSE
+XUGA
+Ukrainian Exchange
+Ukraine
+UAUX
+UKEX
+Uruguay Electronic Exchange
+Uruguay
+UYUEX
+BVUR
+Valencia Stock Exchange
+Spain
+ESVSE
+XVAL
+Victoria Falls Stock Exchange
+Zimbabwe
+ZWVFSE
+VFEX
+Vienna Stock Exchange
+Austria
+ATVSE
+XWBO
+Warsaw Stock Exchange
+Poland
+PLWSE
+XWAR
+Xetra
+Germany
+DEXETR
+XETR
+Zagreb Stock Exchange
+Croatia
+HRZSE
+XZAG
+Zimbabwe Stock Exchange
+Zimbabwe
+ZWZSE
+XZIM
+FRACTIONS
+Value
+Description
+Cash
+Round Down
+Fractions
+Round Up
+FREQ
+Value
+Description
+28 Days
+35DAY
+Every 35 Days
+Annual
+BiMonthly
+Daily
+Final
+Interim
+INTONMAT
+Interest on Maturity
+INTONTRIG
+Interest on Trigger
+Irregular
+Interest on Maturity
+Monthly
+Quarterly
+Semi-Annual
+Trimesterly
+Unspecified
+Weekly
+GLOBSTATUS
+Value
+Description
+Active
+In default
+Inactive
+LISTSOURCE
+Value
+Description
+Main WCA supported Listing
+Secondary Listing
+LISTSTAT
+Value
+Description
+Delisted
+Reporting purposes only - Listed
+Reporting purposes only - Delisted
+Reporting purposes only - Suspended
+Listed
+New Listing
+Listing Pending
+Resumed
+Suspended
+Trading permitted - Listed
+Trading permitted - Delisted
+Trading permitted - Suspended
+MANDVOLU
+Value
+Description
+Mandatory
+Voluntary
+Mandatory and/or Voluntary
+MARKER
+Value
+Description
+Annual
+Arrears
+Capital Gain
+Capital Gain Long Term
+Capital Gain Short Term
+Final
+Installment
+Interim
+Interest on Capital
+Memorial
+Quarterly
+Regular
+Semi-annual
+Special
+Supplementary
+Unspecified
+Variable
+MICSEG
+Value
+Description
+AIMX
+ALTX
+AltX
+ALXA
+Euronext - Alternext Amsterdam
+ALXB
+Euronext Growth
+ALXL
+Euronext Growth
+ALXP
+Euronext Growth
+AQSL
+Main Board (Equity)
+AQST
+Trading (Equity)
+BERA
+Regulated Market
+BERB
+Open Market
+BERC
+Berlin Second Regulated Market
+BETA
+BETa Market
+BLBF
+Free Market
+BSME
+CAVE
+Caveat Emptor
+DSME
+First North Growth Market
+DUSA
+Regulated Market
+DUSB
+Free Market
+EMTF
+Euro MTF
+ENAX
+Alternative Market
+ENXL
+Euronext Access
+EXGM
+Euronext Growth Milan
+EXPM
+Expert Market
+FNEE
+First North
+FNIS
+First North
+FNLT
+First North
+FNLV
+First North
+FRAA
+Regulated Market
+FRAB
+Free Market
+FRAS
+Free Market - Scale
+FSME
+First North Growth Market
+GBUL
+Beam
+HAMA
+Regulated Market
+HAMB
+Free Market
+HANA
+Regulated Market
+HANB
+Free Market
+IFSM
+Institutional Financial Securities Market
+MBUL
+MTF BSE International
+MERK
+Euronext Growth
+MESQ
+ACE Market
+MIVX
+Euronext MIV Milan
+MLXB
+Euronext Access
+MOTX
+MTAA
+EURONEXT MILAN
+MUNA
+Regulated Market
+MUNB
+Free Market
+NSME
+OTCB
+OTCQB
+OTCQ
+OTCQX
+PINC
+Pink Current Information
+PINI
+Pink No Information
+PINL
+Pink Limited Information
+PROS
+Prospects MTF
+PSGM
+Grey Market
+SSME
+First North Growth Market
+STUA
+Regulated Market
+STUB
+Open Market
+WBAH
+Official Market
+WBDM
+Vienna MTF
+XBIS
+International Securities Market
+XCAN
+AeRO
+XECM
+Emerging Companies Market
+XESM
+Euronext Growth
+XETA
+Regulated Market
+XETB
+Free Market
+XETS
+Free Market - Scale
+XGEM
+Growth Enterprises Market
+XGLO
+GlobalConnect
+XHNX
+Unlisted Public Company Market
+XJAS
+TOKYO STOCK EXCHANGE JASDAQ
+XLIM
+Entry Market
+XMAI
+Market for Alternative Investment
+XMLI
+Euronext Access
+XMOT
+ExtraMOT
+XMSM
+Euronext Dublin
+XNCM
+Capital Market
+XNCO
+NewConnect
+XNGS
+Global Select
+XNMS
+Global Market
+XOAM
+Nordic Alternative Bond Market
+XOAS
+Euronext Expand
+XSCA
+Catalist
+XTAM
+Tokyo Pro Market
+XTND
+Xtend
+XTNX
+MKTSG
+Value
+Description
+First Section
+OTCQX
+Alternative Securities Market
+First North
+Main List
+Secondary List
+Free Market
+Listed Main Market
+Listed Parallel Market
+Regulated Free Market
+Euronext Growth
+First Market
+OTCQB
+Second Market
+Third Market
+NXT Market
+Official Market
+Second Regulated Market
+Vienna MTF
+Free Market
+Prime Market
+Standard Market
+Start Market
+Pink Current Information
+Channel Islands
+Isle of Man
+Euronext Access
+Growth - Apex (Equity)
+Trading (Equity)
+Main Board (Equity)
+Prime Market
+Standard Market
+Entry Market
+LEAP Market
+Pink Limited Information
+Main Market
+Nomu - Parallel Market
+Tokyo Pro Market
+Premier Market
+Main Market
+Venture Capital Market
+Development Capital Market
+Black Economic Empowerment Segment
+Auction Market
+Regulated Market
+Pink No Information
+AeRO
+MTS International
+Regulated Market
+Free Market
+Regulated Market
+Free Market
+Free Market
+Regulated Market
+Regulated Market - Prime Standard
+Finra OTCBB
+Regulated Market - General Standard
+Free Market - Basic Board
+Free Market - Scale
+Free Market - Basic Board
+Free Market - Scale
+Regulated Market - General Standard
+Regulated Market - Prime Standard
+Euronext Dublin
+Euronext Growth
+Atlantic Securities Market
+Grey Market
+Berlin Second Regulated Market
+Bonds Segment
+Exchange Traded Products Segment
+Government Securities Segment
+BaSE - Special Purpose Vehicles Segment
+Prime
+Standard
+1st Market
+1st Secondary
+Caveat Emptor
+2nd Market
+Main Board
+SME Board
+ChiNext
+Main Board
+Star Market
+Official Market
+Free Market
+Free Market - Issuers in Bankruptcy
+Official Market
+Official Market - Prime Market
+Official Market - Standard Market
+Official Market - Entry Market
+Free Market
+Official Listing - Super Listing
+Official Listing - Stock Exchange Listing
+Official Listing - Mandatory Listing
+Small Joint Stock Companies
+Free Market
+Euronext Milan
+Euronext STAR Milan
+Euronext MIV Milan
+Euronext Growth Milan
+Expert Market
+Premium Market
+Standard Market
+Alternative Market
+MTS - Bond
+Regulated Market
+Free Market
+Second Section
+Euronext A
+Free Market - High Risk
+Free Market - SME Market
+Regulated Market
+Free Market
+Free Market - SME Market
+Tokyo Pro Bond Market
+First Market
+Second Market
+Third Market
+Yellow UTP Market
+Euronext B
+Orange UTP Market
+Red UTP Market
+SME Market
+Family & Friends
+Unlisted Public Company Market
+Euronext Growth Milan Professional
+Growth - Access (Equity)
+Regular Market
+Parallel Market
+Under Monitoring Market
+Euronext C
+Prime Market
+Standard Market
+Growth Market
+Domestic Main Board
+Foreign Main Board
+Domestic Venture Capital Board
+Foreign Venture Capital Board
+Tshipidi SME Board
+Serala OTC Board
+Prime Market
+Euronext Growth
+Official Market
+Regular Market
+Main List
+Secondary List
+First North
+Main List
+Secondary List
+First North
+Main List
+Secondary List
+Euronext Access
+First North
+BIST Star
+BIST Main
+BIST Submarket
+Watchlist Market
+Pre-market Trading Platform
+Main Market
+Innovation & Growth Market
+International Securities Market
+Main Market
+Euronext A
+Alternative Market
+Regulated Main Market
+Prospects MTF
+BdL Market
+Euro MTF
+LuxSE Securities Official List
+Small Capital Platform
+Main Market
+NewConnect
+Main Regulated
+Euronext B
+Pre Market
+SME Main Market
+Worldcaps
+New Market
+Level 1
+Level 2
+Bovespa Plus
+Bovespa Plus Level 2
+Euronext C
+First North Premier Growth Market
+First North Premier Growth Market
+Institutional Financial Securities Market
+MTF BSE International
+Beam
+Regulated Market
+Open Market
+PepMarket
+Euronext Growth
+Premier Market
+Main Market
+Next Market
+Main Board
+Q Board
+Main Market
+Ambitious Market
+Main Board Premium
+Main Board Standard
+Alternative Board
+Euronext Access
+KASE Global
+Emerging Companies Market
+Growth Market
+Main Board
+Development Board
+Acceleration Board
+Main Board
+Small and Medium Enterprises Board
+Venture Capital Board
+Small Capital Platform
+JASDAQ
+Euronext A
+A Listing
+B Listing
+Main Market
+Venture Market
+New Economy Board
+Official Market
+Development & Enterprise Market (DEM)
+Main Market
+Growth Market
+First Market
+Euronext B
+Second Market
+First Tier Market
+Second Tier Market
+SME Market
+Main Board
+Small Cap
+Mezzanine Market
+Tier I
+Tier II
+Tier III
+Euronext C
+Main Board
+Diri Savi Board
+Empower Board
+Second Board
+Watch List
+SME Nile
+SME Tamayuz
+ExtraMOT
+ExtraMOT Pro
+Alternext
+ExtraMOT Pro3
+GlobalConnect
+Main Market
+Junior Market
+USD Market
+Official Prime Market
+Official Standard Market
+Free Market
+Main
+Belt and Road Market
+Euronext A
+Pre-IPO
+Regional Equity Market Segment
+Main Board
+SME Board
+Main Investment Market
+Enterprise Growth Market
+Main Market
+SME Market
+Main Market
+Alternate Market
+Euronext B
+Main Investment Market
+Alternative Investment Market
+Growth Enterprise Market
+Main Board
+GEM Board
+Pioneer Stock Board
+Main Market
+Alternative Market
+Taiwan Innovation Board
+Social Stock Exchange
+Euronext C
+Social Stock Exchange
+Xtend
+Official Market
+Second Market
+Third Market
+Euronext Growth
+Alternative Market
+Investment Companies Market
+First Section
+Main Market
+Parallel Market
+Shipping Companies Market
+Special Category Market
+Special Characteristics Market
+Main Board
+Growth Enterprises Market
+Premium Equities Segment
+Standard Equities Segment
+Special Purpose Vehicles Segment
+Second Section
+UCITs Segment
+Compensatory Instruments Segment
+Structured Products Segment
+Equities Segment
+Category A
+Category B
+BETa Market
+Main Market
+ACE Market
+Euronext Expand
+Mothers
+Main Board
+Alternative Market
+Main Board
+Catalist
+Global Quote
+Market for Alternative Investment
+Main Board
+AltX
+Africa Board
+Main Market
+Global Select
+Professional Securities Market
+Specialist Fund Market
+First North Growth Market
+JASDAQ
+First North Premier Growth Market
+SME-ITP
+SME-ITP
+Nordic Alternative Bond Market
+Surveillance Market
+Global Market
+Regulated Market
+Free Market
+Regulated Market
+Open Market
+First North Growth Market
+First North Growth Market
+Free Market - Subsegment 1
+Free Market - Subsegment 2
+Free Market - Subsegment 3
+Emerging Stock Board
+Capital Market
+Prime Listing
+Standard Listing
+Open Market
+A-List
+B-List
+Official List
+Secondary List
+Main Board
+Premium Board
+MRGRSTAT
+Value
+Description
+Complete
+On-going
+No value
+OUTTURNSTYLE
+Value
+Description
+ADEX
+Additional for Existing Securities
+NEWO
+New for Old Securities
+PARTFINAL
+Value
+Description
+Final
+Part
+PAYTYPE
+Value
+Description
+Cash&Stock
+Cash
+Dissenters Rights
+Stock
+ToBeAnnounced
+REGS144A
+Value
+Description
+144A
+144A
+REGD
+Regulation D
+REGS
+Regulation S
+SECTYPE
+Value
+Description
+Bond
+Basket Warrant
+Share Depository Certificate
+Chess Depository Interest
+Convertible Notes
+Contingent Value Rights
+Depository Receipts
+Distribution Rights
+Deferred Settlement Trading
+Equity Shares
+Exchange Traded Commodities
+Exchange Traded Fund
+Letter of Allotment
+Mutual Fund
+Preferred Security
+Preference Share
+Parallel Line
+Receipt
+Redemption Rights
+Redeemable Shares
+Structured Product
+Subscription Receipts
+Second Trading Line
+Stapled Security
+Tradeable Rights
+Tendered Shares Security
+Units
+Warrants
+When Distributed
+When Issued
+TKOVRSTAT
+Value
+Description
+Complete
+Lapsed
+On-going
+UTTYP
+Value
+Description
+Open Ended Investment Companies (OEIC)
+Unit Investment Trust
+Unit Trust
+VOTING
+Value
+Description
+Limited Voting
+Multiple Voting
+No Voting
+Voting
+Python Python C++ Rust HTTP/Raw

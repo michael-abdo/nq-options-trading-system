@@ -1,0 +1,303 @@
+{
+  "extraction_summary": [
+    {
+      "filename": "quickstart",
+      "category": "misc",
+      "title": "Getting started with Databento | Databento Docs",
+      "content_length": 16106,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/misc/quickstart_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_status",
+      "category": "schemas",
+      "title": "Status | Databento schemas & data formats",
+      "content_length": 15055,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_status_content.txt"
+    },
+    {
+      "filename": "faqs_streaming-vs-batch-download",
+      "category": "faqs",
+      "title": "Streaming vs. batch download | Databento FAQs",
+      "content_length": 12383,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/faqs/faqs_streaming-vs-batch-download_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_bbo",
+      "category": "schemas",
+      "title": "BBO on interval (BBO) | Databento schemas & data formats",
+      "content_length": 15497,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_bbo_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_imbalance",
+      "category": "schemas",
+      "title": "Imbalance | Databento schemas & data formats",
+      "content_length": 12932,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_imbalance_content.txt"
+    },
+    {
+      "filename": "release-notes",
+      "category": "misc",
+      "title": "Databento API and dataset release notes",
+      "content_length": 114723,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/misc/release-notes_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_batch_download",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 106810,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_batch_download_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_batch_list",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 106810,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_batch_list_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_basics_overview",
+      "category": "api_reference",
+      "title": "Overview | Databento Historical API",
+      "content_length": 106845,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_basics_overview_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_basics_datasets",
+      "category": "api_reference",
+      "title": "Datasets | Databento Historical API",
+      "content_length": 106845,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_basics_datasets_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_statistics",
+      "category": "schemas",
+      "title": "Statistics | Databento schemas & data formats",
+      "content_length": 15292,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_statistics_content.txt"
+    },
+    {
+      "filename": "api-reference-live_subscription",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 47524,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-live_subscription_content.txt"
+    },
+    {
+      "filename": "standards-and-conventions_databento-binary-encoding",
+      "category": "standards",
+      "title": "Databento Binary Encoding | Databento standards & conventions",
+      "content_length": 40525,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/standards/standards-and-conventions_databento-binary-encoding_content.txt"
+    },
+    {
+      "filename": "knowledge-base_new-users_fields-by-schema_trades-trades",
+      "category": "knowledge_base",
+      "title": "Schemas and data formats | Databento Docs",
+      "content_length": 94244,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/knowledge_base/knowledge-base_new-users_fields-by-schema_trades-trades_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_ohlcv",
+      "category": "schemas",
+      "title": "Aggregate bars (OHLCV) | Databento schemas & data formats",
+      "content_length": 12832,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_ohlcv_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_tbbo",
+      "category": "schemas",
+      "title": "BBO on trade (TBBO) | Databento schemas & data formats",
+      "content_length": 15383,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_tbbo_content.txt"
+    },
+    {
+      "filename": "standards-and-conventions_normalization",
+      "category": "standards",
+      "title": "Normalization | Databento standards & conventions",
+      "content_length": 18202,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/standards/standards-and-conventions_normalization_content.txt"
+    },
+    {
+      "filename": "knowledge-base_new-users_market-data-schemas",
+      "category": "knowledge_base",
+      "title": "What's a schema? | Databento schemas & data formats",
+      "content_length": 17696,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/knowledge_base/knowledge-base_new-users_market-data-schemas_content.txt"
+    },
+    {
+      "filename": "standards-and-conventions_enums-and-types",
+      "category": "standards",
+      "title": "Standards and conventions | Databento Docs",
+      "content_length": 118682,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/standards/standards-and-conventions_enums-and-types_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_basics_request-response",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 106810,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_basics_request-response_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_basics_authentication",
+      "category": "api_reference",
+      "title": "Authentication | Databento Historical API",
+      "content_length": 106845,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_basics_authentication_content.txt"
+    },
+    {
+      "filename": "faqs_venues-and-publishers",
+      "category": "faqs",
+      "title": "Venues and publishers | Databento FAQs",
+      "content_length": 14262,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/faqs/faqs_venues-and-publishers_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_mbp-10",
+      "category": "schemas",
+      "title": "Market by price (MBP-10) | Databento schemas & data formats",
+      "content_length": 12642,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_mbp-10_content.txt"
+    },
+    {
+      "filename": "standards-and-conventions_common-fields",
+      "category": "standards",
+      "title": "Standards and conventions | Databento Docs",
+      "content_length": 118682,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/standards/standards-and-conventions_common-fields_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_mbp-1",
+      "category": "schemas",
+      "title": "Market by price (MBP-1) | Databento schemas & data formats",
+      "content_length": 16381,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_mbp-1_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_whats-a-schema",
+      "category": "schemas",
+      "title": "What's a schema? | Databento schemas & data formats",
+      "content_length": 17696,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_whats-a-schema_content.txt"
+    },
+    {
+      "filename": "knowledge-base_new-users_fields-by-schema",
+      "category": "knowledge_base",
+      "title": "Schemas and data formats | Databento Docs",
+      "content_length": 94244,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/knowledge_base/knowledge-base_new-users_fields-by-schema_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_mbo",
+      "category": "schemas",
+      "title": "Market by order (MBO) | Databento schemas & data formats",
+      "content_length": 12354,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_mbo_content.txt"
+    },
+    {
+      "filename": "api-reference-reference",
+      "category": "api_reference",
+      "title": "Databento API documentation - Reference",
+      "content_length": 49074,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-reference_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_definition",
+      "category": "schemas",
+      "title": "Schemas and data formats | Databento Docs",
+      "content_length": 94244,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_definition_content.txt"
+    },
+    {
+      "filename": "examples",
+      "category": "examples",
+      "title": "Databento API code examples and tutorials",
+      "content_length": 17166,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/examples/examples_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_basics_symbology",
+      "category": "api_reference",
+      "title": "Symbology | Databento Historical API",
+      "content_length": 106845,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_basics_symbology_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_timeseries_timeseries-get-range_parameters",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 106845,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_timeseries_timeseries-get-range_parameters_content.txt"
+    },
+    {
+      "filename": "api-reference-live",
+      "category": "api_reference",
+      "title": "Databento API documentation - Live",
+      "content_length": 47539,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-live_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_timeseries_get-range",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 106810,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_timeseries_get-range_content.txt"
+    },
+    {
+      "filename": "api-reference-live_authentication",
+      "category": "api_reference",
+      "title": "Authentication | Databento Live API",
+      "content_length": 47524,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-live_authentication_content.txt"
+    },
+    {
+      "filename": "api-reference-historical",
+      "category": "api_reference",
+      "title": "Databento API documentation - Historical",
+      "content_length": 106845,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_content.txt"
+    },
+    {
+      "filename": "schemas-and-data-formats_trades",
+      "category": "schemas",
+      "title": "Trades | Databento schemas & data formats",
+      "content_length": 11178,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/schemas/schemas-and-data-formats_trades_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_helpers_bento-replay",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 106810,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_helpers_bento-replay_content.txt"
+    },
+    {
+      "filename": "api-reference-historical_batch_submit",
+      "category": "api_reference",
+      "title": "Databento | Docs",
+      "content_length": 106810,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/api_reference/api-reference-historical_batch_submit_content.txt"
+    },
+    {
+      "filename": "portal_api-keys",
+      "category": "portal",
+      "title": "API keys guide | Databento portal",
+      "content_length": 12834,
+      "output_file": "/Users/Mike/trading/algos/EOD/databento_docs/clean_complete_content/portal/portal_api-keys_content.txt"
+    }
+  ],
+  "categories": {
+    "api_reference": 16,
+    "schemas": 12,
+    "standards": 4,
+    "knowledge_base": 3,
+    "faqs": 2,
+    "examples": 1,
+    "portal": 1,
+    "misc": 2
+  },
+  "total_files": 41,
+  "total_content_chars": 2414826
+}

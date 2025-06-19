@@ -16,7 +16,7 @@
           "schema": "trades",
           "stype_in": "parent",
           "symbols": [
-            "NQ.OPT"
+            "NQ.FUT"
           ],
           "window_size": 300,
           "pressure_thresholds": {

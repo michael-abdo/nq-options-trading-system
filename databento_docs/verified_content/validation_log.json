@@ -1,0 +1,149 @@
+[
+  {
+    "timestamp": "2025-06-18T20:58:02.108645",
+    "step": "INIT",
+    "status": "INFO",
+    "message": "Starting scrape of: https://databento.com/docs/quickstart",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:02.496507",
+    "step": "BROWSER",
+    "status": "INFO",
+    "message": "Launching browser...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:03.047336",
+    "step": "NAVIGATE",
+    "status": "INFO",
+    "message": "Navigating to https://databento.com/docs/quickstart",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:05.082990",
+    "step": "LOAD",
+    "status": "INFO",
+    "message": "Waiting for content to load...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.090239",
+    "step": "TITLE",
+    "status": "INFO",
+    "message": "Page title: Getting started with Databento | Databento Docs",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.094819",
+    "step": "JS_CHECK",
+    "status": "SUCCESS",
+    "message": "JavaScript content loaded successfully",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.245743",
+    "step": "EXTRACT",
+    "status": "INFO",
+    "message": "Extracted 1276664 characters",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.251324",
+    "step": "SAVE",
+    "status": "SUCCESS",
+    "message": "Saved to quickstart.html (1276678 bytes)",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.251379",
+    "step": "VALIDATE",
+    "status": "SUCCESS",
+    "message": "File validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.307636",
+    "step": "PAGE_RESULT",
+    "status": "SUCCESS",
+    "message": "Page 1 successfully scraped and validated",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.307666",
+    "step": "INIT",
+    "status": "INFO",
+    "message": "Starting scrape of: https://databento.com/docs/api-reference-historical",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:08.763393",
+    "step": "BROWSER",
+    "status": "INFO",
+    "message": "Launching browser...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:09.061379",
+    "step": "NAVIGATE",
+    "status": "INFO",
+    "message": "Navigating to https://databento.com/docs/api-reference-historical",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:11.184073",
+    "step": "LOAD",
+    "status": "INFO",
+    "message": "Waiting for content to load...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:14.192006",
+    "step": "TITLE",
+    "status": "INFO",
+    "message": "Page title: Databento API documentation - Historical",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:14.212983",
+    "step": "JS_CHECK",
+    "status": "SUCCESS",
+    "message": "JavaScript content loaded successfully",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:14.415717",
+    "step": "EXTRACT",
+    "status": "INFO",
+    "message": "Extracted 1936720 characters",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:14.419974",
+    "step": "SAVE",
+    "status": "SUCCESS",
+    "message": "Saved to api-reference-historical.html (1936739 bytes)",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:14.420019",
+    "step": "VALIDATE",
+    "status": "SUCCESS",
+    "message": "File validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:14.478837",
+    "step": "PAGE_RESULT",
+    "status": "SUCCESS",
+    "message": "Page 2 successfully scraped and validated",
+    "data": null
+  },
+  {
+    "timestamp": "2025-06-18T20:58:14.478873",
+    "step": "FINAL",
+    "status": "SUCCESS",
+    "message": "All pages successfully scraped - SCRAPER WORKS!",
+    "data": null
+  }
+]

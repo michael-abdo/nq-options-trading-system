@@ -1,0 +1,11 @@
+# Exclude large HTML files from git but keep them locally
+complete_content/*.html
+verified_content/*.html
+
+# Keep the important extracted content
+!clean_complete_content/
+!clean_verified_content/
+!*.json
+!*.py
+!*.md
+!*.txt

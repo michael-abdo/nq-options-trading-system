@@ -1,0 +1,699 @@
+# Databento API documentation - Reference
+Category: Api Reference
+Source: api-reference-reference.html
+================================================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+API keys
+Download center
+Team
+Billing
+Plans and live data
+Release notes
+0.38.1 - 2025-06-17
+0.38.0 - 2025-06-10
+0.37.1 - 2025-06-03
+0.37.0 - 2025-06-03
+0.36.0 - 2025-05-27
+0.35.1 - 2025-05-20
+0.35.0 - 2025-05-13
+0.34.2 - 2025-05-06
+0.34.1 - 2025-04-29
+0.34.0 - 2025-04-22
+0.33.0 - 2025-04-15
+0.32.1 - 2025-04-07
+0.32.0 - 2025-04-02
+0.31.0 - 2025-03-18
+0.30.0 - 2025-02-11
+0.29.0 - 2025-02-04
+0.28.0 - 2025-01-21
+0.27.0 - 2025-01-07
+0.26.0 - 2024-12-17
+0.25.0 - 2024-11-12
+0.24.0 - 2024-10-22
+0.23.0 - 2024-09-25
+0.22.0 - 2024-08-27
+0.21.0 - 2024-07-30
+0.20.1 - 2024-07-16
+0.20.0 - 2024-07-09
+0.19.1 - 2024-06-25
+0.19.0 - 2024-06-04
+0.18.1 - 2024-05-22
+0.18.0 - 2024-05-14
+0.17.1 - 2024-04-08
+0.17.0 - 2024-04-01
+0.16.0 - 2024-03-01
+0.15.0 - 2024-01-16
+0.14.1 - 2023-12-18
+0.14.0 - 2023-11-23
+0.13.1 - 2023-10-23
+0.13.0 - 2023-09-21
+0.12.0 - 2023-08-24
+0.11.0 - 2023-08-10
+0.10.0 - 2023-07-20
+0.9.1 - 2023-07-11
+0.9.0 - 2023-06-13
+0.8.0 - 2023-05-16
+0.7.0 - 2023-04-28
+0.6.1 - 2023-03-28
+0.6.0 - 2023-03-24
+0.5.0 - 2023-03-13
+0.4.0 - 2023-03-02
+0.3.0 - 2023-01-06
+0.2.0 - 2022-12-01
+0.1.0 - 2022-11-07
+Python
+0.57.1 - 2025-06-17
+0.57.0 - 2025-06-10
+0.56.0 - 2025-06-03
+0.55.1 - 2025-06-02
+0.55.0 - 2025-05-29
+0.54.0 - 2025-05-13
+0.53.0 - 2025-04-29
+0.52.0 - 2025-04-15
+0.51.0 - 2025-04-08
+0.50.0 - 2025-03-18
+0.49.0 - 2025-03-04
+0.48.0 - 2025-01-21
+0.47.0 - 2024-12-17
+0.46.0 - 2024-12-10
+0.45.0 - 2024-11-12
+0.44.1 - 2024-10-29
+0.44.0 - 2024-10-22
+0.43.1 - 2024-10-15
+0.43.0 - 2024-10-09
+0.42.0 - 2024-09-23
+0.41.0 - 2024-09-03
+0.40.0 - 2024-08-27
+0.39.3 - 2024-08-20
+0.39.2 - 2024-08-13
+0.39.1 - 2024-08-13
+0.39.0 - 2024-07-30
+0.38.0 - 2024-07-23
+0.37.0 - 2024-07-09
+0.36.3 - 2024-07-02
+0.36.2 - 2024-06-25
+0.36.1 - 2024-06-18
+0.36.0 - 2024-06-11
+0.35.0 - 2024-06-04
+0.34.1 - 2024-05-21
+0.34.0 - 2024-05-14
+0.33.0 - 2024-04-16
+0.32.0 - 2024-04-04
+0.31.1 - 2024-03-20
+0.31.0 - 2024-03-05
+0.30.0 - 2024-02-22
+0.29.0 - 2024-02-13
+0.28.0 - 2024-02-01
+0.27.0 - 2024-01-23
+0.26.0 - 2024-01-16
+0.25.0 - 2024-01-09
+0.24.1 - 2023-12-15
+0.24.0 - 2023-11-23
+0.23.1 - 2023-11-10
+0.23.0 - 2023-10-26
+0.22.1 - 2023-10-24
+0.22.0 - 2023-10-23
+0.21.0 - 2023-10-11
+0.20.0 - 2023-09-21
+0.19.1 - 2023-09-08
+0.19.0 - 2023-08-25
+0.18.1 - 2023-08-16
+0.18.0 - 2023-08-14
+0.17.0 - 2023-08-10
+0.16.1 - 2023-08-03
+0.16.0 - 2023-07-25
+0.15.2 - 2023-07-19
+0.15.1 - 2023-07-06
+0.15.0 - 2023-07-05
+0.14.1 - 2023-06-16
+0.14.0 - 2023-06-14
+0.13.0 - 2023-06-02
+0.12.0 - 2023-05-01
+0.11.0 - 2023-04-13
+0.10.0 - 2023-04-07
+0.9.0 - 2023-03-10
+0.8.1 - 2023-03-05
+0.8.0 - 2023-03-03
+0.7.0 - 2023-01-10
+0.6.0 - 2022-12-02
+0.5.0 - 2022-11-07
+0.4.0 - 2022-09-14
+0.3.0 - 2022-08-30
+HTTP API
+0.34.1 - 2025-06-17
+0.34.0 - TBD
+0.33.0 - 2024-12-10
+0.32.0 - 2024-11-26
+0.31.0 - 2024-11-12
+0.30.0 - 2024-09-24
+0.29.0 - 2024-09-03
+0.28.0 - 2024-06-25
+0.27.0 - 2024-06-04
+0.26.0 - 2024-05-14
+0.25.0 - 2024-03-26
+0.24.0 - 2024-03-06
+0.23.0 - 2024-02-15
+0.22.0 - 2024-02-06
+0.21.0 - 2024-01-30
+0.20.0 - 2024-01-18
+0.19.0 - 2023-10-17
+0.18.0 - 2023-10-11
+0.17.0 - 2023-10-04
+0.16.0 - 2023-09-26
+0.15.0 - 2023-09-19
+0.14.0 - 2023-08-29
+0.13.0 - 2023-08-23
+0.12.0 - 2023-08-10
+0.11.0 - 2023-07-25
+0.10.0 - 2023-07-06
+0.9.0 - 2023-06-01
+0.8.0 - 2023-05-01
+0.7.0 - 2023-04-07
+0.6.0 - 2023-03-10
+0.5.0 - 2023-03-03
+0.4.0 - 2022-12-02
+0.3.0 - 2022-08-30
+0.2.0 - 2021-12-10
+0.1.0 - 2021-08-30
+Raw API
+0.6.1 - TBD
+0.6.0 - 2025-05-24
+0.5.6 - 2025-04-06
+0.5.5 - 2024-12-01
+0.5.4 - 2024-10-02
+0.5.3 - 2024-10-02
+0.5.1 - 2024-07-24
+2024-07-20
+2024-06-25
+0.5.0 - 2024-05-25
+0.4.6 - 2024-04-13
+0.4.5 - 2024-03-25
+0.4.4 - 2024-03-23
+0.4.3 - 2024-02-13
+0.4.2 - 2024-01-06
+0.4.0 - 2023-11-08
+0.3.0 - 2023-10-20
+0.2.0 - 2023-07-23
+0.1.0 - 2023-05-01
+Rust
+0.27.1 - 2025-06-17
+0.27.0 - 2025-06-10
+0.26.2 - 2025-06-03
+0.26.1 - 2025-05-30
+0.26.0 - 2025-05-28
+0.25.0 - 2025-05-13
+0.24.0 - 2025-04-22
+0.23.0 - 2025-04-15
+0.22.0 - 2025-04-01
+0.21.0 - 2025-03-18
+0.20.0 - 2025-02-12
+0.19.0 - 2025-01-21
+0.18.0 - 2025-01-08
+0.17.0 - 2024-12-17
+0.16.0 - 2024-11-12
+0.15.0 - 2024-10-22
+0.14.1 - 2024-10-08
+0.14.0 - 2024-10-01
+0.13.0 - 2024-09-25
+0.12.1 - 2024-08-27
+0.12.0 - 2024-07-30
+0.11.4 - 2024-07-16
+0.11.3 - 2024-07-09
+0.11.2 - 2024-06-25
+0.11.1 - 2024-06-11
+0.11.0 - 2024-06-04
+0.10.0 - 2024-05-22
+0.9.1 - 2024-05-15
+0.9.0 - 2024-05-14
+0.8.0 - 2024-04-01
+0.7.1 - 2024-03-05
+0.7.0 - 2024-03-01
+0.6.0 - 2024-01-16
+0.5.0 - 2023-11-23
+0.4.2 - 2023-10-23
+0.4.1 - 2023-10-06
+0.4.0 - 2023-09-21
+0.3.0 - 2023-09-13
+0.2.1 - 2023-08-25
+0.2.0 - 2023-08-10
+0.1.0 - 2023-08-02
+Data
+TBD (coming soon)
+2025-06-17
+2024-10-22
+2024-05-07
+2024-06-25
+2024-06-18
+2024-01-18
+2023-11-17
+2023-10-04
+2023-08-29
+2023-07-23
+2023-05-01
+2023-04-28
+2023-03-07
+HTTP API. To make it easier to integrate the API, we also provide official
+client libraries that simplify the code you need to write.Our HTTP API is designed as a collection of RPC-style methods, which can be
+called using URLs in the
+form https://hist.databento.com/v0/METHOD_FAMILY.METHOD.Our client libraries wrap these HTTP RPC-style methods with more idiomatic
+interfaces in their respective languages.REFERENCE DATA
+Client Libraries
+Python
+APIs
+HTTPHTTP
+pip install -U databento
+BasicsOverviewOur reference API has the following structure:
+Corporate actions provides point-in-time (PIT) corporate actions events with global coverage.
+Adjustment factors provides end-of-day price adjustment factors for capital events, spanning multiple currencies for the same event.
+Security master provides up-to-date (latest) or point-in-time (PIT) static information on global market securities.
+AuthenticationDatabento uses API keys to authenticate requests. You can view and manage
+your keys on the API keys page of your portal.Each API key is a 32-character string starting with db-. By default, our library uses the
+environment variable DATABENTO_API_KEY as your API key. However, if you
+pass an API key to the Historical constructor through the key parameter,
+then this value will be used instead.Related: Securing your API keys.Example usagePythonPythonHTTP
+import databento as db
+# Establish connection and authenticate
+client = db.Reference("$YOUR_API_KEY")
+# Authenticated request
+print(client.security_master.get_last(symbols="AAPL"))
+SymbologyThe reference datasets support querying by raw_symbol and additionally symbology types listed in the below table (depending on the endpoint).The raw_symbol symbology type uses a standardized convention for the symbols parameter for requests.
+This convention is referred to as the "Nasdaq Integrated Platform Suffix" and is used consistently across our datasets, regardless of the suffix originally used by the exchange.
+Standardization. This approach aligns with our symbology standardization for US equity datasets. For a detailed explanation, see our symbology standards documentation.
+Local Codes. The local_code field retains the original symbol from the primary exchange. For example, symbols from NYSE-owned feeds such as NYSE Texas use the "CMS Suffix".
+For additional context on symbol conventions, including the four most common suffix patterns used for US equities, refer to Nasdaq's guide on ticker symbol conventions.The symbology related fields included with every data record are as follows:
+Field
+Description
+nasdaq_symbol
+Nasdaq Integrated Platform Suffix convention symbol (standardized raw_symbol).
+local_code
+Local code, typically the original symbol and unique at the listing level (but there are exceptions to this rule). Either an alpha string, or a number.
+isin
+International Securities Identification Number (ISIN) - ISO 6166.
+us_code
+US domestic Committee on Uniform Securities Identification Procedure (CUSIP) code.
+bbg_comp_id
+Bloomberg composite global ID.
+bbg_ticker
+Bloomberg composite ticker.
+figi
+Financial Instrument Global Identifier (FIGI), formerly Bloomberg Global Identifier (BBGID). Listing level identifier.
+figi_ticker
+Bloomberg exchange level ticker.
+InfoNote a symbol may match multiple securities across a time range if the symbol has been recylced.TipWhen identifying a listing on a specific venue, we suggest using the nasdaq_symbol field, as it aligns
+with the normalized raw_symbol for instruments. Once you have the ISIN for the security, using
+the isin symbology type will provide the most accurate results when querying for related records.Dates and timesOur Python client library has several functions with timestamp arguments. These arguments will have type pandas.Timestamp | datetime.date | str | int and support a variety of formats.It's recommended to use pandas.Timestamp, which fully supports timezones and nanosecond-precision. If a datetime.date is used, the time is set to midnight UTC. If an int is provided, the value is interpreted as UNIX nanoseconds.The client library also handles several string-based timestamp formats based on ISO 8601.
+yyyy-mm-dd, e.g. "2022-02-28" (midnight UTC)
+yyyy-mm-ddTHH:MM, e.g. "2022-02-28T23:50"
+yyyy-mm-ddTHH:MM:SS, e.g. "2022-02-28T23:50:59"
+yyyy-mm-ddTHH:MM:SS.NNNNNNNNN, e.g. "2022-02-28T23:50:59.123456789"
+Timezone specification is also supported.
+yyyy-mm-ddTHH:MMZ
+yyyy-mm-ddTHH:MM±hh
+yyyy-mm-ddTHH:MM±hhmm
+yyyy-mm-ddTHH:MM±hh:mm
+Bare datesSome parameters require a bare date, without a time. These arguments have type datetime.date | str and must either be a datetime.date object, or a string in yyyy-mm-dd format, e.g. "2022-02-28".ErrorsOur reference API uses HTTP response codes to indicate the success or
+failure of an API request. The client library provides exceptions that
+wrap these response codes.
+2xx indicates success.
+4xx indicates an error on the client side. Represented as a BentoClientError.
+5xx indicates an error with Databento's servers. Represented as a BentoServerError.
+The full list of the response codes and associated causes is as follows:
+Code
+Message
+Cause
+Successful request.
+Bad Request
+Invalid request. Usually due to a missing, malformed or unsupported parameter.
+Unauthorized
+Invalid username or API key.
+Forbidden
+The API key has insufficient permissions to perform the request.
+Not Found
+A resource is not found, or a requested symbol does not exist.
+Unprocessable Entity
+The request is well formed, but we cannot or will not process the contained instructions.
+Too Many Requests
+API rate limit exceeded.
+Internal Server Error
+Unexpected condition encountered in our system.
+Service Unavailable
+Data gateway is offline or overloaded.
+Gateway Timeout
+Data gateway is available but other parts of our system are offline or overloaded.
+API methodPythonPythonHTTP
+class databento.BentoError(Exception)
+class databento.BentoHttpError(databento.BentoError)
+class databento.BentoClientError(databento.BentoHttpError)
+class databento.BentoServerError(databento.BentoHttpError)
+Example usagePythonPythonHTTP
+import databento as db
+client = db.Reference("INVALID_API_KEY")
+try:
+print(client.security_master.get_last("TEST"))
+except db.BentoClientError as e:
+print(e)
+Example responsePythonPythonHTTP
+400 auth_invalid_username_in_basic_auth
+Invalid username in Basic auth ('INVALID_API_KEY').
+documentation: https://databento.com/docs
+Rate limitsOur reference API allows each IP address up to:
+100 concurrent connections.
+100 corporate actions requests per second.
+100 adjustment factors requests per second.
+100 security master requests per second.
+When a request exceeds a rate limit, a BentoClientError exception is raised
+with a 429 error code.Retry-AfterThe Retry-After response header indicates how long the user should wait before retrying.If you find that your application has been rate-limited, you can retry after waiting for the time specified in the Retry-After header.If you are using Python, you may use the time.sleep function as seen below to wait for the time specified in the Retry-After header.
+e.g. time.sleep(int(response.headers("Retry-After", 1)))This code snippet works best for our current APIs with their rate limits. Future APIs may have different rate limits, and might require a different default time delay.ClientReferenceTo access Databento's reference API, first create an instance of the
+Reference client. The entire API is exposed through instance methods of
+the client.Note that the API key can be passed as a parameter, which is
+not recommended for production applications.
+Instead, you can leave out this parameter to pass your API key via the DATABENTO_API_KEY environment variable:Currently, only the 'bo1' gateway is supported for historical data.Parameterskeyoptional | str32-character API key. Found on your API keys page. If None then DATABENTO_API_KEY environment variable is used.gatewayoptional | databento.HistoricalGateway or strSite of historical gateway to connect to. Currently only 'bo1' is supported. If None then will connect to the default historical gateway.API methodPythonPythonHTTP
+class Reference(
+key: str | None = None,
+gateway: HistoricalGateway | str = 'bo1',
+Example usagePythonPythonHTTP
+import databento as db
+# Pass as parameter
+client = db.Reference("$YOUR_API_KEY")
+# Or, pass as `DATABENTO_API_KEY` environment variable
+client = db.Reference()
+Corporate actionsReference.corporate_actions.get_rangeMake a streaming request for corporate actions time series data from Databento.Each record represents a unique corporate actions event at the listing level.The specified index will be used to filter the time range and order the records.
+It will also be set as the index of the resulting data frame.See alsoCorporate actions dataset guide for further details.Parametersstartrequired | pandas.Timestamp, datetime, date, str, or intThe start of request time range (inclusive). Takes pandas.Timestamp, Python datetime, Python date, ISO 8601 string, or UNIX timestamp in nanoseconds. Assumes UTC as timezone unless otherwise specified.endoptional | pandas.Timestamp, datetime, date, str, or intThe end of request time range (exclusive). Takes pandas.Timestamp, Python datetime, Python date, ISO 8601 string, or UNIX timestamp in nanoseconds. Assumes UTC as timezone unless otherwise specified. Defaults to the forward filled value of start based on the resolution provided.indexoptional | str, default 'event_date'The index column to use for filtering the start and end time range and for record ordering. Use any of 'event_date', 'ex_date' or 'ts_record'. Records with a NULL value in the specified index column will be excluded.symbolsoptional | list or strThe symbols to filter for. Takes up to 2,000 symbols per request. If more than 1 symbol is specified, the data is merged and sorted by time. If 'ALL_SYMBOLS' or None then will select all symbols by default.stype_inoptional | databento.SType or str, default 'raw_symbol'The symbology type of input symbols. Use any of 'raw_symbol', 'nasdaq_symbol', 'isin', 'us_code', 'bbg_comp_id', 'bbg_comp_ticker', 'figi', 'figi_ticker'.eventsoptional | list or strThe event types to filter for. Takes any number of events per request. If not specified then will select all event types by default. See EVENT enum.countriesoptional | list or strThe listing countries to filter for. Takes any number of country codes per request as two letter ISO 3166-1 alpha-2 strings. If not specified then will select all countries by default. See CNTRY enum.exchangesThe (listing) exchanges to filter for. Takes any number of exchanges per request. If not specified then will select all exchanges by default. See EXCHANGE enum. | list or strsecurity_typesoptional | list or strThe security types to filter for. If not specified then will select all security types by default. See SECTYPE enum.flattenoptional | bool, default TrueIf nested JSON objects within the date_info, rate_info, and event_info fields should be flattened into separate columns in the resulting data frame.pitoptional | bool, default FalseDetermines whether to retain all historical records or only the latest records. If True, all historical records for each event_unique_id will be retained, preserving the complete point-in-time history. If False (default), the data frame will include only the most recent record for each event_unique_id based on the ts_record timestamp.Returnspandas.DataframeThe data converted into a data frame.See alsoCorporate actions field descriptions for further details.API methodPythonPythonHTTP
+def databento.Reference.corporate_actions.get_range(
+start: pd.Timestamp | datetime | date | str | int,
+end: pd.Timestamp | datetime | date | str | int | None = None,
+index: str = "event_date",
+symbols: Iterable[str] | str | None = None,
+stype_in: SType | str = "raw_symbol",
+events: Iterable[str] | str | None = None,
+countries: list[str] | str | None = None,
+security_types: list[str] | str | None = None,
+flatten: bool = True,
+pit: bool = False,
+) -> pandas.DataFrame
+Example usagePythonPythonHTTP
+import databento as db
+client = db.Reference("$YOUR_API_KEY")
+df_raw = client.corporate_actions.get_range(
+symbols=["AAPL"],
+stype_in="raw_symbol",
+start="2024-01",
+events=["SHOCH"],
+countries=["US"],
+print(df_raw.head())
+Example responsePythonPythonHTTP
+event_unique_id                 ts_record         event_id listing_id listing_group_id security_id issuer_id event_action  event  event_subtype event_date_label event_created_date effective_date ex_date record_date  record_date_id related_event  related_event_id global_status listing_status listing_source listing_date delisting_date issuer_name security_type security_description primary_exchange exchange operating_mic symbol nasdaq_symbol local_code          isin   us_code   bbg_comp_id bbg_comp_ticker          figi figi_ticker listing_country register_country trading_currency  multi_currency segment_mic_name segment_mic mand_volu_flag  rd_priority  lot_size  par_value par_value_currency payment_date duebills_redemption_date from_date to_date registration_date start_date end_date open_date close_date start_subscription_date end_subscription_date option_election_date  withdrawal_rights_from_date withdrawal_rights_to_date notification_date financial_year_end_date exp_completion_date  payment_type  option_id  serial_id  default_option_flag  rate_currency  ratio_old  ratio_new  fraction  outturn_style  outturn_security_type  outturn_security_id  outturn_isin  outturn_us_code  outturn_local_code  outturn_bbg_comp_id  outturn_bbg_comp_ticker  outturn_figi  outturn_figi_ticker  min_offer_qty  max_offer_qty  min_qualify_qty  max_qualify_qty  min_accept_qty  max_accept_qty  tender_strike_price  tender_price_step option_expiry_time  option_expiry_tz  withdrawal_rights_flag withdrawal_rights_expiry_time  withdrawal_rights_expiry_tz expiry_time  expiry_tz                       ts_created old_outstanding_date new_outstanding_date old_shares_outstanding new_shares_outstanding
+event_date
+2024-01-02  U-40685533904-135825 2024-01-12 13:12:12+00:00  E-5533904-SHOCH   L-135825         LG-35825     S-33449   I-30017            I  SHOCH            NaN   effective_date         2024-01-12     2024-01-02    None        None             NaN         SHOCH               NaN             A              L              M   1980-12-12           None   Apple Inc           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW              US               US              USD           False    Global Select        XNGS              M          NaN       100    0.00001                USD         None                     None      None    None              None       None     None      None       None                    None                  None                 None                          NaN                      None              None                    None                None           NaN        NaN        NaN                False            NaN        NaN        NaN       NaN            NaN                    NaN                  NaN           NaN              NaN                 NaN                  NaN                      NaN           NaN                  NaN            NaN            NaN              NaN              NaN             NaN             NaN                  NaN                NaN                NaT               NaN                     NaN                           NaT                          NaN         NaT        NaN 2024-07-24 06:32:10.375440+00:00  2023-10-20T00:00:00  2024-01-02T00:00:00            15552752000            15461896000
+2024-01-19  U-40685575281-135825 2024-02-05 03:37:49+00:00  E-5575281-SHOCH   L-135825         LG-35825     S-33449   I-30017            I  SHOCH            NaN   effective_date         2024-02-03     2024-01-19    None        None             NaN         SHOCH               NaN             A              L              M   1980-12-12           None   Apple Inc           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW              US               US              USD           False    Global Select        XNGS              M          NaN       100    0.00001                USD         None                     None      None    None              None       None     None      None       None                    None                  None                 None                          NaN                      None              None                    None                None           NaN        NaN        NaN                False            NaN        NaN        NaN       NaN            NaN                    NaN                  NaN           NaN              NaN                 NaN                  NaN                      NaN           NaN                  NaN            NaN            NaN              NaN              NaN             NaN             NaN                  NaN                NaN                NaT               NaN                     NaN                           NaT                          NaN         NaT        NaN 2024-07-24 22:44:12.284177+00:00  2024-01-02T00:00:00  2024-01-19T00:00:00            15461896000            15441881000
+2024-04-19  U-40685752069-135825 2024-05-06 13:21:00+00:00  E-5752069-SHOCH   L-135825         LG-35825     S-33449   I-30017            I  SHOCH            NaN   effective_date         2024-05-06     2024-04-19    None        None             NaN         SHOCH               NaN             A              L              M   1980-12-12           None   Apple Inc           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW              US               US              USD           False    Global Select        XNGS              M          NaN       100    0.00001                USD         None                     None      None    None              None       None     None      None       None                    None                  None                 None                          NaN                      None              None                    None                None           NaN        NaN        NaN                False            NaN        NaN        NaN       NaN            NaN                    NaN                  NaN           NaN              NaN                 NaN                  NaN                      NaN           NaN                  NaN            NaN            NaN              NaN              NaN             NaN             NaN                  NaN                NaN                NaT               NaN                     NaN                           NaT                          NaN         NaT        NaN 2024-07-25 01:52:32.148864+00:00  2024-01-19T00:00:00  2024-04-19T00:00:00            15441881000            15334082000
+2024-07-19  U-40685933868-135825 2024-08-05 03:41:52+00:00  E-5933868-SHOCH   L-135825         LG-35825     S-33449   I-30017            I  SHOCH            NaN   effective_date         2024-08-03     2024-07-19    None        None             NaN         SHOCH               NaN             A              L              M   1980-12-12           None   Apple Inc           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW              US               US              USD           False    Global Select        XNGS              M          NaN       100    0.00001                USD         None                     None      None    None              None       None     None      None       None                    None                  None                 None                          NaN                      None              None                    None                None           NaN        NaN        NaN                False            NaN        NaN        NaN       NaN            NaN                    NaN                  NaN           NaN              NaN                 NaN                  NaN                      NaN           NaN                  NaN            NaN            NaN              NaN              NaN             NaN             NaN                  NaN                NaN                NaT               NaN                     NaN                           NaT                          NaN         NaT        NaN 2024-08-05 06:00:56.552900+00:00  2024-04-19T00:00:00  2024-07-19T00:00:00            15334082000            15204137000
+Adjustment factorsReference.adjustment_factors.get_rangeMake a streaming request for adjustment factors time series data from Databento.Each record represents a unique corporate actions event with an adjustment factor at the listing level.The ex_date column will be used to filter the time range and order the records.
+It will also be set as the index of the resulting data frame.See alsoAdjustment factors dataset guide for further details.Parametersstartrequired | pandas.Timestamp, datetime, date, str, or intThe start of request time range (inclusive). Takes pandas.Timestamp, Python datetime, Python date, ISO 8601 string, or UNIX timestamp in nanoseconds. Assumes UTC as timezone unless otherwise specified.endoptional | pandas.Timestamp, datetime, date, str, or intThe end of request time range (exclusive). Takes pandas.Timestamp, Python datetime, Python date, ISO 8601 string, or UNIX timestamp in nanoseconds. Assumes UTC as timezone unless otherwise specified. Defaults to the forward filled value of start based on the resolution provided.symbolsoptional | list or strThe symbols to filter for. Takes up to 2,000 symbols per request. If more than 1 symbol is specified, the data is merged and sorted by time. If 'ALL_SYMBOLS' or None then will select all symbols by default.stype_inoptional | databento.SType or str, default 'raw_symbol'The symbology type of input symbols. Use any of 'raw_symbol', 'nasdaq_symbol', 'isin', 'us_code'.countriesoptional | list or strThe listing countries to filter for. Takes any number of country codes per request as two letter ISO 3166-1 alpha-2 strings. If not specified then will select all countries by default. See CNTRY enum.security_typesoptional | list or strThe security types to filter for. If not specified then will select all security types by default. See SECTYPE enum.Returnspandas.DataframeThe data converted into a data frame.See alsoAdjustment factors field descriptions for further details.API methodPythonPythonHTTP
+def databento.Reference.adjustment_factors.get_range(
+start: pd.Timestamp | datetime | date | str | int,
+end: pd.Timestamp | datetime | date | str | int | None = None,
+symbols: Iterable[str] | str | None = None,
+stype_in: SType | str = "raw_symbol",
+countries: list[str] | str | None = None,
+security_types: list[str] | str | None = None,
+) -> pandas.DataFrame
+Example usagePythonPythonHTTP
+import databento as db
+client = db.Reference("$YOUR_API_KEY")
+df_raw = client.adjustment_factors.get_range(
+symbols=["MSFT"],
+stype_in="raw_symbol",
+start="2009",
+end="2010",
+countries=["US"],
+print(df_raw.head())
+Example responsePythonPythonHTTP
+security_id      event_id event            issuer_name security_type primary_exchange  exchange operating_mic symbol nasdaq_symbol local_code  local_code_resulting          isin  isin_resulting    us_code status    factor  close currency  sentiment  reason  gross_dividend dividend_currency frequency  option                                   detail                       ts_created
+ex_date
+2009-02-17     S-39827  E-336073-DIV   DIV  Microsoft Corporation           EQS           USNASD       NaN          XNAS   MSFT          MSFT       MSFT                   NaN  US5949181045             NaN  594918104      A  0.993190  19.09      USD   0.968570      17            0.13               USD       FNL       1  Dividend (cash) of USD0.130000000/Share 2024-08-23 10:04:48.075003+00:00
+2009-05-19     S-39827  E-353927-DIV   DIV  Microsoft Corporation           EQS           USNASD       NaN          XNAS   MSFT          MSFT       MSFT                   NaN  US5949181045             NaN  594918104      A  0.993689  20.60      USD   0.992718      17            0.13               USD       QTR       1  Dividend (cash) of USD0.130000000/Share 2024-08-23 10:07:09.546929+00:00
+2009-08-18     S-39827  E-381906-DIV   DIV  Microsoft Corporation           EQS           USNASD       NaN          XNAS   MSFT          MSFT       MSFT                   NaN  US5949181045             NaN  594918104      A  0.994409  23.25      USD   1.003871      17            0.13               USD       QTR       1  Dividend (cash) of USD0.130000000/Share 2024-08-23 10:09:33.205558+00:00
+2009-11-17     S-39827  E-400830-DIV   DIV  Microsoft Corporation           EQS           USNASD       NaN          XNAS   MSFT          MSFT       MSFT                   NaN  US5949181045             NaN  594918104      A  0.995599  29.54      USD   0.998646      17            0.13               USD       QTR       1  Dividend (cash) of USD0.130000000/Share 2024-08-23 10:11:40.477633+00:00
+Security masterReference.security_master.get_lastMake a streaming request for the latest security master data from Databento.Each record represents the a unique listing for a security.The resulting data frame will be indexed and sorted by ts_effective.See alsoSecurity master dataset guide for further details.Parameterssymbolsoptional | list or strThe symbols to filter for. Takes up to 2,000 symbols per request. If more than 1 symbol is specified, the data is merged and sorted by time. If 'ALL_SYMBOLS' or None then will select all symbols by default.stype_inoptional | databento.SType or str, default 'raw_symbol'The symbology type of input symbols. Use any of 'raw_symbol', 'nasdaq_symbol', 'isin', 'us_code', 'bbg_comp_id', 'bbg_comp_ticker', 'figi', 'figi_ticker'.countriesoptional | list or strThe listing countries to filter for. Takes any number of country codes per request as two letter ISO 3166-1 alpha-2 strings. If not specified then will select all countries by default. See CNTRY enum.security_typesoptional | list or strThe security types to filter for. If not specified then will select all security types by default. See SECTYPE enum.Returnspandas.DataframeThe data converted into a data frame.See alsoSecurity master field descriptions for further details.API methodPythonPythonHTTP
+def databento.Reference.security_master.get_last(
+symbols: Iterable[str] | str | None = None,
+stype_in: SType | str = "raw_symbol",
+countries: list[str] | str | None = None,
+security_types: list[str] | str | None = None,
+) -> pandas.DataFrame
+Example usagePythonPythonHTTP
+import databento as db
+client = db.Reference("$YOUR_API_KEY")
+df_raw = client.security_master.get_last(
+symbols=["AAPL"],
+countries=["US"],
+print(df_raw.head())
+Example responsePythonPythonHTTP
+ts_record listing_id listing_group_id security_id issuer_id listing_status listing_source listing_created_date listing_date delisting_date issuer_name security_type security_description primary_exchange exchange operating_mic symbol nasdaq_symbol local_code          isin   us_code   bbg_comp_id bbg_comp_ticker          figi figi_ticker  fisn                   lei   sic     cik  gics   naics   cic     cfi incorporation_country listing_country register_country trading_currency  multi_currency segment_mic_name segment_mic  structure  lot_size  par_value par_value_currency voting  vote_per_sec  shares_outstanding shares_outstanding_date                       ts_created
+ts_effective
+2024-07-19 00:00:00+00:00 2024-08-05 02:41:52+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None   Apple Inc           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1         15204137000              2024-07-19 2024-11-11 22:41:29.670132+00:00
+Reference.security_master.get_rangeMake a streaming request for security master point-in-time (PIT) time series data from Databento.Each record represents the status of a unique listing for a security with an effective date.The specified index will be used to filter the time range and order the records.
+It will also be set as the index of the resulting data frame.See alsoSecurity master dataset guide for further details.Parametersstartrequired | pandas.Timestamp, datetime, date, str, or intThe start of request time range (inclusive). Takes pandas.Timestamp, Python datetime, Python date, ISO 8601 string, or UNIX timestamp in nanoseconds. Assumes UTC as timezone unless otherwise specified.endoptional | pandas.Timestamp, datetime, date, str, or intThe end of request time range (exclusive). Takes pandas.Timestamp, Python datetime, Python date, ISO 8601 string, or UNIX timestamp in nanoseconds. Assumes UTC as timezone unless otherwise specified. Defaults to the forward filled value of start based on the resolution provided.indexoptional | str, default 'ts_effective'The index column to use for filtering the start and end time range and recording ordering. Use any of 'ts_effective' or 'ts_record'.symbolsoptional | list or strThe symbols to filter for. Takes up to 2,000 symbols per request. If more than 1 symbol is specified, the data is merged and sorted by time. If 'ALL_SYMBOLS' or None then will select all symbols by default.stype_inoptional | databento.SType or str, default 'raw_symbol'The symbology type of input symbols. Use any of 'raw_symbol', 'nasdaq_symbol', 'isin', 'us_code', 'bbg_comp_id', 'bbg_comp_ticker', 'figi', 'figi_ticker'.countriesoptional | list or strThe listing countries to filter for. Takes any number of country codes per request as two letter ISO 3166-1 alpha-2 strings. If not specified then will select all countries by default. See CNTRY enum.security_typesoptional | list or strThe security types to filter for. If not specified then will select all security types by default. See SECTYPE enum.Returnspandas.DataframeThe data converted into a data frame.See alsoSecurity master field descriptions for further details.API methodPythonPythonHTTP
+def databento.Reference.security_master.get_range(
+start: pd.Timestamp | datetime | date | str | int,
+end: pd.Timestamp | datetime | date | str | int | None = None,
+index: str = "ts_effective",
+symbols: Iterable[str] | str | None = None,
+stype_in: SType | str = "raw_symbol",
+countries: list[str] | str | None = None,
+security_types: list[str] | str | None = None,
+) -> pandas.DataFrame
+Example usagePythonPythonHTTP
+import databento as db
+client = db.Reference("$YOUR_API_KEY")
+df_raw = client.security_master.get_range(
+symbols=["AAPL"],
+countries=["US"],
+start="2005-01-01",
+print(df_raw.head(10))
+Example responsePythonPythonHTTP
+ts_record listing_id listing_group_id security_id issuer_id listing_status listing_source listing_created_date listing_date delisting_date          issuer_name security_type security_description primary_exchange exchange operating_mic symbol nasdaq_symbol local_code          isin   us_code   bbg_comp_id bbg_comp_ticker          figi figi_ticker  fisn                   lei   sic     cik  gics   naics   cic     cfi incorporation_country listing_country register_country trading_currency  multi_currency segment_mic_name segment_mic  structure  lot_size  par_value par_value_currency voting  vote_per_sec  shares_outstanding shares_outstanding_date                       ts_created
+ts_effective
+2004-11-19 00:00:00+00:00 2004-12-06 15:09:30+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           402057856              2004-11-19 2024-11-11 22:41:24.780487+00:00
+2005-01-25 00:00:00+00:00 2005-02-03 16:00:32+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           408585970              2005-01-25 2024-11-11 22:41:24.780487+00:00
+2005-02-28 00:00:00+00:00 2005-03-01 15:28:04+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           817171940              2005-02-28 2024-11-11 22:41:24.780487+00:00
+2005-04-22 00:00:00+00:00 2005-05-06 14:06:41+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           823933916              2005-04-22 2024-11-11 22:41:24.780487+00:00
+2005-07-22 00:00:00+00:00 2005-08-04 14:39:03+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           829829296              2005-07-22 2024-11-11 22:41:24.780487+00:00
+2005-11-18 00:00:00+00:00 2005-12-02 15:25:18+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           842767948              2005-11-18 2024-11-11 22:41:24.780487+00:00
+2006-01-25 00:00:00+00:00 2006-02-07 15:32:26+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           848612359              2006-01-25 2024-11-11 22:41:24.780487+00:00
+2006-04-26 00:00:00+00:00 2006-05-09 14:36:54+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           850508144              2006-04-26 2024-11-11 22:41:24.780487+00:00
+2006-12-13 00:00:00+00:00 2007-01-02 15:42:39+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None  Apple Computer Inc.           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           859273757              2006-12-13 2024-11-11 22:41:24.780487+00:00
+2007-01-11 00:00:00+00:00 2007-01-11 00:00:00+00:00   L-135825         LG-35825     S-33449   I-30017              L              M           2001-05-05   1980-12-12           None            Apple Inc           EQS      Ordinary Shares           USNASD   USNASD          XNAS   AAPL          AAPL       AAPL  US0378331005  37833100  BBG000B9XRY4         AAPL US  BBG000B9Y5X2     AAPL UW   NaN  HWUPKR0MPOU8FGXBT394  3571  320193   NaN  334111  US31  ESVUFR                    US              US               US              USD           False    Global Select        XNGS        NaN       100          0                USD      V             1           859273757              2006-12-13 2024-11-11 22:41:29.670132+00:00
+Python Python C++ Rust HTTP/Raw

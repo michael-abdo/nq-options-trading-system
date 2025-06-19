@@ -1,0 +1,56 @@
+{
+  "strategy": "optimized_volume_bias_40_percent",
+  "parameters": {
+    "min_bid_size": 50,
+    "min_pressure_ratio": 2.0,
+    "min_volume_bias": 0.4,
+    "min_total_volume": 2000
+  },
+  "summary": {
+    "total_sessions": 6,
+    "successful_trades": 1,
+    "total_pnl": 287.5,
+    "win_rate": 100.0,
+    "avg_pnl": 287.5,
+    "avg_volume_bias": 0.420956910124996
+  },
+  "trades": [
+    {
+      "session": "2025-06-16 14:30-15:00",
+      "current_nq_price": 21973.0,
+      "direction": "SHORT",
+      "volume_bias": 0.420956910124996,
+      "volume_above": 45051,
+      "volume_below": 110554,
+      "total_directional_volume": 155605,
+      "net_volume": -65503,
+      "strikes_analyzed": 2630,
+      "entry_price": 21973.0,
+      "exit_price": 21958.625,
+      "pnl_points": 14.375,
+      "pnl_dollars": 287.5
+    }
+  ],
+  "skipped_sessions": [
+    {
+      "session": "2025-06-17 14:30-15:00",
+      "reason": "insufficient_bias"
+    },
+    {
+      "session": "2025-06-18 14:30-15:00",
+      "reason": "insufficient_bias"
+    },
+    {
+      "session": "2025-06-16 09:30-10:00",
+      "reason": "insufficient_bias"
+    },
+    {
+      "session": "2025-06-17 15:30-16:00",
+      "reason": "insufficient_bias"
+    },
+    {
+      "session": "2025-06-18 09:30-10:00",
+      "reason": "insufficient_bias"
+    }
+  ]
+}

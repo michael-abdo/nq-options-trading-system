@@ -1,0 +1,218 @@
+# Quickstart
+Source: quickstart.html
+============================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+Downloa
+
+[Content truncated for preview - full content available in HTML file]

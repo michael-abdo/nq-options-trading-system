@@ -1,0 +1,1010 @@
+# Databento API documentation - Live
+Category: Api Reference
+Source: api-reference-live.html
+================================================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+API keys
+Download center
+Team
+Billing
+Plans and live data
+Release notes
+0.38.1 - 2025-06-17
+0.38.0 - 2025-06-10
+0.37.1 - 2025-06-03
+0.37.0 - 2025-06-03
+0.36.0 - 2025-05-27
+0.35.1 - 2025-05-20
+0.35.0 - 2025-05-13
+0.34.2 - 2025-05-06
+0.34.1 - 2025-04-29
+0.34.0 - 2025-04-22
+0.33.0 - 2025-04-15
+0.32.1 - 2025-04-07
+0.32.0 - 2025-04-02
+0.31.0 - 2025-03-18
+0.30.0 - 2025-02-11
+0.29.0 - 2025-02-04
+0.28.0 - 2025-01-21
+0.27.0 - 2025-01-07
+0.26.0 - 2024-12-17
+0.25.0 - 2024-11-12
+0.24.0 - 2024-10-22
+0.23.0 - 2024-09-25
+0.22.0 - 2024-08-27
+0.21.0 - 2024-07-30
+0.20.1 - 2024-07-16
+0.20.0 - 2024-07-09
+0.19.1 - 2024-06-25
+0.19.0 - 2024-06-04
+0.18.1 - 2024-05-22
+0.18.0 - 2024-05-14
+0.17.1 - 2024-04-08
+0.17.0 - 2024-04-01
+0.16.0 - 2024-03-01
+0.15.0 - 2024-01-16
+0.14.1 - 2023-12-18
+0.14.0 - 2023-11-23
+0.13.1 - 2023-10-23
+0.13.0 - 2023-09-21
+0.12.0 - 2023-08-24
+0.11.0 - 2023-08-10
+0.10.0 - 2023-07-20
+0.9.1 - 2023-07-11
+0.9.0 - 2023-06-13
+0.8.0 - 2023-05-16
+0.7.0 - 2023-04-28
+0.6.1 - 2023-03-28
+0.6.0 - 2023-03-24
+0.5.0 - 2023-03-13
+0.4.0 - 2023-03-02
+0.3.0 - 2023-01-06
+0.2.0 - 2022-12-01
+0.1.0 - 2022-11-07
+Python
+0.57.1 - 2025-06-17
+0.57.0 - 2025-06-10
+0.56.0 - 2025-06-03
+0.55.1 - 2025-06-02
+0.55.0 - 2025-05-29
+0.54.0 - 2025-05-13
+0.53.0 - 2025-04-29
+0.52.0 - 2025-04-15
+0.51.0 - 2025-04-08
+0.50.0 - 2025-03-18
+0.49.0 - 2025-03-04
+0.48.0 - 2025-01-21
+0.47.0 - 2024-12-17
+0.46.0 - 2024-12-10
+0.45.0 - 2024-11-12
+0.44.1 - 2024-10-29
+0.44.0 - 2024-10-22
+0.43.1 - 2024-10-15
+0.43.0 - 2024-10-09
+0.42.0 - 2024-09-23
+0.41.0 - 2024-09-03
+0.40.0 - 2024-08-27
+0.39.3 - 2024-08-20
+0.39.2 - 2024-08-13
+0.39.1 - 2024-08-13
+0.39.0 - 2024-07-30
+0.38.0 - 2024-07-23
+0.37.0 - 2024-07-09
+0.36.3 - 2024-07-02
+0.36.2 - 2024-06-25
+0.36.1 - 2024-06-18
+0.36.0 - 2024-06-11
+0.35.0 - 2024-06-04
+0.34.1 - 2024-05-21
+0.34.0 - 2024-05-14
+0.33.0 - 2024-04-16
+0.32.0 - 2024-04-04
+0.31.1 - 2024-03-20
+0.31.0 - 2024-03-05
+0.30.0 - 2024-02-22
+0.29.0 - 2024-02-13
+0.28.0 - 2024-02-01
+0.27.0 - 2024-01-23
+0.26.0 - 2024-01-16
+0.25.0 - 2024-01-09
+0.24.1 - 2023-12-15
+0.24.0 - 2023-11-23
+0.23.1 - 2023-11-10
+0.23.0 - 2023-10-26
+0.22.1 - 2023-10-24
+0.22.0 - 2023-10-23
+0.21.0 - 2023-10-11
+0.20.0 - 2023-09-21
+0.19.1 - 2023-09-08
+0.19.0 - 2023-08-25
+0.18.1 - 2023-08-16
+0.18.0 - 2023-08-14
+0.17.0 - 2023-08-10
+0.16.1 - 2023-08-03
+0.16.0 - 2023-07-25
+0.15.2 - 2023-07-19
+0.15.1 - 2023-07-06
+0.15.0 - 2023-07-05
+0.14.1 - 2023-06-16
+0.14.0 - 2023-06-14
+0.13.0 - 2023-06-02
+0.12.0 - 2023-05-01
+0.11.0 - 2023-04-13
+0.10.0 - 2023-04-07
+0.9.0 - 2023-03-10
+0.8.1 - 2023-03-05
+0.8.0 - 2023-03-03
+0.7.0 - 2023-01-10
+0.6.0 - 2022-12-02
+0.5.0 - 2022-11-07
+0.4.0 - 2022-09-14
+0.3.0 - 2022-08-30
+HTTP API
+0.34.1 - 2025-06-17
+0.34.0 - TBD
+0.33.0 - 2024-12-10
+0.32.0 - 2024-11-26
+0.31.0 - 2024-11-12
+0.30.0 - 2024-09-24
+0.29.0 - 2024-09-03
+0.28.0 - 2024-06-25
+0.27.0 - 2024-06-04
+0.26.0 - 2024-05-14
+0.25.0 - 2024-03-26
+0.24.0 - 2024-03-06
+0.23.0 - 2024-02-15
+0.22.0 - 2024-02-06
+0.21.0 - 2024-01-30
+0.20.0 - 2024-01-18
+0.19.0 - 2023-10-17
+0.18.0 - 2023-10-11
+0.17.0 - 2023-10-04
+0.16.0 - 2023-09-26
+0.15.0 - 2023-09-19
+0.14.0 - 2023-08-29
+0.13.0 - 2023-08-23
+0.12.0 - 2023-08-10
+0.11.0 - 2023-07-25
+0.10.0 - 2023-07-06
+0.9.0 - 2023-06-01
+0.8.0 - 2023-05-01
+0.7.0 - 2023-04-07
+0.6.0 - 2023-03-10
+0.5.0 - 2023-03-03
+0.4.0 - 2022-12-02
+0.3.0 - 2022-08-30
+0.2.0 - 2021-12-10
+0.1.0 - 2021-08-30
+Raw API
+0.6.1 - TBD
+0.6.0 - 2025-05-24
+0.5.6 - 2025-04-06
+0.5.5 - 2024-12-01
+0.5.4 - 2024-10-02
+0.5.3 - 2024-10-02
+0.5.1 - 2024-07-24
+2024-07-20
+2024-06-25
+0.5.0 - 2024-05-25
+0.4.6 - 2024-04-13
+0.4.5 - 2024-03-25
+0.4.4 - 2024-03-23
+0.4.3 - 2024-02-13
+0.4.2 - 2024-01-06
+0.4.0 - 2023-11-08
+0.3.0 - 2023-10-20
+0.2.0 - 2023-07-23
+0.1.0 - 2023-05-01
+Rust
+0.27.1 - 2025-06-17
+0.27.0 - 2025-06-10
+0.26.2 - 2025-06-03
+0.26.1 - 2025-05-30
+0.26.0 - 2025-05-28
+0.25.0 - 2025-05-13
+0.24.0 - 2025-04-22
+0.23.0 - 2025-04-15
+0.22.0 - 2025-04-01
+0.21.0 - 2025-03-18
+0.20.0 - 2025-02-12
+0.19.0 - 2025-01-21
+0.18.0 - 2025-01-08
+0.17.0 - 2024-12-17
+0.16.0 - 2024-11-12
+0.15.0 - 2024-10-22
+0.14.1 - 2024-10-08
+0.14.0 - 2024-10-01
+0.13.0 - 2024-09-25
+0.12.1 - 2024-08-27
+0.12.0 - 2024-07-30
+0.11.4 - 2024-07-16
+0.11.3 - 2024-07-09
+0.11.2 - 2024-06-25
+0.11.1 - 2024-06-11
+0.11.0 - 2024-06-04
+0.10.0 - 2024-05-22
+0.9.1 - 2024-05-15
+0.9.0 - 2024-05-14
+0.8.0 - 2024-04-01
+0.7.1 - 2024-03-05
+0.7.0 - 2024-03-01
+0.6.0 - 2024-01-16
+0.5.0 - 2023-11-23
+0.4.2 - 2023-10-23
+0.4.1 - 2023-10-06
+0.4.0 - 2023-09-21
+0.3.0 - 2023-09-13
+0.2.1 - 2023-08-25
+0.2.0 - 2023-08-10
+0.1.0 - 2023-08-02
+Data
+TBD (coming soon)
+2025-06-17
+2024-10-22
+2024-05-07
+2024-06-25
+2024-06-18
+2024-01-18
+2023-11-17
+2023-10-04
+2023-08-29
+2023-07-23
+2023-05-01
+2023-04-28
+2023-03-07
+Databento Raw API.The Raw API is a simple socket-based, subscription-style protocol. Clients
+communicate with our live data gateways through a regular TCP/IP socket.
+To make it easier to integrate the API, we also provide official client
+libraries that simplify the code you need to write.You can use our live APIs to subscribe to real-time data in your
+application. You can also use the APIs to request intraday historical
+data and instrument definitions for any number of products in a venue.LIVE DATA
+Client Libraries
+PythonC++Rust
+APIs
+RawRaw
+pip install -U databento
+BasicsOverviewDatabento's live API offers both real-time subscriptions and intraday replay within the last 24 hours to
+various market data schemas and symbols.
+Multiple subscriptions may be combined into a single session, such as trades, subsampled data
+(second, minute, hour, daily aggregates), and definitions (expirations, settlement, etc.).
+For an easy transition from backtesting to live trading, the live API supports the same schemas,
+datasets, and
+symbology as the historical API and returns the same
+record structures.
+Our live clients use our binary DBN encoding for
+performant zero-copy market data decoding.AuthenticationDatabento uses API keys to authenticate requests. You can view and manage
+your keys on the API Keys page of your portal.Each API key is a 32-character string. By default, our library uses the
+environment variable DATABENTO_API_KEY as your API key. However, if you
+pass an API key to the Live constructor through the key parameter,
+then this value will be used instead.Our Live API uses a challenge-response authentication mechanism to ensure that
+your API key is never sent over the network.Related: Securing your API keys.Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Authentication happens on the first subscribe
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+SessionsEach instance of the Live client manages a single Raw API session.
+Each session is associated with one dataset.A session will begin streaming when Live.start is called.
+A session can be stopped gracefully with Live.stop or forcefully with Live.terminate.A session can also be stopped by specifying a timeout with Live.block_for_close for synchronous applications and Live.wait_for_close for asynchronous applications.See alsoConnection limits for more details.Schemas and conventionsA schema is a data record format represented as a collection of different
+data fields. Our datasets support multiple schemas, such as order book,
+trades, bar aggregates, and so on. You can get a dictionary describing
+the fields of each schema from our List of market data schemas.You can get a list of all supported schemas for any given dataset using
+the Historical client's list_schemas method. The same information can also be
+found on the dataset details pages on the user portal.The following table provides details about the data types and conventions used
+for various fields that you will commonly encounter in the data.
+Name
+Field
+Description
+Dataset
+dataset
+A unique string name assigned to each dataset by Databento. Full list of datasets can be found from the metadata.
+Publisher ID
+publisher_id
+A unique 16-bit unsigned integer assigned to each publisher by Databento. Full list of publisher IDs can be found from the metadata.
+Instrument ID
+instrument_id
+A unique 32-bit unsigned integer assigned to each instrument by the venue. Information about instrument IDs for any given dataset can be found in the symbology.
+Order ID
+order_id
+A unique 64-bit unsigned integer assigned to each order by the venue.
+Timestamp (event)
+ts_event
+The matching-engine-received timestamp expressed as the number of nanoseconds since the UNIX epoch.
+Timestamp (receive)
+ts_recv
+The capture-server-received timestamp expressed as the number of nanoseconds since the UNIX epoch.
+Timestamp delta (in)
+ts_in_delta
+The matching-engine-sending timestamp expressed as the number of nanoseconds before ts_recv. See timestamping guide.
+Timestamp out
+ts_out
+The Databento gateway-sending timestamp expressed as the number of nanoseconds since the UNIX epoch. See timestamping guide.
+Price
+price
+The price expressed as signed integer where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001.
+Book side
+side
+The side that initiates the event. Can be Ask for a sell order (or sell aggressor in a trade), Bid for a buy order (or buy aggressor in a trade), or None where no side is specified by the original source.
+Size
+size
+The order quantity.
+Flag
+flag
+A bit field indicating event end, message characteristics, and data quality.
+Action
+action
+The event type or order book operation. Can be Add, Cancel, Modify, cleaR book, Trade, Fill, or None.
+Sequence number
+sequence
+The original message sequence number from the venue.
+DatasetsDatabento provides time series datasets for a variety of markets, sourced from different
+publishers. Our available datasets can be browsed through the search
+feature on our site.We describe each dataset with a unique code (string identifier) in the form PUBLISHER.DATASET, such as GLBX.MDP3.
+For publishers that are also markets, we use standard four character ISO 10383 Market Identifier Codes (MIC).
+Otherwise, Databento arbitrarily assigns a three character identifier for the publisher.These dataset codes are also found on the Data catalog and Download request
+features of the Databento user portal.When a publisher provides multiple data products with different levels of granularity,
+Databento subscribes to the most-granular product. We then provide this dataset with
+alternate schemas to
+make it easy to work with the level of detail most appropriate for your application.More information about different types of venues and publishers is available in
+our FAQs.SymbologyDatabento's live API supports several ways to select an instrument in a dataset.
+An instrument is specified using a symbol and a symbology type, also referred to as an stype.
+The supported symbology types are:
+Raw symbology (raw_symbol) original string symbols used by the publisher in the source data.
+Instrument ID symbology (instrument_id) unique numeric ID assigned to each instrument by the publisher.
+Parent symbology (parent) groups instruments related to the market for the same underlying.
+Continuous contract symbology (continuous) proprietary symbology that specifies instruments based on certain systematic rules.
+When subscribing to live data, an input symbology type can be specified.
+By default, our client libraries will use raw symbology for the input type. Not all symbology types are supported for every dataset.For live data, symbology mappings are provided through SymbolMappingMsg records.
+These records are sent after the session has started and can be used to map the instrument_id from a data record's header to a text symbol.For more about symbology at Databento, see our Standards and conventions.Dates and timesOur Python client library has several functions with timestamp arguments. These arguments will have type pandas.Timestamp | datetime.date | str | int and support a variety of formats.It's recommended to use pandas.Timestamp, which fully supports timezones and nanosecond-precision. If a datetime.date is used, the time is set to midnight UTC. If an int is provided, the value is interpreted as UNIX nanoseconds.The client library also handles several string-based timestamp formats based on ISO 8601.
+yyyy-mm-dd, e.g. "2022-02-28" (midnight UTC)
+yyyy-mm-ddTHH:MM, e.g. "2022-02-28T23:50"
+yyyy-mm-ddTHH:MM:SS, e.g. "2022-02-28T23:50:59"
+yyyy-mm-ddTHH:MM:SS.NNNNNNNNN, e.g. "2022-02-28T23:50:59.123456789"
+Timezone specification is also supported.
+yyyy-mm-ddTHH:MMZ
+yyyy-mm-ddTHH:MM±hh
+yyyy-mm-ddTHH:MM±hhmm
+yyyy-mm-ddTHH:MM±hh:mm
+Bare datesSome parameters require a bare date, without a time. These arguments have type datetime.date | str and must either be a datetime.date object, or a string in yyyy-mm-dd format, e.g. "2022-02-28".Intraday replayOur live API offers intraday replay within the last 24 hours.
+Users can connect to the live service and request data from a particular start time.
+The start time can be specified for each subscription. When the streaming session starts, records will be immediately replayed from the start time.Our Python client library supports several convenient date formats, such as ISO 8601 timestamps and UNIX nanoseconds. Refer to the Dates and times article for more information on how our client library handles timestamps.As a special case for the GLBX.MDP3 dataset, we also provide replay of the entire weekly session in the MBO and definition schemas
+outside of the 24-hour window to aid with recovery, as these schemas are highly stateful.Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe with a specified start time for intraday replay
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+symbols="ES.FUT",
+stype_in="parent",
+start="2023-04-17T09:00:00",
+SnapshotUsers can request a snapshot for a live subscription to obtain the recent order book state without replaying the whole trading session.More details can be found in this article.Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to live snapshot
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="mbo",
+symbols="ES.FUT",
+stype_in="parent",
+snapshot=True,
+System messagesOur live API uses a system record (SystemMsg) to indicate non-error information to clients.One use is heartbeating, to ensure the TCP connection remains open and to help clients detect a connection issue.
+A heartbeat will only be sent if no other data record was sent to the client during the heartbeat interval.
+The interval between heartbeat messages can be configured with the heartbeat_interval_s parameter to Live.
+The is_heartbeat() method will return True if the record is a heartbeat.
+Field
+Type
+Description
+The message from the gateway.
+code
+Reserved for future use.
+System code variantsCorresponds with the SystemCode enum.
+Variant
+code
+Description
+Heartbeat
+A message sent in the absence of other records to indicate the connection remains open.
+SubscriptionAck
+An acknowledgement of a subscription request.
+SlowReaderWarning
+The gateway has detected this session is falling behind real-time.
+ReplayCompleted
+Indicates a replay subscription has caught up with real-time data.
+ErrorsOur live API uses an error record (ErrorMsg) to indicate failures to clients.
+Error records are processed like any other record and as such will be
+passed on to any callbacks, streams, and iterators for the Live client.
+Field
+Type
+Description
+The error message.
+code
+Reserved for future use.
+is_last
+bool
+True if this is the last in a series of error records.
+Such errors will close the connection to the gateway.Error code variantsCorresponds with the ErrorCode enum.
+Variant
+code
+Description
+AuthFailed
+The authentication step failed.
+ApiKeyDeactivated
+The user account or API key were deactivated.
+ConnectionLimitExceeded
+The user has exceeded their open connection limit
+SymbolResolutionFailed
+One or more symbols failed to resolve.
+InvalidSubscription
+There was an issue with a subscription request (other than symbol resolution).
+InternalError
+An error occurred in the gateway.
+LoggingOur Python client library is fully compatible with the built-in logging module.When using the live client to build an application, it is recommended to
+enable logging in the databento module. This logging is disabled by default.Connection limitsWith our live API, there is a limit of 10 simultaneous connections (sessions)
+per (dataset) per user for Usage-based and Standard plans.
+Unlimited and Enterprise plans will be limited to 50 simultaneous connections per dataset per user.
+Creating additional API keys will not affect the maximum number of connections per user.In addition, a single gateway will allow at most five incoming connections per second from the same IP address.
+If an IP address goes over this limit, incoming connections will be immediately closed by the
+gateway - existing connections will not be affected.
+If this happens, clients should wait one second before retrying.Subscription rate limitsSymbol resolution is a relatively slow operation, as such, subscription requests are throttled
+to prevent abuse and accidental performance impact on other users.
+Subscriptions above the limit of 3 per second will not be rejected;
+instead, the gateway will wait until the session is back under the rate limit before processing it.
+The gateway will send a subscription acknowledgement when it has finished processing a subscription request.Metered pricingDatabento only charges for the data that you use.
+You can find rates (per MB) for the various datasets and estimate pricing on
+our Data catalog. We meter the data by its
+uncompressed size in binary encoding.When you stream the data, you are billed incrementally for each outbound
+byte of data sent from our live subscription gateway. If your connection
+is interrupted while streaming our data and our live gateway detects
+connection timeout over 5 seconds, it will immediately stop sending data
+and you will not be billed for the remainder of your request.Duplicate subscriptions within the same client
+will be deduplicated and not incur additional charges.
+Separate sessions with identical subscriptions will incur repeated charges.Access to metadata, symbology, and account management is free.Related: Billing management.Error detectionWhen maintaining a connected Live client, clients should monitor their connection for errors.There are three main ways in which a session can enter an error state:
+Hung connection: The client is not receiving any data from the gateway
+Disconnect without error: The client is explicitly disconnected by the gateway, without receiving an error message
+Disconnect with error: The client is explicitly disconnected by the gateway.
+Immediately prior to being disconnected, the client will receive an error record
+Hung connectionTo detect hung connections, clients are instructed to make use of system heartbeats.
+Clients can configure a heartbeat interval when creating the Live client by setting the heartbeat_interval_s parameter.
+If the heartbeat interval is not set by the client, it will default to 30 seconds.Once a session is started, if no data is sent by the gateway for the entirety of a heartbeat interval, the gateway will send a system message to the client to indicate a heartbeat.
+If the gateway is regularly sending other messages to the client (for example, MboMsg), heartbeats will not be sent.Once a session is started, if a client does not receive any messages from the gateway for the duration of one heartbeat interval plus two seconds, the session can be considered hung.
+Clients are instructed to disconnect from the gateway and reconnect upon detecting hung connections.Clients with unstable internet connections may need larger intervals than two seconds to ensure the connection is truly hung, as opposed to merely delayed.Disconnect without errorFrom the point of view of the Live client, a disconnect is detected when the underlying TCP session is closed.
+When using Live.block_for_close or Live.wait_for_close, an exception will be raised if the TCP session was closed without an error.
+Upon being disconnected, clients are instructed to wait one second and initiate a new connection.
+Waiting too short an interval to reconnect may trigger the gateway's rate limiter.See alsoConnection limits for more details.Disconnect with errorFrom the point of view of the Live client, a disconnect with error is detected when the underlying TCP session is closed after an ErrorMsg or a API error response is received.
+Any ErrorMsg records received by the client can be consumed by the application, such as when iterating or using a callback with Live.add_callback.
+When using Live.block_for_close or Live.wait_for_close, any ErrorMsg records received will be raised in an exception.Clients disconnected with an error are instructed to not reconnect automatically.
+In the vast majority of cases, reconnecting and resubscribing with the same parameters will lead to the same errors being received again.
+The error sent to the client will indicate the issue to be fixed prior to resubscribing.VersioningOur historical and live APIs and its client libraries adopt MAJOR.MINOR.PATCH format
+for version numbers. These version numbers conform to
+semantic versioning. We are using major version 0 for
+initial development, where our API is not considered stable.Once we release major version 1, our public API will be stable. This means that
+you will be able to upgrade minor or patch versions to pick up new functionality,
+without breaking your integration.Starting with major versions after 1, we will provide support for previous
+versions for one year after the date of the subsequent major release.
+For example, if version 2.0.0 is released on January 1, 2024, then all versions
+1.x.y of the API and client libraries will be deprecated. However, they will
+remain supported until January 1, 2025.We may introduce backwards-compatible changes between minor versions in the form of:
+New data encodings
+Additional fields to existing data schemas
+Additional batch download customizations
+Our Release notes will contain information about
+both breaking and backwards-compatible changes in each release.Our API and official client libraries are kept in sync with same-day releases
+for major versions. For instance, 1.x.y of the C++ client
+library will use the same functionality found in any 1.x.y version of the Python client.Related: Release notes.Recovering after a disconnectionWhen reconnecting to the gateway, clients should resubscribe to all desired symbols.
+In order to avoid missing data after a reconnection, there are three main approaches to recovery:
+Natural refresh
+Intraday replay
+Snapshot (MBO only)
+The best approach to recovery will depend on the client's use case and specific needs.Natural refreshTo recover via natural refresh, clients can resubscribe to all desired symbols without the start or snapshot parameters.
+This means no data will be replayed, and the client will immediately receive the newest messages upon subscribing.This recovery approach is the fastest (since there's no data replay), and is recommended for stateless schemas such as MBP-10, in cases where the client only requires the current state of each instrument.Intraday replayTo recover via intraday replay, clients should store the last ts_event and the number of records received with that last timestamp, per schema and instrument.
+The ts_event and record count should be continuously updated when processing incoming records.When reconnecting, clients should set the start parameter of the resubscription to the lowest stored ts_event across all instruments for that schema.
+The gateway will then send all records starting from that timestamp (including records with the exact same ts_event).The resubscription may lead to duplicated data being sent to the client.
+Clients who require that each message is delivered exactly once are instructed to:
+Discard all records with a lower ts_event than the stored one for the corresponding instrument
+Discard the first N records with the same ts_event as the stored one for the corresponding instrument, where N is the number of records already seen with that ts_event prior to the disconnection.
+This is important in case there are multiple events with the same ts_event and the client is disconnected halfway through processing those events
+This recovery approach is recommended when clients require the uninterrupted history of records for the desired schema (for example, when using the Trades schema to construct a ticker tape).
+However, this approach can take a longer time to synchronize with the live stream, depending on how long the client was disconnected.Snapshot (MBO only)When resubscribing to the MBO schema, clients can request a snapshot to receive the current state of the book after a disconnection.
+This eliminates the need to replay the missed messages and leads to faster synchronization with the live stream.
+This recovery approach is generally recommended over intraday replay when using the MBO schema.Maintenance scheduleWe restart our live gateways on Sunday at the following times:
+CME Globex. 09:30 UTC
+All ICE venues. 09:45 UTC
+All other datasets. 10:30 UTC
+All clients will be disconnected during this time.Additionally, we may restart our gateways mid-week.
+While we generally post these mid-week restarts on our status page, we may perform these restarts without notice due to an urgent fix.
+You should configure your client to handle reconnecting automatically.While exchanges are closed on Saturday, our systems are still connected to the exchange feeds.
+The exchange may send test data, and our gateways will disseminate this data to all connected clients.
+If you are not interested in receiving this test data, we recommend you disconnect after the Friday close and reconnect on Sunday after the scheduled restart.InfoAny test data sent through the Live API will not be seen in our historical data.ClientLiveTo access Databento's live API, first create an instance of the
+Live client. The entire API for a streaming session is exposed
+through instance methods of the client.Databento's Live client is built with Python's asyncio module and can be
+easily integrated into asynchronous applications.Note that the API key can be passed as a parameter, which is
+not recommended for production applications.
+Instead, you can leave out this parameter to pass your API key via the DATABENTO_API_KEY environment variable:Parameterskeyoptional | str32-character API key. Found on your API keys page. If None then DATABENTO_API_KEY environment variable is used.gatewayoptional | strThe url of the remote gateway to connect to. This is for advanced use.portoptional | intThe port to connect to the remote gateway on. This is for advanced use.ts_outoptional | bool, default FalseWhether the gateway should append the send timestamp (ts_out) to each record.heartbeat_interval_soptional | int, default NoneThe interval in seconds at which the gateway will send heartbeat records if no other data records are sent. By default heartbeats will be sent at the gateway's default interval.reconnect_policyoptional | ReconnectPolicy or strThe reconnection policy for automatically resuming a live session when an unexpected disconnection occurs.API methodPythonPythonC++RustRaw
+class Live(
+key: str | None = None,
+gateway: str | None = None,
+port: int | None = None,
+ts_out: bool = False,
+heartbeat_interval_s: int | None = None,
+reconnect_policy: ReconnectPolicy | str = ReconnectPolicy.NONE,
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Pass as parameter
+client = db.Live(key="$YOUR_API_KEY")
+# Or, pass as `DATABENTO_API_KEY` environment variable
+client = db.Live()
+Live.add_callbackAdd a callback to the live client. This callback must take a single record argument.
+Refer to the What's a schema article for documentation on the fields contained with each record type.A callback will receive error messages from the gateway with the ErrMsg record type.
+This indicates a problem occurred with the streaming session.
+Exceptions raised in a callback can be handled explicitly by specifying an exception_callback.The callbacks are executed in the order they are added.Info
+It is recommended that callback functions be non-blocking to ensure the networking event loop remains running.Parametersrecord_callbackrequired | Callable[[DBNRecord], None]A callback to dispatch records to. The callback must take a single record argument.exception_callbackoptional | Callable[[Exception], None]A callback to dispatch exceptions to that are raised when executing record_callback. The callback must take a single exception argument.API methodPythonPythonC++RustRaw
+def Live.add_callback(
+self,
+record_callback: Callable[[DBNRecord], None],
+exception_callback: Callable[[Exception], None] | None = None,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a callback to handle DBN records
+def user_callback(record: db.DBNRecord) -> None:
+print(f"callback run for {record}")
+# Create a callback to handle exceptions from `user_callback`
+def error_handler(exception: Exception) -> None:
+print(f"an error occurred {exception}")
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Add the user_callback to the client
+client.add_callback(
+record_callback=user_callback,
+exception_callback=error_handler,  # optional error handler
+Live.add_streamAdd an output stream to the live client. The client will write binary DBN records to the stream.
+This stream must be writable in bytes mode, or a path to a file that is writable.A stream will receive error messages from the gateway with the ErrMsg record type.
+This indicates a problem occurred with the streaming session.
+Exceptions raised in a callback can be handled explicitly by specifying an exception_callback.The writes are performed in the order the streams were added.See alsoDBN records are optimized for stream-like processing.While pandas DataFrames are not well-suited for this due to their column-oriented format,
+they can still be used by first streaming DBN data to a file, then converting to a DataFrame with DBNStore.from_file().to_df().
+See this example for more information.Parametersstreamrequired | IO[bytes] or PathLike[str] or strAn IO stream to write records to, or a writable file path. The stream must support writing bytes.exception_callbackoptional | Callable[[Exception], None]A callback to dispatch exceptions to that are raised when writing to the stream. The callback must take a single exception argument.API methodPythonPythonC++RustRaw
+def Live.add_stream(
+self,
+stream: IO[bytes] | PathLike[str],
+exception_callback: Callable[[Exception], None] | None = None,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Open a file for writing
+output = open("output.dbn", mode="wb")
+# Create a callback to handle exceptions when writing to `output`
+def error_handler(exception: Exception) -> None:
+print(f"an error occurred {exception}")
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Add the output file stream to the client
+client.add_stream(
+stream=output,
+exception_callback=error_handler,  # optional error handler
+Live.add_reconnect_callbackAdd a reconnect callback to the live client. This callback must take two arguments.
+When a reconnection policy is set on the Live client, this callback will be executed when a reconnection occurs with two arguments:
+The last received record's ts_event timestamp, or start timestamp from the session Metadata if no records were received yet.
+The start timestamp from the reconnected session's Metadata.
+These values can be used to record any gaps in the received data due to a disconnection.
+Exceptions raised in a callback can be handled explicitly by specifying an exception_callback.The callbacks are executed in the order they are added.Info
+It is recommended that callback functions be non-blocking to ensure the networking event loop remains running.Parametersreconnect_callbackrequired | Callable[[pd.Timestamp, pd.Timestamp], None]A callback for handling reconnections. The callback must take two arguments.exception_callbackoptional | Callable[[Exception], None]A callback to dispatch exceptions to that are raised when executing reconnect_callback. The callback must take a single exception argument.API methodPythonPythonC++RustRaw
+def Live.add_reconnect_callback(
+self,
+reconnect_callback: Callable[[pd.Timestamp, pd.Timestamp], None]
+exception_callback: Callable[[Exception], None] | None = None,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a callback to handle reconnections
+def reconnect_callback(start, end) -> None:
+print(f"reconnection gap from {start} to {end}")
+# Create a callback to handle exceptions from `reconnect_callback`
+def error_handler(exception: Exception) -> None:
+print(f"an error occurred {exception}")
+# Create a live client with a reconnect policy
+client = db.Live(
+key="$YOUR_API_KEY",
+reconnect_policy="reconnect",
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Add the reconnect callback to the client
+client.add_reconnect_callback(
+reconnect_callback=reconnect_callback,
+exception_callback=error_handler,  # optional error handler
+Live.block_for_closeBlock execution until the streaming session closes or a timeout is reached.
+A session will close when the remote gateway disconnects or after Live.stop or Live.terminate are called.
+In the event the connection is closed unexpectedly, a BentoError will be raised.If a timeout is specified, Live.stop will be called when the timeout is reached.When this method unblocks, the session is guaranteed to be closed.Parameterstimeoutoptional | floatA duration in seconds to wait for the streaming session to close. If None, wait forever.API methodPythonPythonC++RustRaw
+def Live.block_for_close(
+self,
+timeout: float | None = None,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Start the streaming session
+client.start()
+# Block for the streaming session to close
+client.block_for_close()
+Live.startStart the streaming session.A client can only be started once, and after a successful connection is made by calling Live.subscribe.A client can be gracefully stopped by calling Live.stop or forcefully using Live.terminateWhen iterating records with Live.__iter__ or Live.__aiter__ it is not necessary to call Live.start and doing so before iterating will raise a ValueError.Info
+A session cannot be started more than once.API methodPythonPythonC++RustRaw
+def Live.start(
+self,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Print records as they arrive
+client.add_callback(print)
+# Start the streaming session
+client.start()
+# Block until disconnection
+client.block_for_close()
+Live.stopStop the streaming session and finish processing received records.A client can only be stopped after a successful connection is made by calling Live.subscribe.Once stopped, the Live client can be reused but the session state is not preserved.This method does not block waiting for the connection to close.
+If this is desired, use Live.block_for_close or Live.wait_for_close to wait for the client to disconnect.API methodPythonPythonC++RustRaw
+def Live.stop(
+self,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Start the streaming session
+client.start()
+# Stop the streaming session
+client.stop()
+Live.subscribeAdd a new subscription to the session with the Databento live gateway. All subscriptions must be for the same dataset.Multiple subscription requests can be made, which allows for rich data streams containing mixed record types.
+Specify an optional start time for intraday replay with subscriptions made before starting the session.All subscription requests for a single live client instance must be for the same dataset.Parametersdatasetrequired | databento.Dataset or strThe dataset code (string identifier). Must be one of the values from list_datasets.schemarequired | databento.Schema or strThe data record schema. Must be one of the values from list_schemas.symbolsoptional | list or strThe product symbols to subscribe to. If 'ALL_SYMBOLS' or None then will select all symbols.stype_inoptional | databento.SType or str, default 'raw_symbol'The symbology type of input symbols. Must be one of 'raw_symbol', 'instrument_id', 'parent', or 'continuous'.startoptional | pandas.Timestamp or date or str or intThe start of subscription replay (inclusive), based on ts_event. Takes pandas.Timestamp, ISO 8601 string or UNIX timestamp in nanoseconds. Assumes UTC as timezone unless otherwise specified. The value must be no earlier than most recent Sunday or 0 to request all available data. Cannot be specified after the session is started.snapshotoptional | bool, default FalseRequest subscription with snapshot. Defaults to False. Conflicts with the start parameter.API methodPythonPythonC++RustRaw
+def Live.subscribe(
+self,
+dataset: Dataset | str,
+schema: Schema | str,
+symbols: list[str] | str = 'ALL_SYMBOLS',
+stype_in: SType | str = 'raw_symbol',
+start: pd.Timestamp | date | str | int | None = None,
+snapshot: bool = False,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+Live.terminateTerminate the streaming session and stop processing records.A client can only be terminated after a successful connection is made by calling Live.subscribe.Unlike Live.stop, the session will end immediately and received records will no longer be processed.Once terminated, the Live client can be reused but the session state is not preserved.API methodPythonPythonC++RustRaw
+def Live.terminate(
+self,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Start the streaming session
+client.start()
+# Terminate the streaming session
+client.terminate()
+Live.wait_for_closeWait until the streaming session closes or a timeout is reached.
+A session will close when the remote gateway disconnects or after Live.stop or Live.terminate are called.
+In the event the connection is closed unexpectedly, a BentoError will be raised.If a timeout is specified, Live.stop will be called when the timeout is reached.When this method unblocks, the session is guaranteed to be closed.This method is a coroutine and must be used with an await expression.Parameterstimeoutoptional | floatA duration in seconds to wait for the streaming session to close. If None, wait forever.API methodPythonPythonC++RustRaw
+async def Live.wait_for_close(
+self,
+timeout: float | None = None,
+) -> None
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to the trades schema for all ES futures
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Start the streaming session
+client.start()
+# Wait for the streaming session to end
+await client.wait_for_close()
+Live.__aiter__Using async for; records will be yielded as they arrive.
+Iteration will stop when the connection is closed and all records are processed.
+This is best for integration into asynchronous applications.Asynchronous iteration is only supported inside a coroutine.Asynchronous iteration will automatically call Live.start if the session is connected but it has not been started.
+Starting iteration after the session has started will cause a ValueError.Asynchronous iteration will automatically call Live.stop if the iterator is destroyed, such as when an async for loop is escaped with an exception or break statement.
+To prevent this behavior, an iterator can be created explicitly using aiter().API methodPythonPythonC++RustRaw
+def Live.__aiter__(
+self,
+) -> AsyncIterator[DBNRecord]
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to a data stream
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Start streaming and asynchronously iterate the records
+async for record in client:
+print(record)
+Live.__iter__Using for; records will be yielded as they arrive.
+Iteration will stop when the connection is closed and all records are processed.
+This is best for integration into simple synchronous applications.Iteration will automatically call Live.start if the session is connected but it has not been started.
+Starting iteration after the session has started will cause a ValueError.Iteration will automatically call Live.stop if the iterator is destroyed, such as when a for loop is escaped with an exception or break statement.
+To prevent this behavior, an iterator can be created explicitly using iter().API methodPythonPythonC++RustRaw
+def Live.__iter__(
+self,
+) -> Iterator[DBNRecord]
+Example usagePythonPythonC++RustRaw
+import databento as db
+# Create a live client
+client = db.Live(key="$YOUR_API_KEY")
+# Subscribe to a data stream
+client.subscribe(
+dataset="GLBX.MDP3",
+schema="trades",
+stype_in="parent",
+symbols="ES.FUT",
+# Start streaming and synchronously iterate the records
+for record in client:
+print(record)
+Python Python C++ Rust HTTP/Raw

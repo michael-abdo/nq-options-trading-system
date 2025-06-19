@@ -1,0 +1,577 @@
+# BBO on interval (BBO) | Databento schemas & data formats
+Category: Schemas
+Source: schemas-and-data-formats_bbo.html
+================================================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+API keys
+Download center
+Team
+Billing
+Plans and live data
+Release notes
+0.38.1 - 2025-06-17
+0.38.0 - 2025-06-10
+0.37.1 - 2025-06-03
+0.37.0 - 2025-06-03
+0.36.0 - 2025-05-27
+0.35.1 - 2025-05-20
+0.35.0 - 2025-05-13
+0.34.2 - 2025-05-06
+0.34.1 - 2025-04-29
+0.34.0 - 2025-04-22
+0.33.0 - 2025-04-15
+0.32.1 - 2025-04-07
+0.32.0 - 2025-04-02
+0.31.0 - 2025-03-18
+0.30.0 - 2025-02-11
+0.29.0 - 2025-02-04
+0.28.0 - 2025-01-21
+0.27.0 - 2025-01-07
+0.26.0 - 2024-12-17
+0.25.0 - 2024-11-12
+0.24.0 - 2024-10-22
+0.23.0 - 2024-09-25
+0.22.0 - 2024-08-27
+0.21.0 - 2024-07-30
+0.20.1 - 2024-07-16
+0.20.0 - 2024-07-09
+0.19.1 - 2024-06-25
+0.19.0 - 2024-06-04
+0.18.1 - 2024-05-22
+0.18.0 - 2024-05-14
+0.17.1 - 2024-04-08
+0.17.0 - 2024-04-01
+0.16.0 - 2024-03-01
+0.15.0 - 2024-01-16
+0.14.1 - 2023-12-18
+0.14.0 - 2023-11-23
+0.13.1 - 2023-10-23
+0.13.0 - 2023-09-21
+0.12.0 - 2023-08-24
+0.11.0 - 2023-08-10
+0.10.0 - 2023-07-20
+0.9.1 - 2023-07-11
+0.9.0 - 2023-06-13
+0.8.0 - 2023-05-16
+0.7.0 - 2023-04-28
+0.6.1 - 2023-03-28
+0.6.0 - 2023-03-24
+0.5.0 - 2023-03-13
+0.4.0 - 2023-03-02
+0.3.0 - 2023-01-06
+0.2.0 - 2022-12-01
+0.1.0 - 2022-11-07
+Python
+0.57.1 - 2025-06-17
+0.57.0 - 2025-06-10
+0.56.0 - 2025-06-03
+0.55.1 - 2025-06-02
+0.55.0 - 2025-05-29
+0.54.0 - 2025-05-13
+0.53.0 - 2025-04-29
+0.52.0 - 2025-04-15
+0.51.0 - 2025-04-08
+0.50.0 - 2025-03-18
+0.49.0 - 2025-03-04
+0.48.0 - 2025-01-21
+0.47.0 - 2024-12-17
+0.46.0 - 2024-12-10
+0.45.0 - 2024-11-12
+0.44.1 - 2024-10-29
+0.44.0 - 2024-10-22
+0.43.1 - 2024-10-15
+0.43.0 - 2024-10-09
+0.42.0 - 2024-09-23
+0.41.0 - 2024-09-03
+0.40.0 - 2024-08-27
+0.39.3 - 2024-08-20
+0.39.2 - 2024-08-13
+0.39.1 - 2024-08-13
+0.39.0 - 2024-07-30
+0.38.0 - 2024-07-23
+0.37.0 - 2024-07-09
+0.36.3 - 2024-07-02
+0.36.2 - 2024-06-25
+0.36.1 - 2024-06-18
+0.36.0 - 2024-06-11
+0.35.0 - 2024-06-04
+0.34.1 - 2024-05-21
+0.34.0 - 2024-05-14
+0.33.0 - 2024-04-16
+0.32.0 - 2024-04-04
+0.31.1 - 2024-03-20
+0.31.0 - 2024-03-05
+0.30.0 - 2024-02-22
+0.29.0 - 2024-02-13
+0.28.0 - 2024-02-01
+0.27.0 - 2024-01-23
+0.26.0 - 2024-01-16
+0.25.0 - 2024-01-09
+0.24.1 - 2023-12-15
+0.24.0 - 2023-11-23
+0.23.1 - 2023-11-10
+0.23.0 - 2023-10-26
+0.22.1 - 2023-10-24
+0.22.0 - 2023-10-23
+0.21.0 - 2023-10-11
+0.20.0 - 2023-09-21
+0.19.1 - 2023-09-08
+0.19.0 - 2023-08-25
+0.18.1 - 2023-08-16
+0.18.0 - 2023-08-14
+0.17.0 - 2023-08-10
+0.16.1 - 2023-08-03
+0.16.0 - 2023-07-25
+0.15.2 - 2023-07-19
+0.15.1 - 2023-07-06
+0.15.0 - 2023-07-05
+0.14.1 - 2023-06-16
+0.14.0 - 2023-06-14
+0.13.0 - 2023-06-02
+0.12.0 - 2023-05-01
+0.11.0 - 2023-04-13
+0.10.0 - 2023-04-07
+0.9.0 - 2023-03-10
+0.8.1 - 2023-03-05
+0.8.0 - 2023-03-03
+0.7.0 - 2023-01-10
+0.6.0 - 2022-12-02
+0.5.0 - 2022-11-07
+0.4.0 - 2022-09-14
+0.3.0 - 2022-08-30
+HTTP API
+0.34.1 - 2025-06-17
+0.34.0 - TBD
+0.33.0 - 2024-12-10
+0.32.0 - 2024-11-26
+0.31.0 - 2024-11-12
+0.30.0 - 2024-09-24
+0.29.0 - 2024-09-03
+0.28.0 - 2024-06-25
+0.27.0 - 2024-06-04
+0.26.0 - 2024-05-14
+0.25.0 - 2024-03-26
+0.24.0 - 2024-03-06
+0.23.0 - 2024-02-15
+0.22.0 - 2024-02-06
+0.21.0 - 2024-01-30
+0.20.0 - 2024-01-18
+0.19.0 - 2023-10-17
+0.18.0 - 2023-10-11
+0.17.0 - 2023-10-04
+0.16.0 - 2023-09-26
+0.15.0 - 2023-09-19
+0.14.0 - 2023-08-29
+0.13.0 - 2023-08-23
+0.12.0 - 2023-08-10
+0.11.0 - 2023-07-25
+0.10.0 - 2023-07-06
+0.9.0 - 2023-06-01
+0.8.0 - 2023-05-01
+0.7.0 - 2023-04-07
+0.6.0 - 2023-03-10
+0.5.0 - 2023-03-03
+0.4.0 - 2022-12-02
+0.3.0 - 2022-08-30
+0.2.0 - 2021-12-10
+0.1.0 - 2021-08-30
+Raw API
+0.6.1 - TBD
+0.6.0 - 2025-05-24
+0.5.6 - 2025-04-06
+0.5.5 - 2024-12-01
+0.5.4 - 2024-10-02
+0.5.3 - 2024-10-02
+0.5.1 - 2024-07-24
+2024-07-20
+2024-06-25
+0.5.0 - 2024-05-25
+0.4.6 - 2024-04-13
+0.4.5 - 2024-03-25
+0.4.4 - 2024-03-23
+0.4.3 - 2024-02-13
+0.4.2 - 2024-01-06
+0.4.0 - 2023-11-08
+0.3.0 - 2023-10-20
+0.2.0 - 2023-07-23
+0.1.0 - 2023-05-01
+Rust
+0.27.1 - 2025-06-17
+0.27.0 - 2025-06-10
+0.26.2 - 2025-06-03
+0.26.1 - 2025-05-30
+0.26.0 - 2025-05-28
+0.25.0 - 2025-05-13
+0.24.0 - 2025-04-22
+0.23.0 - 2025-04-15
+0.22.0 - 2025-04-01
+0.21.0 - 2025-03-18
+0.20.0 - 2025-02-12
+0.19.0 - 2025-01-21
+0.18.0 - 2025-01-08
+0.17.0 - 2024-12-17
+0.16.0 - 2024-11-12
+0.15.0 - 2024-10-22
+0.14.1 - 2024-10-08
+0.14.0 - 2024-10-01
+0.13.0 - 2024-09-25
+0.12.1 - 2024-08-27
+0.12.0 - 2024-07-30
+0.11.4 - 2024-07-16
+0.11.3 - 2024-07-09
+0.11.2 - 2024-06-25
+0.11.1 - 2024-06-11
+0.11.0 - 2024-06-04
+0.10.0 - 2024-05-22
+0.9.1 - 2024-05-15
+0.9.0 - 2024-05-14
+0.8.0 - 2024-04-01
+0.7.1 - 2024-03-05
+0.7.0 - 2024-03-01
+0.6.0 - 2024-01-16
+0.5.0 - 2023-11-23
+0.4.2 - 2023-10-23
+0.4.1 - 2023-10-06
+0.4.0 - 2023-09-21
+0.3.0 - 2023-09-13
+0.2.1 - 2023-08-25
+0.2.0 - 2023-08-10
+0.1.0 - 2023-08-02
+Data
+TBD (coming soon)
+2025-06-17
+2024-10-22
+2024-05-07
+2024-06-25
+2024-06-18
+2024-01-18
+2023-11-17
+2023-10-04
+2023-08-29
+2023-07-23
+2023-05-01
+2023-04-28
+2023-03-07
+BBO on interval (BBO)BBO on interval (BBO) provides the last best bid, best offer, and sale at 1-second or 1-minute intervals. This is a subset of MBP-1.Databento adopts the following convention for BBO:
+The time interval is indicated by the schema ID's suffix: -1s for 1-second and -1m for 1-minute.
+If no trade or BBO update occurs within the interval, no record is printed.
+If a BBO update occurs but no trade takes place within the interval, the last sale information is forward-filled from the previous interval.
+If no BBO update occurs but a trade takes place within the interval, the BBO information is forward-filled from the previous interval.
+Fields (bbo-1s and bbo-1m)
+Field
+Type
+Description
+ts_recv
+uint64_t
+The end timestamp of the interval, clamped to the second/minute boundary, expressed as the number of nanoseconds since the UNIX epoch.
+ts_event
+uint64_t
+The matching-engine-received timestamp of the last trade for the instrument expressed as the number of nanoseconds since the UNIX epoch. Will be UNDEF_TIMESTAMP in cases where there was no last trade in the session. See ts_event.
+rtype
+uint8_t
+A sentinel value indicating the record type. Can be either 195 (BBO-1s) or 196 (BBO-1m). See Rtype.
+publisher_id
+uint16_t
+The publisher ID assigned by Databento, which denotes the dataset and venue. See Publishers.
+instrument_id
+uint32_t
+The numeric instrument ID. See Instrument identifiers.
+side
+char
+The side that initiated the last trade. Can be Ask for a sell aggressor in a trade, Bid for a buy aggressor in a trade, or None where no side is specified. See Side.
+price
+int64_t
+The last trade price where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001. Will be UNDEF_PRICE if there was no last trade in the session. See Prices.
+size
+uint32_t
+The last trade quantity.
+flags
+uint8_t
+A bit field indicating event end, message characteristics, and data quality. See Flags.
+sequence
+uint32_t
+The message sequence number assigned at the venue of the last update.
+bid_px_00
+int64_t
+The bid price at the top level where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001. See Prices.
+ask_px_00
+int64_t
+The ask price at the top level where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001. See Prices.
+bid_sz_00
+uint32_t
+The bid size at the top level.
+ask_sz_00
+uint32_t
+The ask size at the top level.
+bid_ct_00
+uint32_t
+The bid order count at the top level.
+ask_ct_00
+uint32_t
+The ask order count at the top level.
+Consolidated BBO on interval (CBBO)Consolidated BBO on interval (CBBO) provides the consolidated last best bid, best offer, and sale at 1-second or 1-minute intervals. This is a subset of CMBP-1.Databento adopts the following convention for CBBO:
+The time interval is indicated by the schema ID's suffix: -1s for 1-second and -1m for 1-minute.
+If no trade or CBBO update occurs within the interval, no record is printed.
+If a CBBO update occurs but no trade takes place within the interval, the last sale information is forward-filled from the previous interval.
+If no CBBO update occurs but a trade takes place within the interval, the CBBO information is forward-filled from the previous interval.
+Fields (cbbo-1s and cbbo-1m)
+Field
+Type
+Description
+ts_recv
+uint64_t
+The end timestamp of the interval, clamped to the second/minute boundary.
+ts_event
+uint64_t
+The matching-engine-received timestamp of the last trade for the instrument expressed as the number of nanoseconds since the UNIX epoch. Will be UNDEF_TIMESTAMP in cases where there was no last trade in the session. See ts_event.
+rtype
+uint8_t
+A sentinel value indicating the record type. Can be either 192 (CBBO-1s) or 193 (CBBO-1m). See Rtype.
+publisher_id
+uint16_t
+The publisher ID assigned by Databento, which denotes the dataset and venue. See Publishers.
+instrument_id
+uint32_t
+The numeric instrument ID. See Instrument identifiers.
+side
+char
+The side that initiated the last trade. Can be Ask for a sell aggressor in a trade, Bid for a buy aggressor in a trade, or None where no side is specified. See Side.
+price
+int64_t
+The last trade price where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001.
+size
+uint32_t
+The last trade quantity.
+flags
+uint8_t
+A bit field indicating event end, message characteristics, and data quality. See Flags.
+bid_px_00
+int64_t
+The bid price at the top level where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001. See Prices.
+ask_px_00
+int64_t
+The ask price at the top level where every 1 unit corresponds to 1e-9, i.e. 1/1,000,000,000 or 0.000000001. See Prices.
+bid_sz_00
+uint32_t
+The bid size at the top level.
+ask_sz_00
+uint32_t
+The ask size at the top level.
+bid_pb_00
+uint16_t
+The publisher ID indicating the venue containing the best bid. See Publishers.
+ask_pb_00
+uint16_t
+The publisher ID indicating the venue containing the best ask. See Publishers.
+CBBO publisherThe publisher_id field will always be the consolidated publisher ID for the dataset.bid_pb_00 and ask_pb_00 will represent the individual venues showing the NBBO at the end of the interval.Implementation differences between clients and encodingsBid and ask depth messages (fields starting with bid_ and ask_) are structured differently in the C++ and Rust clients, the Python record interface, and JSON data. Instead of using the _N suffix, they're stored in an array of structures named levels, with the top-of-book at index 0.For example, in C++, levels[5].bid_px corresponds to bid_px_05 in the Python DataFrame API and CSV format.See alsoCBBO has many similarities to the CMBP-1 and TCBBO schemas. The main distinction is that CBBO is in time space, while CMBP-1 is in book update space, and TCBBO is in trade space. Learn about the differences between each in our CMBP-1 vs. TCBBO vs. CBBO schemas guide. Python Python C++ Rust HTTP/Raw

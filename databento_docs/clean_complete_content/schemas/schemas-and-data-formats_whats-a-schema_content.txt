@@ -1,0 +1,543 @@
+# What's a schema? | Databento schemas & data formats
+Category: Schemas
+Source: schemas-and-data-formats_whats-a-schema.html
+================================================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+API keys
+Download center
+Team
+Billing
+Plans and live data
+Release notes
+0.38.1 - 2025-06-17
+0.38.0 - 2025-06-10
+0.37.1 - 2025-06-03
+0.37.0 - 2025-06-03
+0.36.0 - 2025-05-27
+0.35.1 - 2025-05-20
+0.35.0 - 2025-05-13
+0.34.2 - 2025-05-06
+0.34.1 - 2025-04-29
+0.34.0 - 2025-04-22
+0.33.0 - 2025-04-15
+0.32.1 - 2025-04-07
+0.32.0 - 2025-04-02
+0.31.0 - 2025-03-18
+0.30.0 - 2025-02-11
+0.29.0 - 2025-02-04
+0.28.0 - 2025-01-21
+0.27.0 - 2025-01-07
+0.26.0 - 2024-12-17
+0.25.0 - 2024-11-12
+0.24.0 - 2024-10-22
+0.23.0 - 2024-09-25
+0.22.0 - 2024-08-27
+0.21.0 - 2024-07-30
+0.20.1 - 2024-07-16
+0.20.0 - 2024-07-09
+0.19.1 - 2024-06-25
+0.19.0 - 2024-06-04
+0.18.1 - 2024-05-22
+0.18.0 - 2024-05-14
+0.17.1 - 2024-04-08
+0.17.0 - 2024-04-01
+0.16.0 - 2024-03-01
+0.15.0 - 2024-01-16
+0.14.1 - 2023-12-18
+0.14.0 - 2023-11-23
+0.13.1 - 2023-10-23
+0.13.0 - 2023-09-21
+0.12.0 - 2023-08-24
+0.11.0 - 2023-08-10
+0.10.0 - 2023-07-20
+0.9.1 - 2023-07-11
+0.9.0 - 2023-06-13
+0.8.0 - 2023-05-16
+0.7.0 - 2023-04-28
+0.6.1 - 2023-03-28
+0.6.0 - 2023-03-24
+0.5.0 - 2023-03-13
+0.4.0 - 2023-03-02
+0.3.0 - 2023-01-06
+0.2.0 - 2022-12-01
+0.1.0 - 2022-11-07
+Python
+0.57.1 - 2025-06-17
+0.57.0 - 2025-06-10
+0.56.0 - 2025-06-03
+0.55.1 - 2025-06-02
+0.55.0 - 2025-05-29
+0.54.0 - 2025-05-13
+0.53.0 - 2025-04-29
+0.52.0 - 2025-04-15
+0.51.0 - 2025-04-08
+0.50.0 - 2025-03-18
+0.49.0 - 2025-03-04
+0.48.0 - 2025-01-21
+0.47.0 - 2024-12-17
+0.46.0 - 2024-12-10
+0.45.0 - 2024-11-12
+0.44.1 - 2024-10-29
+0.44.0 - 2024-10-22
+0.43.1 - 2024-10-15
+0.43.0 - 2024-10-09
+0.42.0 - 2024-09-23
+0.41.0 - 2024-09-03
+0.40.0 - 2024-08-27
+0.39.3 - 2024-08-20
+0.39.2 - 2024-08-13
+0.39.1 - 2024-08-13
+0.39.0 - 2024-07-30
+0.38.0 - 2024-07-23
+0.37.0 - 2024-07-09
+0.36.3 - 2024-07-02
+0.36.2 - 2024-06-25
+0.36.1 - 2024-06-18
+0.36.0 - 2024-06-11
+0.35.0 - 2024-06-04
+0.34.1 - 2024-05-21
+0.34.0 - 2024-05-14
+0.33.0 - 2024-04-16
+0.32.0 - 2024-04-04
+0.31.1 - 2024-03-20
+0.31.0 - 2024-03-05
+0.30.0 - 2024-02-22
+0.29.0 - 2024-02-13
+0.28.0 - 2024-02-01
+0.27.0 - 2024-01-23
+0.26.0 - 2024-01-16
+0.25.0 - 2024-01-09
+0.24.1 - 2023-12-15
+0.24.0 - 2023-11-23
+0.23.1 - 2023-11-10
+0.23.0 - 2023-10-26
+0.22.1 - 2023-10-24
+0.22.0 - 2023-10-23
+0.21.0 - 2023-10-11
+0.20.0 - 2023-09-21
+0.19.1 - 2023-09-08
+0.19.0 - 2023-08-25
+0.18.1 - 2023-08-16
+0.18.0 - 2023-08-14
+0.17.0 - 2023-08-10
+0.16.1 - 2023-08-03
+0.16.0 - 2023-07-25
+0.15.2 - 2023-07-19
+0.15.1 - 2023-07-06
+0.15.0 - 2023-07-05
+0.14.1 - 2023-06-16
+0.14.0 - 2023-06-14
+0.13.0 - 2023-06-02
+0.12.0 - 2023-05-01
+0.11.0 - 2023-04-13
+0.10.0 - 2023-04-07
+0.9.0 - 2023-03-10
+0.8.1 - 2023-03-05
+0.8.0 - 2023-03-03
+0.7.0 - 2023-01-10
+0.6.0 - 2022-12-02
+0.5.0 - 2022-11-07
+0.4.0 - 2022-09-14
+0.3.0 - 2022-08-30
+HTTP API
+0.34.1 - 2025-06-17
+0.34.0 - TBD
+0.33.0 - 2024-12-10
+0.32.0 - 2024-11-26
+0.31.0 - 2024-11-12
+0.30.0 - 2024-09-24
+0.29.0 - 2024-09-03
+0.28.0 - 2024-06-25
+0.27.0 - 2024-06-04
+0.26.0 - 2024-05-14
+0.25.0 - 2024-03-26
+0.24.0 - 2024-03-06
+0.23.0 - 2024-02-15
+0.22.0 - 2024-02-06
+0.21.0 - 2024-01-30
+0.20.0 - 2024-01-18
+0.19.0 - 2023-10-17
+0.18.0 - 2023-10-11
+0.17.0 - 2023-10-04
+0.16.0 - 2023-09-26
+0.15.0 - 2023-09-19
+0.14.0 - 2023-08-29
+0.13.0 - 2023-08-23
+0.12.0 - 2023-08-10
+0.11.0 - 2023-07-25
+0.10.0 - 2023-07-06
+0.9.0 - 2023-06-01
+0.8.0 - 2023-05-01
+0.7.0 - 2023-04-07
+0.6.0 - 2023-03-10
+0.5.0 - 2023-03-03
+0.4.0 - 2022-12-02
+0.3.0 - 2022-08-30
+0.2.0 - 2021-12-10
+0.1.0 - 2021-08-30
+Raw API
+0.6.1 - TBD
+0.6.0 - 2025-05-24
+0.5.6 - 2025-04-06
+0.5.5 - 2024-12-01
+0.5.4 - 2024-10-02
+0.5.3 - 2024-10-02
+0.5.1 - 2024-07-24
+2024-07-20
+2024-06-25
+0.5.0 - 2024-05-25
+0.4.6 - 2024-04-13
+0.4.5 - 2024-03-25
+0.4.4 - 2024-03-23
+0.4.3 - 2024-02-13
+0.4.2 - 2024-01-06
+0.4.0 - 2023-11-08
+0.3.0 - 2023-10-20
+0.2.0 - 2023-07-23
+0.1.0 - 2023-05-01
+Rust
+0.27.1 - 2025-06-17
+0.27.0 - 2025-06-10
+0.26.2 - 2025-06-03
+0.26.1 - 2025-05-30
+0.26.0 - 2025-05-28
+0.25.0 - 2025-05-13
+0.24.0 - 2025-04-22
+0.23.0 - 2025-04-15
+0.22.0 - 2025-04-01
+0.21.0 - 2025-03-18
+0.20.0 - 2025-02-12
+0.19.0 - 2025-01-21
+0.18.0 - 2025-01-08
+0.17.0 - 2024-12-17
+0.16.0 - 2024-11-12
+0.15.0 - 2024-10-22
+0.14.1 - 2024-10-08
+0.14.0 - 2024-10-01
+0.13.0 - 2024-09-25
+0.12.1 - 2024-08-27
+0.12.0 - 2024-07-30
+0.11.4 - 2024-07-16
+0.11.3 - 2024-07-09
+0.11.2 - 2024-06-25
+0.11.1 - 2024-06-11
+0.11.0 - 2024-06-04
+0.10.0 - 2024-05-22
+0.9.1 - 2024-05-15
+0.9.0 - 2024-05-14
+0.8.0 - 2024-04-01
+0.7.1 - 2024-03-05
+0.7.0 - 2024-03-01
+0.6.0 - 2024-01-16
+0.5.0 - 2023-11-23
+0.4.2 - 2023-10-23
+0.4.1 - 2023-10-06
+0.4.0 - 2023-09-21
+0.3.0 - 2023-09-13
+0.2.1 - 2023-08-25
+0.2.0 - 2023-08-10
+0.1.0 - 2023-08-02
+Data
+TBD (coming soon)
+2025-06-17
+2024-10-22
+2024-05-07
+2024-06-25
+2024-06-18
+2024-01-18
+2023-11-17
+2023-10-04
+2023-08-29
+2023-07-23
+2023-05-01
+2023-04-28
+2023-03-07
+What's a schema?Databento supports over 15 different data formats of market data. When you make a request from Databento, you must usually specify which data format—also called a schema—to receive your data in.Supported schemas and their fieldsA schema represents a collection of data fields. The following is a summary of schemas supported by Databento. Click on any schema below for its details, the fields included, and a data dictionary that defines each field.
+Schema
+Schema IDs
+Common names used by third parties
+L3, Market by order, full order book, tick data
+MBP-10
+mbp-10
+L2, Market by price, market depth
+MBP-1 / CMBP-1
+mbp-1 / cmbp-1
+L1, Top of book, trades and quotes
+BBO / CBBO
+bbo-1s, bbo-1m / cbbo-1s, cbbo-1m
+L1, Top of book sampled in time space, subsampled BBO and trades
+TBBO / TCBBO
+tbbo / tcbbo
+L1, Top of book sampled in trade space
+Trades
+trades
+L1, Last sale, time and sales, tick-by-tick trades
+OHLCV
+ohlcv-1s, ohlcv-1m, ohlcv-1h, ohlcv-1d
+L0, OHLCV bars, aggregates
+Definition
+definition
+L0, Security definitions, reference data, symbol list
+Imbalance
+imbalance
+L3, Auction imbalance, order imbalance, NOII
+Statistics
+statistics
+L0, Session or daily statistics, end-of-day summary, open interest
+Status
+status
+L0, Market or trading state/status
+Market by order (MBO) provides every order book event across every price level, keyed by its order ID. This allows you to determine the queue position of each order and provides the highest level of granularity available.Market by price (MBP-10) provides every order book event across the top ten price levels, keyed by price. This includes every trade and changes to aggregate market depth, alongside total size and order count at the top ten price levels.Market by price (MBP-1) provides every order book event that updates the top price level, also known as the best bid and offer (BBO). This includes every trade and changes to book depth, alongside total size and order count at the BBO.Consolidated market by price (CMBP-1) provides every order book event that updates the top price level across all venues in the dataset, also known as the consolidated best bid and offer (CBBO). This includes every trade and changes to book depth, alongside total size and publisher attribution at the CBBO.BBO on trade (TBBO) provides every trade event alongside the BBO immediately before the effect of each trade. This is a subset of MBP-1.Consolidated BBO on trade (TCBBO) provides every trade event alongside the consolidated BBO immediately before the effect of each trade. This is a subset of CMBP-1.BBO on interval (BBO) provides the last best bid, best offer, and sale at 1-second or 1-minute intervals. This is a subset of MBP-1.Consolidated BBO on interval (CBBO) provides the consolidated last best bid, best offer, and sale at 1-second or 1-minute intervals. This is a subset of CMBP-1.Trades provides every trade event. This is a subset of MBO.Aggregate bars (OHLCV) provide open, high, low, and close prices and total volume aggregated from trades at 1-second, 1-minute, 1-hour, or 1-day intervals.Instrument definitions provide reference information about each instrument, which includes properties like symbol, instrument name, expiration date, listing date, tick size, and strike price.Imbalance provides auction imbalance data such as paired quantity, total quantity, and auction status.Statistics provides official summary statistics of each instrument that's published by the venue. This generally includes properties like daily volume, open interest, preliminary and final settlement prices, and official open, high, and low prices.Status provides updates about the trading session, such as halts, pauses, short-selling restrictions, auction start, and other matching engine statuses. The granularity and frequency of these updates vary by publisher and dataset.See alsoThe MBP-1, BBO and TBBO schemas, as well as the CMBP-1, CBBO, and TCBBO schemas, all provide top of book data with different update space and sampling intervals. Learn more about their differences in our MBP-1 vs. BBO vs. TBBO schemas guide.Why are Databento's naming conventions different from third parties?Databento avoids terms like Level 1 (L1) or Level 2 (L2) due to their inconsistent application. For example, some vendors refer to both MBO and MBP data as L2, while others strictly refer to MBP data as L2. More misleadingly, many vendors refer to MBO data as L3, even though this doesn't follow any major trading venue's naming convention.Likewise, the term tick originates from the concept of a ticker tape and only refers to trades, not resting limit orders. This becomes a source of confusion when vendors use the term tick data to refer to either MBO or MBP data when it should be strictly reserved for trades data.See alsoFor more Databento naming conventions and key terminology, visit our FAQs.Special casesOur MBO, MBP-1 and MBP-10 schemas adopt the following conventions in these special cases:
+Combining MBO with trades feed: Typically, MBO data provides the highest granularity, but certain venues enhance their trades feed with additional information like trades not reflected in the MBO feed, consolidated NBBO, and more. In these cases, we document the exception in our Venues and datasets section and recommend that you request both our MBO and trades schemas if you need the highest level of granularity.
+Deriving one schema from anotherDatabento captures market data directly from the source and is only subscribed to the most granular feed(s) available from each publisher. Order book feeds are usually normalized into our MBO schema and top-of-book feeds are usually normalized into our MBP-1 schema.To ensure consistency between schemas, Databento doesn't source the less granular schemas from separate feeds. Instead, Databento derives all of the less granular schemas starting from the most granular schema available. As you may have noticed from our schema's descriptions, the majority of them—MBP, BBO, TBBO, trades, and OHLCV—are simply derived from MBO data.Likewise, you can also derive one schema from another losslessly on the client side, and you should expect your self-derived data to be consistent with ours. For example:
+MBP-1, BBO, and Trades can be derived from MBP-10.
+BBO, TBBO, and Trades can be derived from MBP-1.
+Trades and OHLCV can be derived from TBBO.
+OHLCV can be derived from Trades.
+Deriving your own schema is useful for various reasons:
+The data needs to be defined differently for your application.
+Our derivation differs from those of another vendor and you want transparency.
+You can cut down the number of API requests made to Databento by getting the most granular schema that you need and deriving the rest yourself.
+Databento provides MBP-10 merely as a convenience feature. You can reduce bandwidth requirements, latency, and transfer time significantly by deriving MBP-10 yourself from MBO.
+This is especially relevant for OHLCV, which can vary depending on how trade breaks or market halts are managed, how the start and end of each time interval are determined, and how illiquid instruments are handled if there are no trades over a given time interval. If these considerations are trivial for your use case, Databento offers OHLCV data in multiple time intervals (seconds, minutes, hours, and daily) for your convenience.The table below summarizes which schemas can be derived from the another. Each row represents the original schema, and each column represents schemas that you can derive from the original schema.
+Schema
+MBP-10
+MBP-1
+CMBP-1
+TBBO
+TCBBO
+BBO-1s
+BBO-1m
+CBBO-1s
+CBBO-1m
+Trades
+OHLCV-1s
+OHLCV-1m
+OHLCV-1h
+OHLCV-1d
+MBP-10
+MBP-1
+CMBP-1
+TBBO
+TCBBO
+BBO-1s
+BBO-1m
+CBBO-1s
+CBBO-1m
+Trades
+OHLCV-1s
+OHLCV-1m
+OHLCV-1h
+OHLCV-1d
+See alsoLearn how to resample trades data to other intervals, such as 5-minute intervals, from our bar aggregation tutorial.You can also learn how to generate MBP-10 from MBO data using an order book, as seen in our limit order book construction tutorial. Python Python C++ Rust HTTP/Raw

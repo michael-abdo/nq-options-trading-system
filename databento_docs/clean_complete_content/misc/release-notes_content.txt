@@ -1,0 +1,2360 @@
+# Databento API and dataset release notes
+Category: Misc
+Source: release-notes.html
+================================================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+API keys
+Download center
+Team
+Billing
+Plans and live data
+Release notes
+0.38.1 - 2025-06-17
+0.38.0 - 2025-06-10
+0.37.1 - 2025-06-03
+0.37.0 - 2025-06-03
+0.36.0 - 2025-05-27
+0.35.1 - 2025-05-20
+0.35.0 - 2025-05-13
+0.34.2 - 2025-05-06
+0.34.1 - 2025-04-29
+0.34.0 - 2025-04-22
+0.33.0 - 2025-04-15
+0.32.1 - 2025-04-07
+0.32.0 - 2025-04-02
+0.31.0 - 2025-03-18
+0.30.0 - 2025-02-11
+0.29.0 - 2025-02-04
+0.28.0 - 2025-01-21
+0.27.0 - 2025-01-07
+0.26.0 - 2024-12-17
+0.25.0 - 2024-11-12
+0.24.0 - 2024-10-22
+0.23.0 - 2024-09-25
+0.22.0 - 2024-08-27
+0.21.0 - 2024-07-30
+0.20.1 - 2024-07-16
+0.20.0 - 2024-07-09
+0.19.1 - 2024-06-25
+0.19.0 - 2024-06-04
+0.18.1 - 2024-05-22
+0.18.0 - 2024-05-14
+0.17.1 - 2024-04-08
+0.17.0 - 2024-04-01
+0.16.0 - 2024-03-01
+0.15.0 - 2024-01-16
+0.14.1 - 2023-12-18
+0.14.0 - 2023-11-23
+0.13.1 - 2023-10-23
+0.13.0 - 2023-09-21
+0.12.0 - 2023-08-24
+0.11.0 - 2023-08-10
+0.10.0 - 2023-07-20
+0.9.1 - 2023-07-11
+0.9.0 - 2023-06-13
+0.8.0 - 2023-05-16
+0.7.0 - 2023-04-28
+0.6.1 - 2023-03-28
+0.6.0 - 2023-03-24
+0.5.0 - 2023-03-13
+0.4.0 - 2023-03-02
+0.3.0 - 2023-01-06
+0.2.0 - 2022-12-01
+0.1.0 - 2022-11-07
+Python
+0.57.1 - 2025-06-17
+0.57.0 - 2025-06-10
+0.56.0 - 2025-06-03
+0.55.1 - 2025-06-02
+0.55.0 - 2025-05-29
+0.54.0 - 2025-05-13
+0.53.0 - 2025-04-29
+0.52.0 - 2025-04-15
+0.51.0 - 2025-04-08
+0.50.0 - 2025-03-18
+0.49.0 - 2025-03-04
+0.48.0 - 2025-01-21
+0.47.0 - 2024-12-17
+0.46.0 - 2024-12-10
+0.45.0 - 2024-11-12
+0.44.1 - 2024-10-29
+0.44.0 - 2024-10-22
+0.43.1 - 2024-10-15
+0.43.0 - 2024-10-09
+0.42.0 - 2024-09-23
+0.41.0 - 2024-09-03
+0.40.0 - 2024-08-27
+0.39.3 - 2024-08-20
+0.39.2 - 2024-08-13
+0.39.1 - 2024-08-13
+0.39.0 - 2024-07-30
+0.38.0 - 2024-07-23
+0.37.0 - 2024-07-09
+0.36.3 - 2024-07-02
+0.36.2 - 2024-06-25
+0.36.1 - 2024-06-18
+0.36.0 - 2024-06-11
+0.35.0 - 2024-06-04
+0.34.1 - 2024-05-21
+0.34.0 - 2024-05-14
+0.33.0 - 2024-04-16
+0.32.0 - 2024-04-04
+0.31.1 - 2024-03-20
+0.31.0 - 2024-03-05
+0.30.0 - 2024-02-22
+0.29.0 - 2024-02-13
+0.28.0 - 2024-02-01
+0.27.0 - 2024-01-23
+0.26.0 - 2024-01-16
+0.25.0 - 2024-01-09
+0.24.1 - 2023-12-15
+0.24.0 - 2023-11-23
+0.23.1 - 2023-11-10
+0.23.0 - 2023-10-26
+0.22.1 - 2023-10-24
+0.22.0 - 2023-10-23
+0.21.0 - 2023-10-11
+0.20.0 - 2023-09-21
+0.19.1 - 2023-09-08
+0.19.0 - 2023-08-25
+0.18.1 - 2023-08-16
+0.18.0 - 2023-08-14
+0.17.0 - 2023-08-10
+0.16.1 - 2023-08-03
+0.16.0 - 2023-07-25
+0.15.2 - 2023-07-19
+0.15.1 - 2023-07-06
+0.15.0 - 2023-07-05
+0.14.1 - 2023-06-16
+0.14.0 - 2023-06-14
+0.13.0 - 2023-06-02
+0.12.0 - 2023-05-01
+0.11.0 - 2023-04-13
+0.10.0 - 2023-04-07
+0.9.0 - 2023-03-10
+0.8.1 - 2023-03-05
+0.8.0 - 2023-03-03
+0.7.0 - 2023-01-10
+0.6.0 - 2022-12-02
+0.5.0 - 2022-11-07
+0.4.0 - 2022-09-14
+0.3.0 - 2022-08-30
+HTTP API
+0.34.1 - 2025-06-17
+0.34.0 - TBD
+0.33.0 - 2024-12-10
+0.32.0 - 2024-11-26
+0.31.0 - 2024-11-12
+0.30.0 - 2024-09-24
+0.29.0 - 2024-09-03
+0.28.0 - 2024-06-25
+0.27.0 - 2024-06-04
+0.26.0 - 2024-05-14
+0.25.0 - 2024-03-26
+0.24.0 - 2024-03-06
+0.23.0 - 2024-02-15
+0.22.0 - 2024-02-06
+0.21.0 - 2024-01-30
+0.20.0 - 2024-01-18
+0.19.0 - 2023-10-17
+0.18.0 - 2023-10-11
+0.17.0 - 2023-10-04
+0.16.0 - 2023-09-26
+0.15.0 - 2023-09-19
+0.14.0 - 2023-08-29
+0.13.0 - 2023-08-23
+0.12.0 - 2023-08-10
+0.11.0 - 2023-07-25
+0.10.0 - 2023-07-06
+0.9.0 - 2023-06-01
+0.8.0 - 2023-05-01
+0.7.0 - 2023-04-07
+0.6.0 - 2023-03-10
+0.5.0 - 2023-03-03
+0.4.0 - 2022-12-02
+0.3.0 - 2022-08-30
+0.2.0 - 2021-12-10
+0.1.0 - 2021-08-30
+Raw API
+0.6.1 - TBD
+0.6.0 - 2025-05-24
+0.5.6 - 2025-04-06
+0.5.5 - 2024-12-01
+0.5.4 - 2024-10-02
+0.5.3 - 2024-10-02
+0.5.1 - 2024-07-24
+2024-07-20
+2024-06-25
+0.5.0 - 2024-05-25
+0.4.6 - 2024-04-13
+0.4.5 - 2024-03-25
+0.4.4 - 2024-03-23
+0.4.3 - 2024-02-13
+0.4.2 - 2024-01-06
+0.4.0 - 2023-11-08
+0.3.0 - 2023-10-20
+0.2.0 - 2023-07-23
+0.1.0 - 2023-05-01
+Rust
+0.27.1 - 2025-06-17
+0.27.0 - 2025-06-10
+0.26.2 - 2025-06-03
+0.26.1 - 2025-05-30
+0.26.0 - 2025-05-28
+0.25.0 - 2025-05-13
+0.24.0 - 2025-04-22
+0.23.0 - 2025-04-15
+0.22.0 - 2025-04-01
+0.21.0 - 2025-03-18
+0.20.0 - 2025-02-12
+0.19.0 - 2025-01-21
+0.18.0 - 2025-01-08
+0.17.0 - 2024-12-17
+0.16.0 - 2024-11-12
+0.15.0 - 2024-10-22
+0.14.1 - 2024-10-08
+0.14.0 - 2024-10-01
+0.13.0 - 2024-09-25
+0.12.1 - 2024-08-27
+0.12.0 - 2024-07-30
+0.11.4 - 2024-07-16
+0.11.3 - 2024-07-09
+0.11.2 - 2024-06-25
+0.11.1 - 2024-06-11
+0.11.0 - 2024-06-04
+0.10.0 - 2024-05-22
+0.9.1 - 2024-05-15
+0.9.0 - 2024-05-14
+0.8.0 - 2024-04-01
+0.7.1 - 2024-03-05
+0.7.0 - 2024-03-01
+0.6.0 - 2024-01-16
+0.5.0 - 2023-11-23
+0.4.2 - 2023-10-23
+0.4.1 - 2023-10-06
+0.4.0 - 2023-09-21
+0.3.0 - 2023-09-13
+0.2.1 - 2023-08-25
+0.2.0 - 2023-08-10
+0.1.0 - 2023-08-02
+Data
+TBD (coming soon)
+2025-06-17
+2024-10-22
+2024-05-07
+2024-06-25
+2024-06-18
+2024-01-18
+2023-11-17
+2023-10-04
+2023-08-29
+2023-07-23
+2023-05-01
+2023-04-28
+2023-03-07
+Changed the following Venue, Publisher, and Dataset descriptions:
+"ICE Futures US" renamed to "ICE Futures US"
+"ICE Futures Europe (Financials)" renamed to "ICE Europe Financials"
+"ICE Futures Europe (Commodities)" renamed to "ICE Europe Commodities"
+0.38.0 - 2025-06-10Enhancements
+Made the buffer size used by the live clients when reading from the TCP socket
+configurable through the LiveBuilder::SetBufferSize() method
+Added log level prefix to ConsoleLogReceiver output
+Added iomanip compatibility: fill, precision, and width to pretty::Px (formerly
+FixPx)
+Added new pretty::Ts helper type for human-readable formatting of UnixNanos
+Breaking changes
+Live client instances can only be created through the LiveBuilder class
+Changed HeartbeatInterval() getters on LiveBlocking and LiveThreaded to return
+an std::optional
+Added new optional ShouldLog virtual method to ILogReceiver to
+filter the levels of log messages that will be sent to the receiver
+Deprecations
+Deprecated FixPx in favor of pretty::Px which has consistent naming with the API
+and the Python and Rust client libraries
+Bug fixes
+Ensure CPPHTTPLIB_OPENSSL_SUPPORT is defined at all locations where cpp-httplib
+is included
+0.37.1 - 2025-06-03Bug fixes
+Fixed issue where not all data was processed in Historical::TimeseriesGetRange()
+Fixed issue with pointer arithmetic in Buffer::Write()
+Fixed issue where more data than necessary was copied in Buffer::Shift()
+0.37.0 - 2025-06-03Breaking changes
+Changed the type of the output_dir parameter in  HistoricalClient::BatchDownload()
+to a std::filesystem::path and the return type to std::filesystem::path
+Changed the type of the file_path parameter in
+HistoricalClient::TimeseriesGetRangeToFile() to a std::filesystem::path
+Changed the type of the file_path parameter in the DbnFileStore, InFileStream,
+and OutFileStream constructors to a std::filesystem::path
+Made stype_in and schema optionals in Metadata to align with how
+Metadata is represented in other languages and removed the boolean
+has_mixed_stype_in and has_mixed_schema fields
+Bug fixes
+Fixed behavior where encoding metadata could lower the version
+0.36.0 - 2025-05-27This version marks the release of DBN version 3 (DBNv3), which is the new default.
+API methods and DbnDecoder support decoding all versions of DBN, but now default to
+upgrading data to version 3.Enhancements
+Added UpgradeToV3 variant to VersionUpgradePolicy enum
+Version 1 and 2 structs can be converted to version 3 structs with templated Upgrade
+method
+Metadata will now always be encoded with a length divisible by 8 bytes for better
+alignment
+Added is_last field to live subscription requests which will be used to improve the
+handling of split subscription requests
+Breaking changes
+Release of DBN version 3:
+Definition schema:
+Updated InstrumentDefMsg with new leg_ fields to support multi-leg strategy
+definitions.
+Expanded raw_instrument_id to 64 bits to support more venues. Like other 64-bit
+integer fields, its value will now be quoted in JSON
+Removed trading_reference_date, trading_reference_price, and
+settl_price_type fields which will be normalized in the statistics schema
+Removed md_security_trading_status better served by the status schema
+Updated asset to 11 bytes and kAssetCstrLen to match
+Statistics schema:
+Updated StatMsg has an expanded 64-bit quantity field. kUndefStatQuantity
+has been updated to match
+The previous StatMsg has been moved to v2::StatMsg or StatMsgV2
+Bug fixes
+Fixed "Zstd error decompressing: Operation made no progress over multiple calls, due
+to output buffer being full" error with TimeseriesGetRange
+Fixed missing implementation of HistoricalBuilder::SetLogReceiver
+0.35.1 - 2025-05-20Bug fixes
+Added missing operator<< and ToString implementations for Cmbp1Msg
+0.35.0 - 2025-05-13Enhancements
+Added a v3::StatMsg record with an expanded 64-bit quantity field
+Added kDbnVersion constants to each version namespace: v1, v2, and v3
+Added kUndefStatQuantity constants to each version namespace
+Added new off-market publishers for Eurex, and European Energy Exchange (EEX)
+Increased live subscription symbol chunking size
+0.34.2 - 2025-05-06Bug fixes
+Fixed potential for unaligned records in live and historical streaming requests
+0.34.1 - 2025-04-29Enhancements
+Added InstitutionalPrioritization variant to MatchingAlgorithm
+Bug fixes
+Improved memory usage of historical streaming requests (TimeseriesGetRange)
+0.34.0 - 2025-04-22Enhancements
+Added SystemCode and ErrorCode enums to indicate types of system and error
+messages
+Converting a v1::SystemMsg to a v2::SystemMsg now sets to code to the heartbeat
+value
+Introduced kAssetCstrLen constant containing the size of asset field in
+InstrumentDefMsg
+Breaking changes
+Increased the size of asset field in v3::InstrumentDefMsg from 7 to 11. The
+v3::InstrumentDefMsg message size remains 520 bytes.
+Set minimum CMake version to 3.24
+Changed type of code field in SystemMsg to SystemCode
+Changed type of code field in ErrorMsg to ErrorCode
+Bug fixes
+Changed TriState to a regular enum to handle unexpected values
+Fixed ccache support
+Changed to explicitly only support being built as a static library
+0.33.0 - 2025-04-15Enhancements
+Added id field to LiveSubscription requests, which will be used for improved error
+messages
+Removed Windows-only dirent dependency
+Breaking changes
+Changed DbnDecoder, FileStream, IReadable, IWritable to work on bytes
+0.32.1 - 2025-04-07Bug fixes
+Fixed CMake error when zstdTargets.cmake exists
+Reverted vcpkg baseline change
+0.32.0 - 2025-04-02Enhancements
+Upgraded default date version to 3.0.3
+Updated vcpkg baseline
+Breaking changes
+Upgraded default cpp-httplib version to 0.20.0 which requires OpenSSL >= 3.0
+0.31.0 - 2025-03-18Enhancements
+Added new venues, datasets, and publishers for ICE Futures US, ICE Europe Financial
+products, Eurex, and European Energy Exchange (EEX).
+0.30.0 - 2025-02-11Enhancements
+Added Resubscribe() methods to LiveBlocking and LiveThreaded to make it easier
+to resume a live session after losing the connection to the live gateway
+Added Subscriptions() getter methods to LiveBlocking and LiveThreaded for
+getting all active subscriptions
+Added CommoditySpot InstrumentClass variant
+0.29.0 - 2025-02-04Enhancements
+Fixed documentation for using external versions of libraries (credit: ElBellaCiao)
+Breaking changes
+Updated the minimum supported C++ standard to C++17
+0.28.0 - 2025-01-21Breaking changes
+Updated enumerations for unreleased datasets and publishers.
+Enhancements
+Added new dataset EQUS.MINI and new publishers EQUS.MINI.EQUS, XNYS.TRADES.EQUS
+Bug fixes
+Changed historical metadata methods with symbols parameter to use a POST request
+to allow for requesting supported maximum of 2000 symbols
+0.27.0 - 2025-01-07Breaking changes
+Converted the UserDefinedInstrument enum class to an enum to safely allow handling
+invalid data and adding future variants
+Updated the value of the kMaxRecordLen constant for the changes to
+InstrumentDefMsg in version 3
+Enhancements
+Added v3 namespace in preparation for future DBN version 3 release. DBN version 2
+remains the current and default version
+Added v3::InstrumentDefMsg record with new fields to support normalizing multi-leg
+strategy definitions
+Removal of statistics-schema related fields trading_reference_price,
+trading_reference_date, and settl_price_type
+Removal of the status-schema related field md_security_trading_status
+0.26.0 - 2024-12-17Breaking changes
+Removed deprecated Packaging enum and packaging field that's no longer supported
+by the API
+Renamed VersionUpgradePolicy::Upgrade to UpgradeToV2 in preparation for a future
+DBN version 3
+Enhancements
+Created separate namespaces for each DBN version to create a consistent way to refer
+to record types from a particular DBN version regardless of whether the record changed
+between versions
+0.25.0 - 2024-11-12Enhancements
+Added new IntelligentCross venues ASPN, ASMT, and ASPI
+Deprecations
+Deprecated Packaging enum and packaging field on BatchJob. These will be
+removed in a future version. All files from a batch job can be downloaded with the
+BatchDownload method on the historical client
+0.24.0 - 2024-10-22Enhancements
+Added new None Action variant that will be gradually rolled out
+to historical and live GLBX.MDP3 data
+0.23.0 - 2024-09-25Enhancements
+Added new Cmbp1Msg
+Added new consolidated publisher values for XNAS.BASIC and DBEQ.MAX
+Breaking changes
+Changed the layout of CbboMsg to better match BboMsg
+Renamed Schema::Cbbo to Schema::Cmbp1
+Deprecations
+Deprecated Packing::Tar and renamed it to TarDeprecated. This variant will be
+removed in a future version when it is no longer supported by the API
+0.22.0 - 2024-08-27Enhancements
+Added Intraday variant to DatasetCondition in preparation for intraday data being
+available from the historical API
+Added new publisher values for XCIS.BBOTRADES and XNYS.BBOTRADES
+Breaking changes
+Removed previously deprecated DatasetCondition::Bad variant
+0.21.0 - 2024-07-30Enhancements
+Added new publisher value for DBEQ.SUMMARY
+Breaking changes
+Renamed SType::Nasdaq variant to SType::NasdaqSymbol
+Renamed SType::Cms variant to SType::CmsSymbol
+Bug fixes
+Added missing ToString and FromString branches for SType::NasdaqSymbol and
+SType::CmsSymbol
+Removed has_header_v variable template that broke C++11 compatibility
+0.20.1 - 2024-07-16Enhancements
+Improved installation with CMake: license is now installed, transitive dependencies are configured
+when importing package
+0.20.0 - 2024-07-09This release adds support for encoding DBN within the C++ client.
+It also improves historical symbology support with the new TsSymbolMap class that
+handles mapping historical records to a text symbol. To support this class, several types
+for date fields were changed from strings or ints to date::year_month_day.Enhancements
+Added TsSymbolMap to support historical symbology where mappings change between days
+Added DbnEncoder class for encoding DBN data
+Added blocking API similar to LiveBlocking to DbnFileStore with new GetMetadata
+and NextRecord methods
+Added BboMsg record struct for future bbo-1m and bbo-1s schemas
+Added PitSymbol map constructor from Metadata and a date::year_month_day
+Added Metadata::CreateSymbolMap and Metadata::CreateSymbolMapForDate methods for
+creating symbology maps from historical metadata
+Added blocking API similar to LiveBlocking to DbnFileStore
+Added SymbologyResolution::CreateSymbolMap method for creating a symbology map from
+a symbology resolution response
+Added InFileStream and OutFileStream helper classes for reading and writing binary
+output respectively
+Breaking changes
+Added new dependency on Howard Hinnant's date library
+Added ILogReceiver* parameter to all DbnDecoder constructors and one DbnFileStore constructor
+Removed type StrMappingInterval. MappingInterval is now also used in SymbologyResolution.
+Changed Bbo1sMsg and Bbo1mMsg to be aliases for BboMsg
+Changed type of start_date and end_date in MappingInterval to date::year_month_day
+Added stype_in and stype_out fields to SymbologyResolution to support creating
+a TsSymbolMap
+0.19.1 - 2024-06-25Enhancements
+Added Upgrade() method to Metadata to update the metadata fields according to a
+VersionUpgradePolicy
+Added new publisher values for XNAS.BASIC and XNAS.NLS
+Bug fixes
+Fixed issue where Metadata wasn't upgraded when passing
+VersionUpgradePolicy::Upgrade
+0.19.0 - 2024-06-04Enhancements
+Added configurable heartbeat_interval parameter for live clients that determines the
+timeout before heartbeat SystemMsg records will be sent. It can be configured via
+the SetHeartbeatInterval method of the LiveBuilder
+Added SetAddress method to LiveBuilder for configuring a custom gateway address
+without using the constructor directly
+Added new UncrossingPrice StatType variant
+Added new publisher values for XNAS.BASIC
+Added SetDataset(Dataset) overload to LiveBuilder
+Added new off-market publisher values for IFEU.IMPACT and NDEX.IMPACT
+Breaking changes
+Added heartbeat_interval parameter to the Live constructors
+Removed start_date and end_date fields from DatasetRange struct
+in favor of start and end
+Removed live Subscribe method overloads with use_snapshot
+parameter in favor of separate SubscribeWithSnapshot method
+Bug fixes
+Fixed overloading of live Subscribe methods
+Fixed live subscribing with default-constructed UnixNanos
+Fixed descriptions for FINN and FINY publishers
+0.18.1 - 2024-05-22Enhancements
+Added live Subscribe function overload with use_snapshot parameter
+Added GetIf method to Record that allows if chaining for handling multiple
+record types
+Added record type checking to Record::Get method to catch programming errors
+and prevent reading invalid data
+Added ToString for Record
+Bug fixes
+Added missing symbol chunking for live Subscribe overloads with const std::string&
+start parameter
+0.18.0 - 2024-05-14Breaking changes
+Changed FlagSet to be more class-like:
+Added predicate methods and setters for each bit flag
+Improved string formatting
+Removed bitwise operators. Bitwise operations can be performed by first casting to a
+std::uint8_t or calling the Raw() method
+Changed format of display_factor and price_ratio to a fixed-precision decimal for
+InstrumentDefMsg and InstrumentDefMsgV1 to match existing values and DBN crate
+Changed format of unit_of_measure_qty to a fixed-precision decimal for
+InstrumentDefMsgV1 to match InstrumentDefMsg
+0.17.1 - 2024-04-08Enhancements
+Added support for Conan-installed zstd (credit: Jakob Lövhall)
+Bug fixes
+Added missing copying of ts_event when upgrading structs from DBNv1 to DBNv2
+Fixed setting of compiler warnings and warnings that had accumulated
+0.17.0 - 2024-04-01Enhancements
+Added StatusMsg record, and StatusAction, StatusReason, TradingEvent, and
+TriState enums
+Added CbboMsg record and corresponding ConsolidatedBidAskPair structure
+Added new enum values for Schema and RType corresponding to new schemas
+cbbo, cbbo-1s, cbbo-1m, tcbbo, bbo-1s, bbo-1m
+Changed format unit_of_measure_qty to a fixed-precision decimal
+Added logic to skip find_package call if nlohmann_json and httplib targets
+already exist (credit: Asen Kovachev)
+Add specific instructions for installing dependencies on Ubuntu and macOS (credit:
+Camron Godbout)
+Bug fixes
+Fixed out-of-order initialization in DbnDecoder (credit: Jakob Lövhall)
+Breaking changes
+Renamed publishers from deprecated datasets to their respective sources (XNAS.NLS
+and XNYS.TRADES respectively)
+Deprecations
+Deprecated dataset values FINN.NLS and FINY.TRADES
+0.16.0 - 2024-03-01Enhancements
+Added new publisher values for consolidated DBEQ.MAX
+Added constructor to WithTsOut that updates length to the correct value to account
+for the extra 8 bytes
+Upgraded default cpp-httplib version to 0.14.3 (last to still support OpenSSL 1.1)
+Upgraded default nlohmann_json version to 3.11.3
+Breaking changes
+Changed default upgrade_policy to Upgrade so by default the primary record types
+can always be used
+Renamed dummy field in ImbalanceMsg and StatMsg to reserved
+Bug fixes
+Fixed handling of ts_out when decoding DBNv1 and upgrading to version 2
+Fixed missing logic to upgrade ErrorMsgV1 and SystemMsgV1 when decoding DBN with
+VersionUpgradePolicy::Upgrade
+Added missing StatType::Vwap variant used in the ICE datasets
+Added missing ToString and operator<< handling for StatType::ClosePrice and
+StatType::NetChange
+Fixed potential for invalid reads when decoding C strings in DbnDecoder
+0.15.0 - 2024-01-16Breaking changes
+Increased size of SystemMsg and ErrorMsg to provide better messages from Live
+gateway
+Increased length of err and msg fields for more detailed messages
+Added is_last field to ErrorMsg to indicate the last error in a chain
+Added code field to SystemMsg and ErrorMsg, although currently unused
+Added new is_last parameter to ErrorMsg::new
+Decoding these is backwards-compatible and records with longer messages won't be
+sent during the DBN version 2 migration period
+Renamed previous records to ErrorMsgV1 and SystemMsgV1
+0.14.1 - 2023-12-18Enhancements
+Added PitSymbolMap helper for keeping track of symbology mappings in Live
+Added new publisher value for OPRA MIAX Sapphire
+Bug fixes
+Fixed misaligned read undefined behavior when decoding records
+0.14.0 - 2023-11-23This release adds support for DBN v2.DBN v2 delivers improvements to the Metadata header symbology, new stype_in and stype_out
+fields for SymbolMappingMsg, and extends the symbol field length for SymbolMappingMsg and
+InstrumentDefMsg. The entire change notes are available here.
+Users who wish to convert DBN v1 files to v2 can use the dbn-cli tool available in the databento-dbn crate.
+On a future date, the Databento live and historical APIs will stop serving DBN v1.This release is fully compatible with both DBN v1 and v2, and so the change should be
+seamless for most users.Enhancements
+Added support for DBN encoding version 2 (DBNv2), affecting SymbolMappingMsg,
+InstrumentDefMsg, and Metadata
+Version 1 structs can be converted to version 2 structs with the ToV2() method
+Added symbol_cstr_len field to Metadata to indicate the length of fixed symbol
+strings
+Added stype_in and stype_out fields to SymbolMappingMsg to provide more context
+with live symbology updates
+Added IndexTs methods to every record type which returns the primary timestamp
+Added VersionUpgradePolicy enum to allow specifying how to handle decoding records
+from prior DBN versions
+Added InstrumentDefMsgV2 and SymbolMappingMsgV2 type aliases
+Added kDbnVersion constant for current DBN version
+Added kSymbolCstrLen, kSymbolCstrLenV1, and kSymbolCstrLenV2 constants for the
+length of fixed-length symbol strings in different DBN versions
+Added new publisher values in preparation for IFEU.IMPACT and NDEX.IMPACT datasets
+Added new publisher values for consolidated DBEQ.BASIC and DBEQ.PLUS
+Added kMaxRecordLen constant for the length of the largest record type
+Added ability to convert FlagSet to underlying representation
+Breaking changes
+The old InstrumentDefMsg is now InstrumentDefMsgV1 in compat.hpp
+The old SymbolMappingMsg is now SymbolMappingMsgV1 in compat.hpp
+Converted the following enum classes to enums to allow safely adding new variants:
+SecurityUpdateAction and SType
+Renamed dummy to reserved in InstrumentDefMsg
+Removed reserved2, reserved3, reserved4, and reserved5 from InstrumentDefMsg
+Moved position of strike_price within InstrumentDefMsg
+Removed deprecated SecurityUpdateAction::Invalid variant
+0.13.1 - 2023-10-23Enhancements
+Added new publisher values in preparation for DBEQ.PLUS
+Added ToIso8601 for UnixNanos for converting to human-readable
+ISO8601 datetime string
+Added kUndefTimestamp and kUndefStatQuantity constants
+Added flag kTob for top-of-book messages
+0.13.0 - 2023-09-21Enhancements
+Added pretty_px option for BatchSubmitJob, which formats prices to the correct
+scale using the fixed-precision scalar 1e-9 (available for CSV and JSON text
+encodings)
+Added pretty_ts option for BatchSubmitJob, which formats timestamps as ISO 8601
+strings (available for CSV and JSON text encodings)
+Added map_symbols option to BatchSubmitJob, which appends the raw symbol to every
+record (available for CSV and JSON text encodings) reducing the need to look at the
+symbology.json file
+Added split_symbols option for BatchSubmitJob, which will split files by raw symbol
+Added encoding option to BatchSubmitJob to allow requesting non-DBN encoded
+data through the client
+Added map_symbols, pretty_px, and pretty_ts to BatchJob response
+Added ARCX.PILLAR.ARCX publisher
+Added ClosePrice and NetChange StatTypes used in the OPRA.PILLAR dataset
+Breaking changes
+Remove default_value parameter from Historical::SymbologyResolve
+0.12.0 - 2023-08-24Enhancements
+Added the Publisher, Venue, and Dataset enums
+Added Publisher getters to Record and RecordHeader to convert the
+publisher_id to its enum
+0.11.0 - 2023-08-10Enhancements
+Added raw_instrument_id to definition schema
+Added operator== and operator!= implementations for DatasetConditionDetail and
+DatasetRange
+Breaking changes
+Changed MetadataListPublishers to return a vector<PublisherDetail>
+MetadataListFields:
+Changed return type to vector<FieldDetail>
+Made encoding and schema parameters required
+Removed dataset parameter
+MetadataListUnitPrices:
+Changed return type to vector<UnitPricesForMode>
+Made dataset parameter required
+Removed mode and schema parameters
+Bug fixes
+Fixed installation of nlohmann_json when using bundled version
+Added missing operator!= implementations for Metadata, MappingInterval, and
+SymbolMapping
+0.10.0 - 2023-07-20Enhancements
+Added preliminary support for Windows
+Added LiveThreaded::BlockForStop to make it easier to wait for one or more records
+before closing the session
+Changed TimeseriesGetRange to request a Zstd-compressed result for more efficient
+data transfer
+Switched BatchSubmitJob to use form data to avoid query param length limit
+Switched SymbologyResolve to use POST request with form data to avoid query param
+length limit
+Breaking changes
+Changed size-related fields and limit parameters to use std::uint64_t for consistency
+across architectures
+Bug fixes
+Remove usage of non-portable __PRETTY_FUNCTION__
+0.9.1 - 2023-07-11Enhancements
+Added constants for dataset codes for Databento Equity Basic and OPRA Pillar
+Added const char* getters to records for fixed-length char arrays
+Added RType getter to Record
+Bug fixes
+Added batching for live subscriptions to avoid hitting max message length
+Fixed bug in Zstd decompression
+Fixed Historical::BatchDownload truncating file before writing each chunk
+0.9.0 - 2023-06-13Enhancements
+Added Reconnect methods to LiveBlocking and LiveThreaded
+Added optional exception_callback argument to LiveThreaded::Start to improve
+error handling options
+Added batch download support data files (condition.json and symbology.json)
+Added support for logging warnings from Historical API
+Relaxed 10 minute minimum request time range restriction
+Breaking changes
+Changed use_ts_out default to false
+Bug fixes
+Fixed missing definition for operator== for ImbalanceMsg
+0.8.0 - 2023-05-16Enhancements
+Changed end and end_date to optional to support new forward-fill behaviour
+Breaking changes
+Renamed booklevel MBP field to levels for brevity and consistent naming
+Removed open_interest_qty and cleared_volume fields from definitions schema
+that were always unset
+0.7.0 - 2023-04-28Enhancements
+Added initial support for live data with LiveBlocking and LiveThreaded clients
+Added support for statistics schema
+Added SystemMsg and ErrorMsg records for use in live data
+Added strike_price, strike_price_currency, and instrument_class to InstrumentDefMsg
+Added FixedPx helper class for formatting fixed prices
+Added configurable log receiver ILogReceiver
+Added instrument_class, strike_price, and strike_price_currency to definition schema
+Added additional condition variants for DatasetConditionDetail (degraded, pending,
+missing)
+Added additional member last_modified_date to DatasetConditionDetail
+Added has_mixed_schema, has_mixed_stype_in, and ts_out to Metadata to support
+live data
+Added optional compression parameter to BatchSubmitJob
+Breaking changes
+Removed related and related_security_id from InstrumentDefMsg
+Renamed BatchJob.cost to cost_usd and value now expressed as US dollars
+Renamed SType::ProductId to SType::InstrumentId and SType::Native to
+SType::RawSymbol
+Renamed RecordHeader::product_id to instrument_id
+Renamed InstrumentDefMsg::symbol to raw_symbol
+Renamed SymbolMapping::native_symbol to raw_symbol
+Changed expiration and action type to UnixNanos
+Changed some fields to enums in InstrumentDefMsg
+Deprecations
+Deprecated SType::Smart to split into SType::Parent and SType::Continuous
+Bug fixes
+Fixed parsing of BatchSubmitJob response
+Fixed invalid read in DbnDecoder
+Fixed memory leak in TryCreateDir
+0.6.1 - 2023-03-28Breaking changes
+Removed usage of unreliable std::ifstream::readsome
+Bug fixes
+Fixed Zstd decoding of files with multiple frames
+0.6.0 - 2023-03-24Enhancements
+Added support for imbalance schema
+Added support for decoding ts_out field
+Added flags kSnapshot and kMaybeBadBook
+Breaking changes
+Removed record_count from Metadata
+Changed Historical::BatchDownload to return the paths of the downloaded files
+0.5.0 - 2023-03-13Enhancements
+Added Historical::MetadataGetDatasetRange
+Breaking changes
+Changed MetadataGetDatasetCondition to return vector<DatasetConditionDetail>
+Removed MetadataListCompressions (redundant with docs)
+Removed MetadataListEncodings (redundant with docs)
+Removed optional start and end params from MetadataListSchemas (redundant)
+Renamed FileBento to DbnFileStore
+0.4.0 - 2023-03-02Enhancements
+Added live gateway resolution
+Added SymbolMappingMsg and ErrorMsg records
+Added Action and Side enums
+Added available_start_date and available_end_date to
+DatasetConditionInfo
+Made start_date and end_date optional for
+Historical::MetadataGetDatasetCondition
+Improved API for flags record fields
+Added PKGBUILD to demonstrate installation
+Disabled unit testing by default
+Breaking changes
+Removed is_full_universe and is_example fields from BatchJob
+Refactored rtypes
+Introduced separate rtypes for each OHLCV schema
+Renamed DBZ to DBN
+Renamed DbzParser to DbnDecoder
+Renamed TimeseriesStream to TimeseriesGetRange
+Changed kAllSymbols representation
+Bug fixes
+Fixed usage of as a system library
+0.3.0 - 2023-01-06Enhancements
+Added support for definition schema
+Added option for CMake to download gtest
+Updated Flag enum
+Breaking changes
+Standardized getter method names to pascal case
+Renamed is_full_book to is_full_universe
+Renamed TickMsg to MboMsg
+Changed flags fields to unsigned
+Bug fixes
+Fixed cancellation in Historical::TimeseriesStream
+Fixed race condition in Historical::TimeseriesStream exception handling
+Fixed gtest linker error on macOS
+0.2.0 - 2022-12-01Enhancements
+Added Historical::MetadataGetDatasetCondition
+Improved Zstd CMake integration
+Bug fixes
+Fixed requesting all symbols for a dataset
+0.1.0 - 2022-11-07
+Initial release with support for historical data
+Python0.57.1 - 2025-06-17Enhancements
+Changed the following Venue, Publisher, and Dataset descriptions:
+"ICE Futures US" renamed to "ICE Futures US"
+"ICE Futures Europe (Financials)" renamed to "ICE Europe Financials"
+"ICE Futures Europe (Commodities)" renamed to "ICE Europe Commodities"
+Upgraded databento-dbn to 0.36.1
+Fixed setting of ts_out property of DbnFsm based on decoded metadata. This
+was preventing ts_out from being correctly decoded in the Python DBNDecoder
+Fixed decoding of ts_out with first records in DBNDecoder
+Bug fixes
+Fixed an issue where DBN records from the Live client where not having their ts_out populated
+0.57.0 - 2025-06-10Enhancements
+Upgraded databento-dbn to 0.36.0
+Added missing Python type stubs for several leg properties of InstrumentDefMsg
+Bug fixes
+Fixed an issue where the zstandard frame size could limit the size of DataFrame objects returned by DBNStore.to_df() when a count was specified
+Deprecations
+Deprecated int and pd.Timestamp types for start_date and end_date parameters which will be removed in a future release
+0.56.0 - 2025-06-03Breaking changes
+Updated the names of several subfields in the Reference.corporate_actions.get_range(...) response,
+under the date_info, event_info, and rate_info fields. The following subfields were renamed:
+decl_currency renamed to declared_currency
+decl_gross_amount renamed to declared_gross_amount
+f_x_rate renamed to fx_rate
+iss_new_name renamed to issuer_new_name
+iss_old_name renamed to issuer_old_name
+new_bbg_company_id renamed to new_bbg_comp_id
+new_bbg_company_tk renamed to new_bbg_comp_ticker
+new_bbg_exh_id renamed to new_figi
+new_bbg_exh_tk renamed to new_figi_ticker
+new_min_tra_qty renamed to new_min_trading_qty
+new_mktsg_id renamed to new_market_segment_id
+new_reg_s144_a renamed to new_reg_s144a
+new_unit_sec_id renamed to new_unit_security_id
+offeree_iss_id renamed to offeree_issuer_id
+offeror_iss_id renamed to offeror_issuer_id
+old_bbg_company_id renamed to old_bbg_comp_id
+old_bbg_company_tk renamed to old_bbg_comp_ticker
+old_bbg_exh_id renamed to old_figi
+old_bbg_exh_tk renamed to old_figi_ticker
+old_min_tra_qty renamed to old_min_trading_qty
+old_mktsg_id renamed to old_market_segment_id
+old_reg_s144_a renamed to old_reg_s144a
+old_unit_sec_id renamed to old_unit_security_id
+pp_sec_id renamed to pp_security_id
+poolfactor renamed to pool_factor
+pre_offer_q_ty renamed to pre_offer_qty
+qual_st_cap_gains renamed to qual_short_term_cap_gains
+redem_percentage renamed to redemption_percentage
+st_cap_gains renamed to short_term_cap_gains
+sec_new_name renamed to security_new_name
+sec_old_name renamed to security_old_name
+section199_a_foreign_tax_paid renamed to section199a_foreign_tax_paid
+section199_a_inc_div renamed to section199a_inc_div
+section199_a_st_cap_gain renamed to section199a_short_term_cap_gain
+tra_isin renamed to trading_isin
+tra_sec_id renamed to trading_security_id
+us_deposit_receiptateto_currency renamed to usd_rate_to_currency
+cashbak renamed to cash_back
+companyulsory_acq_date renamed to compulsory_acq_date
+frankdiv renamed to franked_div
+lead_plntiff_deadline_date renamed to lead_plaintiff_deadline_date
+maxprice renamed to max_price
+minprice renamed to min_price
+redem_premium renamed to redemption_premium
+redem_price renamed to redemption_price
+unit_frankdiv renamed to unfranked_div
+Enhancements
+Upgraded databento-dbn to 0.35.1
+0.55.1 - 2025-06-02Bug fixes
+Fixed decoding of DBN versions 1 and 2 statistics in DBNStore.to_df()
+0.55.0 - 2025-05-29Enhancements
+Added exchanges parameter to Reference.corporate_actions.get_range(...)
+Added is_last field to live subscription requests which will be used to improve the
+handling of split subscription requests
+Upgraded databento-dbn to 0.35.0
+This version delivers DBN version 3 (DBNv3), which is the new default
+Improved the performance of the Python DBNDecoder
+Bug fixes
+Fixed an issue where JSONDecodeError would not be caught when using simplejson with requests (credit: @xuanqing94)
+0.54.0 - 2025-05-13Enhancements
+Added new off-market publishers for Eurex, and European Energy Exchange (EEX)
+Increased live subscription symbol chunking size
+Upgraded databento-dbn to 0.34.0
+0.53.0 - 2025-04-29Enhancements
+Upgraded databento-dbn to 0.33.1
+Added SystemCode and ErrorCode enums to indicate types of system and error messages
+Added code() methods to SystemMsg and ErrorMsg to retrieve the enum value if one exists and equivalent properties in Python
+Bug fixes
+Fixed issue where all SystemMsg records were logged as gateway heartbeats
+0.52.0 - 2025-04-15Enhancements
+Added new optional id field to SubcriptionRequest class which will be used for improved error messages
+Upgraded databento-dbn to 0.32.0
+Fixed RType variant names in Python to match Schema
+Added missing Python type declarations for RType variants
+Fixed issue with Python _hidden_fields definition that caused KeyError: _reserved1_00
+with CMBP1Msg and other records with ConsolidatedBidAskPair
+0.51.0 - 2025-04-08Enhancements
+Upgraded databento-dbn to 0.31.0
+Fixed Python type annotation for SystemMsg.is_heartbeat() method that was previously annotated as a property
+0.50.0 - 2025-03-18Enhancements
+Added new venues, datasets, and publishers for ICE Futures US, ICE Europe Financials, Eurex, and European Energy Exchange (EEX)
+Added export of the following enums from databento_dbn to the root databento package:
+Action
+InstrumentClass
+MatchAlgorithm
+RType
+SecurityUpdateAction
+Side
+StatUpdateAction
+TriState
+UserDefinedInstrument
+VersionUpgradePolicy
+Added export of the following constants from databento_dbn to the root databento package:
+DBN_VERSION
+FIXED_PRICE_SCALE
+UNDEF_ORDER_SIZE
+UNDEF_PRICE
+UNDEF_STAT_QUANTITY
+UNDEF_TIMESTAMP
+Added export of BidAskPair and ConsolidatedBidAskPair from databento_dbn to the root databento package
+Upgraded databento-dbn to 0.29.0
+Added COMMODITY_SPOT InstrumentClass variant
+Improved handling of datetime and date objects in start and end parameters
+0.49.0 - 2025-03-04Enhancements
+Added new venues, datasets, and publishers for ICE Futures US and for ICE Futures
+Europe (Financial products)
+Added a keep_zip parameter to Historical.batch.download(). When True, and downloading all files, the jobs contents will be saved as a ZIP file
+Calling Live.terminate() will now attempt to write EOF before aborting the connection to help close the remote end
+0.48.0 - 2025-01-21Breaking changes
+Updated enumerations for unreleased datasets and publishers.
+Enhancements
+Added export of StatusAction enum from databento_dbn to the root databento package
+Added export of StatusReason enum from databento_dbn to the root databento package
+Added export of TradingEvent enum from databento_dbn to the root databento package
+Added new dataset EQUS.MINI and new publishers EQUS.MINI.EQUS, XNYS.TRADES.EQUS
+Removed upper bound for supported python versions; the constraint is now ^3.9
+Upgraded databento-dbn to 0.27.0
+Fixed export of InstrumentDefMsgV3 to Python
+Bug fixes
+Fixed an issue where sending a KeyboardInterrupt during iteration of the Live client could block execution waiting for the connection to close
+Fixed an issue with submitting historical metadata requests for a large number of symbols.
+0.47.0 - 2024-12-17Enhancements
+Upgraded databento-dbn to 0.25.0
+Added type aliases for TBBOMsg, BBO1SMsg, BBO1MMsg, TCBBOMsg, CBBO1SMsg,
+CBBO1MMsg in Python
+Removed exports for CBBOMsg and BBOMsg in the root databento package in favor of aliased versions from databento-dbn
+0.46.0 - 2024-12-10Enhancements
+Removed deprecated packaging parameter from Historical.batch.submit_job. Job files can be downloaded individually or as zip files after the job completes
+Upgraded databento-dbn to 0.24.0
+Added handling for UNDEF_TIMESTAMP in pretty_ timestamp getters for Python. They now return None in the case of UNDEF_TIMESTAMP
+0.45.0 - 2024-11-12This release adds support for Python v3.13.Enhancements
+Added support for Python 3.13
+Added new IntelligentCross venues ASPN, ASMT, and ASPI
+Upgraded databento-dbn to 0.23.1
+Fixed pretty_activation getter in databento_dbn returning expiration instead
+Fixed some pretty_ getters in databento_dbn didn't correctly handle UNDEF_PRICE
+Deprecations
+Deprecated packaging parameter for Historical.batch.submit_job which will be removed in a future release
+0.44.1 - 2024-10-29Enhancements
+Improved exception messages emitted by the Live client to always include contents of any ErrorMsg sent by the gateway
+Bug fixes
+Fixed an issue where calling Live.stop would not close the connection within a reasonable time
+0.44.0 - 2024-10-22Enhancements
+Removed deprecated databento.from_dbn; databento.read_dbn can be used instead
+Upgraded databento-dbn to 0.23.0
+Bug fixes
+Fixed an issue where DBNStore.request_symbology could request the wrong end date
+0.43.1 - 2024-10-15Enhancements
+Keyword arguments to DBNStore.to_parquet will now allow where and schema to be specified
+Improved record processing time for the Live client
+Bug fixes
+Fixed an issue where validating the checksum of a batch file loaded the entire file into memory
+0.43.0 - 2024-10-09This release drops support for Python 3.8 which has reached end-of-life.Enhancements
+Added PriceType enum for validation of price_type parameter in DBNStore.to_df
+Upgraded databento-dbn to 0.22.1
+Bug fixes
+Fixed return type hint for metadata.get_dataset_condition
+Breaking changes
+Removed support for Python 3.8 due to end of life
+0.42.0 - 2024-09-23Enhancements
+Added mode parameter to DBNStore.to_csv to control the file writing mode
+Added mode parameter to DBNStore.to_json to control the file writing mode
+Added mode parameter to DBNStore.to_parquet to control the file writing mode
+Added compression parameter to DBNStore.to_file which controls the output compression format
+Added new consolidated publisher values for XNAS.BASIC and DBEQ.MAX
+Changed DBNStore to be more tolerant of truncated DBN streams
+Breaking changes
+Changed default write mode for DBNStore.to_csv to overwrite ("w")
+Changed default write mode for DBNStore.to_json to overwrite ("w")
+Changed default write mode for DBNStore.to_parquet to overwrite ("w")
+0.41.0 - 2024-09-03Enhancements
+Added databento.read_dbn alias
+Added mode parameter to DBNStore.to_file to control the file writing mode
+Breaking changes
+Changed default write mode for DBNStore.to_file to overwrite ("w")
+Deprecations
+Deprecated databento.from_dbn and will be removed in a future release, use databento.read_dbn instead
+0.40.0 - 2024-08-27Enhancements
+Added adjustment_factors.get_range(...) method for Reference client
+Added security_master.get_range(...) method for Reference client
+Added security_master.get_last(...) method for Reference client
+Upgraded databento-dbn to 0.20.1
+0.39.3 - 2024-08-20Enhancements
+Added new publisher values for XCIS.BBOTRADES and XNYS.BBOTRADES
+Bug fixes
+Fixed an issue receiving multiple DBN v1 ErrorMsg in the Live client would cause an InvalidState error
+Fixed an issue where creating Live clients in multiple threads could cause a RuntimeError upon initialization
+0.39.2 - 2024-08-13Enhancements
+Changed corporate_actions.get_range(...) to stream compressed zstd data
+0.39.1 - 2024-08-13Enhancements
+Added new publisher values for XCIS.BBOTRADES and XNYS.BBOTRADES
+Bug fixes
+Fixed an issue where a symbol list which contained a None would produce a convoluted exception
+0.39.0 - 2024-07-30Enhancements
+Added new publisher value for DBEQ.SUMMARY
+Upgraded databento-dbn to 0.20.0
+0.38.0 - 2024-07-23This release adds a new feature to the Live client for automatically reconnecting when an unexpected disconnection occurs.Enhancements
+Added Reference data client with corporate_actions.get_range(...) method
+Added ReconnectPolicy enumeration
+Added reconnect_policy parameter to the Live client to specify client reconnection behavior
+Added Live.add_reconnect_callback method for specifying a callback to handle client reconnections
+Added platform information to the user agent reported by the Historical and Live clients
+Upgraded databento-dbn to 0.19.1
+Added BBOMsg, CBBOMsg, and StatusMsg exports to the root databento package
+Breaking changes
+Calling Live.stop will now clear all user streams and callbacks
+Renamed Session to LiveSession in the databento.live.session module
+0.37.0 - 2024-07-09Enhancements
+A disconnected Live client can now be reused with a different dataset
+Upgraded databento-dbn to 0.19.0
+0.36.3 - 2024-07-02Enhancements
+Added export of StatType enum from databento_dbn to the root databento package
+0.36.2 - 2024-06-25Enhancements
+Upgraded databento-dbn to 0.18.2
+0.36.1 - 2024-06-18Enhancements
+Added type alias TBBOMsg for MBP1Msg
+Added support for bbo-1s, bbo-1m, and status schemas
+Instances of the Live client will now call Live.stop when garbage collected
+Added new publisher values for XNAS.BASIC and XNAS.NLS
+0.36.0 - 2024-06-11Enhancements
+Upgraded databento-dbn to 0.18.1
+Bug fixes
+Fixed an issue where heartbeat_interval_s was not being sent to the gateway
+Fixed an issue where a truncated DBN stream could be written by the Live client in the event of an ungraceful disconnect
+Breaking changes
+Output streams of the Live client added with Live.add_stream will now upgrade to the latest DBN version before being written
+0.35.0 - 2024-06-04Enhancements
+Added optional heartbeat_interval_s parameter to Live client for configuring the
+interval at which the gateway will send heartbeat records
+Upgraded databento-dbn to 0.18.0
+Added new off-market publisher values for IFEU.IMPACT and NDEX.IMPACT
+Breaking changes
+Renamed CbboMsg to CBBOMsg
+Renamed use_snapshot parameter in Live.subscribe function to snapshot
+All Python exceptions raised by databento-dbn have been changed to use the DBNError type
+0.34.1 - 2024-05-21Enhancements
+Added use_snapshot parameter to Live.subscribe, defaults to False
+0.34.0 - 2024-05-14Enhancements
+Added pip-system-certs dependency for Windows platforms to prevent a connection issue in requests when behind a proxy
+Iteration of the Live client will now automatically call Live.stop when the iterator is destroyed, such as when a for loop is escaped with an exception or break statement
+Bug fixes
+Fixed an issue where batch.download and batch.download_async would fail if requested files already existed in the output directory
+Fixed an issue where batch.download, batch.download_async, and timeseries.get_range could use a lot of memory while streaming data
+Fixed an issue where reusing a Live client with an open output stream would drop DBN records when received at the same time as the Metadata header
+Deprecations
+The start_date and end_date keys in the response from Historical.metadata.get_dataset_range will be removed in a future release. Use the new start and end keys instead, which include time resolution
+0.33.0 - 2024-04-16Enhancements
+The Historical.batch.download and Historical.batch.download_async methods will now automatically retry the download if a rate limit (HTTP 429) error is received
+The Historical.batch.download and Historical.batch.download_async methods will now retry failed downloads automatically
+The Historical.batch.download and Historical.batch.download_async methods will now download files concurrently
+The output_dir parameter for Historical.batch.download and Historical.batch.download_async is now optional and will default to the current working directory if unspecified
+Added pip-system-certs dependency for Windows platforms to prevent a connection issue in requests when behind a VPN
+Breaking changes
+The enable_partial_downloads parameter for Historical.batch.download and Historical.batch.download_async has been removed, partial files will always be resumed which was the default behavior
+The parameters for Historical.batch.download and Historical.batch.download_async have been reordered because output_dir is now optional, job_id now comes first
+0.32.0 - 2024-04-04Enhancements
+Improved exception messages when multiple ErrorMsg are received by the Live client
+Upgraded databento-dbn to 0.17.1
+Bug fixes
+Removed live session ID parsing to int, that could cause a session to fail when
+nothing was wrong
+Breaking changes
+Renamed publishers from deprecated datasets to their respective sources (XNAS.NLS
+and XNYS.TRADES respectively)
+Deprecations
+Deprecated dataset values FINN.NLS and FINY.TRADES
+0.31.1 - 2024-03-20Enhancements
+Increase Live session connection and authentication timeouts
+Added new F_TOB and F_MAYBE_BAD_BOOK variants to RecordFlags
+Bug fixes
+Fixed an issue where calling Live.subscribe from a Live client callback would cause a deadlock
+0.31.0 - 2024-03-05Enhancements
+Added DBNStore.insert_symbology_json convenience method for adding symbology JSON data
+Upgraded databento-dbn to 0.16.0
+0.30.0 - 2024-02-22Enhancements
+Changed how SymbolMappingMsg objects are ingested by InstrumentMap to single source the timestamp parsing from the databento-dbn package
+Bug fixes
+Fixed an issue where setting a timezone in DBNStore.to_df could cause invalid symbol mappings
+Breaking changes
+Changed Live.add_stream to use the exclusive write mode when handling file paths so existing files won't be overwritten
+0.29.0 - 2024-02-13Enhancements
+Added tz parameter to DBNStore.to_df which will convert all timestamp fields from UTC to a specified timezone when used with pretty_ts
+Added new publisher values for consolidated DBEQ.MAX
+Bug fixes
+Live.block_for_close and Live.wait_for_close will now call Live.stop when a timeout is reached instead of Live.terminate to close the stream more gracefully
+0.28.0 - 2024-02-01Enhancements
+Substantially increased iteration queue size
+Added methods DBNQueue.enable and DBNQueue.disable for controlling queue consumption
+Added method DBNQueue.is_enabled to signal the queue can accept records
+Added method DBNQueue.is_full to signal the queue has reached capacity
+Added enabled checks to DBNQueue.put and DBNQueue.put_nowait
+Breaking changes
+Iterating a Live client after the streaming session has started will now raise a ValueError. Calling Live.start is not necessary when iterating the Live client
+Moved constant databento.live.client.DEFAULT_QUEUE_SIZE to databento.live.session.DBN_QUEUE_CAPACITY
+Removed maxsize parameter from DBNQueue constructor. DBNQueue now subclasses SimpleQueue instead
+Removed property DBNQueue.enabled, use DBNQueue.is_enabled instead
+Removed method DBNQueue.is_half_full, use DBNQueue.is_full instead
+Bug fixes
+Fixed an issue where DBN records could be dropped while iterating
+Fixed an issue where async iteration would block the event loop
+0.27.0 - 2024-01-23Enhancements
+Added Session.session_id property which will contain the numerical session ID once a live session has been authenticated
+Upgraded databento-dbn to 0.15.1
+Breaking changes
+Renamed DatabentoLiveProtocol.started to DatabentoLiveProtocol.is_started which now returns a bool instead of an asyncio.Event
+Bug fixes
+Fixed an issue where an error message from the live gateway would not properly raise an exception if the connection closed before Live.start was called
+0.26.0 - 2024-01-16This release adds support for transcoding DBN data into Apache parquet.Enhancements
+Added DBNStore.to_parquet for transcoding DBN data into Apache parquet using pyarrow
+Upgraded databento-dbn to 0.15.0
+0.25.0 - 2024-01-09Breaking changes
+Removed deprecated pretty_px parameter for DBNStore.to_df; price_type can be used instead
+Bug fixes
+Fixed an issue where the Live client would not raise an exception when reading an incompatible DBN version
+Fixed an issue where sending lots of subscriptions could cause a BufferError
+Fixed an issue where Historical.batch.download was slow
+Fixed an issue where Historical.timeseries.get_range was slow
+Fixed an issue where reading a DBN file with non-empty metadata symbol mappings and mixed SType would cause an error when mapping symbols (credit: Jakob Lövhall)
+0.24.1 - 2023-12-15Enhancements
+Added new publisher value for OPRA MIAX Sapphire
+Bug fixes
+Fixed issue where a large unreadable symbol subscription message could be sent
+Fixed issue where calling Live.stop could cause a truncated DBN record to be written to a stream
+0.24.0 - 2023-11-23This release adds support for DBN v2 as well as Python v3.12.DBN v2 delivers improvements to the Metadata header symbology, new stype_in and stype_out fields for SymbolMappingMsg, and extends the symbol field length for SymbolMappingMsg and InstrumentDefMsg. The entire change notes are available here. Users who wish to convert DBN v1 files to v2 can use the dbn-cli tool available in the databento-dbn create. On a future date, the Databento live and historical APIs will stop serving DBN v1.This release of databento-python is fully compatible with both DBN v1 and v2, so this upgrade should be seamless for most users.In some cases, DBN v1 records will be converted to their v2 counterparts:
+When iterating a DBNStore and with DBNStore.replay
+When iterating a Live client and records dispatched to callbacks
+Enhancements
+Added support for Python 3.12
+Improved the performance for stream writes in the Live client
+Upgraded databento-dbn to 0.14.2
+Added databento.common.types module to hold common type annotations
+Bug fixes
+Fixed an issue where specifying an OHLCV schema in DBNStore.to_ndarray or DBNStore.to_df would not properly filter records by their interval
+Fixed an issue where DBNStore.to_ndarray and DBNStore.to_df with a non-zero count could get stuck in a loop if the DBN data did not contain any records
+Breaking Changes
+DBNStore iteration and DBNStore.replay will upgrade DBN version 1 messages to version 2
+Live client iteration and callbacks upgrade DBN version 1 messages to version 2
+Moved DBNRecord, RecordCallback, and ExceptionCallback types to them databento.common.types module
+Moved AUTH_TIMEOUT_SECONDS and CONNECT_TIMEOUT_SECONDS constants from the databento.live module to databento.live.session
+Moved INT64_NULL from the databento.common.dbnstore module to databento.common.constants
+Moved SCHEMA_STRUCT_MAP from the databento.common.data module to databento.common.constants
+Removed schema parameter from DataFrameIterator constructor, struct_type is to be used instead
+Removed NON_SCHEMA_RECORD_TYPES constant as it is no longer used
+Removed DERIV_SCHEMAS constant as it is no longer used
+Removed SCHEMA_COLUMNS constant as it is no longer used
+Removed SCHEMA_DTYPES_MAP constant as it is no longer used
+Removed empty databento.common.data module
+0.23.1 - 2023-11-10Enhancements
+Added new publishers for consolidated DBEQ.BASIC and DBEQ.PLUS
+Bug fixes
+Fixed an issue where Live.block_for_close and Live.wait_for_close would not flush streams if the timeout was reached
+Fixed a performance regression when reading a historical DBN file into a numpy array
+0.23.0 - 2023-10-26Enhancements
+Added map_symbols_csv function to the databento module for using symbology.json files to map a symbol column onto a CSV file
+Added map_symbols_json function to the databento module for using symbology.json files to add a symbol key to a file of JSON records
+Added new publisher values in preparation for IFEU.IMPACT and NDEX.IMPACT datasets
+Bug fixes
+Fixed issue where a large unreadable symbol subscription message could be sent
+Fixed an issue where DBNStore.to_df with pretty_ts=True was very slow
+0.22.1 - 2023-10-24Bug fixes
+Fixed an issue where DBNStore.to_csv and DBNStore.to_json were mapping symbols even when map_symbols was set to False
+Fixed an issue where empty symbology mappings caused a ValueError when loading symbols into the DBNStore instrument map
+0.22.0 - 2023-10-23Enhancements
+Added price_type argument for DBNStore.to_df to specify if price fields should be fixed, float or decimal.Decimal
+Added py.typed marker file
+Upgraded databento-dbn to 0.13.0
+Breaking Changes
+Changed outputs of DBNStore.to_csv and DBNStore.to_json to match the encoding formats from the Databento API
+Deprecations
+Deprecated pretty_px argument for DBNStore.to_df to be removed in a future release; the default pretty_px=True is now equivalent to price_type="float" and pretty_px=False is now equivalent to price_type="fixed"
+0.21.0 - 2023-10-11Enhancements
+Added map_symbols support for DBN data generated by the Live client
+Added support for file paths in Live.add_stream
+Added new publisher values in preparation for DBEQ.PLUS
+Upgraded databento-dbn to 0.11.1
+Bug fixes
+Fixed an issue where DBNStore.from_bytes did not rewind seekable buffers
+Fixed an issue where the DBNStore would not map symbols with input symbology of SType.INSTRUMENT_ID
+Fixed an issue with DBNStore.request_symbology when the DBN metadata's start date and end date were the same
+Fixed an issue where closed streams were not removed from a Live client on shutdown
+0.20.0 - 2023-09-21This release includes batch customization options which improve data usability for CSV and JSON text
+encodings, as well as providing a way to split files by raw symbols.Enhancements
+Added ARCX.PILLAR.ARCX publisher
+Added pretty_px option for batch.submit_job, which formats prices to the correct scale using the fixed-precision scalar 1e-9 (available for CSV and JSON text encodings)
+Added pretty_ts option for batch.submit_job, which formats timestamps as ISO 8601 strings (available for CSV and JSON text encodings)
+Added map_symbols option for batch.submit_job, which appends a symbol field to each text-encoded record (available for CSV and JSON text encodings)
+Added split_symbols option for batch.submit_job, which will split files by raw symbol
+Upgraded databento-dbn to 0.10.2
+Bug fixes
+Fixed an issue where no disconnection exception were raised when iterating the Live client.
+Fixed an issue where calling DBNStore.to_df, DBNStore.to_json, or DBNStore.to_csv with map_symbols=True would cause a TypeError
+Breaking changes
+Removed default_value parameter from Historical.symbology.resolve
+Swapped the ordering for the pretty_px and pretty_ts boolean parameters
+0.19.1 - 2023-09-08Bug fixes
+Fixed an issue where the index column was not serialized with DBNStore.to_json
+Fixed an issue where timestamps serialized by DBNStore.to_json had reduced precision
+0.19.0 - 2023-08-25This release includes improvements to handling large DBN data and adds support for future datasets.Enhancements
+Added count parameter to DBNStore.to_df and DBNStore.to_ndarray to help process large files incrementally
+Improved memory usage of DBNStore.to_csv and DBNStore.to_json
+Added the Publisher, Venue, and Dataset enums
+Replace null prices with NaN when pretty_px=True in DBNStore.to_df()
+Upgraded databento-dbn to 0.8.3
+Bug fixes
+Fixed issue where exception messages were displaying JSON encoded data
+Fixed typo in BATY.PITCH.BATY publisher
+Reduced floating error when converting prices to floats with pretty_px=True
+Breaking changes
+DBNStore.to_df now always utf-8 decodes string fields
+0.18.1 - 2023-08-16Bug fixes
+Fixed issue where extra python key was sent by the Live client
+0.18.0 - 2023-08-14Breaking changes
+Renamed the TimeSeriesHttpAPI class to TimeseriesHttpAPI
+Bug fixes
+Fixed an issue where DBNStore.to_csv(), DBNStore.to_df(), DBNStore.to_json(), and DBNStore.to_ndarray() would consume large amounts of memory
+0.17.0 - 2023-08-10This release includes improvements to the ergonomics of the clients metadata API, you can read more about the changes here.Enhancements
+Upgraded databento-dbn to 0.8.2
+Breaking changes
+Changed metadata.list_publishers() to return a list of publisher details objects
+Changed metadata.list_fields(...) to return a list of field detail objects for a particular schema and encoding
+Changed metadata.list_fields(...) to require the schema and encoding parameters
+Changed metadata.list_unit_prices(...) to return a list of unit prices for each feed mode and data schema
+Changed metadata.list_unit_prices(...) to require the dataset parameter
+Removed metadata.list_unit_prices(...) mode and schema parameters
+Removed metadata.list_fields(...) dataset parameter
+0.16.1 - 2023-08-03Bug fixes
+Fixed an issue where starting a Live client before subscribing gave an incorrect error message
+Fixed an issue where a Live client exception callback would fail when the callback function does not have a __name__ attribute
+0.16.0 - 2023-07-25This release includes updates to the fields in text encodings (CSV and JSON), you can read more about the changes here.Enhancements
+Added rtype field to all schemas that was previously excluded
+Breaking changes
+Reordered fields of DataFrame and CSV encoded records to match historical API
+0.15.2 - 2023-07-19Bug fixes
+Fixed an issue where the end parameter in timeseries.get_range_async did not support a value of None
+Fixed an issue where timeseries.get_range requests would begin with an invalid path parameter
+0.15.1 - 2023-07-06Bug fixes
+Fixed an issue with release tests
+Fixed an issue with release workflow
+0.15.0 - 2023-07-05Enhancements
+Added symbology_map property to Live client
+Added optional_symbols_list_to_list parsing function
+Changed Live.add_callback and Live.add_stream to accept an exception callback
+Changed Live.__iter__() and Live.__aiter__() to send the session start message if the session is connected but not started
+Upgraded databento-dbn to 0.7.1
+Removed exception chaining from exceptions emitted by the library
+Bug fixes
+Fixed issue where a large unreadable symbol subscription message could be sent
+Fixed an ImportError observed in Python 3.8
+Breaking changes
+Removed Encoding, Compression, Schema, and SType enums as they are now exposed by databento-dbn
+Renamed func parameter to record_callback for Live.add_callback and Live.add_stream
+Removed optional_symbols_list_to_string parsing function
+0.14.1 - 2023-06-16Bug fixes
+Fixed issue where DBNStore.to_df() would raise an exception if no records were present
+Fixed exception message when creating a DBNStore from an empty data source
+0.14.0 - 2023-06-14Enhancements
+Added DatabentoLiveProtocol class
+Added metadata property to Live
+Added support for emitting warnings in API response headers
+Added support for reusing a Live client to reconnect
+Relaxed 10 minute minimum request time range restriction
+Upgraded aiohttp to 3.8.3
+Upgraded numpy to 1.23.5
+Upgraded pandas to 1.5.3
+Upgraded requests to 2.28.1
+Upgraded zstandard to 0.21.0
+Breaking changes
+Removed support for Python 3.7
+Renamed symbol to raw_symbol in definition schema when converting to a DataFrame
+Changed iteration of Live to no longer yield DBN metadata
+Changed Live callbacks to no longer yield DBN metadata
+Bug fixes
+Fixed optional end parameter for batch.submit_job(...)
+0.13.0 - 2023-06-02Enhancements
+Added support for statistics schema
+Added batch download support data files (condition.json and symbology.json)
+Renamed booklevel MBP field to levels for brevity and consistent naming
+Upgraded databento-dbn to 0.6.0
+Breaking changes
+Changed flags field to an unsigned int
+Changed default of ts_out to False for Live client
+Changed instrument_class DataFrame representation to be consistent with other char types
+Removed open_interest_qty and cleared_volume fields that were always unset from definition schema
+Removed sunset timeseries.stream method
+Removed support for legacy stypes
+0.12.0 - 2023-05-01Enhancements
+Added Live client for connecting to Databento's live service
+Added degraded, pending and missing condition variants for batch.get_dataset_condition
+Added last_modified_date field to batch.get_dataset_condition response
+Upgraded DBNStore to support mixed schema types to support live data
+Upgraded databento-dbn to 0.5.0
+Breaking changes
+Changed iteration DBNStore to return record types from databento-dbn instead of numpy arrays
+Renamed the cost field to cost_usd for batch.submit_job and batch.list_jobs (value now expressed as US dollars)
+Renamed product_id field to instrument_id
+Renamed symbol field in definitions to raw_symbol
+Removed dtype property from DBNStore
+Removed record_size property from DBNStore
+Removed bad condition variant from batch.get_dataset_condition
+Removed unused LiveGateway enum
+Removed STATSTICS from Schema enum
+Removed STATUS from Schema enum
+Removed GATEWAY_ERROR from Schema enum
+Removed SYMBOL_MAPPING from Schema enum
+Deprecations
+Deprecated SType.PRODUCT_ID to SType.INSTRUMENT_ID
+Deprecated SType.NATIVE to SType.RAW_SYMBOL
+Deprecated SType.SMART to SType.PARENT and SType.CONTINUOUS
+0.11.0 - 2023-04-13Bug fixes
+Changed end and end_date to optional to support new forward-fill behaviour
+Upgraded zstandard to 0.20.0
+0.10.0 - 2023-04-07Enhancements
+Added support for imbalance schema
+Added instrument_class, strike_price, and strike_price_currency to definition
+schema
+Changed parsing of end and end_date params throughout the API
+Improved exception messages for server and client timeouts
+Upgraded databento-dbn to 0.4.3
+Breaking changes
+Renamed Bento class to DBNStore
+Removed metadata.list_compressions (redundant with docs)
+Removed metadata.list_encodings (redundant with docs)
+Removed optional start and end params from metadata.list_schemas (redundant)
+Removed related and related_security_id from definition schema
+0.9.0 - 2023-03-10Enhancements
+Improved use of the logging module
+Breaking changes
+Removed record_count property from Bento class
+Changed metadata.get_dataset_condition response to a list of condition per date
+Bug fixes
+Fixed bug in Bento where invalid metadata would prevent iteration
+0.8.1 - 2023-03-05Enhancements
+Added from_dbn convenience alias for loading DBN files
+Bug fixes
+Fixed bug in Bento iteration where multiple readers were created
+0.8.0 - 2023-03-03Enhancements
+Added batch.list_files(...) method
+Added batch.download(...) method
+Added batch.download_async(...) method
+Integrated DBN encoding 0.3.2
+Breaking changes
+Dropped support for DBZ encoding
+Renamed timeseries.stream to timeseries.get_range
+Renamed timeseries.stream_async to timeseries.get_range_async
+Changed .to_df(...) pretty_ts default argument to True
+Changed .to_df(...) pretty_px default argument to True
+Changed .to_df(...) map_symbols default argument to True
+Deprecations
+Deprecated timeseries.stream(...) method
+Deprecated timeseries.stream_async(...) method
+0.7.0 - 2023-01-10
+Added support for definition schema
+Updated Flags enum
+Upgraded dbz-python to 0.2.1
+Upgraded zstandard to 0.19.0
+0.6.0 - 2022-12-02
+Added metadata.get_dataset_condition method to Historical client
+Upgraded dbz-python to 0.2.0
+0.5.0 - 2022-11-07Enhancements
+Updated quickstart.ipynb jupyter notebook
+Bug fixes
+Fixed dataframe columns for derived data schemas (dropped channel_id)
+Fixed batch.submit_job requests for dbz encoding
+Updated quickstart.ipynb jupyter notebook
+0.4.0 - 2022-09-14
+Added map_symbols option for .to_df() (experimental)
+Upgraded dbz-python to 0.1.5
+0.3.0 - 2022-08-30
+Initial release
+HTTP API0.34.1 - 2025-06-17Enhancements
+Changed the following Venue, Publisher, and Dataset descriptions:
+"ICE Futures US" renamed to "ICE Futures US"
+"ICE Futures Europe (Financials)" renamed to "ICE Europe Financials"
+"ICE Futures Europe (Commodities)" renamed to "ICE Europe Commodities"
+0.34.0 - TBDBreaking changes
+Updated the names of several subfields in the /corporate_actions.get_range response,
+under the date_info, event_info, and rate_info fields. The following subfields were renamed:
+decl_currency renamed to declared_currency
+decl_gross_amount renamed to declared_gross_amount
+f_x_rate renamed to fx_rate
+iss_new_name renamed to issuer_new_name
+iss_old_name renamed to issuer_old_name
+new_bbg_company_id renamed to new_bbg_comp_id
+new_bbg_company_tk renamed to new_bbg_comp_ticker
+new_bbg_exh_id renamed to new_figi
+new_bbg_exh_tk renamed to new_figi_ticker
+new_min_tra_qty renamed to new_min_trading_qty
+new_mktsg_id renamed to new_market_segment_id
+new_reg_s144_a renamed to new_reg_s144a
+new_unit_sec_id renamed to new_unit_security_id
+offeree_iss_id renamed to offeree_issuer_id
+offeror_iss_id renamed to offeror_issuer_id
+old_bbg_company_id renamed to old_bbg_comp_id
+old_bbg_company_tk renamed to old_bbg_comp_ticker
+old_bbg_exh_id renamed to old_figi
+old_bbg_exh_tk renamed to old_figi_ticker
+old_min_tra_qty renamed to old_min_trading_qty
+old_mktsg_id renamed to old_market_segment_id
+old_reg_s144_a renamed to old_reg_s144a
+old_unit_sec_id renamed to old_unit_security_id
+pp_sec_id renamed to pp_security_id
+poolfactor renamed to pool_factor
+pre_offer_q_ty renamed to pre_offer_qty
+qual_st_cap_gains renamed to qual_short_term_cap_gains
+redem_percentage renamed to redemption_percentage
+st_cap_gains renamed to short_term_cap_gains
+sec_new_name renamed to security_new_name
+sec_old_name renamed to security_old_name
+section199_a_foreign_tax_paid renamed to section199a_foreign_tax_paid
+section199_a_inc_div renamed to section199a_inc_div
+section199_a_st_cap_gain renamed to section199a_short_term_cap_gain
+tra_isin renamed to trading_isin
+tra_sec_id renamed to trading_security_id
+us_deposit_receiptateto_currency renamed to usd_rate_to_currency
+cashbak renamed to cash_back
+companyulsory_acq_date renamed to compulsory_acq_date
+frankdiv renamed to franked_div
+lead_plntiff_deadline_date renamed to lead_plaintiff_deadline_date
+maxprice renamed to max_price
+minprice renamed to min_price
+redem_premium renamed to redemption_premium
+redem_price renamed to redemption_price
+unit_frankdiv renamed to unfranked_div
+0.33.0 - 2024-12-10Enhancements
+Removed deprecated packaging parameter from batch.submit_job. Job files can be downloaded individually or as zip files after the job completes
+0.32.0 - 2024-11-26Enhancements
+Introduced POST variants of the following endpoints to complement their existing GET versions:
+POST /metadata.get_record_count(...)
+POST /metadata.get_billable_size(...)
+POST /metadata.get_cost(...)
+0.31.0 - 2024-11-12Deprecations
+The packaging parameter for batch.submit_job is deprecated and will be removed on 2024-12-10. To download all batched files as a dynamic ZIP from the batch/download endpoint, use '{job_id}.zip' as the filename instead.
+0.30.0 - 2024-09-24This release introduces the corporate actions and adjustment factors datasets for the reference data API, both with global coverage.
+The corporate actions dataset provides point-in-time (PIT) corporate action events, while the adjustment factors dataset provides
+end-of-day price adjustments for capital events, supporting multiple currencies for the same event.
+You can read more about the release here.Enhancements
+Added corporate_actions.get_range(...) endpoint
+Added adjustment_factors.get_range(...) endpoint
+0.29.0 - 2024-09-03Deprecations
+The TAR packaging option (tar) for batch.submit_job is deprecated and will be removed at a future date. We recommend you switch to the ZIP packaging option (zip), which will remain available.
+0.28.0 - 2024-06-25Enhancements
+Added support for the status schema for the GLBX.MDP3 dataset
+0.27.0 - 2024-06-04Breaking changes
+Removed the start_date and end_date keys in the response from /metadata.get_dataset_range
+0.26.0 - 2024-05-14Enhancements
+Added start and end keys to the response from /metadata.get_dataset_range to provide time resolution and an exclusive end time
+Deprecations
+The start_date and end_date keys in the response from /metadata.get_dataset_range will be removed in a future release. Use the new start and end keys instead, which include time resolution
+0.25.0 - 2024-03-26Breaking changes
+Removed the forward-fill behavior of end parameters with unspecified months, days, hours, minutes, or seconds
+0.24.0 - 2024-03-06Deprecations
+The forward-fill behavior of end parameters with unspecified months, days, hours, minutes, or seconds will be removed. To ensure consistent time ranges between old and new behavior: specify an explicit end as an ISO 8601 string up to seconds resolution, or a UNIX nanoseconds integer. See https://to.dbn.to/api-change-2024-03-27
+0.23.0 - 2024-02-15Enhancements
+A /timeseries.get_range request which contains one or more unresolved symbols will return a warning message in the response's warnings header
+A /timeseries.get_range request will now return a 206 Partial Content status code if one or more symbols were not resolved
+0.22.0 - 2024-02-06Enhancements
+A /timeseries.get_range request with a date range that contains one or more days with a condition other than available will return a warning message in the response's warnings header
+0.21.0 - 2024-01-30Breaking changes
+Reduced /batch.submit_job rate limit down from 20/second to 20/minute
+0.20.0 - 2024-01-18This release introduces live and historical ICE Europe Commodities iMpact (IFEU.IMPACT) and ICE Endex iMpact (NDEX.IMPACT) data.
+The datasets cover European futures and options for all energy and commodities products, including all listed outrights, spreads,
+and options combinations. You can read more about the release here.Enhancements
+Added the IFEU.IMPACT and NDEX.IMPACT datasets, does not yet include our mbo, mbp-10, mbp-1, and tbbo schemas
+0.19.0 - 2023-10-17Breaking changes
+Standardized timestamps in responses to ISO 8601 format with a T separator and Z suffix for UTC
+Renamed mappings field in the symbology.json to result to match the /symbology.resolve endpoint response
+0.18.0 - 2023-10-11Bug fixes
+Fixed an issue where /timeseries.get_range requests for OHLCV schemas and stype_in=parent with an intraday start would always return no data
+0.17.0 - 2023-10-04This release introduces the Databento Equities Basic dataset (DBEQ.BASIC), our first bundle of live
+and historical US equities data. The bundle includes five proprietary feeds—NYSE Chicago Integrated,
+IEX TOPS, NYSE National Trades, NYSE National BBO, and MIAX Pearl Equities Depth of Market—that can
+be licensed for distribution, display, and non-display applications at no cost.
+You can read more about the release here.Enhancements
+Added the DBEQ.BASIC dataset
+0.16.0 - 2023-09-26Breaking changes
+Symbology mappings no longer include unresolved symbols, this change affects DBN metadata and /symbology.resolve responses
+Changed batch job symbology.csv schema (now a row per date)
+Bug fixes
+Fixed symbology resolution on weekends (now uses mappings from previous Friday)
+Fixed consistent streaming of CSV header when no data is found for a request
+0.15.0 - 2023-09-19This release includes customization options which improve data usability for CSV and JSON text
+encodings, as well as providing a way to split files by raw symbols for batch jobs.Enhancements
+Added pretty_px option for /timeseries.get_range and /batch.submit_job, which formats prices to the correct scale using the fixed-precision scalar 1e-9 (available for CSV and JSON text encodings)
+Added pretty_ts option for /timeseries.get_range and /batch.submit_job, which formats timestamps as ISO 8601 strings (available for CSV and JSON text encodings)
+Added map_symbols option for /timeseries.get_range and /batch.submit_job, which appends a symbol field to each text-encoded record (available for CSV and JSON text encodings)
+Added split_symbols option for /batch.submit_job, which will split files by raw symbol
+0.14.0 - 2023-08-29This release introduces the OPRA (Options Price Reporting Authority) dataset (OPRA.PILLAR) for
+the historical and live APIs, covering all 16 national exchanges. This not only includes options on
+single name equities, but also on indices, e.g., Cboe VIX options, SPX options, and certain
+volatility benchmark indices like SPIKE and VSPKE. You can read more about the release here.Enhancements
+Added the OPRA.PILLAR dataset, does not yet include Global Trading Hours (GTH)
+0.13.0 - 2023-08-23Enhancements
+Added a symbology.csv to batch download support files for the csv encoding
+Changed /symbology.resolve to support input symbology of instrument_id and output of raw_symbol
+0.12.0 - 2023-08-10This release includes improvements to the ergonomics of our metadata API, you can read more about the changes here.
+Note that the /timeseries.get_range and /symbology.resolve endpoints both accept POST and GET requests, with POST being the primary and recommended method.Breaking changes
+Changed /batch.submit_job to now require form-encoded data
+Changed /metadata.list_publishers response to an ordered list of publisher details objects
+Changed /metadata.list_fields response to an ordered list of field detail objects for a particular schema and encoding
+Changed /metadata.list_fields to now require the schema and encoding query parameters
+Changed /metadata.list_unit_prices response to a list of unit prices for each feed mode and data schema
+Changed /metadata.list_unit_prices to now require the dataset query parameter
+Removed /metadata.list_unit_prices mode and schema query parameters
+Removed /metadata.list_field dataset query parameter
+0.11.0 - 2023-07-25This release includes updates to the fields in text encodings (CSV and JSON), you can read more about the changes here.Breaking changes
+Changed CSV encoding column ordering for most schemas
+Changed JSON encoding to serialize header fields in nested hd object (consistency with how levels are serialized)
+Changed JSON encoding to encode all 64-bit integers as strings to avoid loss of precision when converting
+to double-precision floating point
+Added rtype field/column to MBP schemas that was previously excluded
+Added depth field/column to MBP schemas that was previously excluded
+Renamed JSON fields bid_oq_* and ask_oq_* to bid_ct_* and ask_ct_* respectively
+Renamed security_group to group for the definition schema
+0.10.0 - 2023-07-06Enhancements
+Added warnings header for API responses
+Added POST request support for timeseries.get_range and symbology.resolve endpoints
+Improved behavioral consistency of query params start, end, start_date and end_date across the API (exclusive end)
+Relaxed 10 minute minimum request time range restriction
+Added rtype to encoded CSV and JSON
+Deprecations
+Deprecated symbology section in the metadata.json for batch downloads (will be removed in a future version after July 3rd)
+Bug fixes
+Fixed handling of certain errors involving invalid parent or continuous symbols (no longer a HTTP 500 error)
+0.9.0 - 2023-06-01Enhancements
+Added additional batch download support data files (condition.json and symbology.json)
+Breaking changes
+Removed support for sunset /timeseries.stream endpoint
+Removed support for legacy stypes
+0.8.0 - 2023-05-01Enhancements
+Added additional field last_modified_date to /metadata.get_dataset_condition response
+Added degraded, pending and missing condition variants for /metadata.get_dataset_condition
+Added last_modified_date field to batch.get_dataset_condition response
+Breaking changes
+Renamed product_id field to instrument_id
+Renamed symbol field in definitions to raw_symbol
+Renamed the cost field to cost_usd for /batch.submit_job and /batch.list_jobs (value now expressed as US dollars)
+Removed bad condition variant from batch.get_dataset_condition
+Deprecations
+Deprecated stype product_id in favor of instrument_id
+Deprecated stype native in favor of raw_symbol
+Deprecated stype smart in favor of separate parent and continuous stypes
+0.7.0 - 2023-04-07Breaking changes
+Removed /metadata.list_compressions endpoint (redundant with docs)
+Removed /metadata.list_encodings endpoint (redundant with docs)
+Removed optional start and end params from /metadata.list_schemas endpoint (redundant)
+Changed parsing of end and end_date params throughout the API
+0.6.0 - 2023-03-10Breaking changes
+Changed metadata.get_dataset_condition response to an array of conditions per date
+0.5.0 - 2023-03-03Enhancements
+Added /batch.list_files endpoint for listing batch job file details
+Integrated DBN encoding 0.3.2
+Breaking changes
+Renamed /timeseries.stream to /timeseries.get_range
+0.4.0 - 2022-12-02
+Added /metadata.get_dataset_condition endpoint to discover availability and quality
+Improved smart symbology resolution
+0.3.0 - 2022-08-30
+Added Databento Binary Encoding (DBZ) streaming and batch downloads
+Added initial smart symbology support
+Further improved consistency of parameter and field names
+0.2.0 - 2021-12-10
+Added historical APIs for metadata, time series and symbology
+Added streaming and batch download support
+Added native product ID and symbol support
+Added sizing and pricing functionality
+Improved error handling, size limits and rate limits
+Improved consistency of field names between schemas
+0.1.0 - 2021-08-30
+Added support for server-streaming RPC over HTTP
+Added basic schemas and encoding (binary, CSV, JSON) support
+Added new datasets: CME Globex MDP 3.0
+Raw API0.6.1 - TBDEnhancements
+Added replay completed notification SystemMsg records
+Added throttling to subscription handling so one client sending lots of subscriptions
+can't degrade other users' sessions
+0.6.0 - 2025-05-24Enhancements
+Added subscription acknowledgement SystemMsg records
+Added a new optional is_last field to subscription requests to indicate the request
+is part of a larger subscription
+Began setting code field in DBN version 2+ ErrorMsg and SystemMsg records
+Added slow reader warnings in the form of SystemMsg records
+0.5.6 - 2025-04-06Enhancements
+Added support for continuous open interest (.n.) and volume (.v.) symbology for
+ICE Europe Commodities and ICE Endex
+0.5.5 - 2024-12-01Enhancements
+Added support for continuous calendar symbology for ICE Europe Commodities and ICE Endex
+0.5.4 - 2024-10-02Enhancements
+Subscriptions with stype_in=instrument_id will now return SymbolMapping records
+0.5.3 - 2024-10-02Bug fixes
+Fixed issue where an instrument definition with security_update_action Delete could cause
+ALL_SYMBOLS subscriptions to drop records
+Subscription with stype_in=instrument_id will now fail on unknown instrument ids
+0.5.1 - 2024-07-24Bug fixes
+Fixed issue where start times falling between trading sessions could be rejected
+2024-07-20Bug fixes
+Fixed bug where sessions could be closed with "Internal error"
+2024-06-25Enhancements
+Added subscription option snapshot=... to start live MBO data with an order book snapshot
+0.5.0 - 2024-05-25Enhancements
+Added support for optional snapshot field in subscription control message to request
+a snapshot of stateful schemas like MBO
+Added support for optional heartbeat_interval_s field in authentication control message
+to configure the interval when heartbeat messages will be sent
+Added support for optional id field in subscription control message
+0.4.6 - 2024-04-13Bug fixes
+Disabled continuous symbology for ICE Endex and ICE Europe Commodities until it can be
+implemented correctly
+0.4.5 - 2024-03-25Bug fixes
+Fixed inadvertent change to session ID format after successfully authenticating with
+live gateway
+0.4.4 - 2024-03-23Enhancements
+Added functionality to send SymbolMappingMsg records when subscribing to
+ALL_SYMBOLS
+Bug fixes
+Fixed sending SymbolMappingMsg for all instruments in parent symbol when subscribing
+to a continuous symbol
+0.4.3 - 2024-02-13Enhancements
+Changed rate limiter to have more predictable behavior
+0.4.2 - 2024-01-06Enhancements
+Improved error messages
+Bug fixes
+Fixed command truncation
+0.4.0 - 2023-11-08Breaking changes
+Added support to respond with DBNv2. DBN version is indicated in the metadata header
+0.3.0 - 2023-10-20Enhancements
+When a subscription has symbols that fail to resolve, a separate ErrorMsg record
+will be sent for each symbol
+Added pretty_px session parameter which formats prices to the correct scale using
+the fixed-precision scalar 1e-9 (available for JSON encoding)
+Added pretty_ts session parameter which formats timestamps as ISO 8601 strings
+(available for JSON encoding)
+0.2.0 - 2023-07-23Breaking changes
+Updated JSON encoding:
+Moved header fields (rtype, publisher_id, instrument_id, and ts_event) to
+nested object under the key hd in JSON encoding to match structure definitions
+Added channel_id to MBO schema
+Changed to always include rtype to differentiate between schemas, making details
+session parameter redundant
+Rename security_group in definitions schema to group to match struct definitions
+All 64-bit integers are now serialized as strings to avoid loss of precision
+Deprecations
+Deprecated details session parameter
+0.1.0 - 2023-05-01
+Initial support for real-time and intraday data
+Rust0.27.1 - 2025-06-17Enhancements
+Changed the following Venue, Publisher, and Dataset descriptions:
+"ICE Futures US" renamed to "ICE Futures US"
+"ICE Futures Europe (Financials)" renamed to "ICE Europe Financials"
+"ICE Futures Europe (Commodities)" renamed to "ICE Europe Commodities"
+0.27.0 - 2025-06-10Enhancements
+Made the buffer size used by the live client when reading from the TCP socket
+configurable through the LiveBuilder::buffer_size() method
+Added support for using rustls without pulling in OpenSSL. reqwest with OpenSSL is
+still the default
+Upgraded DBN version to 0.36.0:
+Added support for width, fill, and padding when formatting pretty::Ts
+Added support for sign, precision, width, fill, and padding when formatting
+pretty::Px
+Optimized pretty formatting of prices and timestamps
+Breaking changes
+Changed type of split_duration to Option<SplitDuration> to support setting no
+split duration
+Breaking changes from DBN:
+Moved core async decoding and encoding functionality to new traits to
+match the sync interface and present a standardized interface
+Decoding: AsyncDecodeRecordRef and AsyncDecodeRecord
+Encoding: AsyncEncodeRecord, AsyncEncodeRecordRef, and
+AsyncEncodeRecordTextExt
+Deprecations
+Deprecated LiveClient::connect and LiveClient::connect_with_addr methods in favor
+of using the builder so additional optional parameters can be added without a breaking
+change
+Bug fixes
+Fixed bug with deserializing null split_duration in historical
+batch().list_jobs()
+0.26.2 - 2025-06-03Enhancements
+Improved performance of live client by removing redundant state
+Upgraded DBN version to 0.35.1
+Bug fixes
+Fixed handling of VersionUpgradePolicy in timeseries().get_range() and
+get_range_to_file()
+Bug fixes from DBN:
+Fixed behavior where encoding metadata could lower the version
+Changed DbnFsm::data() to exclude all processed data
+Fixed Metadata::upgrade() behavior with UpgradeToV2
+0.26.1 - 2025-05-30Bug fixes
+Fixed handling of VersionUpgradePolicy in live client
+Fixed default upgrade policies to UpgradeToV3 to match announcement for version
+0.26.0
+0.26.0 - 2025-05-28This version marks the release of DBN version 3 (DBNv3), which is the new default.
+API methods and decoders support decoding all versions of DBN, but now default to
+upgrading data to version 3.Enhancements
+Added From<DatasetRange> conversion for DateTimeRange
+Added is_last field to live subscription requests which will be used to improve the
+handling of split subscription requests
+Upgraded DBN version to 0.35.0:
+Version 1 and 2 structs can be converted to version 3 structs with the From trait
+Implemented conversion from RecordRef to IoSlice for use with
+Write::write_vectored
+Breaking changes
+Breaking changes from DBN:
+Definition schema:
+Updated InstrumentDefMsg with new leg_ fields to support multi-leg strategy
+definitions.
+Expanded asset to 11 bytes and ASSET_CSTR_LEN to match
+Expanded raw_instrument_id to 64 bits to support more venues. Like other 64-bit
+integer fields, its value will now be quoted in JSON
+Removed trading_reference_date, trading_reference_price, and
+settl_price_type fields which will be normalized in the statistics schema
+Removed md_security_trading_status better served by the status schema
+Statistics schema:
+Updated StatMsg has an expanded 64-bit quantity field. Like other 64-bit
+integer fields, its value will now be quoted in JSON
+The previous StatMsg has been moved to v2::StatMsg or StatMsgV2
+Changed the default VersionUpgradePolicy to UpgradeToV3
+Updated the minimum supported tokio version to 1.38, which was released one year ago
+0.25.0 - 2025-05-13Enhancements
+Increased live subscription symbol chunking size
+Upgraded DBN version to 0.34.0:
+Added a v3::StatMsg record with an expanded 64-bit quantity field
+Added with_compression_level methods to DynWriter, AsyncDynWriter, and
+AsyncDynBufWriter
+Added DBN_VERSION constants to each version module: v1, v2, and v3
+Added UNDEF_STAT_QUANTITY constants to each version module
+Added statistics compatibility trait StatRec for generalizing across different
+versions of the statistics record
+Added AsRef<[u8]> implementations for RecordEnum and RecordRefEnum
+Added new off-market publishers for Eurex, and European Energy Exchange (EEX)
+Breaking changes
+From DBN:
+Made Record a subtrait of AsRef<[u8]> as all records should be convertible to
+bytes
+0.24.0 - 2025-04-22Enhancements
+Upgraded DBN version to 0.33.0:
+Added SystemCode and ErrorCode enums to indicate types of system and error
+messages
+Added code() methods to SystemMsg and ErrorMsg to retrieve the enum value if
+one exists and equivalent properties in Python
+Converting a v1::SystemMsg to a v2::SystemMsg now sets to code to the
+heartbeat value
+Added ASSET_CSTR_LEN constants for the size of asset field in InstrumentDefMsg
+in different DBN versions
+Added encode_record_with_sym()  method to AsyncJsonEncoder which encodes a
+record along with its text symbol to match the sync encoder
+Breaking changes
+Breaking changes from DBN:
+Added code parameter to SystemCode::new() and ErrorMsg::new()
+Updated the rtype_dispatch and schema_dispatch macro invocations to look more
+like function invocation
+Increased the size of asset field in v3::InstrumentDefMsg from 7 to 11. The
+InstrumentDefMsgV3 message size remains 520 bytes.
+0.23.0 - 2025-04-15Enhancements
+Added subscriptions to LiveClient Debug implementation
+Upgraded DBN version to 0.32.0:
+Added SystemCode and ErrorCode enums to indicate types of system and error
+messages
+Added code() methods to SystemMsg and ErrorMsg to retrieve the enum value if
+one exists and equivalent properties in Python
+Converting a v1::SystemMsg to a v2::SystemMsg now sets to code to the heartbeat
+value
+Added Ord and PartialOrd implementations for all enums and FlagSet to allow
+for use in ordered containers like BTreeMap
+Added decode_records() method to AsyncDbnDecoder and AsyncDbnRecordDecoder
+which is similar to the sync decoder methods of the same name
+Upgraded pyo3 version to 0.24.1
+Upgraded time version to 0.3.41
+Breaking changes
+Added new id field to live Subscription, which will be used for improved error
+messages
+Added new id parameter to live::protocol::SubRequest::new() method
+Breaking changes from DBN:
+Added code parameter to SystemCode::new() and ErrorMsg::new()
+Updated the rtype_dispatch and schema_dispatch macro invocations to look more like
+function invocation
+Removed deprecated dataset module. The top-level Dataset enum and its const as_str()
+method provide the same functionality for all datasets
+Removed deprecated SymbolIndex::get_for_rec_ref() method
+0.22.0 - 2025-04-01Enhancements
+Added an implementation From<Date> for DateRange and DateTimeRange to make it
+simpler to request a single full day's worth of data
+Added conversions between DateRange and DateTimeRange
+Added conversions from timeseries::GetRangeParams, timeseries::GetRangeToFileParams,
+and dbn::Metadata to symbology::ResolveParams
+Upgraded DBN version to 0.30.0:
+Added support for mapping symbols from instrument definitions to PitSymbolMap
+with a new on_instrument_def() method
+Added instrument definition compatibility trait InstrumentDefRec for generalizing
+across different versions of the instrument definition record
+Added Ord and PartialOrd implementations for all enums and FlagSet to allow
+for use in ordered containers like BTreeMap
+Added decode_records() method to AsyncDbnDecoder and AsyncDbnRecordDecoder
+which is similar to the sync decoder methods of the same name
+Removed deprecated dataset module. The top-level Dataset enum and its const as_str()
+method provide the same functionality for all datasets
+Removed deprecated SymbolIndex::get_for_rec_ref() method
+0.21.0 - 2025-03-18Enhancements
+Improved error when calling LiveClient::next_record() on an instance that hasn't
+been started
+Improved error when calling LiveClient::start() on an instance that has already
+been started
+Upgraded DBN version to 0.29.0:
+Added new venues, datasets, and publishers for ICE Futures US, ICE Europe Financials
+products, Eurex, and European Energy Exchange (EEX)
+Added new SkipBytes and AsyncSkipBytes traits which are a subset of the Seek
+and AsyncSeek traits respectively, only supporting seeking forward from the current
+position
+Deprecated AsyncRecordDecoder::get_mut() and AsyncDecoder::get_mut() as modifying
+the inner reader after decoding any records could lead to a corrupted stream and
+decoding errors
+0.20.0 - 2025-02-12Enhancements
+Added LiveClient::reconnect() and LiveClient::resubscribe() methods to make it easier
+to resume a live session after losing the connection to the live gateway
+Added subscriptions() and subscriptions_mut() getters to LiveClient for getting all
+active subscriptions
+Added shutdown() method to live::Protocol to clean up the active session
+Downgraded to tracing span level on LiveClient::next_record() to "debug" to reduce
+performance impact
+Added From<&[&str]> and From<[str; N]> implementations for Symbols
+Breaking changes
+Changed LiveClient::close() to take &mut self rather than an owned value to self now
+that clients can be reused through the reconnect() method
+Changed LiveClient::subscribe() to take a Subscription parameter rather than a
+&Subscription because it will now store the Subscription struct internally
+Upgraded DBN version to 0.28.0:
+Added CommoditySpot InstrumentClass variant and made InstrumentClass
+non-exhaustive to allow future additions without breaking changes
+0.19.0 - 2025-01-21Enhancements
+Upgraded DBN version to 0.27.0:
+Updated enumerations for unreleased US equities datasets and publishers
+Added new venue EQUS for consolidated US equities
+Added new dataset EQUS.MINI and new publishers EQUS.MINI.EQUS and
+XNYS.TRADES.EQUS
+Bug fixes
+Changed historical metadata methods with symbols parameter to use a POST request
+to allow for requesting supported maximum of 2000 symbols
+0.18.0 - 2025-01-08Enhancements
+Upgraded DBN version to 0.26.0:
+Added v3 namespace in preparation for future DBN version 3 release. DBN version 2
+remains the current and default version
+Added v3::InstrumentDefMsg record with new fields to support normalizing multi-leg
+strategy definitions
+Removal of statistics-schema related fields trading_reference_price,
+trading_reference_date, and settl_price_type
+Removal of the status-schema related field md_security_trading_status
+Added initial support for merging DBN:
+Decoding streams: MergeDecoder and MergeRecordDecoder structs
+Metadata: MergeDecoder struct and Metadata::merge() method
+In the CLI: specify more than one input file to initiate a merge
+Eliminated unsafe in From implementations for record structs from different versions
+0.17.0 - 2024-12-17Enhancements
+Upgraded DBN version to 0.25.0:
+Added v1 and v2 namespaces in DBN to allow unambiguously referring to the record
+types for a given DBN version regardless of whether the record type has changed
+Changed dataset() method on MetadataBuilder to accept an impl ToString so now
+Dataset and &str can be passed directly
+Changed async DBN decoding to return Ok(None) when an incomplete record remains in
+the stream. This matches the existing behavior of sync DBN decoding
+Upgraded thiserror version to 2.0
+Breaking changes
+Removed deprecated Packaging enum and packaging field that's no longer supported
+by the API
+As part of the DBN version upgrade:
+VersionUpgradePolicy::Upgrade was renamed to UpgradeToV2
+Changed async DBN decoding to return Ok(None) when an incomplete record remains in
+the stream
+0.16.0 - 2024-11-12Enhancements
+Upgraded DBN version to 0.23.1:
+Added floating-point getters for price fields
+Added new IntelligentCross venues ASPN, ASMT, and ASPI
+Upgraded thiserror version to 2.0
+Deprecations
+Deprecated Packaging enum and packaging field on SubmitJobParams and BatchJob.
+These will be removed in a future version. All files from a batch job can be downloaded
+with the batch().download() method on the historical client
+0.15.0 - 2024-10-22Enhancements
+Upgraded DBN version to 0.23.0:
+Added new None Action variant that will be gradually rolled out
+to historical and live GLBX.MDP3 data
+Added consistent escaping of non-printable and non-ASCII values when text encoding
+c_char fields
+Implemented Default for Action and Side
+Implemented missing Serialize for (with serde feature enabled) for Venue,
+Dataset, Publisher, Compression, SType, Schema, and Encoding
+0.14.1 - 2024-10-08Enhancements
+Upgraded DBN version to 0.22.1:
+Fixed buffer overrun in c_chars_to_str on non-null terminated input
+Combined _reserved3 and reserved4 fields in CbboMsg
+0.14.0 - 2024-10-01Enhancements
+Made several previously internal functions public to allow advanced users more
+customization and piecemeal usage of the live API:
+ApiKey
+Symbols::to_chunked_api_string()
+live::protocol module containing implementations of the raw API messages
+Changed from log crate to tracing for better diagnostics
+0.13.0 - 2024-09-25Deprecations
+Deprecated Packaging::Tar. Users should switch to Packaging::Zip. This variant
+will be removed in a future version when it is no longer supported by the API
+0.12.1 - 2024-08-27Enhancements
+Added Intraday variant to DatasetCondition in preparation for intraday data being
+available from the historical API
+Upgraded DBN version to 0.20.1 for new publisher values for XCIS.BBOTRADES and
+XNYS.BBOTRADES
+0.12.0 - 2024-07-30Breaking changes
+Upgraded DBN version to 0.20.0:
+Renamed SType::Nasdaq variant to SType::NasdaqSymbol
+Renamed SType::Cms variant to SType::CmsSymbol
+0.11.4 - 2024-07-16Enhancements
+Upgraded DBN version to 0.19.1 with fixes for BBOMsg record struct
+0.11.3 - 2024-07-09Enhancements
+Upgraded DBN version to 0.19.0 with new BBOMsg record struct
+0.11.2 - 2024-06-25Enhancements
+Added historical::timeseries::get_range_to_file method to persist the data stream to
+a given path before returning an AsyncDbnDecoder
+0.11.1 - 2024-06-11Enhancements
+Added getter for heartbeat_interval to LiveClient
+Bug fixes
+Fixed potential incorrect DNS resolution when overriding the live gateway address
+with live::Builder::addr
+0.11.0 - 2024-06-04Enhancements
+Added configurable heartbeat_interval parameter for live client that determines the
+timeout before heartbeat SystemMsg records will be sent. It can be configured via
+the heartbeat_interval and heartbeat_interval_s methods of the
+live::ClientBuilder
+Added addr function to live::ClientBuilder for configuring a custom gateway
+address without using LiveClient::connect_with_addr directly
+Upgraded DBN version to 0.18.1
+Breaking changes
+Added heartbeat_interval parameter to LiveClient::connect and
+LiveClient::connect_with_addr
+Removed deprecated start_date and end_date fields from DatasetRange struct
+0.10.0 - 2024-05-22Enhancements
+Added use_snapshot attribute to Subscription, defaults to false
+Upgraded reqwest version to 0.12
+Breaking changes
+Upgraded DBN version to 0.18.0
+Changed type of flags in MboMsg, TradeMsg, Mbp1Msg, Mbp10Msg, and CbboMsg
+from u8 to a new FlagSet type with predicate methods for the various bit flags
+as well as setters. The u8 value can still be obtained by calling the raw() method
+Improved Debug formatting
+Switched DecodeStream from streaming_iterator crate to fallible_streaming_iterator
+to allow better notification of errors
+Changed default value for stype_in and stype_out in SymbolMappingMsg to
+u8::MAX to match C++ client and to reflect an unknown value. This also changes the
+value of these fields when upgrading a SymbolMappingMsgV1 to DBNv2
+0.9.1 - 2024-05-15Bug fixes
+Fixed build when only live feature is enabled
+0.9.0 - 2024-05-14Enhancements
+Added start and end fields to the DatasetRange struct which are instances of OffsetDateTime and provide time resolution and an exclusive end
+Upgraded DBN version to 0.17.1
+Deprecations
+The start_date and end_date fields of the DatasetRange struct are deprecated and will be removed in a future release
+0.8.0 - 2024-04-01Enhancements
+Upgraded DBN version to 0.17.0
+Added new record types and schema variants for consolidated BBO and subsampled BBO
+Added Volatility and Delta StatType variants
+Breaking changes
+Removed previously-deprecated live::SymbolMap. Please use
+databento::dbn::PitSymbolMap instead
+0.7.1 - 2024-03-05Enhancements
+Improve error handling when a historical HTTP error response is not in the
+expected JSON format
+0.7.0 - 2024-03-01Enhancements
+Document cancellation safety of LiveClient methods
+Document live::Subscription::start is based on ts_event
+Allow constructing a DateRange and DateTimeRange with an end based on a
+time::Duration
+Implemented Debug for LiveClient, live::ClientBuilder, HistoricalClient,
+historical::ClientBuilder, BatchClient, MetadataClient, SymbologyClient, and
+TimeseriesClient
+Derived Clone for live::ClientBuilder and historical::ClientBuilder
+Added ApiKey type for safely deriving Debug for types containing an API key
+Breaking changes
+Changed default upgrade_policy in LiveBuilder and GetRangeParams to Upgrade so
+by default the primary record types can always be used
+Simplified DateRange and DateTimeRange by removing FwdFill variant that didn't
+work correctly
+Upgraded DBN version to 0.16.0
+Updated StatusMsg in preparation for status schema release
+Fixed handling of ts_out when upgrading DBNv1 records to version 2
+Fixed handling of ErrorMsgV1 and SystemMsgV1 in rtype dispatch macros
+0.6.0 - 2024-01-16Enhancements
+Relaxed version requirements for tokio, tokio-util, and thiserror
+Breaking changes
+Upgraded DBN version to 0.15.0
+Added support for larger SystemMsg and ErrorMsg records
+Improved Debug implementations for records and RecordRef
+Improved panic messages for RecordRef::get
+Upgraded typed-builder to 0.18
+Bug fixes
+Fixed documentation for end in DateRange::Closed and DateTimeRange::Closed
+0.5.0 - 2023-11-23This release adds support for DBN v2.DBN v2 delivers improvements to the Metadata header symbology, new stype_in and stype_out
+fields for SymbolMappingMsg, and extends the symbol field length for SymbolMappingMsg and
+InstrumentDefMsg. The entire change notes are available here.
+Users who wish to convert DBN v1 files to v2 can use the dbn-cli tool available in the databento-dbn crate.
+On a future date, the Databento live and historical APIs will stop serving DBN v1.This release is fully compatible with both DBN v1 and v2, and so should be seamless for most users.Enhancements
+Made LiveClient::next_record, dbn::decode::AsyncDbnDecoder::decode_record and
+decode_record_ref, and dbn::decode::AsyncRecordDecoder::decode and decode_ref
+cancel safe. This makes them safe to use within a
+tokio::select! statement
+Improved error reporting for HistoricalClient when receiving an error from
+Databento's API
+Improved error messages around API keys
+Improved performance of CSV and JSON encoding
+Added support for emitting warnings from historical API response headers, such as for
+future deprecations
+Added symbol_map method to the Resolution struct returned by symbology::resolve
+that returns a TsSymbolMap
+Added PartialEq and Eq implementations for parameter builder classes
+Added upgrade_policy setter to the LiveClient builder and a getter to the
+LiveClient
+Added upgrade_policy optional setter to the timeseries::GetRangeParams builder
+Breaking changes
+Upgraded dbn to 0.14.2. There are several breaking changes in this release as we
+begin migrating to DBN encoding version 2 (DBNv2) in order to support the ICE
+exchange:
+Renamed dbn::InstrumentDefMsg to dbn::compat::InstrumentDefMsgV1 and added a
+new dbn::InstrumentDefMsg with a longer raw_symbol field
+Renamed dbn::SymbolMappingMsg to dbn::compat::SymbolMappingMsgV1 and added a
+new dbn::SymbolMappingMsg with longer symbol fields and new stype_in and
+stype_out fields
+Added symbol_cstr_len field to dbn::Metadata
+Made Error non-exhaustive, meaning it no longer be exhaustively matched against, and
+new variants can be added in the future without a breaking change
+Added an upgrade_policy parameter to LiveClient::connect and connect_with_addr.
+The builder provides a more stable API since new parameters are usually introduced as
+optional
+Deprecations
+Deprecated live::SymbolMap in favor of databento::dbn::PitSymbolMap
+0.4.2 - 2023-10-23Enhancements
+Upgraded dbn to 0.13.0 for improvements to symbology helpers
+Upgraded tokio to 1.33
+Upgraded typed-builder to 0.17
+Bug fixes
+Fixed panic in LiveClient when gateway returned an auth response without the
+success key
+0.4.1 - 2023-10-06Enhancements
+Added support for changing datetime format used in batch job responses
+Upgraded dbn to 0.11.1
+0.4.0 - 2023-09-21Enhancements
+Added pretty_px option for batch::submit_job, which formats prices to the correct
+scale using the fixed-precision scalar 1e-9 (available for CSV and JSON text
+encodings)
+Added pretty_ts option for batch::submit_job, which formats timestamps as ISO 8601
+strings (available for CSV and JSON text encodings)
+Added map_symbols option to batch::submit_job, which appends the raw symbol to
+every record (available for CSV and JSON text encodings) reducing the need to look at
+the symbology.json file
+Added split_symbols option for batch::submit_job, which will split files by raw
+symbol
+Added encoding option to batch::submit_job to allow requesting non-DBN encoded
+data through the client
+Added map_symbols, pretty_px, and pretty_ts to BatchJob response
+0.3.0 - 2023-09-13Enhancements
+Added SymbolMap type to help maintain up-to-date symbol mappings with live data
+Added chunking to handle subscribing to many symbols for the Live client
+Upgraded DBN version to 0.10.2 for easier historical symbology
+0.2.1 - 2023-08-25Enhancements
+Upgraded DBN version to 0.9.0 for publisher improvements to support OPRA
+0.2.0 - 2023-08-10Breaking changes
+Changed metadata::list_publishers to return a Vec<PublisherDetail>
+metadata::list_fields:
+Changed return type to Vec<FieldDetail>
+Made encoding and schema parameters required
+Removed dataset parameter
+metadata::list_unit_prices:
+Changed return type to Vec<UnitPricesForMode>
+Made dataset parameter required
+Removed mode and schema parameters
+0.1.0 - 2023-08-02
+Initial release with support for historical and live data
+DataTBD (coming soon)Enhancements
+Added N (None) action, which can carry F_LAST flag
+Bug fixes
+GLBX.MDP3 - Fixed issue where publication of a Status record could cause MBO records to
+incorrectly have F_LAST set, and also trigger a premature MBP record before the end of the CME
+event.
+Enhancements
+Added an MBP snapshot record at 00:00 UTC for historical data.
+This is generated along with the existing MBO snapshot and will have the F_SNAPSHOT flag set.
+The MBP snapshot will only be sent for instruments that actually have a quote.
+2025-06-17Enhancements
+Changed the following Venue, Publisher, and Dataset descriptions:
+"ICE Futures US" renamed to "ICE Futures US"
+"ICE Futures Europe (Financials)" renamed to "ICE Europe Financials"
+"ICE Futures Europe (Commodities)" renamed to "ICE Europe Commodities"
+2024-10-22Bug fixes
+Fixed an issue
+where several Fridays in 2020 had no data for ICE Europe Commodities and ICE Endex
+2024-05-07Bug fixes
+Changed normalization for ICE Europe Commodities iMpact and ICE Endex iMpact to no longer set ts_ref
+when a valuation date time or trading date isn't specified
+Added missing normalization to statistics schema for Option Open Interest Message and Option
+Settlement Price Message in ICE Europe Commodities iMpact and ICE Endex iMpact
+2024-06-25Enhancements
+Added the status schema for the GLBX.MDP3 dataset
+2024-06-18Bug fixes
+Changed normalization for CME Globex MDP 3.0 statistics to use tag 34-MsgSeqNum for sequence to
+match other schemas instead of tag 83-RptSeq
+Fixed scaling of strike_price for metal options for CME Globex MDP 3.0
+Added truncated digit
+of strike_price for MDP 3.0 2-Year T-Note options (OZT) for CME Globex MDP 3.0. strike_price now
+includes the full strike price
+Fixed scaling of unit_of_measure_qty in older CME Globex MDP 3.0. Previously, the newer 9-digit precision
+scaling was erroneously applied to pre-late 2018 data when CME used 7-digit precision
+Changed stat_flags to always be 0 when it is unused or there is no source field to normalize to it
+2024-01-18This release introduces live and historical ICE Europe Commodities iMpact (IFEU.IMPACT) and ICE Endex iMpact (NDEX.IMPACT) data.
+The datasets cover European futures and options for all energy and commodities products, including all listed outrights, spreads,
+and options combinations. You can read more about the release here.Enhancements
+Added the IFEU.IMPACT and NDEX.IMPACT datasets, does not yet include our mbo, mbp-10, mbp-1, and tbbo schemas
+2023-11-17EnhancementsThis release adds support for Nasdaq TotalView-ITCH (XNAS.ITCH) live data.
+This includes detailed information on every order in the book, captured and distributed from our Equinix NY4 colo, offering more insights into Nasdaq market activity than data sourced from the SIPs.You can read more about this release here.2023-10-04This release introduces the Databento Equities Basic dataset (DBEQ.BASIC), our first bundle of live
+and historical US equities data. The bundle includes five proprietary feeds—NYSE Chicago Integrated,
+IEX TOPS, NYSE National Trades, NYSE National BBO, and MIAX Pearl Equities Depth of Market—that can
+be licensed for distribution, display, and non-display applications at no cost.
+You can read more about the release here.Enhancements
+Added the DBEQ.BASIC dataset, does not include live data for the mbo schema
+Breaking changes
+Changed XNAS.ITCH Cross Trade messages when no cross occurred to have a price of UNDEF_PRICE
+instead of the previous price of 0
+2023-08-29This release introduces the OPRA (Options Price Reporting Authority) dataset (OPRA.PILLAR) for
+the historical and live APIs, covering all 16 national exchanges. This not only includes options on
+single name equities, but also on indices, e.g., Cboe VIX options, SPX options, and certain
+volatility benchmark indices like SPIKE and VSPKE. You can read more about the release here.Enhancements
+Added the OPRA.PILLAR dataset, does not yet include live data for the mbp-1 schema, or Global Trading Hours (GTH)
+2023-07-23
+Updated CSV encoding:
+Reordered columns in every schema to better reflect relative importance
+Added channel_id to MBO schema
+Always include rtype to differentiate  between schemas
+Rename security_group in definitions schema to group to match struct definitions
+Updated JSON encoding:
+Moved header fields (rtype, publisher_id, instrument_id, and ts_event) to
+Added channel_id to MBO schema
+Changed to always include rtype to differentiate between schemas
+nested object under the key hd in JSON encoding to match structure definitions
+Rename security_group in definitions schema to group to match struct definitions
+All 64-bit integers are now serialized as strings to avoid loss of precision
+2023-05-01
+Renamed product_id to instrument_id in common header
+Renamed symbol to raw_symbol in definitions schema
+2023-04-28
+Added strike_price field to definitions schema
+Added strike_price_currency field to definitions schema
+Added instrument_class field to definitions schema
+Deprecated related and related_security_id from definitions schema
+2023-03-07
+Fixed an issue causing duplicate add order snapshots on CME Globex MDP 3.0.
+Python Python C++ Rust HTTP/Raw

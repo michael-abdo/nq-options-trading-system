@@ -1,0 +1,42 @@
+{
+  "summary": {
+    "days_tested": 3,
+    "total_pnl": -717.5,
+    "avg_pnl_per_day": -239.16666666666666,
+    "win_rate": 33.33333333333333,
+    "total_signals": 26594,
+    "signal_rate": 0.1565592245579339
+  },
+  "daily_results": [
+    {
+      "date": "2025-06-16",
+      "signals": 12249,
+      "quotes_processed": 5588695,
+      "entry_price": 21973.0,
+      "exit_price": 21958.625,
+      "pnl_points": -14.375,
+      "pnl_dollars": -287.5,
+      "signal_rate": 0.21917460158409072
+    },
+    {
+      "date": "2025-06-17",
+      "signals": 5697,
+      "quotes_processed": 5587828,
+      "entry_price": 21877.125,
+      "exit_price": 21850.125,
+      "pnl_points": -27.0,
+      "pnl_dollars": -540.0,
+      "signal_rate": 0.1019537466078054
+    },
+    {
+      "date": "2025-06-18",
+      "signals": 8648,
+      "quotes_processed": 5810020,
+      "entry_price": 21849.0,
+      "exit_price": 21854.5,
+      "pnl_points": 5.5,
+      "pnl_dollars": 110.0,
+      "signal_rate": 0.14884630345506555
+    }
+  ]
+}

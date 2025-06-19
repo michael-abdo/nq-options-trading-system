@@ -1,0 +1,613 @@
+{
+  "download_summary": {
+    "start_time": "2025-06-18T21:01:29.761409",
+    "end_time": "2025-06-18T21:07:50.773800",
+    "duration_minutes": 6.3502065141995745,
+    "total_pages_attempted": 41,
+    "successful_downloads": 41,
+    "failed_downloads": 0,
+    "success_rate_percent": 100.0,
+    "total_data_mb": 58.8347053527832
+  },
+  "successful_downloads": [
+    {
+      "url": "https://databento.com/docs/quickstart",
+      "filename": "quickstart.html",
+      "size": 1276678,
+      "title": "Getting started with Databento | Databento Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical",
+      "filename": "api-reference-historical.html",
+      "size": 1936739,
+      "title": "Databento API documentation - Historical"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-live",
+      "filename": "api-reference-live.html",
+      "size": 1400609,
+      "title": "Databento API documentation - Live"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-reference",
+      "filename": "api-reference-reference.html",
+      "size": 1402939,
+      "title": "Databento API documentation - Reference"
+    },
+    {
+      "url": "https://databento.com/docs/examples",
+      "filename": "examples.html",
+      "size": 1304325,
+      "title": "Databento API code examples and tutorials"
+    },
+    {
+      "url": "https://databento.com/docs/knowledge-base/new-users/market-data-schemas",
+      "filename": "knowledge-base_new-users_market-data-schemas.html",
+      "size": 1249359,
+      "title": "What's a schema? | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/knowledge-base/new-users/fields-by-schema",
+      "filename": "knowledge-base_new-users_fields-by-schema.html",
+      "size": 1467098,
+      "title": "Schemas and data formats | Databento Docs"
+    },
+    {
+      "url": "https://databento.com/docs/knowledge-base/new-users/fields-by-schema/trades-trades",
+      "filename": "knowledge-base_new-users_fields-by-schema_trades-trades.html",
+      "size": 1467098,
+      "title": "Schemas and data formats | Databento Docs"
+    },
+    {
+      "url": "https://databento.com/docs/faqs/venues-and-publishers",
+      "filename": "faqs_venues-and-publishers.html",
+      "size": 1236371,
+      "title": "Venues and publishers | Databento FAQs"
+    },
+    {
+      "url": "https://databento.com/docs/faqs/streaming-vs-batch-download",
+      "filename": "faqs_streaming-vs-batch-download.html",
+      "size": 1231588,
+      "title": "Streaming vs. batch download | Databento FAQs"
+    },
+    {
+      "url": "https://databento.com/docs/standards-and-conventions/normalization",
+      "filename": "standards-and-conventions_normalization.html",
+      "size": 1239135,
+      "title": "Normalization | Databento standards & conventions"
+    },
+    {
+      "url": "https://databento.com/docs/standards-and-conventions/databento-binary-encoding",
+      "filename": "standards-and-conventions_databento-binary-encoding.html",
+      "size": 1279582,
+      "title": "Databento Binary Encoding | Databento standards & conventions"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/whats-a-schema",
+      "filename": "schemas-and-data-formats_whats-a-schema.html",
+      "size": 1249359,
+      "title": "What's a schema? | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/timeseries/timeseries-get-range/parameters",
+      "filename": "api-reference-historical_timeseries_timeseries-get-range_parameters.html",
+      "size": 1936516,
+      "title": "Databento | Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/basics/symbology",
+      "filename": "api-reference-historical_basics_symbology.html",
+      "size": 1936834,
+      "title": "Symbology | Databento Historical API"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/basics/datasets",
+      "filename": "api-reference-historical_basics_datasets.html",
+      "size": 1936825,
+      "title": "Datasets | Databento Historical API"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/helpers/bento-replay",
+      "filename": "api-reference-historical_helpers_bento-replay.html",
+      "size": 1936460,
+      "title": "Databento | Docs"
+    },
+    {
+      "url": "https://databento.com/docs/portal/api-keys",
+      "filename": "portal_api-keys.html",
+      "size": 1235711,
+      "title": "API keys guide | Databento portal"
+    },
+    {
+      "url": "https://databento.com/docs/release-notes",
+      "filename": "release-notes.html",
+      "size": 1619151,
+      "title": "Databento API and dataset release notes"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-live/subscription",
+      "filename": "api-reference-live_subscription.html",
+      "size": 1400473,
+      "title": "Databento | Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-live/authentication",
+      "filename": "api-reference-live_authentication.html",
+      "size": 1400595,
+      "title": "Authentication | Databento Live API"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/mbo",
+      "filename": "schemas-and-data-formats_mbo.html",
+      "size": 1234502,
+      "title": "Market by order (MBO) | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/mbp-10",
+      "filename": "schemas-and-data-formats_mbp-10.html",
+      "size": 1235451,
+      "title": "Market by price (MBP-10) | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/mbp-1",
+      "filename": "schemas-and-data-formats_mbp-1.html",
+      "size": 1246075,
+      "title": "Market by price (MBP-1) | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/tbbo",
+      "filename": "schemas-and-data-formats_tbbo.html",
+      "size": 1243927,
+      "title": "BBO on trade (TBBO) | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/bbo",
+      "filename": "schemas-and-data-formats_bbo.html",
+      "size": 1242135,
+      "title": "BBO on interval (BBO) | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/trades",
+      "filename": "schemas-and-data-formats_trades.html",
+      "size": 1231556,
+      "title": "Trades | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/ohlcv",
+      "filename": "schemas-and-data-formats_ohlcv.html",
+      "size": 1234963,
+      "title": "Aggregate bars (OHLCV) | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/definition",
+      "filename": "schemas-and-data-formats_definition.html",
+      "size": 1467098,
+      "title": "Schemas and data formats | Databento Docs"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/imbalance",
+      "filename": "schemas-and-data-formats_imbalance.html",
+      "size": 1234985,
+      "title": "Imbalance | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/statistics",
+      "filename": "schemas-and-data-formats_statistics.html",
+      "size": 1245212,
+      "title": "Statistics | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/schemas-and-data-formats/status",
+      "filename": "schemas-and-data-formats_status.html",
+      "size": 1243213,
+      "title": "Status | Databento schemas & data formats"
+    },
+    {
+      "url": "https://databento.com/docs/standards-and-conventions/common-fields",
+      "filename": "standards-and-conventions_common-fields.html",
+      "size": 1567235,
+      "title": "Standards and conventions | Databento Docs"
+    },
+    {
+      "url": "https://databento.com/docs/standards-and-conventions/enums-and-types",
+      "filename": "standards-and-conventions_enums-and-types.html",
+      "size": 1567235,
+      "title": "Standards and conventions | Databento Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/basics/overview",
+      "filename": "api-reference-historical_basics_overview.html",
+      "size": 1936653,
+      "title": "Overview | Databento Historical API"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/basics/authentication",
+      "filename": "api-reference-historical_basics_authentication.html",
+      "size": 1936675,
+      "title": "Authentication | Databento Historical API"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/basics/request-response",
+      "filename": "api-reference-historical_basics_request-response.html",
+      "size": 1936460,
+      "title": "Databento | Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/timeseries/get-range",
+      "filename": "api-reference-historical_timeseries_get-range.html",
+      "size": 1936460,
+      "title": "Databento | Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/batch/submit",
+      "filename": "api-reference-historical_batch_submit.html",
+      "size": 1936460,
+      "title": "Databento | Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/batch/list",
+      "filename": "api-reference-historical_batch_list.html",
+      "size": 1936460,
+      "title": "Databento | Docs"
+    },
+    {
+      "url": "https://databento.com/docs/api-reference-historical/batch/download",
+      "filename": "api-reference-historical_batch_download.html",
+      "size": 1936460,
+      "title": "Databento | Docs"
+    }
+  ],
+  "failed_urls": [],
+  "validation_log": [
+    {
+      "timestamp": "2025-06-18T21:03:54.178505",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[17/41] Starting: https://databento.com/docs/api-reference-historical/helpers/bento-replay",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:01.222044",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[17/41] api-reference-historical_helpers_bento-replay.html (1,936,460 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:03.292450",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[18/41] Starting: https://databento.com/docs/portal/api-keys",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:10.042412",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[18/41] portal_api-keys.html (1,235,711 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:12.106761",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[19/41] Starting: https://databento.com/docs/release-notes",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:20.000821",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[19/41] release-notes.html (1,619,151 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:22.072556",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[20/41] Starting: https://databento.com/docs/api-reference-live/subscription",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:29.492085",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[20/41] api-reference-live_subscription.html (1,400,473 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:31.548569",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[21/41] Starting: https://databento.com/docs/api-reference-live/authentication",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:38.575334",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[21/41] api-reference-live_authentication.html (1,400,595 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:40.655420",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[22/41] Starting: https://databento.com/docs/schemas-and-data-formats/mbo",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:48.074169",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[22/41] schemas-and-data-formats_mbo.html (1,234,502 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:50.142419",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[23/41] Starting: https://databento.com/docs/schemas-and-data-formats/mbp-10",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:57.747950",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[23/41] schemas-and-data-formats_mbp-10.html (1,235,451 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:04:59.799615",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[24/41] Starting: https://databento.com/docs/schemas-and-data-formats/mbp-1",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:07.091673",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[24/41] schemas-and-data-formats_mbp-1.html (1,246,075 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:09.171315",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[25/41] Starting: https://databento.com/docs/schemas-and-data-formats/tbbo",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:17.476223",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[25/41] schemas-and-data-formats_tbbo.html (1,243,927 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:19.539299",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[26/41] Starting: https://databento.com/docs/schemas-and-data-formats/bbo",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:26.547136",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[26/41] schemas-and-data-formats_bbo.html (1,242,135 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:28.614655",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[27/41] Starting: https://databento.com/docs/schemas-and-data-formats/trades",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:35.839650",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[27/41] schemas-and-data-formats_trades.html (1,231,556 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:37.899605",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[28/41] Starting: https://databento.com/docs/schemas-and-data-formats/ohlcv",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:45.411698",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[28/41] schemas-and-data-formats_ohlcv.html (1,234,963 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:47.473642",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[29/41] Starting: https://databento.com/docs/schemas-and-data-formats/definition",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:54.584348",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[29/41] schemas-and-data-formats_definition.html (1,467,098 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:05:56.660241",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[30/41] Starting: https://databento.com/docs/schemas-and-data-formats/imbalance",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:03.546870",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[30/41] schemas-and-data-formats_imbalance.html (1,234,985 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:05.606089",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[31/41] Starting: https://databento.com/docs/schemas-and-data-formats/statistics",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:12.946660",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[31/41] schemas-and-data-formats_statistics.html (1,245,212 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:15.005198",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[32/41] Starting: https://databento.com/docs/schemas-and-data-formats/status",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:22.325265",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[32/41] schemas-and-data-formats_status.html (1,243,213 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:24.403008",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[33/41] Starting: https://databento.com/docs/standards-and-conventions/common-fields",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:31.617015",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[33/41] standards-and-conventions_common-fields.html (1,567,235 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:33.679453",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[34/41] Starting: https://databento.com/docs/standards-and-conventions/enums-and-types",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:41.148688",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[34/41] standards-and-conventions_enums-and-types.html (1,567,235 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:43.203841",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[35/41] Starting: https://databento.com/docs/api-reference-historical/basics/overview",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:50.486015",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[35/41] api-reference-historical_basics_overview.html (1,936,653 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:52.549149",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[36/41] Starting: https://databento.com/docs/api-reference-historical/basics/authentication",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:06:59.899673",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[36/41] api-reference-historical_basics_authentication.html (1,936,675 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:01.962976",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[37/41] Starting: https://databento.com/docs/api-reference-historical/basics/request-response",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:09.765454",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[37/41] api-reference-historical_basics_request-response.html (1,936,460 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:11.818697",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[38/41] Starting: https://databento.com/docs/api-reference-historical/timeseries/get-range",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:19.332567",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[38/41] api-reference-historical_timeseries_get-range.html (1,936,460 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:21.404196",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[39/41] Starting: https://databento.com/docs/api-reference-historical/batch/submit",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:29.355373",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[39/41] api-reference-historical_batch_submit.html (1,936,460 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:31.419211",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[40/41] Starting: https://databento.com/docs/api-reference-historical/batch/list",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:38.967619",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[40/41] api-reference-historical_batch_list.html (1,936,460 bytes)",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:41.041287",
+      "step": "PAGE_START",
+      "status": "INFO",
+      "message": "[41/41] Starting: https://databento.com/docs/api-reference-historical/batch/download",
+      "data": null
+    },
+    {
+      "timestamp": "2025-06-18T21:07:48.712080",
+      "step": "SUCCESS",
+      "status": "SUCCESS",
+      "message": "[41/41] api-reference-historical_batch_download.html (1,936,460 bytes)",
+      "data": null
+    }
+  ]
+}

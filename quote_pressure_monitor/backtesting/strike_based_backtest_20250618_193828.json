@@ -1,0 +1,39 @@
+{
+  "strategy": "strike_based_directional",
+  "summary": {
+    "days_tested": 2,
+    "total_pnl": 177.5,
+    "avg_pnl_per_day": 88.75,
+    "win_rate": 50.0
+  },
+  "daily_results": [
+    {
+      "date": "2025-06-16",
+      "current_nq_price": 21973.0,
+      "direction": "SHORT",
+      "volume_above": 45051,
+      "volume_below": 110554,
+      "net_volume": -65503,
+      "volume_ratio": 0.420956910124996,
+      "total_signals": 2630,
+      "entry_price": 21973.0,
+      "exit_price": 21958.625,
+      "pnl_points": 14.375,
+      "pnl_dollars": 287.5
+    },
+    {
+      "date": "2025-06-18",
+      "current_nq_price": 21849.0,
+      "direction": "SHORT",
+      "volume_above": 84076,
+      "volume_below": 162355,
+      "net_volume": -78279,
+      "volume_ratio": 0.31765078257199786,
+      "total_signals": 4262,
+      "entry_price": 21849.0,
+      "exit_price": 21854.5,
+      "pnl_points": -5.5,
+      "pnl_dollars": -110.0
+    }
+  ]
+}

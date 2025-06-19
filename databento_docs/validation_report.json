@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-06-18T20:55:15.311450",
+  "validation_status": "FAILED - No content found",
+  "found_content": {
+    "original_files": [],
+    "existing_docs": [
+      "/Users/Mike/trading/algos/EOD/docs/data_sources/databento_implementation_summary.md",
+      "/Users/Mike/trading/algos/EOD/docs/data_sources/databento.md",
+      "/Users/Mike/trading/algos/EOD/docs/data_sources/databento_migration_guide.md",
+      "/Users/Mike/trading/algos/EOD/docs/data_sources/databento_integration.md"
+    ]
+  },
+  "missing_content": {
+    "/Users/Mike/trading/algos/EOD/databento_docs/real_content": {
+      "exists": false
+    },
+    "/Users/Mike/trading/algos/EOD/databento_docs/clean_content": {
+      "exists": false
+    },
+    "/Users/Mike/trading/algos/EOD/databento_docs/databento_docs": {
+      "exists": false
+    },
+    "html_files": "Not found"
+  },
+  "actionable_recommendations": [
+    "Re-run scraper with validation"
+  ]
+}

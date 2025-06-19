@@ -1,0 +1,1018 @@
+# Databento Binary Encoding | Databento standards & conventions
+Category: Standards
+Source: standards-and-conventions_databento-binary-encoding.html
+================================================================================
+
+Quickstart
+Set up Databento
+Choose a service
+Build your first application
+New user guides
+Examples and tutorials
+Equities
+Equities: Introduction
+Top pre-market movers
+Find average spread for a symbol
+Futures
+Futures: Introduction
+Volume, open interest, and settlement prices
+Futures trading hours
+Options
+Equity options: Introduction
+Options on futures: Introduction
+All options with a given underlying
+Join options with underlying prices
+US equity options volume by venue
+Resample US equity options NBBO
+Estimate implied volatility
+Get symbols for 0DTE options
+Live data
+Handle multiple record types
+Stream live data to a file
+Estimate Databento feed latency
+Calculate TICK and TRIN indicators
+Subscribe to MBO snapshot
+Compare on-exchange and off-exchange trade volume
+Historical data
+Request a large number of symbols
+Programmatic batch downloads
+Best bid, best offer, and midprice
+Constructing OHLCV bars from the Trades schema
+Join schemas on instrument ID
+Plot a candlestick chart
+Calculate VWAP and RSI
+End-of-day pricing and portfolio valuation
+Benchmark portfolio performance
+Market halts, volatility interrupts, and price bands
+Symbology
+Continuous contracts
+Parent symbology
+Symbology mapping for live data
+Dataset symbols
+Instrument definitions
+Finding liquid instruments
+Handling tick sizes
+Order book
+Types of order book events
+State management of resting orders
+Limit order book construction
+Microprice, book imbalance, and book pressure
+Queue position of an order
+Algorithmic trading
+A high-frequency liquidity-taking strategy
+Build prediction models with machine learning
+Execution slippage and markouts
+Matching engine latencies
+Using messaging rates as a proxy for implied volatility
+Mean reversion and portfolio optimization
+Pairs trading based on cointegration
+Build a real-time stock screener
+Corporate actions
+Dividends
+New listings
+Splits and reverse splits
+Mergers and demergers
+Adjustment factors
+Applying adjustment factors
+Handling multiple stock selections
+Security master
+Enrich instrument definitions
+Listings and delistings
+Market capitalization change
+Core concepts
+Schemas and data formats
+What's a schema?
+Market by order (MBO)
+Market by price (MBP-10)
+Market by price (MBP-1)
+BBO on trade (TBBO)
+BBO on interval (BBO)
+Trades
+Aggregate bars (OHLCV)
+Instrument definitions
+Imbalance
+Statistics
+Status
+Corporate actions
+Adjustment factors
+Security master
+Standards and conventions
+Common fields, enums and types
+Normalization
+Symbology
+Databento Binary Encoding
+Zstandard (zstd)
+MBO snapshots
+Reference data enums
+Architecture
+Databento architecture
+Timestamping
+Locations and network connectivity
+Dedicated connectivity
+Databento NTP service
+Performance optimization
+Venues and datasets
+CME Globex MDP 3.0
+Cboe BYX Depth
+Cboe BYZ Depth
+Cboe EDGA Depth
+Cboe EDGX Depth
+Databento US Equities Basic
+Databento US Equities Mini
+Databento US Equities Summary
+European Energy Exchange
+Eurex Exchange
+ICE Endex iMpact
+ICE Europe Commodities iMpact
+ICE Europe Financials iMpact
+ICE Futures US iMpact
+IEX TOPS
+MEMX Memoir
+MIAX Depth of Market
+Nasdaq Basic with NLS Plus
+Nasdaq TotalView-ITCH
+NYSE American Integrated
+NYSE Arca Integrated
+NYSE Texas Integrated
+NYSE National Trades and BBO
+NYSE Integrated
+OPRA Pillar
+Corporate actions
+Adjustment factors
+Security master
+API Reference
+Historical API
+Basics
+Overview
+Authentication
+Schemas and conventions
+Datasets
+Symbology
+Encodings
+Compression
+Dates and times
+Errors
+Rate limits
+Size limits
+Metered pricing
+Versioning
+Client
+Historical
+Metadata....list_publishers....list_datasets....list_schemas....list_fields....list_unit_prices....get_dataset_condition....get_dataset_range....get_record_count....get_billable_size....get_cost
+Time series....get_range....get_range_async
+Symbology....resolve
+Batch downloads....submit_job....list_jobs....list_files....download....download_async
+Helpers
+DBNStore
+....from_bytes....from_file....reader....replay....request_full_definitions....request_symbology....to_csv....to_df....to_file....to_json....to_ndarray....to_parquet....__iter__....insert_symbology_json
+map_symbols_csv
+map_symbols_json
+Live API
+Basics
+Overview
+Authentication
+Sessions
+Schemas and conventions
+Datasets
+Symbology
+Dates and times
+Intraday replay
+Snapshot
+System messages
+Errors
+Connection limits
+Metered pricing
+Error detection
+Versioning
+Recovering after a disconnection
+Maintenance schedule
+Client
+Live
+....add_callback....add_stream....add_reconnect_callback....block_for_close....start....stop....subscribe....terminate....wait_for_close....__aiter__....__iter__
+Reference API
+Basics
+Overview
+Authentication
+Symbology
+Dates and times
+Errors
+Rate limits
+Client
+Reference
+Corporate actions....get_range
+Adjustment factors....get_range
+Security master....get_last....get_range
+Resources
+FAQs
+Client libraries vs. APIs
+Streaming vs. batch download
+Usage-based pricing and credits
+Instruments and products
+Venues and publishers
+MBP-1 vs. TBBO vs. BBO schemas
+Portal
+Data catalog
+Batch download
+Data usage
+API keys
+Download center
+Team
+Billing
+Plans and live data
+Release notes
+0.38.1 - 2025-06-17
+0.38.0 - 2025-06-10
+0.37.1 - 2025-06-03
+0.37.0 - 2025-06-03
+0.36.0 - 2025-05-27
+0.35.1 - 2025-05-20
+0.35.0 - 2025-05-13
+0.34.2 - 2025-05-06
+0.34.1 - 2025-04-29
+0.34.0 - 2025-04-22
+0.33.0 - 2025-04-15
+0.32.1 - 2025-04-07
+0.32.0 - 2025-04-02
+0.31.0 - 2025-03-18
+0.30.0 - 2025-02-11
+0.29.0 - 2025-02-04
+0.28.0 - 2025-01-21
+0.27.0 - 2025-01-07
+0.26.0 - 2024-12-17
+0.25.0 - 2024-11-12
+0.24.0 - 2024-10-22
+0.23.0 - 2024-09-25
+0.22.0 - 2024-08-27
+0.21.0 - 2024-07-30
+0.20.1 - 2024-07-16
+0.20.0 - 2024-07-09
+0.19.1 - 2024-06-25
+0.19.0 - 2024-06-04
+0.18.1 - 2024-05-22
+0.18.0 - 2024-05-14
+0.17.1 - 2024-04-08
+0.17.0 - 2024-04-01
+0.16.0 - 2024-03-01
+0.15.0 - 2024-01-16
+0.14.1 - 2023-12-18
+0.14.0 - 2023-11-23
+0.13.1 - 2023-10-23
+0.13.0 - 2023-09-21
+0.12.0 - 2023-08-24
+0.11.0 - 2023-08-10
+0.10.0 - 2023-07-20
+0.9.1 - 2023-07-11
+0.9.0 - 2023-06-13
+0.8.0 - 2023-05-16
+0.7.0 - 2023-04-28
+0.6.1 - 2023-03-28
+0.6.0 - 2023-03-24
+0.5.0 - 2023-03-13
+0.4.0 - 2023-03-02
+0.3.0 - 2023-01-06
+0.2.0 - 2022-12-01
+0.1.0 - 2022-11-07
+Python
+0.57.1 - 2025-06-17
+0.57.0 - 2025-06-10
+0.56.0 - 2025-06-03
+0.55.1 - 2025-06-02
+0.55.0 - 2025-05-29
+0.54.0 - 2025-05-13
+0.53.0 - 2025-04-29
+0.52.0 - 2025-04-15
+0.51.0 - 2025-04-08
+0.50.0 - 2025-03-18
+0.49.0 - 2025-03-04
+0.48.0 - 2025-01-21
+0.47.0 - 2024-12-17
+0.46.0 - 2024-12-10
+0.45.0 - 2024-11-12
+0.44.1 - 2024-10-29
+0.44.0 - 2024-10-22
+0.43.1 - 2024-10-15
+0.43.0 - 2024-10-09
+0.42.0 - 2024-09-23
+0.41.0 - 2024-09-03
+0.40.0 - 2024-08-27
+0.39.3 - 2024-08-20
+0.39.2 - 2024-08-13
+0.39.1 - 2024-08-13
+0.39.0 - 2024-07-30
+0.38.0 - 2024-07-23
+0.37.0 - 2024-07-09
+0.36.3 - 2024-07-02
+0.36.2 - 2024-06-25
+0.36.1 - 2024-06-18
+0.36.0 - 2024-06-11
+0.35.0 - 2024-06-04
+0.34.1 - 2024-05-21
+0.34.0 - 2024-05-14
+0.33.0 - 2024-04-16
+0.32.0 - 2024-04-04
+0.31.1 - 2024-03-20
+0.31.0 - 2024-03-05
+0.30.0 - 2024-02-22
+0.29.0 - 2024-02-13
+0.28.0 - 2024-02-01
+0.27.0 - 2024-01-23
+0.26.0 - 2024-01-16
+0.25.0 - 2024-01-09
+0.24.1 - 2023-12-15
+0.24.0 - 2023-11-23
+0.23.1 - 2023-11-10
+0.23.0 - 2023-10-26
+0.22.1 - 2023-10-24
+0.22.0 - 2023-10-23
+0.21.0 - 2023-10-11
+0.20.0 - 2023-09-21
+0.19.1 - 2023-09-08
+0.19.0 - 2023-08-25
+0.18.1 - 2023-08-16
+0.18.0 - 2023-08-14
+0.17.0 - 2023-08-10
+0.16.1 - 2023-08-03
+0.16.0 - 2023-07-25
+0.15.2 - 2023-07-19
+0.15.1 - 2023-07-06
+0.15.0 - 2023-07-05
+0.14.1 - 2023-06-16
+0.14.0 - 2023-06-14
+0.13.0 - 2023-06-02
+0.12.0 - 2023-05-01
+0.11.0 - 2023-04-13
+0.10.0 - 2023-04-07
+0.9.0 - 2023-03-10
+0.8.1 - 2023-03-05
+0.8.0 - 2023-03-03
+0.7.0 - 2023-01-10
+0.6.0 - 2022-12-02
+0.5.0 - 2022-11-07
+0.4.0 - 2022-09-14
+0.3.0 - 2022-08-30
+HTTP API
+0.34.1 - 2025-06-17
+0.34.0 - TBD
+0.33.0 - 2024-12-10
+0.32.0 - 2024-11-26
+0.31.0 - 2024-11-12
+0.30.0 - 2024-09-24
+0.29.0 - 2024-09-03
+0.28.0 - 2024-06-25
+0.27.0 - 2024-06-04
+0.26.0 - 2024-05-14
+0.25.0 - 2024-03-26
+0.24.0 - 2024-03-06
+0.23.0 - 2024-02-15
+0.22.0 - 2024-02-06
+0.21.0 - 2024-01-30
+0.20.0 - 2024-01-18
+0.19.0 - 2023-10-17
+0.18.0 - 2023-10-11
+0.17.0 - 2023-10-04
+0.16.0 - 2023-09-26
+0.15.0 - 2023-09-19
+0.14.0 - 2023-08-29
+0.13.0 - 2023-08-23
+0.12.0 - 2023-08-10
+0.11.0 - 2023-07-25
+0.10.0 - 2023-07-06
+0.9.0 - 2023-06-01
+0.8.0 - 2023-05-01
+0.7.0 - 2023-04-07
+0.6.0 - 2023-03-10
+0.5.0 - 2023-03-03
+0.4.0 - 2022-12-02
+0.3.0 - 2022-08-30
+0.2.0 - 2021-12-10
+0.1.0 - 2021-08-30
+Raw API
+0.6.1 - TBD
+0.6.0 - 2025-05-24
+0.5.6 - 2025-04-06
+0.5.5 - 2024-12-01
+0.5.4 - 2024-10-02
+0.5.3 - 2024-10-02
+0.5.1 - 2024-07-24
+2024-07-20
+2024-06-25
+0.5.0 - 2024-05-25
+0.4.6 - 2024-04-13
+0.4.5 - 2024-03-25
+0.4.4 - 2024-03-23
+0.4.3 - 2024-02-13
+0.4.2 - 2024-01-06
+0.4.0 - 2023-11-08
+0.3.0 - 2023-10-20
+0.2.0 - 2023-07-23
+0.1.0 - 2023-05-01
+Rust
+0.27.1 - 2025-06-17
+0.27.0 - 2025-06-10
+0.26.2 - 2025-06-03
+0.26.1 - 2025-05-30
+0.26.0 - 2025-05-28
+0.25.0 - 2025-05-13
+0.24.0 - 2025-04-22
+0.23.0 - 2025-04-15
+0.22.0 - 2025-04-01
+0.21.0 - 2025-03-18
+0.20.0 - 2025-02-12
+0.19.0 - 2025-01-21
+0.18.0 - 2025-01-08
+0.17.0 - 2024-12-17
+0.16.0 - 2024-11-12
+0.15.0 - 2024-10-22
+0.14.1 - 2024-10-08
+0.14.0 - 2024-10-01
+0.13.0 - 2024-09-25
+0.12.1 - 2024-08-27
+0.12.0 - 2024-07-30
+0.11.4 - 2024-07-16
+0.11.3 - 2024-07-09
+0.11.2 - 2024-06-25
+0.11.1 - 2024-06-11
+0.11.0 - 2024-06-04
+0.10.0 - 2024-05-22
+0.9.1 - 2024-05-15
+0.9.0 - 2024-05-14
+0.8.0 - 2024-04-01
+0.7.1 - 2024-03-05
+0.7.0 - 2024-03-01
+0.6.0 - 2024-01-16
+0.5.0 - 2023-11-23
+0.4.2 - 2023-10-23
+0.4.1 - 2023-10-06
+0.4.0 - 2023-09-21
+0.3.0 - 2023-09-13
+0.2.1 - 2023-08-25
+0.2.0 - 2023-08-10
+0.1.0 - 2023-08-02
+Data
+TBD (coming soon)
+2025-06-17
+2024-10-22
+2024-05-07
+2024-06-25
+2024-06-18
+2024-01-18
+2023-11-17
+2023-10-04
+2023-08-29
+2023-07-23
+2023-05-01
+2023-04-28
+2023-03-07
+Databento Binary EncodingDatabento Binary Encoding (DBN) is an extremely fast message encoding and
+storage format for normalized market data. The DBN specification includes a simple,
+self-describing metadata header and a fixed set of struct definitions, which
+enforce a standardized way to normalize market data.All official Databento client libraries use DBN under the hood, both as a data
+interchange format and for in-memory representation of data. DBN is also the default
+encoding for all Databento APIs, including live data streaming, historical data
+streaming, and batch flat files.Getting started with DBNThe easiest way to get started with DBN is through any of the official Databento
+client libraries, which support reading and writing DBN files. See:
+The DBNStore.from_file
+and DBNStore.to_file
+methods for Python
+The DbnFileStore::Replay
+method for C++
+The AsyncDbnStore::from_file
+method, and databento::dbn::encode
+module for Rust
+Other resources are also available:
+The dbn Rust crate is the reference implementation
+of DBN and provides a library for decoding and encoding DBN, and also for converting
+from DBN to CSV and JSON.
+dbn-cli is a command line tool that can be used
+to read DBN files; transcode DBN to CSV or JSON; print the output, or write it to
+disk.
+You can install it with cargo install dbn-cli.
+Why should you use DBN?The key advantages of using DBN are:
+End-to-end. DBN can be used to store and transport normalized data across all
+components of a typical trading system. It can fulfill the requirements of a file
+format for efficient storage; a message encoding for fast real-time streaming, and an
+in-memory representation of market data for a low latency system—all at once.
+This simplifies your trading system and eliminates the
+use of multiple serialization formats. It also ensures that market
+data is immutable, lossless, and consistent as it passes between components.
+Use the same code for historical and live. Our client libraries exploit the
+end-to-end aspect of DBN and allow you to use the same code in historical and live;
+you can write an event-driven trading platform that runs the exact same code in
+backtest and production trading.
+Zero-copy. DBN data is structured the same way whether in-memory,
+on the wire, or on disk. Thus, the data gets read and written directly as-is, without
+costly encoding or decoding steps that move the data into CPU and back out.
+Symbology metadata. The DBN protocol includes a lightweight header that
+provides metadata for interpreting and using the market data payload, such as
+symbology mappings, so a DBN file is self-sufficient for many use cases.
+Highly compressible. DBN strictly uses fixed lengths and offsets for all fields.
+This layout enables typical compression algorithms, such as zstd and lz4, to achieve
+high compression ratios.
+Optimized for modern CPUs. The predictable layout of DBN records also allows for
+highly-optimized, sequential access patterns that take advantage of instruction
+pipelining and prefetching on modern CPUs. The struct definitions are also
+deliberately designed so that most records fit into a single cache line.
+Extremely fast. DBN achieves extremely fast speeds on reads and writes. Most use
+cases of DBN are compression-bound or I/O-bound while only using a single CPU core.
+DBN has been used in environments with 6.1 microseconds median internal latency; we've
+also seen user-reported benchmarks of full order book replay over 19.1 million
+messages per second using our C++ client library on a Google Cloud VM.
+Normalization format. Using DBN also automatically means you're adopting its
+normalization format. While there are many ways to normalize data, our team arrived at
+these best practices after many years of combined experience at top-tier trading firms
+and integrating dozens of trading venues. For example, DBN allows you to replay full
+order book data at I/O bound, backtest with passive orders in precise sequence,
+and losslessly achieve much of what's possible with raw packet captures with several
+factors of improvement in speed and storage requirements.
+LayoutA valid DBN stream or file has two parts, beginning with metadata,
+and immediately followed by records.The following diagram shows the field layout of the DBN encoding:Version 1
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             magic string = "DBN"              |  version = 1  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            length                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                            dataset                            +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             schema            |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                       start (UNIX nanos)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                        end (UNIX nanos)                       |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                      limit (max records)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                            reserved                           |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |   stype_in    |   stype_out   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    ts_out     |                                               |
++-+-+-+-+-+-+-+-+                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                 reserved (47 bytes of padding)                |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    schema_definition_length                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  schema_definition (variable)                 |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         symbols_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       symbols (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         partial_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       partial (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        not_found_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      not_found (variable)                     |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         mappings_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      mappings (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-end metadata; begin body--+-+-+-+-+-+-+-+-+-+
+|                            records                            |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Versions 2 and above
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             magic string = "DBN"              |    version    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            length                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                            dataset                            +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             schema            |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                       start (UNIX nanos)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                        end (UNIX nanos)                       |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                      limit (max records)                      |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |   stype_in    |   stype_out   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    ts_out     |        symbol_cstr_len        |               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                 reserved (53 bytes of padding)                |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    schema_definition_length                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  schema_definition (variable)                 |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         symbols_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       symbols (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         partial_count                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       partial (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        not_found_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      not_found (variable)                     |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         mappings_count                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      mappings (variable)                      |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-end metadata; begin body--+-+-+-+-+-+-+-+-+-+
+|                            records                            |
+|                              ...                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+MetadataMetadata is included at the beginning of every DBN stream or file. Basic information
+is found at the start of the metadata, followed by optional symbology
+mappings.The metadata contains all of the parameters needed to construct a request for the exact
+same data via Databento's historical API. Likewise, if you fetched DBN-encoded data
+from Databento's historical API, the metadata header will contain the parameters of
+your original request.The following table describes the metadata fields, in the order of appearance.
+All fields are little-endian.
+Field
+Type
+Description
+version
+char[4]
+"DBN" followed by the version of DBN the file is encoded in as a u8.
+length
+uint32_t
+The length of the remaining metadata header, i.e. excluding version and length.
+dataset
+char[16]
+The dataset code (string identifier).
+schema
+uint16_t
+The data record schema. u16::MAX indicates a potential mix of schemas and record types, which will always be the case for live data.
+start
+uint64_t
+The start time of query range in UNIX epoch nanoseconds.
+uint64_t
+The end time of query range in UNIX epoch nanoseconds. u64::MAX indicates no end time was provided.
+limit
+uint64_t
+The maximum number of records to return. 0 indicates no limit.
+stype_in
+uint8_t
+The symbology type of input symbols. u8::MAX indicates a potential mix of types, such as with live data.
+stype_out
+uint8_t
+The symbology type of output symbols.
+ts_out
+uint8_t
+Whether each record has an appended gateway send timestamp.
+symbol_cstr_len
+uint16_t
+The number of bytes in fixed-length string symbols, including a null terminator byte. Version 2 only, symbol strings are always 22 in version 1.
+schema_definition_length
+uint32_t
+Number of bytes in the schema definition.
+schema_definition
+uint8_t[schema_definition_length]
+Self-describing schema to be implemented in the future.
+symbols_length
+uint32_t
+Number of symbols in the original query.
+symbols
+char[symbols_length][symbol_cstr_len]
+The symbols from the original query.
+partial_length
+uint32_t
+The number of symbols partially resolved.
+partial
+char[partial_length][symbol_cstr_len]
+The partially resolved symbols.
+not_found_length
+uint32_t
+The number of unresolved symbols.
+not_found
+char[not_found_length][symbol_cstr_len]
+The unresolved symbols.
+mappings_length
+uint32_t
+The number of symbols at least partially resolved.
+mappings
+SymbolMapping[mappings_length]
+The SymbolMappings, one for each resolved symbol.
+where SymbolMapping has the following structure:
+Field
+Type
+Description
+raw_symbol
+char[symbol_cstr_len]
+The symbol requested symbol stype_in.
+interval_length
+uint32_t
+The number of MappingIntervals in intervals.
+intervals
+MappingInterval[interval_length]
+The MappingIntervals associated with raw_symbol.
+and where MappingInterval has the following structure:
+Field
+Type
+Description
+start_date
+uint32_t
+The start date of the interval, as a YYYYMMDD integer.
+end_date
+uint32_t
+The end date of the interval, as a YYYYMMDD integer.
+symbol
+char[symbol_cstr_len]
+The symbol in stype_out to which raw_symbol corresponds for the interval between start_date and end_date, where symbol_cstr_len is specified earlier in the Metadata. This is often instrument_id because it is the default stype_out.
+RecordsThe metadata is immediately followed by DBN records. A valid DBN stream or file
+contains zero or more records.All records begin with the same 16-byte RecordHeader with the following structure:
+Field
+Type
+Description
+length
+uint8_t
+The length of the record in 32-bit words.
+rtype
+uint8_t
+The record type. Each schema corresponds with a single rtype value. See Rtype.
+publisher_id
+uint16_t
+The publisher ID assigned by Databento, which denotes the dataset and venue.
+instrument_id
+uint32_t
+The numeric instrument ID.
+ts_event
+uint64_t
+The event timestamp as the number of nanoseconds since the UNIX epoch.
+See the Schemas and data formats section for a full list of fields for the record associated with each schema.VersioningWe use the version field in the metadata header to signal changes to the structure of record types and metadata.Version 2The following was changed:
+Metadata:
+Sets version to 2
+Adds symbol_cstr_len field
+Rearranges padding
+The fixed-length strings for symbology are now defined to have symbol_cstr_len characters (currently 71), whereas in version 1 they always had 22
+InstrumentDefMsg (definition schema):
+raw_symbol now has symbol_cstr_len characters (71)
+Rearranges padding
+SymbolMappingMsg (live symbology):
+stype_in_symbol and stype_out_symbol now have symbol_cstr_len characters (71)
+Adds stype_in and stype_out fields
+Removes padding
+ErrorMsg (gateway errors in live)
+Adds space to err for longer error messages
+Adds code and is_last fields
+SystemMsg (non-error gateway messages in live)
+Add space to msg for longer messages
+Adds code field
+Version 3This set of changes adds support for strategy legs to the definition schema
+and an expanded quantity field in the statistics schemas.
+Added 8-byte alignment padding to the end of metadata
+Expanded quantity to 64 bits in StatMsg (statistics schema)
+InstrumentDefMsg (definition schema):
+A definition record will be created for each strategy leg
+Adds the following leg fields:
+leg_count
+leg_index
+leg_instrument_id
+leg_raw_symbol
+leg_side
+leg_underlying_id
+leg_instrument_class
+leg_ratio_qty_numerator
+leg_ratio_qty_denominator
+leg_ratio_price_numerator
+leg_ratio_price_denominator
+leg_price
+leg_delta
+Expands asset to 11 bytes
+Expands raw_instrument_id to 64 bits to support publishers that use larger IDs
+Removal of statistics-schema related fields trading_reference_price,
+trading_reference_date, and settl_price_type
+Removal of the status-schema related field md_security_trading_status
+Info
+CSV and JSON are affected by the new fields.Currently, version 2 is used for the IFEU.IMPACT and NDEX.IMPACT datasets.
+The DBN crate and client libraries will continue to support decoding version 1 data.Upgrading to versionsDBN version 1 files can be upgraded to version 2 with the dbn CLI tool by passing the --upgrade or -u flag.
+dbn version1.dbn --output version2.dbn --upgrade
+Comparison with other encodings and formatsDBN is designed specifically for normalized market data. It adopts a fixed
+set of struct definitions, also called message schemas, for this purpose. It's
+important to note that DBN is not a general-purpose serialization format like
+Simple Binary Encoding (SBE) or Google Protocol Buffers (protobufs), which provide a
+flexible schema definition language. Unlike these formats, DBN doesn't offer tools for
+generating decoders or encoders from any user-specified schema.When comparing DBN to most encodings or serialization formats, a critical
+difference is that DBN is a zero-copy encoding. Moreover, what makes DBN most unique is
+that it's simultaneously intended for three common use cases in a trading system:
+file format, real-time messaging format, and in-memory representation. This is a very
+specific convergence of use cases that manifests frequently in financial trading
+systems.Other encodings or formats typically used in situations where DBN would be a suitable
+replacement include:
+Apache Parquet
+Apache Arrow
+Feather
+Comparing to these, DBN is intended to be good at all three abovementioned use cases of
+a trading system—so you don't have to mix multiple serialization formats in one
+system—while the others tend to excel only in one or two use cases.A single format for all use cases carries a more important benefit for
+trading than just the performance upside that comes with minimizing copies; it ensures
+that market data is immutable when it passes through your trading system. The following
+diagram helps you visualize the difference between a potential trading system that uses
+DBN compared to a typical trading system that doesn't.
+Typical trading environment (top chart)
+Trading environment using DBN (bottom chart)
+Market data in multiple message, file, and in-memory formats
+Market data in a single format
+Multiple layers of serialization and deserialization
+No transformation of data
+Incurs risk of inconsistent state between components using market data
+Eliminates risk of inconsistent state between components using market data
+Complex, slow code
+Simple, fast code
+Typical trading environmentTrading environment using DBNImmutable market data makes it easy to align live trading with post-production logs and
+historical data; it makes it easy to use the same code for live trading, backtesting,
+and exploratory research; it also makes it easy to write GUIs that need accurately
+synchronize order events with market data events, especially market data events that
+triggered those order events. In short, using the same encoding or format everywhere
+ensures that state is synchronized throughout distributed parts of your trading system.For these reasons, most mature trading firms eventually end up implementing their own
+proprietary encoding that resembles DBN.The following table summarizes other key comparisons:
+Parquet
+Arrow
+Schema definition
+Fixed schemas
+Thrift, Avro, Protobuf
+Arrow object model
+Layout
+Sequential
+Sequential
+Column-oriented
+Column-oriented
+Zero copy
+Limited support
+Suitable for real-time messaging
+Suitable as file format
+Through Feather
+Metadata
+No, user-defined
+No, user-defined
+Sequential read
+Fastest
+Fast
+Moderate
+Moderate
+Sequential write
+Fastest
+Fast
+Slowest
+Moderate (Feather)
+Compressed size
+Small
+Moderate
+Smallest
+Largest (Feather)
+Transcoding to CSV
+Through pandas
+Transcoding to JSON
+Through pandas
+Mapping to pandas
+Package size (lines of code)
+16.0k (v0.14.0)
+55.7k (v1.27.0)
+108.5k (v1.12.3)
+1.6M (v12.0.0)
+Language support
+Python, C++, Rust, C bindings
+C++, Java, C#
+11+ languages
+11+ languages
+Use case
+Market data (storage, replay, research, real-time messaging, normalization, OMS, EMS, GUIs)
+Direct venue connectivity
+Storage file format
+Data exploration
+Frequently asked questionsIsn't this basically a bunch of raw structs? What's so special about this?Yes, pretty much! And it's not exactly novel—in our experience, most top-tier trading
+firms will have something similar already implemented, along with proprietary tooling
+to support it. The significance of DBN is that we're open sourcing the whole toolset,
+with many best practices for normalization and performance optimization, so that you
+don't have to reinvent the wheel.Another purpose of DBN is that it provides a standardized data interchange format that
+can be used for high-throughput, low latency streaming between a data provider like us
+and you. At the time of the initial release of DBN, we're not aware of any data
+provider that adopts a binary flat file or messaging format with similar zero-copy
+semantics.Even if you don't want to use DBN exactly, it's a lightweight specification so
+it's easy to mimic some of its practices or fork our reference implementation for
+your own use case.When should you not use DBN?
+When you depend on many tools and frameworks in the Apache ecosystem.
+Many data processing tools have native support for Apache Parquet and Arrow.
+However in our experience, mature trading environments generally use fewer
+general-purpose computation frameworks. In these cases, DBN is still an excellent as
+an interchange format for receiving and storing data from Databento, and we still
+support converting DBN to pandas dataframes
+and hence Arrow format.
+If you don't use Databento, only ever plan on trading on one trading venue,
+have already written parsers for the raw feeds, and have direct extranet connectivity,
+then there's a strong argument for just using the original wire protocol like ITCH and
+even rolling your own, thinner normalization format.
+If you have an academic or toy project and only plan on working with historical data.
+Many such projects employ relatively small amounts of data and don't require
+live data. In these circumstances, it makes sense to just store the data in your own,
+thinner binary format or a binary format with some structure like Parquet or HDF5.
+If you have to support many teams with one platform, with different trading styles
+and business functions, of which many of them only require low frequency data. In this
+situation, the performance benefits of fixed schemas become much less important within
+your organization, and the flexibility becomes more important. It's also quite likely
+in this situation that you have to constantly update your normalization format for new
+exploratory workflows. In those cases, DBN is still an excellent as an interchange
+format for receiving and storing data from Databento, but your firm will likely benefit
+from converting DBN data into flexible formats downstream.
+Encoding, serialization format, protocol—what's the difference?There are slight differences in these terms but DBN is all three at once.One way to look at DBN is that it's an OSI layer 6 presentation protocol, much like
+SBE—except that DBN is much stricter about message schemas, whereas SBE is flexible.Data written in accordance to such a protocol can be persisted to disk, so it can also
+serve as a storage format; it can also be written on the wire as a message encoding
+or wire format. SBE excels as a message encoding but is less often used as a storage
+format, whereas DBN accommodates both equally well.Why is the reference implementation written in Rust? Can I use it?The majority of Databento's infrastructure is written in Rust, C, and Python, and the
+reference implementation of DBN is a rewrite of the original C implementation
+and was originally written with internal use in mind.Rust's C ABI makes it interoperable across multiple languages with thin bindings,
+and its memory management model makes it safe and performant. It's simple to integrate
+the Rust DBN library into your Python application, as seen in our Python
+client library.Why is DBN sequential and not column-oriented? Aren't modern column-oriented layouts
+more optimized for querying?The sequential layout of DBN makes it more performant for real-time messaging use
+cases.Column-oriented formats do have the theoretical potential for more optimization in
+non-real time use cases, but this depends on the actual implementation. Our reference
+DBN implementation is heavily optimized and still on par with column-oriented formats
+like Apache Arrow on common use cases for historical market data.Am I locked-in to a proprietary binary format here?No, the DBN reference implementation is open-sourced under the permissive Apache 2.0
+License. We also provide
+transcoders to convert your DBN data into CSV and JSON.How is DBN being used currently?We store upwards of 4 PB and over 30 trillion records of normalized historical data in
+DBN internally at Databento. Every single message that passes through our
+infrastructure gets encoded in DBN—over billions of messages per day, at single-port
+peak messaging rates over 60 Gbps, spanning multiple asset classes and over 1.8 million
+instruments on any given day. It is used for all of our data schemas, including full
+order book, tick-by-tick trades, top of the book, OHLCV aggregates, venue statistics,
+instrument definitions, and more.Most of users, including some of the world's largest hedge funds and market making
+firms, are already using DBN through our client libraries, putting it
+through multiple production use cases that involve real-time streaming and historical
+flat files. Python Python C++ Rust HTTP/Raw

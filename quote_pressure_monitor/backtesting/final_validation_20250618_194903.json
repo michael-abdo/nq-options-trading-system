@@ -1,0 +1,50 @@
+{
+  "validation": "strike_based_institutional_flow",
+  "summary": {
+    "sessions_tested": 3,
+    "total_pnl": -5.0,
+    "win_rate": 33.33333333333333,
+    "avg_pnl_per_session": -1.6666666666666667
+  },
+  "results": [
+    {
+      "session": "2025-06-17 14:30-15:00",
+      "nq_price": 21877.125,
+      "direction": "LONG",
+      "bias": 0.42857142857142855,
+      "volume_above": 185,
+      "volume_below": 74,
+      "strikes_analyzed": 4,
+      "entry": 21877.125,
+      "exit": 21876.25,
+      "pnl_points": -0.875,
+      "pnl_dollars": -17.5
+    },
+    {
+      "session": "2025-06-18 14:30-15:00",
+      "nq_price": 21849.0,
+      "direction": "LONG",
+      "bias": 0.3616759088108441,
+      "volume_above": 1105,
+      "volume_below": 518,
+      "strikes_analyzed": 23,
+      "entry": 21849.0,
+      "exit": 21849.75,
+      "pnl_points": 0.75,
+      "pnl_dollars": 15.0
+    },
+    {
+      "session": "2025-06-17 15:30-16:00",
+      "nq_price": 21864.375,
+      "direction": "LONG",
+      "bias": 0.41371158392434987,
+      "volume_above": 299,
+      "volume_below": 124,
+      "strikes_analyzed": 7,
+      "entry": 21864.375,
+      "exit": 21864.25,
+      "pnl_points": -0.125,
+      "pnl_dollars": -2.5
+    }
+  ]
+}
