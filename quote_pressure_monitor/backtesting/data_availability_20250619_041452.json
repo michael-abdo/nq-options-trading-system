@@ -1,0 +1,170 @@
+{
+  "dates_tested": 18,
+  "dates_with_data": 0,
+  "dates_no_data": 18,
+  "total_quotes_found": 0,
+  "results_by_date": [
+    {
+      "date": "2025-01-02",
+      "contract": "NQH5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-01-15",
+      "contract": "NQH5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-01-30",
+      "contract": "NQH5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-02-05",
+      "contract": "NQH5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-02-14",
+      "contract": "NQH5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-02-26",
+      "contract": "NQH5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-03-05",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-03-17",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-03-28",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-04-03",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-04-15",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-04-29",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-05-05",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-05-16",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-05-30",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-06-03",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-06-12",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    },
+    {
+      "date": "2025-06-18",
+      "contract": "NQM5",
+      "error": "401 auth_authentication_failed\nAuthentication failed.\ndocumentation: https://databento.com/docs/portal/api-keys",
+      "nq_available": false,
+      "options_available": false,
+      "total_quotes": 0,
+      "data_quality": "error"
+    }
+  ]
+}

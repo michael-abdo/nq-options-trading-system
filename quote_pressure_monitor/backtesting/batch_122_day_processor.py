@@ -139,14 +139,14 @@ def batch_process_122_days():
 
             for record in data:
                 count += 1
-                if count > 50000:  # Limit for speed
+                if count > 100000:  # Increased timeout limit
                     break
 
                 if hasattr(record, 'levels') and len(record.levels) > 0:
                     level = record.levels[0]
                     if level.bid_sz >= 50 and level.ask_sz > 0 and level.bid_sz / level.ask_sz >= 2.0:
                         signals.append({'id': record.instrument_id, 'size': level.bid_sz})
-                        if len(signals) >= 50:
+                        if len(signals) >= 100:  # Increased signal collection limit
                             break
 
             if len(signals) < 10:
