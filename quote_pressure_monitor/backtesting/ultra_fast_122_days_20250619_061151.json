@@ -1,0 +1,44 @@
+{
+  "total_days": 121,
+  "successful_trades": 3,
+  "total_pnl": 22.5,
+  "win_rate": 66.66666666666666,
+  "trades": [
+    {
+      "date": "2025-02-13",
+      "direction": "SHORT",
+      "bias": 0.7725024727992087,
+      "vol_above": 115,
+      "vol_below": 896,
+      "total_vol": 1011,
+      "nq_price": 21869.75,
+      "pnl": 32.5,
+      "signals": 20,
+      "contract": "NQH5"
+    },
+    {
+      "date": "2025-04-16",
+      "direction": "LONG",
+      "bias": 1.0,
+      "vol_above": 3600,
+      "vol_below": 0,
+      "total_vol": 3600,
+      "nq_price": 18618.375,
+      "pnl": -12.5,
+      "signals": 9,
+      "contract": "NQM5"
+    },
+    {
+      "date": "2025-04-21",
+      "direction": "LONG",
+      "bias": 0.9050179211469535,
+      "vol_above": 1063,
+      "vol_below": 53,
+      "total_vol": 1116,
+      "nq_price": 17925.875,
+      "pnl": 2.5,
+      "signals": 20,
+      "contract": "NQM5"
+    }
+  ]
+}
