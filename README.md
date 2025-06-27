@@ -5,17 +5,17 @@
 **Single Entry Point with Flexible Usage**:
 
 ```bash
-# Run with today's auto-calculated EOD contract  
-python3 run_pipeline.py
+# Run monthly options pipeline (recommended)
+python3 daily_options_pipeline.py --option-type monthly
 
-# Run with specific contract (multiple syntax options)
-python3 run_pipeline.py MC7M25                    # Friday's EOD contract
-python3 run_pipeline.py MC1M25                    # Monday's EOD contract  
-python3 run_pipeline.py --contract MC2M25         # Tuesday's EOD contract
-python3 run_pipeline.py MC6M25                    # Monthly options
+# Run weekly options pipeline  
+python3 daily_options_pipeline.py --option-type weekly
+
+# Use global command for monthly options
+nq-monthly
 
 # Show help with all examples
-python3 run_pipeline.py --help
+python3 daily_options_pipeline.py --help
 ```
 
 This runs the complete Hierarchical Pipeline Analysis Framework with your actual NQ Options EV algorithm using **live market data** when available.
@@ -36,7 +36,7 @@ Final Results: Top-ranked trading opportunities
 
 ## Core Components
 
-- **Entry Point**: `run_pipeline.py` - Single command to run everything
+- **Entry Point**: `daily_options_pipeline.py` - Modern options data pipeline with metrics
 - **Pipeline System**: `tasks/options_trading_system/` - Modular analysis framework
 - **Configuration**: `tasks/options_trading_system/analysis_engine/pipeline_config.json`
 - **Documentation**: `docs/hierarchical_pipeline_framework.md`
@@ -47,7 +47,8 @@ Final Results: Top-ranked trading opportunities
 /Users/Mike/trading/algos/EOD/
 ├── CLAUDE.md                           # Project instructions
 ├── README.md                           # This file
-├── run_pipeline.py                     # 🚀 MAIN ENTRY POINT
+├── daily_options_pipeline.py           # 🚀 MAIN ENTRY POINT
+├── nq-monthly                          # Global command for monthly options
 ├── archive/                            # Legacy files (archived)
 ├── data/                               # Market data
 ├── docs/                               # Documentation
