@@ -1,0 +1,17 @@
+{
+  "timestamp": "20250627_080343",
+  "symbol_generated": true,
+  "symbol": "MM6N25",
+  "option_type": "monthly",
+  "authenticated": true,
+  "cookies_saved": true,
+  "cookie_file": null,
+  "data_retrieved": false,
+  "data_file": null,
+  "metrics_calculated": false,
+  "metrics_file": null,
+  "total_contracts": 0,
+  "errors": [
+    "Data retrieval failed: 401 Client Error: Unauthorized for url: https://www.barchart.com/proxies/core-api/v1/quotes/get?symbol=MM6N25&list=futures.options&fields=strike%2CopenPrice%2ChighPrice%2ClowPrice%2ClastPrice%2CpriceChange%2CbidPrice%2CaskPrice%2Cvolume%2CopenInterest%2Cpremium%2CtradeTime%2ClongSymbol%2CoptionType%2Csymbol%2CsymbolCode%2CsymbolType&meta=field.shortName%2Cfield.description%2Cfield.type%2Clists.lastUpdate&groupBy=optionType&orderBy=strike&orderDir=asc&raw=1"
+  ]
+}

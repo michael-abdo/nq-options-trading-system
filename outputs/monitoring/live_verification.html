@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Data Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .status-card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .live { border-left: 5px solid #27ae60; }
+        .not-live { border-left: 5px solid #e74c3c; }
+        .no-data { border-left: 5px solid #95a5a6; }
+        h1 { color: #2c3e50; }
+        .metric { display: inline-block; margin-right: 30px; }
+        .metric-value { font-size: 1.5em; font-weight: bold; }
+        .timestamp { color: #666; font-size: 0.9em; }
+        #status { font-size: 1.2em; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Live Data Verification Dashboard</h1>
+
+        <div id="statusCard" class="status-card no-data">
+            <h2 id="statusTitle">Waiting for Data...</h2>
+            <div id="status"></div>
+            <div id="metrics"></div>
+            <div id="timestamp" class="timestamp"></div>
+        </div>
+
+        <div class="status-card">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Open Tradovate in Chrome</li>
+                <li>Run the monitoring script in DevTools</li>
+                <li>Click "Copy Trading Data" to send reference data</li>
+                <li>Your system data will be compared automatically</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        async function updateStatus() {
+            try {
+                const response = await fetch('http://localhost:8083/api/status');
+                const data = await response.json();
+
+                const card = document.getElementById('statusCard');
+                const title = document.getElementById('statusTitle');
+                const status = document.getElementById('status');
+                const metrics = document.getElementById('metrics');
+                const timestamp = document.getElementById('timestamp');
+
+                // Update card style
+                card.className = 'status-card ' + data.status.toLowerCase().replace('_', '-');
+
+                // Update title
+                if (data.status === 'LIVE') {
+                    title.textContent = '✅ LIVE DATA VERIFIED';
+                } else if (data.status === 'NOT_LIVE') {
+                    title.textContent = '❌ NOT LIVE DATA';
+                } else {
+                    title.textContent = '⏳ Waiting for Data...';
+                }
+
+                // Update status message
+                status.textContent = data.message;
+
+                // Update metrics
+                if (data.tradovate_price) {
+                    metrics.innerHTML = `
+                        <div class="metric">
+                            <div>Tradovate (Reference)</div>
+                            <div class="metric-value">$${data.tradovate_price.toFixed(2)}</div>
+                        </div>
+                        <div class="metric">
+                            <div>System Data</div>
+                            <div class="metric-value">$${data.system_price.toFixed(2)}</div>
+                        </div>
+                        <div class="metric">
+                            <div>Time Diff</div>
+                            <div class="metric-value">${data.time_diff.toFixed(1)}s</div>
+                        </div>
+                        <div class="metric">
+                            <div>Price Diff</div>
+                            <div class="metric-value">$${data.price_diff.toFixed(2)}</div>
+                        </div>
+                    `;
+                }
+
+                // Update timestamp
+                if (data.last_check) {
+                    timestamp.textContent = 'Last check: ' + new Date(data.last_check).toLocaleTimeString();
+                }
+
+            } catch (e) {
+                console.error('Error updating status:', e);
+            }
+        }
+
+        // Update every second
+        setInterval(updateStatus, 1000);
+        updateStatus();
+    </script>
+</body>
+</html>

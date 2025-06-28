@@ -1,0 +1,15 @@
+{
+  "timestamp": "20250627_002806",
+  "symbol_generated": true,
+  "symbol": "MM1N25",
+  "option_type": "weekly",
+  "authenticated": true,
+  "cookies_saved": true,
+  "cookie_file": null,
+  "data_retrieved": true,
+  "data_file": "outputs/20250627/api_data/barchart_api_MM1N25_002807.json",
+  "metrics_calculated": true,
+  "metrics_file": "outputs/20250627/metrics/MM1N25_metrics_002807.json",
+  "total_contracts": 576,
+  "errors": []
+}

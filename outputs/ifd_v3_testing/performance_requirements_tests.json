@@ -1,0 +1,269 @@
+{
+  "test_suite": "performance_requirements",
+  "timestamp": "2025-06-17T01:45:00.872474-04:00",
+  "requirements": {
+    "max_latency_ms": 100,
+    "min_throughput_strikes": 100,
+    "max_memory_growth_mb": 50,
+    "max_cpu_usage_percent": 80
+  },
+  "test_results": {
+    "latency": {
+      "test_name": "latency_requirements",
+      "requirement_ms": 100,
+      "measurements": [
+        {
+          "test_case": "small_dataset",
+          "pressure_metrics_count": 5,
+          "measurements": [
+            26.00693702697754,
+            14.232873916625977,
+            13.098001480102539,
+            15.110969543457031,
+            18.456220626831055,
+            14.558076858520508,
+            14.860153198242188,
+            18.004179000854492,
+            13.754844665527344,
+            14.051198959350586
+          ],
+          "avg_latency_ms": 16.213345527648926,
+          "median_latency_ms": 14.709115028381348,
+          "p95_latency_ms": 29.404759407043457,
+          "max_latency_ms": 26.00693702697754,
+          "meets_requirement": true
+        },
+        {
+          "test_case": "medium_dataset",
+          "pressure_metrics_count": 15,
+          "measurements": [
+            41.47505760192871,
+            40.29202461242676,
+            75.33693313598633,
+            73.64606857299805,
+            41.56684875488281,
+            50.987958908081055,
+            33.18595886230469,
+            39.31903839111328,
+            43.57004165649414,
+            41.407108306884766
+          ],
+          "avg_latency_ms": 48.07870388031006,
+          "median_latency_ms": 41.52095317840576,
+          "p95_latency_ms": 76.09782218933105,
+          "max_latency_ms": 75.33693313598633,
+          "meets_requirement": true
+        },
+        {
+          "test_case": "large_dataset",
+          "pressure_metrics_count": 50,
+          "measurements": [
+            118.87788772583008,
+            161.53597831726074,
+            122.21789360046387,
+            120.50080299377441,
+            121.14596366882324,
+            132.42292404174805,
+            119.5230484008789,
+            155.8096408843994,
+            117.00081825256348,
+            138.2882595062256
+          ],
+          "avg_latency_ms": 130.73232173919678,
+          "median_latency_ms": 121.68192863464355,
+          "p95_latency_ms": 164.11283016204834,
+          "max_latency_ms": 161.53597831726074,
+          "meets_requirement": false
+        },
+        {
+          "test_case": "xlarge_dataset",
+          "pressure_metrics_count": 100,
+          "measurements": [
+            255.61022758483887,
+            275.4368782043457,
+            300.3230094909668,
+            263.91077041625977,
+            237.91193962097168,
+            252.4559497833252,
+            261.1551284790039,
+            275.0282287597656,
+            260.0739002227783,
+            260.2097988128662
+          ],
+          "avg_latency_ms": 264.2115831375122,
+          "median_latency_ms": 260.68246364593506,
+          "p95_latency_ms": 311.5217685699463,
+          "max_latency_ms": 300.3230094909668,
+          "meets_requirement": false
+        }
+      ],
+      "status": "FAILED",
+      "overall_stats": {
+        "total_measurements": 40,
+        "overall_avg_ms": 114.80898857116699,
+        "overall_p95_ms": 275.4164457321167,
+        "overall_max_ms": 300.3230094909668
+      }
+    },
+    "throughput": {
+      "test_name": "throughput_requirements",
+      "requirement_strikes": 100,
+      "measurements": [
+        {
+          "strike_count": 50,
+          "processing_time_ms": 191.2689208984375,
+          "strikes_per_second": 261.4120462704428,
+          "signals_generated": 0,
+          "meets_requirement": true
+        },
+        {
+          "strike_count": 100,
+          "processing_time_ms": 332.44895935058594,
+          "strikes_per_second": 300.7980539188406,
+          "signals_generated": 0,
+          "meets_requirement": true
+        },
+        {
+          "strike_count": 150,
+          "processing_time_ms": 521.9969749450684,
+          "strikes_per_second": 287.3579871143603,
+          "signals_generated": 0,
+          "meets_requirement": true
+        },
+        {
+          "strike_count": 200,
+          "processing_time_ms": 675.2607822418213,
+          "strikes_per_second": 296.1818681902615,
+          "signals_generated": 0,
+          "meets_requirement": true
+        },
+        {
+          "strike_count": 300,
+          "processing_time_ms": 1322.8411674499512,
+          "strikes_per_second": 226.78459620236328,
+          "signals_generated": 0,
+          "meets_requirement": false
+        }
+      ],
+      "status": "FAILED",
+      "best_throughput": {
+        "strikes_per_second": 300.7980539188406,
+        "strike_count": 100,
+        "processing_time_ms": 332.44895935058594
+      }
+    },
+    "streaming": {
+      "test_name": "streaming_updates",
+      "measurements": [
+        {
+          "target_frequency": 1,
+          "actual_frequency": 1.0,
+          "updates_processed": 5,
+          "avg_processing_time_ms": 30.934858322143555,
+          "max_processing_time_ms": 46.65994644165039,
+          "can_maintain_frequency": true
+        },
+        {
+          "target_frequency": 5,
+          "actual_frequency": 4.4,
+          "updates_processed": 22,
+          "avg_processing_time_ms": 31.417987563393332,
+          "max_processing_time_ms": 63.79508972167969,
+          "can_maintain_frequency": true
+        },
+        {
+          "target_frequency": 10,
+          "actual_frequency": 7.4,
+          "updates_processed": 37,
+          "avg_processing_time_ms": 35.28365573367557,
+          "max_processing_time_ms": 109.0538501739502,
+          "can_maintain_frequency": false
+        },
+        {
+          "target_frequency": 20,
+          "actual_frequency": 11.2,
+          "updates_processed": 56,
+          "avg_processing_time_ms": 37.171870470047,
+          "max_processing_time_ms": 150.7399082183838,
+          "can_maintain_frequency": false
+        }
+      ],
+      "status": "FAILED",
+      "max_sustainable_frequency": 4.4
+    },
+    "memory": {
+      "test_name": "memory_efficiency",
+      "measurements": [
+        {
+          "baseline_memory_mb": 118.30078125,
+          "final_memory_mb": 114.86328125,
+          "max_memory_mb": 120.93359375,
+          "memory_growth_mb": -3.4375,
+          "peak_growth_mb": 2.6328125,
+          "iterations": 50,
+          "memory_timeline": [
+            118.30078125,
+            118.5859375,
+            120.421875,
+            118.71875,
+            120.93359375,
+            114.9453125,
+            114.86328125
+          ],
+          "meets_requirement": true
+        }
+      ],
+      "status": "PASSED"
+    },
+    "cpu": {
+      "test_name": "cpu_efficiency",
+      "measurements": [
+        {
+          "avg_cpu_percent": 4.496666666666667,
+          "max_cpu_percent": 93.2,
+          "cpu_timeline": [
+            93.2,
+            41.7,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "meets_requirement": false
+        }
+      ],
+      "status": "FAILED"
+    }
+  },
+  "overall_status": "FAILED",
+  "summary": {
+    "total_test_time_ms": 64148.56028556824,
+    "tests_passed": 1,
+    "total_tests": 5,
+    "success_rate": 0.2
+  }
+}

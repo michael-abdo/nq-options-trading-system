@@ -1,0 +1,8 @@
+{
+  "symbol": "MQ4M25",
+  "timestamp": "2025-06-27T14:06:05.214899",
+  "api_endpoint": "proxies/core-api/v1/quotes/get",
+  "contracts_count": 2,
+  "total_contracts": 706,
+  "file_path": "outputs/20250627/api_data/barchart_api_MQ4M25_140605.json"
+}

@@ -1,0 +1,8 @@
+{
+  "symbol": "MM1N25",
+  "timestamp": "2025-06-27T00:28:07.860464",
+  "api_endpoint": "proxies/core-api/v1/quotes/get",
+  "contracts_count": 2,
+  "total_contracts": 576,
+  "file_path": "outputs/20250627/api_data/barchart_api_MM1N25_002807.json"
+}

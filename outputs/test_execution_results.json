@@ -1,0 +1,94 @@
+{
+  "execution_time": "2025-06-16T22:58:24.794305",
+  "total_sample_tests": 10,
+  "passed": 4,
+  "failed": 6,
+  "errors": 0,
+  "success_rate": "40.0%",
+  "failure_patterns": {
+    "Missing module": 5,
+    "Unknown error": 1
+  },
+  "test_results": [
+    {
+      "file": "tests/test_config_system.py",
+      "status": "PASSED",
+      "return_code": 0,
+      "failure_reason": null,
+      "execution_time": "< 30s",
+      "output_sample": "=== Testing Configurable Data Sources System ===\n\n1. Testing Configuration Manager...\n   Creating standard profiles...\n   \u2713 Created 10 profiles: ['barchart_only', 'databento_only', 'testing', 'shadow_trading', 'databento_live', '5m_chart_config', 'shadow_trading_default_20250616_181733', 'all_sources', 'alerting', 'monitoring']\n\n2. Testing Sources Registry...\n   \u2713 Available sources: []\n   \u2713 Total sources: 0\n\n3. Testing Configuration Profiles...\n\n   Testing profile: barchart_only\n     \u2713 Enabled s"
+    },
+    {
+      "file": "tests/test_api_authentication.py",
+      "status": "FAILED",
+      "return_code": 1,
+      "failure_reason": "Missing module: utils",
+      "execution_time": "< 30s",
+      "output_sample": "Traceback (most recent call last):\n  File \"/Users/Mike/trading/algos/EOD/tests/test_api_authentication.py\", line 12, in <module>\n    from utils.timezone_utils import get_eastern_time, get_utc_time\nModuleNotFoundError: No module named 'utils'\n"
+    },
+    {
+      "file": "tests/test_data_quality.py",
+      "status": "FAILED",
+      "return_code": 1,
+      "failure_reason": "Missing module: utils",
+      "execution_time": "< 30s",
+      "output_sample": "Traceback (most recent call last):\n  File \"/Users/Mike/trading/algos/EOD/tests/test_data_quality.py\", line 12, in <module>\n    from utils.timezone_utils import get_eastern_time, get_utc_time\nModuleNotFoundError: No module named 'utils'\n"
+    },
+    {
+      "file": "tests/shadow_trading/test_shadow_trading_integration.py",
+      "status": "PASSED",
+      "return_code": 0,
+      "failure_reason": null,
+      "execution_time": "< 30s",
+      "output_sample": "INFO:__main__:============================================================\nINFO:__main__:SHADOW TRADING SYSTEM INTEGRATION TEST\nINFO:__main__:============================================================\nINFO:__main__:\nRunning test: Component Imports\nINFO:__main__:----------------------------------------\nINFO:__main__:Testing shadow trading imports...\nINFO:institutional_flow_v3.solution:Successfully imported MBO streaming integration\nWARNING:phase4.latency_monitor:Matplotlib not available - chart"
+    },
+    {
+      "file": "tests/error_handling/test_error_handling_and_recovery.py",
+      "status": "FAILED",
+      "return_code": 1,
+      "failure_reason": "Missing module: utils",
+      "execution_time": "< 30s",
+      "output_sample": "Traceback (most recent call last):\n  File \"/Users/Mike/trading/algos/EOD/tests/error_handling/test_error_handling_and_recovery.py\", line 20, in <module>\n    from utils.timezone_utils import get_eastern_time, get_utc_time\nModuleNotFoundError: No module named 'utils'\n"
+    },
+    {
+      "file": "tests/performance/test_performance_quick.py",
+      "status": "PASSED",
+      "return_code": 0,
+      "failure_reason": null,
+      "execution_time": "< 30s",
+      "output_sample": "\ud83d\ude80 Running Quick Performance Tests\n============================================================\nThese are quick versions of the full performance tests\n============================================================\n\n\ud83d\ude80 Running Quick Latency Test\n  Samples: 100\n  Average: 1.43ms\n  P95: 1.63ms\n  Max: 1.77ms\n  \u2705 Latency test passed!\n\n\ud83d\udca5 Running Burst Load Test\n  Burst Size: 50 operations\n  Avg Time: 0.30ms\n  Max Time: 0.39ms\n  \u2705 Burst handling test passed!\n\n\ud83d\udd04 Running Concurrent Operations Test\n\ud83d\ude80 Starting"
+    },
+    {
+      "file": "tests/integration/live_streaming/test_live_streaming.py",
+      "status": "FAILED",
+      "return_code": 1,
+      "failure_reason": "Missing module: databento_5m_provider",
+      "execution_time": "< 30s",
+      "output_sample": "Traceback (most recent call last):\n  File \"/Users/Mike/trading/algos/EOD/tests/integration/live_streaming/test_live_streaming.py\", line 18, in <module>\n    from databento_5m_provider import Databento5MinuteProvider\nModuleNotFoundError: No module named 'databento_5m_provider'\n"
+    },
+    {
+      "file": "tests/test_pipeline_with_config.py",
+      "status": "PASSED",
+      "return_code": 0,
+      "failure_reason": null,
+      "execution_time": "< 30s",
+      "output_sample": "=== Testing Pipeline with Configurable Data Sources ===\n\n1. Testing Pipeline Integration with New Config Format...\n\n   Testing with 'databento_only' profile...\n   \u2713 Pipeline created successfully with new config format\n\ud83d\udd27 Enabled sources: ['databento']\n\n\ud83c\udfaf Loading data using priority-based system...\n\ud83d\udd12 TRADING SAFETY MODE: Only live Databento data allowed\n\ud83c\udfaf Loading from Databento (NO FALLBACKS)...\n\ud83d\udd04 Loading data from databento...\n\u274c Priority-based loading failed: \u274c CRITICAL: Databento failed: Databen"
+    },
+    {
+      "file": "tests/test_databento_live.py",
+      "status": "FAILED",
+      "return_code": 0,
+      "failure_reason": "Unknown error",
+      "execution_time": "< 30s",
+      "output_sample": "DATABENTO LIVE TEST\n========================================\nSubscribing to NQ futures...\nError: User authentication failed: Authentication failed.\nTraceback (most recent call last):\n  File \"/Users/Mike/trading/algos/EOD/tests/test_databento_live.py\", line 19, in <module>\n    live.subscribe(\n    ~~~~~~~~~~~~~~^\n        dataset='GLBX.MDP3',\n        ^^^^^^^^^^^^^^^^^^^^\n        symbols=['NQ.c.0'],\n        ^^^^^^^^^^^^^^^^^^^\n        schema='trades'\n        ^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/"
+    },
+    {
+      "file": "tests/test_e2e_pipeline.py",
+      "status": "FAILED",
+      "return_code": 1,
+      "failure_reason": "Missing module: utils",
+      "execution_time": "< 30s",
+      "output_sample": "Traceback (most recent call last):\n  File \"/Users/Mike/trading/algos/EOD/tests/test_e2e_pipeline.py\", line 17, in <module>\n    from utils.timezone_utils import get_eastern_time, get_utc_time\nModuleNotFoundError: No module named 'utils'\n"
+    }
+  ]
+}

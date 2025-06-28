@@ -1,0 +1,31 @@
+{
+  "call_premium_total": 3531924,
+  "put_premium_total": 569934,
+  "total_premium": 4101858,
+  "put_call_premium_ratio": 0.16136643936845754,
+  "call_oi_total": 1717,
+  "put_oi_total": 1826,
+  "total_oi": 3543,
+  "put_call_oi_ratio": 1.0634828188701224,
+  "call_contracts_total": 140,
+  "put_contracts_total": 140,
+  "total_contracts": 280,
+  "call_contracts_with_premium": 140,
+  "put_contracts_with_premium": 140,
+  "call_contracts_with_oi": 59,
+  "put_contracts_with_oi": 85,
+  "formatted": {
+    "call_premium_total": "$3,531,924.00",
+    "put_premium_total": "$569,934.00",
+    "total_premium": "$4,101,858.00",
+    "put_call_premium_ratio": "0.161",
+    "call_oi_total": "1,717",
+    "put_oi_total": "1,826",
+    "total_oi": "3,543",
+    "put_call_oi_ratio": "1.063"
+  },
+  "symbol": "MM6N25",
+  "timestamp": "2025-06-27T00:22:02.133906",
+  "data_source": "barchart_api",
+  "calculation_version": "1.0"
+}

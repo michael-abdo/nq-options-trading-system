@@ -512,50 +512,38 @@ class BarchartAPIComparator:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
     
-    def get_eod_contract_symbol(self, base_symbol: str = "NQ") -> str:
+    def get_eod_contract_symbol(self, base_symbol: str = "NQ", option_type: str = "weekly", year_format: str = "2digit") -> str:
         """
         Get the EOD (End of Day) options contract symbol for today
         
-        Barchart daily options symbols:
-        - Format: {BASE}{DAY_CODE}{MONTH}{YEAR}
-        - For NQ Micro daily options: MC{D}{M}{YY}
+        Barchart options symbols based on observed patterns:
+        - MM1N25 = Tuesday July 1st, 2025 (Weekly - First Tuesday)
+        - MM6N25 = Thursday July 3rd, 2025 (Monthly - Third Thursday)
+        - MC4M25 = Thursday June 27th, 2025 (Daily/Weekly pattern)
         
-        Day codes for daily options:
-        - 1 = Monday (MC1)
-        - 2 = Tuesday (MC2)
-        - 3 = Wednesday (MC3)
-        - 4 = Thursday (MC4)
-        - 5 = Friday (MC5)
-        - Weekend: Use next Monday's contract (MC1)
+        Symbol Format: {PREFIX}{CODE}{MONTH}{YEAR}
+        - PREFIX: MM (weekly/monthly), MC (daily)
+        - CODE: Complex mapping based on expiration pattern
+        - MONTH: Standard futures month codes (F,G,H,J,K,M,N,Q,U,V,X,Z)
+        - YEAR: Single digit (5 for 2025)
         
-        For weekly/monthly options:
-        - 6 = Standard monthly (3rd Friday)
-        - 7 = Weekly options
-        
+        Args:
+            base_symbol: Underlying symbol (default "NQ")
+            option_type: "weekly", "monthly", or "daily"
+            year_format: "2digit" for 25, "1digit" for 5
+            
         Returns:
-            Symbol like "MC1M25" for Monday June 2025 daily options
+            Symbol like "MM1N25" for weekly options (2digit) or "MM1N5" (1digit)
         """
         from datetime import datetime, timedelta
+        import calendar
         
         now = datetime.now()
-        
-        # Determine expiration date and day code
-        if now.weekday() < 5:  # Monday = 0, Friday = 4
-            # Weekday: use today's daily option
-            expiry_date = now
-            day_code = now.weekday() + 1  # 1-5 for Mon-Fri
-        else:
-            # Weekend: use next Monday's daily option
-            days_until_monday = (7 - now.weekday()) % 7
-            if days_until_monday == 0:  # Already Monday
-                days_until_monday = 7
-            expiry_date = now + timedelta(days=days_until_monday)
-            day_code = 1  # Monday
         
         # Get month letter code
         month_codes = {
             1: 'F',   # January
-            2: 'G',   # February
+            2: 'G',   # February  
             3: 'H',   # March
             4: 'J',   # April
             5: 'K',   # May
@@ -568,15 +556,89 @@ class BarchartAPIComparator:
             12: 'Z'   # December
         }
         
-        month_code = month_codes[expiry_date.month]
-        year_code = str(expiry_date.year)[-2:]  # Last 2 digits of year
+        month_code = month_codes[now.month]
         
-        # Construct symbol
-        eod_symbol = f"MC{day_code}{month_code}{year_code}"
+        # Format year code based on preference
+        if year_format == "2digit":
+            year_code = str(now.year)[-2:]  # Last 2 digits: 2025 -> 25
+        else:
+            year_code = str(now.year)[-1]   # Last 1 digit: 2025 -> 5
         
-        self.logger.info(f"Today's EOD contract: {eod_symbol} (expires {expiry_date.strftime('%Y-%m-%d')})")
+        if option_type == "weekly":
+            # For weekly options, find the next Tuesday
+            days_ahead = 1 - now.weekday()  # Tuesday = 1
+            if days_ahead <= 0:  # Already past Tuesday
+                days_ahead += 7
+            
+            next_tuesday = now + timedelta(days=days_ahead)
+            
+            # Calculate which week of the month this Tuesday falls in
+            week_of_month = (next_tuesday.day - 1) // 7 + 1
+            
+            # Use MM prefix with week number
+            next_tuesday_year = str(next_tuesday.year)[-2:] if year_format == "2digit" else str(next_tuesday.year)[-1]
+            symbol = f"MM{week_of_month}{month_codes[next_tuesday.month]}{next_tuesday_year}"
+            expiry_date = next_tuesday
+            
+        elif option_type == "friday" or option_type == "0dte":
+            # For Friday weekly options (including 0DTE on Fridays)
+            days_ahead = 4 - now.weekday()  # Friday = 4
+            if days_ahead < 0:  # Already past Friday
+                days_ahead += 7
+            elif days_ahead == 0 and option_type == "0dte":
+                # Today is Friday, use today for 0DTE
+                days_ahead = 0
+            
+            next_friday = now + timedelta(days=days_ahead)
+            
+            # Calculate which week of the month this Friday falls in
+            week_of_month = (next_friday.day - 1) // 7 + 1
+            
+            # Use MQ prefix with week number
+            next_friday_year = str(next_friday.year)[-2:] if year_format == "2digit" else str(next_friday.year)[-1]
+            symbol = f"MQ{week_of_month}{month_codes[next_friday.month]}{next_friday_year}"
+            expiry_date = next_friday
+            
+        elif option_type == "monthly":
+            # Monthly options expire on 3rd Thursday
+            # Find 3rd Thursday of current month
+            first_day = now.replace(day=1)
+            first_thursday = first_day + timedelta(days=(3 - first_day.weekday()) % 7)
+            third_thursday = first_thursday + timedelta(days=14)
+            
+            # If we're past 3rd Thursday, use next month
+            if now > third_thursday:
+                if now.month == 12:
+                    next_month = now.replace(year=now.year + 1, month=1, day=1)
+                else:
+                    next_month = now.replace(month=now.month + 1, day=1)
+                
+                first_thursday = next_month + timedelta(days=(3 - next_month.weekday()) % 7)
+                third_thursday = first_thursday + timedelta(days=14)
+            
+            third_thursday_year = str(third_thursday.year)[-2:] if year_format == "2digit" else str(third_thursday.year)[-1]
+            symbol = f"MM6{month_codes[third_thursday.month]}{third_thursday_year}"
+            expiry_date = third_thursday
+            
+        else:  # daily
+            # For daily options, use MC prefix with weekday number
+            if now.weekday() < 5:  # Monday = 0, Friday = 4
+                expiry_date = now
+                day_code = now.weekday() + 1  # 1-5 for Mon-Fri
+            else:
+                # Weekend: use next Monday
+                days_until_monday = (7 - now.weekday()) % 7
+                if days_until_monday == 0:
+                    days_until_monday = 7
+                expiry_date = now + timedelta(days=days_until_monday)
+                day_code = 1
+            
+            expiry_year = str(expiry_date.year)[-2:] if year_format == "2digit" else str(expiry_date.year)[-1]
+            symbol = f"MC{day_code}{month_codes[expiry_date.month]}{expiry_year}"
         
-        return eod_symbol
+        self.logger.info(f"Generated {option_type} contract: {symbol} (expires {expiry_date.strftime('%Y-%m-%d')})")
+        
+        return symbol
     
     def get_eod_options_url(self, futures_symbol: str = "NQM25") -> str:
         """

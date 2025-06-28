@@ -1,0 +1,25 @@
+{
+  "start_time": "2025-06-17T01:50:30.452693-04:00",
+  "tests": {
+    "system_startup": {
+      "status": "FAIL",
+      "error": "'StreamingBridge' object has no attribute 'start_async'"
+    }
+  },
+  "metrics": {},
+  "issues": [
+    {
+      "type": "CRITICAL",
+      "message": "'StreamingBridge' object has no attribute 'start_async'",
+      "timestamp": "2025-06-17T01:50:30.453472-04:00"
+    }
+  ],
+  "end_time": "2025-06-17T01:50:30.453812-04:00",
+  "summary": {
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "success_rate": 0.0,
+    "critical_issues": 1
+  }
+}

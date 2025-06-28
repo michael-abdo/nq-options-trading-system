@@ -1,0 +1,10 @@
+{
+  "description": "",
+  "devtoolsFrontendUrl": "https://chrome-devtools-frontend.appspot.com/serve_rev/@707269b903b9d66dcfc06ea5101eec3cf7cdb12b/inspector.html?ws=localhost:9222/devtools/page/955B966DC8930B45EB481241CDA0BE78",
+  "faviconUrl": "https://assets.barchart.com/favicon.ico",
+  "id": "955B966DC8930B45EB481241CDA0BE78",
+  "title": "Nasdaq 100 E-Mini Sep &#39;25 Futures Options Prices - Barchart.com",
+  "type": "page",
+  "url": "https://www.barchart.com/futures/quotes/NQU25/options/MC4M25?futuresOptionsView=merged",
+  "webSocketDebuggerUrl": "ws://localhost:9222/devtools/page/955B966DC8930B45EB481241CDA0BE78"
+}

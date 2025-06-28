@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-06-16T15:33:24.039519-04:00",
+  "metrics": {
+    "failed_auth_attempts": 0,
+    "successful_auth_attempts": 1,
+    "data_access_events": 1,
+    "suspicious_activity_events": 0,
+    "blocked_ips": 0,
+    "rate_limit_violations": 0,
+    "last_intrusion_attempt": null,
+    "high_risk_events_24h": 0
+  },
+  "events_24h": {
+    "total": 2,
+    "by_type": {
+      "data_access": 2
+    },
+    "by_severity": {
+      "LOW": 2
+    }
+  },
+  "blocked_ips": {
+    "count": 0,
+    "list": []
+  },
+  "top_failed_ips": [],
+  "security_score": 100
+}

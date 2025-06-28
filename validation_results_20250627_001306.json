@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-06-27T00:13:06.129605",
+  "test_cases": 4,
+  "successful": 4,
+  "working_symbols": 2,
+  "detailed_results": [
+    {
+      "test_case": {
+        "description": "Monthly July 2025 (Known working)",
+        "symbol": "MM6N25",
+        "expected_date": "07/03/25",
+        "option_type": "monthly"
+      },
+      "result": {
+        "success": true,
+        "days": "6",
+        "actualDate": "07/03/25",
+        "expectedDate": "07/03/25",
+        "match": true
+      },
+      "status": "SUCCESS"
+    },
+    {
+      "test_case": {
+        "description": "First Tuesday July 2025",
+        "symbol": "MM1N25",
+        "expected_date": "07/01/25",
+        "option_type": "weekly"
+      },
+      "result": {
+        "success": true,
+        "days": "4",
+        "actualDate": "07/01/25",
+        "expectedDate": "07/01/25",
+        "match": true
+      },
+      "status": "SUCCESS"
+    },
+    {
+      "test_case": {
+        "description": "Generated weekly symbol",
+        "symbol": "MM1N5",
+        "expected_date": "TBD",
+        "option_type": "weekly"
+      },
+      "result": {
+        "success": true,
+        "days": "4",
+        "actualDate": "07/01/25",
+        "expectedDate": "TBD",
+        "match": false
+      },
+      "status": "SUCCESS"
+    },
+    {
+      "test_case": {
+        "description": "Generated monthly symbol",
+        "symbol": "MM6N5",
+        "expected_date": "TBD",
+        "option_type": "monthly"
+      },
+      "result": {
+        "success": true,
+        "days": "6",
+        "actualDate": "07/03/25",
+        "expectedDate": "TBD",
+        "match": false
+      },
+      "status": "SUCCESS"
+    }
+  ]
+}

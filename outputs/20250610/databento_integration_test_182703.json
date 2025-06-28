@@ -1,0 +1,125 @@
+{
+  "test_time": "2025-06-10T18:27:03.249219",
+  "load_results": {
+    "databento": {
+      "status": "success",
+      "contracts": 1296,
+      "quality": {
+        "total_contracts": 1296,
+        "volume_coverage": 0.13117283950617284,
+        "oi_coverage": 0.0,
+        "data_source": "databento",
+        "timestamp": "2025-06-10T18:27:03.243386"
+      }
+    }
+  },
+  "summary": {
+    "pipeline_metadata": {
+      "pipeline_version": "1.0",
+      "created_at": "2025-06-10T18:26:58.477545",
+      "sources_configured": [
+        "databento"
+      ]
+    },
+    "sources_loaded": 1,
+    "sources_failed": 0,
+    "total_contracts": 1296,
+    "data_quality": {
+      "total_contracts": 1296,
+      "overall_volume_coverage": 0.13117283950617284,
+      "overall_oi_coverage": 0.0,
+      "overall_price_coverage": 0.13117283950617284,
+      "by_source": {
+        "databento": {
+          "total": 1296,
+          "volume_coverage": 0.13117283950617284,
+          "oi_coverage": 0.0,
+          "price_coverage": 0.13117283950617284
+        }
+      },
+      "sources": [
+        "databento"
+      ]
+    },
+    "timestamp": "2025-06-10T18:27:03.248548",
+    "source_details": {
+      "databento": {
+        "contracts": 1296,
+        "volume_coverage": 0.13117283950617284,
+        "oi_coverage": 0.0
+      }
+    }
+  },
+  "sample_contracts": [
+    {
+      "source": "databento",
+      "type": "call",
+      "symbol": "NQM5 C22850",
+      "strike": 22.85,
+      "expiration": "2025-06-20T13:30:00+00:00",
+      "volume": 2,
+      "open_interest": 0,
+      "last_price": 14.75,
+      "bid": 0,
+      "ask": 0,
+      "underlying_price": null,
+      "timestamp": "2025-06-10T18:27:03.243463"
+    },
+    {
+      "source": "databento",
+      "type": "call",
+      "symbol": "NQM5 C15800",
+      "strike": 15.8,
+      "expiration": "2025-06-20T13:30:00+00:00",
+      "volume": 0,
+      "open_interest": 0,
+      "last_price": 0,
+      "bid": 0,
+      "ask": 0,
+      "underlying_price": null,
+      "timestamp": "2025-06-10T18:27:03.243471"
+    },
+    {
+      "source": "databento",
+      "type": "call",
+      "symbol": "NQM5 C22600",
+      "strike": 22.6,
+      "expiration": "2025-06-20T13:30:00+00:00",
+      "volume": 0,
+      "open_interest": 0,
+      "last_price": 0,
+      "bid": 0,
+      "ask": 0,
+      "underlying_price": null,
+      "timestamp": "2025-06-10T18:27:03.243477"
+    },
+    {
+      "source": "databento",
+      "type": "call",
+      "symbol": "NQZ6 C33500",
+      "strike": 33.5,
+      "expiration": "2026-12-18T14:30:00+00:00",
+      "volume": 0,
+      "open_interest": 0,
+      "last_price": 0,
+      "bid": 0,
+      "ask": 0,
+      "underlying_price": null,
+      "timestamp": "2025-06-10T18:27:03.243481"
+    },
+    {
+      "source": "databento",
+      "type": "call",
+      "symbol": "NQH6 C18000",
+      "strike": 18.0,
+      "expiration": "2026-03-20T13:30:00+00:00",
+      "volume": 0,
+      "open_interest": 0,
+      "last_price": 0,
+      "bid": 0,
+      "ask": 0,
+      "underlying_price": null,
+      "timestamp": "2025-06-10T18:27:03.243485"
+    }
+  ]
+}

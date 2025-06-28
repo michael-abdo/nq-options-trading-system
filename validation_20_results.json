@@ -1,0 +1,715 @@
+{
+  "timestamp": "2025-06-27T21:44:58.672862",
+  "statistics": {
+    "total_tests": 20,
+    "by_type": {
+      "weekly": {
+        "total": 20,
+        "correct_prefix": 20,
+        "correct_weekday": 20
+      },
+      "friday": {
+        "total": 20,
+        "correct_prefix": 20,
+        "correct_weekday": 20
+      },
+      "0dte": {
+        "total": 0,
+        "matches_friday": 0
+      },
+      "monthly": {
+        "total": 20,
+        "correct_prefix": 20,
+        "correct_weekday": 20
+      }
+    }
+  },
+  "results": [
+    {
+      "test_num": 1,
+      "test_date": "2025-07-12",
+      "weekday": "Saturday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-15",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ3N25",
+          "expiry": "2025-07-18",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-17",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 2,
+      "test_date": "2025-09-12",
+      "weekday": "Friday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-16",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ2U25",
+          "expiry": "2025-09-12",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "0dte": {
+          "error": "'correct_prefix'"
+        }
+      }
+    },
+    {
+      "test_num": 3,
+      "test_date": "2025-08-19",
+      "weekday": "Tuesday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM4Q25",
+          "expiry": "2025-08-26",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 4 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ4Q25",
+          "expiry": "2025-08-22",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 4 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3Q25",
+          "expiry": "2025-08-21",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 4,
+      "test_date": "2025-09-02",
+      "weekday": "Tuesday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM2U25",
+          "expiry": "2025-09-09",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1U25",
+          "expiry": "2025-09-05",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 5,
+      "test_date": "2025-09-09",
+      "weekday": "Tuesday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-16",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ2U25",
+          "expiry": "2025-09-12",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 6,
+      "test_date": "2025-06-30",
+      "weekday": "Monday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM1N25",
+          "expiry": "2025-07-01",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1N25",
+          "expiry": "2025-07-04",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-17",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 7,
+      "test_date": "2025-06-29",
+      "weekday": "Sunday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM1N25",
+          "expiry": "2025-07-01",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1N25",
+          "expiry": "2025-07-04",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-17",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 8,
+      "test_date": "2025-09-14",
+      "weekday": "Sunday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-16",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ3U25",
+          "expiry": "2025-09-19",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 9,
+      "test_date": "2025-09-07",
+      "weekday": "Sunday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM2U25",
+          "expiry": "2025-09-09",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ2U25",
+          "expiry": "2025-09-12",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 10,
+      "test_date": "2025-08-23",
+      "weekday": "Saturday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM4Q25",
+          "expiry": "2025-08-26",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 4 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ5Q25",
+          "expiry": "2025-08-29",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 5 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 11,
+      "test_date": "2025-07-31",
+      "weekday": "Thursday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM1Q25",
+          "expiry": "2025-08-05",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1Q25",
+          "expiry": "2025-08-01",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3Q25",
+          "expiry": "2025-08-21",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 12,
+      "test_date": "2025-09-09",
+      "weekday": "Tuesday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-16",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ2U25",
+          "expiry": "2025-09-12",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 13,
+      "test_date": "2025-08-24",
+      "weekday": "Sunday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM4Q25",
+          "expiry": "2025-08-26",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 4 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ5Q25",
+          "expiry": "2025-08-29",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 5 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3U25",
+          "expiry": "2025-09-18",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 14,
+      "test_date": "2025-06-30",
+      "weekday": "Monday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM1N25",
+          "expiry": "2025-07-01",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1N25",
+          "expiry": "2025-07-04",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-17",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 15,
+      "test_date": "2025-07-27",
+      "weekday": "Sunday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM5N25",
+          "expiry": "2025-07-29",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 5 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1Q25",
+          "expiry": "2025-08-01",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3Q25",
+          "expiry": "2025-08-21",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 16,
+      "test_date": "2025-08-03",
+      "weekday": "Sunday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM1Q25",
+          "expiry": "2025-08-05",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ2Q25",
+          "expiry": "2025-08-08",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3Q25",
+          "expiry": "2025-08-21",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 17,
+      "test_date": "2025-06-29",
+      "weekday": "Sunday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM1N25",
+          "expiry": "2025-07-01",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1N25",
+          "expiry": "2025-07-04",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-17",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 18,
+      "test_date": "2025-07-19",
+      "weekday": "Saturday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM4N25",
+          "expiry": "2025-07-22",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 4 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ4N25",
+          "expiry": "2025-07-25",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 4 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3Q25",
+          "expiry": "2025-08-21",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 19,
+      "test_date": "2025-07-16",
+      "weekday": "Wednesday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM4N25",
+          "expiry": "2025-07-22",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 4 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ3N25",
+          "expiry": "2025-07-18",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-17",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        }
+      }
+    },
+    {
+      "test_num": 20,
+      "test_date": "2025-07-04",
+      "weekday": "Friday",
+      "symbols": {
+        "weekly": {
+          "symbol": "MM2N25",
+          "expiry": "2025-07-08",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Tuesday",
+            "\u2705 Week number 2 valid"
+          ]
+        },
+        "friday": {
+          "symbol": "MQ1N25",
+          "expiry": "2025-07-04",
+          "validations": [
+            "\u2705 Prefix MQ correct",
+            "\u2705 Expires on Friday",
+            "\u2705 Week number 1 valid"
+          ]
+        },
+        "monthly": {
+          "symbol": "MM3N25",
+          "expiry": "2025-07-17",
+          "validations": [
+            "\u2705 Prefix MM correct",
+            "\u2705 Expires on Thursday",
+            "\u2705 Week number 3 valid"
+          ]
+        },
+        "0dte": {
+          "error": "'correct_prefix'"
+        }
+      }
+    }
+  ]
+}

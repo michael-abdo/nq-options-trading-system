@@ -1,0 +1,38 @@
+[
+  {
+    "id": "5b20b04f3538",
+    "event_type": "data_access",
+    "severity": "LOW",
+    "timestamp": "2025-06-16T15:32:06.313031-04:00",
+    "source_ip": "127.0.0.1",
+    "user_agent": "",
+    "endpoint": "/api/test",
+    "user_id": "",
+    "api_key_hash": "",
+    "event_details": {
+      "data_type": "test_data",
+      "record_count": 10,
+      "sensitive_data": false,
+      "risk_score": 0
+    },
+    "risk_score": 0
+  },
+  {
+    "id": "f9652e293524",
+    "event_type": "data_access",
+    "severity": "LOW",
+    "timestamp": "2025-06-16T15:33:24.039179-04:00",
+    "source_ip": "127.0.0.1",
+    "user_agent": "",
+    "endpoint": "/api/test",
+    "user_id": "",
+    "api_key_hash": "",
+    "event_details": {
+      "data_type": "test_data",
+      "record_count": 10,
+      "sensitive_data": false,
+      "risk_score": 0
+    },
+    "risk_score": 0
+  }
+]

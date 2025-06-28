@@ -1,0 +1,573 @@
+{
+  "timestamp": "2025-06-27T21:28:29.120836",
+  "summary": {
+    "total_failures": 50,
+    "edge_case_issues": 8,
+    "patterns_analyzed": {
+      "day_of_week": {
+        "Monday": 60,
+        "Tuesday": 60,
+        "Wednesday": 60,
+        "Thursday": 60,
+        "Friday": 60,
+        "Saturday": 60,
+        "Sunday": 60
+      },
+      "symbols": {
+        "MM": 140,
+        "MQ": 280
+      },
+      "years": {
+        "2025": 1112,
+        "2026": 1004,
+        "2024": 1224,
+        "2028": 1184,
+        "2030": 1116,
+        "2027": 1148,
+        "2029": 1212
+      },
+      "months": {
+        "August": 688,
+        "October": 648,
+        "April": 692,
+        "September": 624,
+        "January": 652,
+        "March": 644,
+        "May": 612,
+        "February": 656,
+        "July": 716,
+        "November": 668,
+        "December": 796,
+        "June": 604
+      },
+      "week_numbers": {
+        "1": 1337,
+        "5": 478,
+        "3": 3355,
+        "4": 1407,
+        "2": 1423
+      }
+    }
+  },
+  "failures": [
+    {
+      "date": "2028-08-18 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3Q28",
+      "issues": [
+        "Expiry date 2028-08-18 is not after 2028-08-18"
+      ]
+    },
+    {
+      "date": "2028-01-21 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3F28",
+      "issues": [
+        "Expiry date 2028-01-21 is not after 2028-01-21"
+      ]
+    },
+    {
+      "date": "2028-01-07 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1F28",
+      "issues": [
+        "Expiry date 2028-01-07 is not after 2028-01-07"
+      ]
+    },
+    {
+      "date": "2029-07-13 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2N29",
+      "issues": [
+        "Expiry date 2029-07-13 is not after 2029-07-13"
+      ]
+    },
+    {
+      "date": "2025-11-07 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1X25",
+      "issues": [
+        "Expiry date 2025-11-07 is not after 2025-11-07"
+      ]
+    },
+    {
+      "date": "2030-02-21 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3G30",
+      "issues": [
+        "Expiry date 2030-02-21 is not after 2030-02-21"
+      ]
+    },
+    {
+      "date": "2030-03-21 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3H30",
+      "issues": [
+        "Expiry date 2030-03-21 is not after 2030-03-21"
+      ]
+    },
+    {
+      "date": "2030-02-01 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1G30",
+      "issues": [
+        "Expiry date 2030-02-01 is not after 2030-02-01"
+      ]
+    },
+    {
+      "date": "2024-01-19 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3F24",
+      "issues": [
+        "Expiry date 2024-01-19 is not after 2024-01-19"
+      ]
+    },
+    {
+      "date": "2026-04-10 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2J26",
+      "issues": [
+        "Expiry date 2026-04-10 is not after 2026-04-10"
+      ]
+    },
+    {
+      "date": "2026-06-26 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ4M26",
+      "issues": [
+        "Expiry date 2026-06-26 is not after 2026-06-26"
+      ]
+    },
+    {
+      "date": "2029-12-20 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3Z29",
+      "issues": [
+        "Expiry date 2029-12-20 is not after 2029-12-20"
+      ]
+    },
+    {
+      "date": "2026-08-20 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3Q26",
+      "issues": [
+        "Expiry date 2026-08-20 is not after 2026-08-20"
+      ]
+    },
+    {
+      "date": "2028-06-16 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3M28",
+      "issues": [
+        "Expiry date 2028-06-16 is not after 2028-06-16"
+      ]
+    },
+    {
+      "date": "2027-05-20 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3K27",
+      "issues": [
+        "Expiry date 2027-05-20 is not after 2027-05-20"
+      ]
+    },
+    {
+      "date": "2030-08-09 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2Q30",
+      "issues": [
+        "Expiry date 2030-08-09 is not after 2030-08-09"
+      ]
+    },
+    {
+      "date": "2027-12-17 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3Z27",
+      "issues": [
+        "Expiry date 2027-12-17 is not after 2027-12-17"
+      ]
+    },
+    {
+      "date": "2029-09-14 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2U29",
+      "issues": [
+        "Expiry date 2029-09-14 is not after 2029-09-14"
+      ]
+    },
+    {
+      "date": "2024-12-13 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2Z24",
+      "issues": [
+        "Expiry date 2024-12-13 is not after 2024-12-13"
+      ]
+    },
+    {
+      "date": "2027-01-08 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2F27",
+      "issues": [
+        "Expiry date 2027-01-08 is not after 2027-01-08"
+      ]
+    },
+    {
+      "date": "2029-10-26 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ4V29",
+      "issues": [
+        "Expiry date 2029-10-26 is not after 2029-10-26"
+      ]
+    },
+    {
+      "date": "2024-01-19 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3F24",
+      "issues": [
+        "Expiry date 2024-01-19 is not after 2024-01-19"
+      ]
+    },
+    {
+      "date": "2028-09-01 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1U28",
+      "issues": [
+        "Expiry date 2028-09-01 is not after 2028-09-01"
+      ]
+    },
+    {
+      "date": "2028-12-01 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1Z28",
+      "issues": [
+        "Expiry date 2028-12-01 is not after 2028-12-01"
+      ]
+    },
+    {
+      "date": "2030-08-23 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ4Q30",
+      "issues": [
+        "Expiry date 2030-08-23 is not after 2030-08-23"
+      ]
+    },
+    {
+      "date": "2024-09-06 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1U24",
+      "issues": [
+        "Expiry date 2024-09-06 is not after 2024-09-06"
+      ]
+    },
+    {
+      "date": "2024-11-22 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ4X24",
+      "issues": [
+        "Expiry date 2024-11-22 is not after 2024-11-22"
+      ]
+    },
+    {
+      "date": "2028-03-17 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3H28",
+      "issues": [
+        "Expiry date 2028-03-17 is not after 2028-03-17"
+      ]
+    },
+    {
+      "date": "2024-05-24 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ4K24",
+      "issues": [
+        "Expiry date 2024-05-24 is not after 2024-05-24"
+      ]
+    },
+    {
+      "date": "2028-10-20 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3V28",
+      "issues": [
+        "Expiry date 2028-10-20 is not after 2028-10-20"
+      ]
+    },
+    {
+      "date": "2028-10-13 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2V28",
+      "issues": [
+        "Expiry date 2028-10-13 is not after 2028-10-13"
+      ]
+    },
+    {
+      "date": "2029-12-14 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2Z29",
+      "issues": [
+        "Expiry date 2029-12-14 is not after 2029-12-14"
+      ]
+    },
+    {
+      "date": "2029-09-21 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3U29",
+      "issues": [
+        "Expiry date 2029-09-21 is not after 2029-09-21"
+      ]
+    },
+    {
+      "date": "2029-02-02 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1G29",
+      "issues": [
+        "Expiry date 2029-02-02 is not after 2029-02-02"
+      ]
+    },
+    {
+      "date": "2030-01-25 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ4F30",
+      "issues": [
+        "Expiry date 2030-01-25 is not after 2030-01-25"
+      ]
+    },
+    {
+      "date": "2026-05-01 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1K26",
+      "issues": [
+        "Expiry date 2026-05-01 is not after 2026-05-01"
+      ]
+    },
+    {
+      "date": "2029-03-09 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2H29",
+      "issues": [
+        "Expiry date 2029-03-09 is not after 2029-03-09"
+      ]
+    },
+    {
+      "date": "2027-07-09 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2N27",
+      "issues": [
+        "Expiry date 2027-07-09 is not after 2027-07-09"
+      ]
+    },
+    {
+      "date": "2028-06-16 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3M28",
+      "issues": [
+        "Expiry date 2028-06-16 is not after 2028-06-16"
+      ]
+    },
+    {
+      "date": "2024-03-08 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2H24",
+      "issues": [
+        "Expiry date 2024-03-08 is not after 2024-03-08"
+      ]
+    },
+    {
+      "date": "2025-12-18 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3Z25",
+      "issues": [
+        "Expiry date 2025-12-18 is not after 2025-12-18"
+      ]
+    },
+    {
+      "date": "2029-07-19 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3N29",
+      "issues": [
+        "Expiry date 2029-07-19 is not after 2029-07-19"
+      ]
+    },
+    {
+      "date": "2029-11-30 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ5X29",
+      "issues": [
+        "Expiry date 2029-11-30 is not after 2029-11-30"
+      ]
+    },
+    {
+      "date": "2027-02-26 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ4G27",
+      "issues": [
+        "Expiry date 2027-02-26 is not after 2027-02-26"
+      ]
+    },
+    {
+      "date": "2026-05-29 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ5K26",
+      "issues": [
+        "Expiry date 2026-05-29 is not after 2026-05-29"
+      ]
+    },
+    {
+      "date": "2028-03-17 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ3H28",
+      "issues": [
+        "Expiry date 2028-03-17 is not after 2028-03-17"
+      ]
+    },
+    {
+      "date": "2027-07-02 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N27",
+      "issues": [
+        "Expiry date 2027-07-02 is not after 2027-07-02"
+      ]
+    },
+    {
+      "date": "2030-02-01 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1G30",
+      "issues": [
+        "Expiry date 2030-02-01 is not after 2030-02-01"
+      ]
+    },
+    {
+      "date": "2028-03-10 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ2H28",
+      "issues": [
+        "Expiry date 2028-03-10 is not after 2028-03-10"
+      ]
+    },
+    {
+      "date": "2027-10-21 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MM3V27",
+      "issues": [
+        "Expiry date 2027-10-21 is not after 2027-10-21"
+      ]
+    }
+  ],
+  "edge_cases": [
+    {
+      "date": "2024-03-01 00:00:00",
+      "description": "Day after leap day",
+      "option_type": "friday",
+      "symbol": "MQ1H24",
+      "issues": [
+        "Expiry date 2024-03-01 is not after 2024-03-01"
+      ]
+    },
+    {
+      "date": "2025-02-28 00:00:00",
+      "description": "Last day of non-leap February",
+      "option_type": "friday",
+      "symbol": "MQ4G25",
+      "issues": [
+        "Expiry date 2025-02-28 is not after 2025-02-28"
+      ]
+    },
+    {
+      "date": "2025-05-30 00:00:00",
+      "description": "5th Friday of May",
+      "option_type": "friday",
+      "symbol": "MQ5K25",
+      "issues": [
+        "Expiry date 2025-05-30 is not after 2025-05-30"
+      ]
+    },
+    {
+      "date": "2025-07-04 00:00:00",
+      "description": "Independence Day",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-07-04 is not after 2025-07-04"
+      ]
+    },
+    {
+      "date": "2025-01-31 00:00:00",
+      "description": "End of January",
+      "option_type": "friday",
+      "symbol": "MQ5F25",
+      "issues": [
+        "Expiry date 2025-01-31 is not after 2025-01-31"
+      ]
+    },
+    {
+      "date": "2025-01-03 00:00:00",
+      "description": "First Friday of year",
+      "option_type": "friday",
+      "symbol": "MQ1F25",
+      "issues": [
+        "Expiry date 2025-01-03 is not after 2025-01-03"
+      ]
+    },
+    {
+      "date": "2025-12-26 00:00:00",
+      "description": "Friday after Christmas",
+      "option_type": "friday",
+      "symbol": "MQ4Z25",
+      "issues": [
+        "Expiry date 2025-12-26 is not after 2025-12-26"
+      ]
+    },
+    {
+      "date": "2025-11-28 00:00:00",
+      "description": "Black Friday",
+      "option_type": "friday",
+      "symbol": "MQ4X25",
+      "issues": [
+        "Expiry date 2025-11-28 is not after 2025-11-28"
+      ]
+    }
+  ],
+  "patterns": {
+    "day_of_week": {
+      "Monday": 60,
+      "Tuesday": 60,
+      "Wednesday": 60,
+      "Thursday": 60,
+      "Friday": 60,
+      "Saturday": 60,
+      "Sunday": 60
+    },
+    "symbols": {
+      "MM": 140,
+      "MQ": 280
+    },
+    "years": {
+      "2025": 1112,
+      "2026": 1004,
+      "2024": 1224,
+      "2028": 1184,
+      "2030": 1116,
+      "2027": 1148,
+      "2029": 1212
+    },
+    "months": {
+      "August": 688,
+      "October": 648,
+      "April": 692,
+      "September": 624,
+      "January": 652,
+      "March": 644,
+      "May": 612,
+      "February": 656,
+      "July": 716,
+      "November": 668,
+      "December": 796,
+      "June": 604
+    },
+    "week_numbers": {
+      "1": 1337,
+      "5": 478,
+      "3": 3355,
+      "4": 1407,
+      "2": 1423
+    }
+  }
+}

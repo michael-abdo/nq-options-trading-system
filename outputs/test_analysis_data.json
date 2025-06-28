@@ -1,0 +1,281 @@
+{
+  "total_files": 67,
+  "test_categories": {
+    "root": 49,
+    "shadow_trading": 4,
+    "error_handling": 4,
+    "chrome": 1,
+    "performance": 3,
+    "limited_live_trading": 1,
+    "integration": 3,
+    "live_streaming": 2
+  },
+  "common_imports": {
+    "sys": 63,
+    "os": 67,
+    "json": 53,
+    "time": 44,
+    "sqlite3": 1,
+    "datetime": 60,
+    "utils": 47,
+    "typing": 11,
+    "dataclasses": 5,
+    "statistics": 5,
+    "dotenv": 5,
+    "asyncio": 7,
+    "concurrent": 4,
+    "tasks": 18,
+    "pathlib": 22,
+    "math": 5,
+    "random": 12,
+    "traceback": 1,
+    "threading": 9,
+    "psutil": 2,
+    "gc": 3,
+    "unittest": 17,
+    "websocket": 1,
+    "pandas": 2,
+    "config_manager": 1,
+    "data_ingestion": 1,
+    "databento": 2,
+    "pytz": 3,
+    "tempfile": 1,
+    "logging": 8,
+    "databento_5m_provider": 2,
+    "solution": 2,
+    "queue": 1,
+    "contextlib": 2,
+    "requests": 1,
+    "test_performance_under_load": 1,
+    "multiprocessing": 1,
+    "websockets": 1,
+    "cProfile": 1,
+    "pstats": 1,
+    "io": 1,
+    "timezone_utils": 1
+  },
+  "potential_issues": [
+    {
+      "file": "tests/test_30_day_tracking.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_rate_limiting.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_pipeline_config.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_pipeline_config.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/test_pipeline_with_config.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_pipeline_with_config.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/test_data_quality.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_barchart_caching.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/test_live_trading_readiness.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_load_balancing.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_config_enforcement.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_no_fallback_safety.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_source_availability.py",
+      "issue": "Modifies sys.path: parent_dir"
+    },
+    {
+      "file": "tests/test_config_system.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_config_system.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/test_timezone_consistency.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_e2e_pipeline.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_source_failure_handling.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/test_databento_integration.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/test_source_loading.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/shadow_trading/test_signal_validation.py",
+      "issue": "Modifies sys.path: current_dir"
+    },
+    {
+      "file": "tests/shadow_trading/test_algorithm_integration.py",
+      "issue": "Uses databento but may not check for API key"
+    },
+    {
+      "file": "tests/shadow_trading/test_algorithm_integration.py",
+      "issue": "Modifies sys.path: current_dir"
+    },
+    {
+      "file": "tests/shadow_trading/test_real_performance_metrics.py",
+      "issue": "Modifies sys.path: current_dir"
+    },
+    {
+      "file": "tests/shadow_trading/test_shadow_trading_integration.py",
+      "issue": "Modifies sys.path: str(project_root"
+    },
+    {
+      "file": "tests/error_handling/test_system_resilience.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/error_handling/test_broker_connection_failures.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/error_handling/test_market_data_validation.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/error_handling/test_error_handling_and_recovery.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/performance/test_performance_quick.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/performance/test_performance_under_load.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/limited_live_trading/test_limited_live_trading_integration.py",
+      "issue": "Modifies sys.path: project_root"
+    },
+    {
+      "file": "tests/integration/live_streaming/test_live_streaming_pipeline.py",
+      "issue": "Modifies sys.path: os.path.dirname(current_dir"
+    },
+    {
+      "file": "tests/integration/live_streaming/test_live_streaming.py",
+      "issue": "Uses databento but may not check for API key"
+    }
+  ],
+  "test_functions": 84,
+  "files_by_category": {
+    "root": [
+      "test_30_day_tracking.py",
+      "test_rate_limiting.py",
+      "test_pipeline_config.py",
+      "test_pipeline_with_config.py",
+      "test_data_quality.py",
+      "test_final_config_security.py",
+      "test_options_parsing.py",
+      "test_baseline_accuracy.py",
+      "test_scraper_fallback.py",
+      "test_barchart_caching.py",
+      "test_databento_api.py",
+      "test_volume_ratios.py",
+      "test_live_trading_readiness.py",
+      "test_load_balancing.py",
+      "test_quality_setup_identification.py",
+      "test_performance_requirements.py",
+      "test_phase2_websocket_integration.py",
+      "test_databento_nq_options.py",
+      "test_config_enforcement.py",
+      "test_databento_simple_data.py",
+      "test_databento_datasets.py",
+      "test_no_fallback_safety.py",
+      "test_source_availability.py",
+      "test_api_authentication.py",
+      "test_weight_configurations.py",
+      "test_mbo_streaming.py",
+      "test_config_system.py",
+      "test_all_symbols.py",
+      "test_barchart_auth.py",
+      "test_timezone_consistency.py",
+      "test_mbo_pressure_analysis.py",
+      "test_e2e_pipeline.py",
+      "test_remaining_batch.py",
+      "test_source_failure_handling.py",
+      "test_edge_cases.py",
+      "test_risk_reward_calculations.py",
+      "test_live_streaming_fixes.py",
+      "test_databento_integration.py",
+      "test_databento_live_connection.py",
+      "test_web_scrape_simple.py",
+      "test_mbo_live_streaming.py",
+      "test_priority_assignment.py",
+      "test_confidence_calculations.py",
+      "test_pattern_recognition.py",
+      "test_barchart_api_only.py",
+      "test_source_loading.py",
+      "test_ifd_v3_comprehensive.py",
+      "test_data_flow_integration.py",
+      "test_databento_live.py"
+    ],
+    "shadow_trading": [
+      "test_signal_validation.py",
+      "test_algorithm_integration.py",
+      "test_real_performance_metrics.py",
+      "test_shadow_trading_integration.py"
+    ],
+    "error_handling": [
+      "test_system_resilience.py",
+      "test_broker_connection_failures.py",
+      "test_market_data_validation.py",
+      "test_error_handling_and_recovery.py"
+    ],
+    "chrome": [
+      "test_dashboard_chrome.py"
+    ],
+    "performance": [
+      "test_performance_quick.py",
+      "test_performance_under_load.py",
+      "test_performance_optimization.py"
+    ],
+    "limited_live_trading": [
+      "test_limited_live_trading_integration.py"
+    ],
+    "integration": [
+      "test_live_market_integration.py",
+      "test_dashboard_responsiveness.py",
+      "test_stress_scenarios.py"
+    ],
+    "live_streaming": [
+      "test_live_streaming_pipeline.py",
+      "test_live_streaming.py"
+    ]
+  }
+}

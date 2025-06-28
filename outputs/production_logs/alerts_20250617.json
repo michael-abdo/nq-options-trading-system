@@ -1,0 +1,28 @@
+[
+  {
+    "type": "CRITICAL_ERROR",
+    "timestamp": "2025-06-17T01:44:32.654822-04:00",
+    "component": "trading_engine",
+    "error_type": "CRITICAL_SYSTEM_FAILURE",
+    "message": "Manual intervention required - invalid market data detected",
+    "context": {
+      "market_data_source": "primary_feed",
+      "invalid_values": [
+        "negative_volume"
+      ]
+    }
+  },
+  {
+    "type": "CRITICAL_ERROR",
+    "timestamp": "2025-06-17T01:53:07.148659-04:00",
+    "component": "trading_engine",
+    "error_type": "CRITICAL_SYSTEM_FAILURE",
+    "message": "Manual intervention required - invalid market data detected",
+    "context": {
+      "market_data_source": "primary_feed",
+      "invalid_values": [
+        "negative_volume"
+      ]
+    }
+  }
+]

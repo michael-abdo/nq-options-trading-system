@@ -1,0 +1,120 @@
+{
+  "symbol": "MCOM5",
+  "underlying": "NQU25",
+  "underlying_price": 22467.5,
+  "price_change": "+54.75 (+0.24%)",
+  "expiration_date": "06/25/25",
+  "days_to_expiration": 0,
+  "option_point_value": 20,
+  "count": 40,
+  "data": {
+    "Call": [
+      {
+        "strike": "22,400.00C",
+        "openPrice": "65.00",
+        "highPrice": "150.00",
+        "lowPrice": "29.00",
+        "lastPrice": "60.96",
+        "priceChange": "-12.04",
+        "bidPrice": "51.00",
+        "askPrice": "52.75",
+        "volume": "269",
+        "openInterest": "207",
+        "premium": "1,500.00",
+        "tradeTime": "14:57 ET",
+        "longSymbol": "MCOM5|22400C",
+        "symbol": "MCOM5|22400C"
+      },
+      {
+        "strike": "22,450.00C",
+        "openPrice": "37.75",
+        "highPrice": "102.50",
+        "lowPrice": "2.00",
+        "lastPrice": "10.96",
+        "priceChange": "-38.04",
+        "bidPrice": "22.25",
+        "askPrice": "23.00",
+        "volume": "1,213",
+        "openInterest": "489",
+        "premium": "400.00",
+        "tradeTime": "14:59 ET",
+        "longSymbol": "MCOM5|22450C",
+        "symbol": "MCOM5|22450C"
+      },
+      {
+        "strike": "22,500.00C",
+        "openPrice": "24.50",
+        "highPrice": "75.00",
+        "lowPrice": "0.35",
+        "lastPrice": "0.00",
+        "priceChange": "-29.75",
+        "bidPrice": "7.00",
+        "askPrice": "7.75",
+        "volume": "3,677",
+        "openInterest": "384",
+        "premium": "135.00",
+        "tradeTime": "14:45 ET",
+        "longSymbol": "MCOM5|22500C",
+        "symbol": "MCOM5|22500C"
+      }
+    ],
+    "Put": [
+      {
+        "strike": "22,400.00P",
+        "openPrice": "66.25",
+        "highPrice": "70.75",
+        "lowPrice": "0.05",
+        "lastPrice": "0.00",
+        "priceChange": "-60.25",
+        "bidPrice": "17.75",
+        "askPrice": "18.50",
+        "volume": "1,379",
+        "openInterest": "178",
+        "premium": "420.00",
+        "tradeTime": "14:59 ET",
+        "longSymbol": "MCOM5|22400P",
+        "symbol": "MCOM5|22400P"
+      },
+      {
+        "strike": "22,450.00P",
+        "openPrice": "78.00",
+        "highPrice": "78.00",
+        "lowPrice": "1.00",
+        "lastPrice": "0.00",
+        "priceChange": "-86.25",
+        "bidPrice": "38.50",
+        "askPrice": "39.50",
+        "volume": "612",
+        "openInterest": "35",
+        "premium": "760.00",
+        "tradeTime": "14:59 ET",
+        "longSymbol": "MCOM5|22450P",
+        "symbol": "MCOM5|22450P"
+      },
+      {
+        "strike": "22,500.00P",
+        "openPrice": "130.00",
+        "highPrice": "130.00",
+        "lowPrice": "26.75",
+        "lastPrice": "39.04",
+        "priceChange": "-77.96",
+        "bidPrice": "73.00",
+        "askPrice": "74.25",
+        "volume": "436",
+        "openInterest": "21",
+        "premium": "1,325.00",
+        "tradeTime": "14:54 ET",
+        "longSymbol": "MCOM5|22500P",
+        "symbol": "MCOM5|22500P"
+      }
+    ]
+  },
+  "summary": {
+    "put_premium_total": 493608.0,
+    "call_premium_total": 5299200.0,
+    "put_call_premium_ratio": 0.09,
+    "put_open_interest_total": 5930,
+    "call_open_interest_total": 4633,
+    "put_call_oi_ratio": 1.28
+  }
+}

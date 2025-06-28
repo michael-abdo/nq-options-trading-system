@@ -1,0 +1,40 @@
+#!/bin/bash
+# NQ Monthly Options Pipeline
+# Usage: ./nq-monthly (from project directory)
+
+# Run pipeline from current directory
+python3 daily_options_pipeline.py --option-type monthly --year-format 2digit
+
+# Check if successful and display key metrics
+if [ $? -eq 0 ]; then
+    echo ""
+    echo "🎯 KEY METRICS SUMMARY:"
+    echo "======================"
+    
+    # Find the most recent metrics file
+    LATEST_METRICS=$(find "outputs" -name "*metrics*.json" -type f -exec ls -t {} + | head -1)
+    
+    if [ -f "$LATEST_METRICS" ]; then
+        # Extract and display key metrics using python
+        python3 -c "
+import json
+with open('$LATEST_METRICS', 'r') as f:
+    data = json.load(f)
+    fmt = data.get('formatted', {})
+    print(f'  📞 Call Premium Total: {fmt.get(\"call_premium_total\", \"N/A\")}')
+    print(f'  📉 Put Premium Total: {fmt.get(\"put_premium_total\", \"N/A\")}')
+    print(f'  ⚖️  Put/Call Premium Ratio: {fmt.get(\"put_call_premium_ratio\", \"N/A\")}')
+    print(f'  📊 Call Open Interest: {fmt.get(\"call_oi_total\", \"N/A\")}')
+    print(f'  📊 Put Open Interest: {fmt.get(\"put_oi_total\", \"N/A\")}')
+    print(f'  ⚖️  Put/Call OI Ratio: {fmt.get(\"put_call_oi_ratio\", \"N/A\")}')
+    print(f'  🎯 Symbol: {data.get(\"symbol\", \"N/A\")}')
+    print(f'  📅 Timestamp: {data.get(\"timestamp\", \"N/A\")}')
+"
+    else
+        echo "  ❌ No metrics file found"
+    fi
+    
+    echo "======================"
+else
+    echo "❌ Pipeline failed. Check logs in outputs/"
+fi

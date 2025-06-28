@@ -1,0 +1,31 @@
+{
+  "call_premium_total": 8262945,
+  "put_premium_total": 691635,
+  "total_premium": 8954580,
+  "put_call_premium_ratio": 0.08370320751257572,
+  "call_oi_total": 7519,
+  "put_oi_total": 10907,
+  "total_oi": 18426,
+  "put_call_oi_ratio": 1.4505918340204815,
+  "call_contracts_total": 353,
+  "put_contracts_total": 353,
+  "total_contracts": 706,
+  "call_contracts_with_premium": 353,
+  "put_contracts_with_premium": 353,
+  "call_contracts_with_oi": 189,
+  "put_contracts_with_oi": 285,
+  "formatted": {
+    "call_premium_total": "$8,262,945.00",
+    "put_premium_total": "$691,635.00",
+    "total_premium": "$8,954,580.00",
+    "put_call_premium_ratio": "0.084",
+    "call_oi_total": "7,519",
+    "put_oi_total": "10,907",
+    "total_oi": "18,426",
+    "put_call_oi_ratio": "1.451"
+  },
+  "symbol": "MQ4M25",
+  "timestamp": "2025-06-26T23:52:14.865830",
+  "data_source": "barchart_api",
+  "calculation_version": "1.0"
+}

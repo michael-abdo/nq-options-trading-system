@@ -8,8 +8,8 @@ import json
 from datetime import datetime
 from typing import Dict, Any, Optional
 
-from .solution import BarchartWebScraper
-from .barchart_api_client import BarchartAPIClient
+from solution import BarchartWebScraper
+from barchart_api_client import BarchartAPIClient
 
 class HybridBarchartScraper:
     """
@@ -78,16 +78,17 @@ class HybridBarchartScraper:
             self.logger.error(f"Authentication failed: {e}")
             return False
     
-    def fetch_options_data(self, symbol: str, futures_symbol: str = "NQM25") -> Dict[str, Any]:
+    def fetch_options_data(self, symbol: str, futures_symbol: str = "NQM25", calculate_metrics: bool = True) -> Dict[str, Any]:
         """
         Fetch options data using API with authenticated cookies
         
         Args:
             symbol: Options symbol (e.g., "MC7M25")
             futures_symbol: Underlying futures symbol
+            calculate_metrics: Whether to calculate and save metrics
             
         Returns:
-            Options data from API
+            Options data from API with optional metrics
         """
         if not self.cookies:
             self.logger.error("No cookies available. Run authenticate() first.")
@@ -108,6 +109,25 @@ class HybridBarchartScraper:
             if data and data.get('total', 0) > 0:
                 saved_path = self.api_client.save_api_response(data, symbol)
                 self.logger.info(f"✅ Saved {data.get('total', 0)} contracts to {saved_path}")
+                
+                # Calculate and save metrics if requested
+                if calculate_metrics:
+                    try:
+                        import sys
+                        import os
+                        sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
+                        from options_metrics_calculator import OptionsMetricsCalculator
+                        
+                        calculator = OptionsMetricsCalculator()
+                        metrics, metrics_file = calculator.calculate_and_save_metrics(data, symbol)
+                        calculator.print_metrics_summary(metrics)
+                        
+                        # Add metrics to return data
+                        data['_metrics'] = metrics
+                        data['_metrics_file'] = metrics_file
+                        
+                    except Exception as me:
+                        self.logger.warning(f"Metrics calculation failed: {me}")
             
             return data
             
