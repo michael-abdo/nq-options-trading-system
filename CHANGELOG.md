@@ -1,5 +1,27 @@
 # Changelog
 
+## [2025-06-28] - Comprehensive Code Deduplication Phase 5
+
+### Removed Duplicate Test Utility Functions
+- **REMOVED**: `save_evidence()` from 10 test validation/integration files
+- **CANONICALIZED IN**: `tests/test_utils.py`
+- **FILES UPDATED**:
+  - `tasks/options_trading_system/test_integration.py`
+  - `tasks/options_trading_system/output_generation/test_integration.py`
+  - `tasks/options_trading_system/output_generation/json_exporter/test_validation.py`
+  - `tasks/options_trading_system/output_generation/report_generator/test_validation.py`
+  - `tasks/options_trading_system/analysis_engine/test_integration.py`
+  - `tasks/options_trading_system/analysis_engine/expected_value_analysis/test_validation.py`
+  - `tasks/options_trading_system/analysis_engine/risk_analysis/test_validation.py`
+  - `tasks/options_trading_system/data_ingestion/barchart_saved_data/test_validation.py`
+  - `tasks/options_trading_system/data_ingestion/tradovate_api_data/test_validation.py`
+  - `tasks/options_trading_system/data_ingestion/data_normalizer/test_validation.py`
+- **WHY**: Identical 4-line function duplicated across all test files
+- **IMPACT**:
+  - Removed ~40 lines of duplicate code (4 lines × 10 files)
+  - Created central test utilities module for shared test functionality
+  - Fixed import paths to ensure proper module resolution
+
 ## [2025-06-28] - Comprehensive Code Deduplication Phase 4
 
 ### Removed Duplicate Symbol Generation Methods

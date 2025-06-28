@@ -1,0 +1,59 @@
+{
+  "test_name": "estimate_underlying_price",
+  "timestamp": "2025-06-28T15:39:03.721904",
+  "result": {
+    "expected_value_analysis": [
+      {
+        "case": "with_underlying_price",
+        "result": 105.5,
+        "expected": 105.5,
+        "matches": true
+      },
+      {
+        "case": "no_underlying_price",
+        "result": 110.0,
+        "expected": 110.0,
+        "matches": true
+      },
+      {
+        "case": "mixed",
+        "result": 108.75,
+        "expected": 108.75,
+        "matches": true
+      },
+      {
+        "case": "empty",
+        "result": 21376.75,
+        "expected": null,
+        "matches": false
+      }
+    ],
+    "risk_analysis": [
+      {
+        "case": "with_underlying_price",
+        "result": 105.5,
+        "expected": 105.5,
+        "matches": true
+      },
+      {
+        "case": "no_underlying_price",
+        "result": 110.0,
+        "expected": 110.0,
+        "matches": true
+      },
+      {
+        "case": "mixed",
+        "result": 108.75,
+        "expected": 108.75,
+        "matches": true
+      },
+      {
+        "case": "empty",
+        "result": 21376.75,
+        "expected": null,
+        "matches": false
+      }
+    ]
+  },
+  "hash": "70440455fbe5524e9adcd59bdf49f6fb"
+}

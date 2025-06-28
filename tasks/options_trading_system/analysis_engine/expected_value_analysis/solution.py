@@ -14,6 +14,7 @@ from typing import Dict, Any, List, Optional, Tuple
 parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, parent_dir)
 from data_ingestion.integration import run_data_ingestion
+from ..analysis_utils import estimate_underlying_price
 
 
 # Configuration from your actual algorithm
@@ -98,17 +99,7 @@ class ExpectedValueAnalyzer:
     
     def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
         """Estimate current underlying price from contract data"""
-        # Look for underlying price in contract metadata
-        for contract in contracts:
-            if contract.get("underlying_price"):
-                return float(contract["underlying_price"])
-        
-        # Fallback: estimate from ATM options
-        strikes = [c["strike"] for c in contracts if c["strike"] and c["strike"] > 0]
-        if strikes:
-            return sum(strikes) / len(strikes)  # Average strike as rough estimate
-        
-        return 21376.75  # Default fallback
+        return estimate_underlying_price(contracts)
     
     def convert_to_options_strikes(self, contracts: List[Dict]) -> List[OptionsStrike]:
         """Convert normalized contract data to OptionsStrike objects"""

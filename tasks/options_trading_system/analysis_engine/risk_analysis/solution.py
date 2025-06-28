@@ -9,6 +9,7 @@ import sys
 import os
 from datetime import datetime
 from typing import Dict, Any, List, Optional
+from ..analysis_utils import estimate_underlying_price
 
 # Add project root to path for data model imports
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -63,17 +64,7 @@ class RiskAnalyzer:
     
     def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
         """Estimate current underlying price from contract data"""
-        # Look for underlying price in contract metadata
-        for contract in contracts:
-            if contract.get("underlying_price"):
-                return float(contract["underlying_price"])
-        
-        # Fallback: estimate from ATM options
-        strikes = [c["strike"] for c in contracts if c["strike"] and c["strike"] > 0]
-        if strikes:
-            return sum(strikes) / len(strikes)  # Average strike as rough estimate
-        
-        return 21376.75  # Default fallback
+        return estimate_underlying_price(contracts)
     
     def analyze_risk(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """

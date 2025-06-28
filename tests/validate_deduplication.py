@@ -337,6 +337,91 @@ def test_save_evidence():
     return results
 
 
+def test_estimate_underlying_price():
+    """Test _estimate_underlying_price function behavior"""
+    results = {}
+    
+    # Test data with various scenarios
+    test_cases = [
+        # Case 1: Contract has underlying_price
+        {
+            "name": "with_underlying_price",
+            "contracts": [
+                {"strike": 100, "underlying_price": 105.5},
+                {"strike": 110, "underlying_price": 105.5}
+            ],
+            "expected": 105.5
+        },
+        # Case 2: No underlying_price, use strike average
+        {
+            "name": "no_underlying_price",
+            "contracts": [
+                {"strike": 100},
+                {"strike": 110},
+                {"strike": 120}
+            ],
+            "expected": 110.0
+        },
+        # Case 3: Mixed - should use underlying_price
+        {
+            "name": "mixed",
+            "contracts": [
+                {"strike": 100},
+                {"strike": 110, "underlying_price": 108.75},
+                {"strike": 120}
+            ],
+            "expected": 108.75
+        },
+        # Case 4: Empty contracts
+        {
+            "name": "empty",
+            "contracts": [],
+            "expected": None  # Should handle gracefully
+        }
+    ]
+    
+    # Test both implementations
+    implementations = [
+        ("expected_value_analysis", "tasks.options_trading_system.analysis_engine.expected_value_analysis.solution"),
+        ("risk_analysis", "tasks.options_trading_system.analysis_engine.risk_analysis.solution")
+    ]
+    
+    for impl_name, impl_path in implementations:
+        try:
+            # Import the module
+            module = __import__(impl_path, fromlist=['ExpectedValueAnalyzer', 'RiskAnalyzer'])
+            
+            # Get the appropriate class
+            if impl_name == "expected_value_analysis":
+                analyzer = module.ExpectedValueAnalyzer({})
+            else:
+                analyzer = module.RiskAnalyzer({})
+            
+            # Test each case
+            impl_results = []
+            for test_case in test_cases:
+                try:
+                    result = analyzer._estimate_underlying_price(test_case["contracts"])
+                    impl_results.append({
+                        "case": test_case["name"],
+                        "result": result,
+                        "expected": test_case["expected"],
+                        "matches": abs(result - test_case["expected"]) < 0.01 if test_case["expected"] else False
+                    })
+                except Exception as e:
+                    impl_results.append({
+                        "case": test_case["name"],
+                        "error": str(e)
+                    })
+            
+            results[impl_name] = impl_results
+            
+        except Exception as e:
+            results[impl_name] = f"Error: {e}"
+    
+    return results
+
+
 def find_duplicate_functions():
     """Find specific duplicate functions to target"""
     print("\nSearching for duplicate functions in current branch...")
@@ -381,6 +466,9 @@ def main():
     
     # Test 4: Save Evidence
     validator.validate_against_baseline("save_evidence", test_save_evidence)
+    
+    # Test 5: Estimate Underlying Price
+    validator.validate_against_baseline("estimate_underlying_price", test_estimate_underlying_price)
     
     # Find duplicates
     print("\n" + "="*60)
