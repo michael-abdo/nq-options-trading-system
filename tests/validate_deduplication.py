@@ -259,6 +259,84 @@ def test_calculation_functions():
     return results
 
 
+def test_save_evidence():
+    """Test save_evidence function behavior across all implementations"""
+    import tempfile
+    import shutil
+    
+    results = {}
+    
+    # Test data
+    test_data = {
+        "status": "VALIDATED",
+        "tests_passed": 10,
+        "tests_failed": 0,
+        "timestamp": "2025-06-28T15:30:00",
+        "details": {
+            "test1": "passed",
+            "test2": "passed"
+        }
+    }
+    
+    # Test implementations from different files
+    implementations = [
+        "tasks.options_trading_system.test_integration",
+        "tasks.options_trading_system.output_generation.json_exporter.test_validation",
+        "tasks.options_trading_system.output_generation.report_generator.test_validation",
+        "tasks.options_trading_system.analysis_engine.expected_value_analysis.test_validation",
+        "tasks.options_trading_system.analysis_engine.risk_analysis.test_validation",
+        "tasks.options_trading_system.data_ingestion.barchart_saved_data.test_validation",
+        "tasks.options_trading_system.data_ingestion.tradovate_api_data.test_validation",
+        "tasks.options_trading_system.data_ingestion.data_normalizer.test_validation",
+    ]
+    
+    for impl_path in implementations:
+        try:
+            # Create temp directory to isolate test
+            with tempfile.TemporaryDirectory() as tmpdir:
+                # Import the module
+                module_parts = impl_path.split('.')
+                module = __import__(impl_path, fromlist=[module_parts[-1]])
+                
+                # Temporarily change to temp directory
+                original_dir = os.getcwd()
+                os.chdir(tmpdir)
+                
+                # Create a mock __file__ path for the function
+                module.__file__ = os.path.join(tmpdir, "test_module.py")
+                
+                # Call save_evidence
+                module.save_evidence(test_data)
+                
+                # Check if evidence.json was created
+                evidence_path = os.path.join(tmpdir, "evidence.json")
+                if os.path.exists(evidence_path):
+                    with open(evidence_path, 'r') as f:
+                        saved_data = json.load(f)
+                    
+                    results[impl_path] = {
+                        'status': 'success',
+                        'file_created': True,
+                        'data_matches': saved_data == test_data,
+                        'file_size': os.path.getsize(evidence_path)
+                    }
+                else:
+                    results[impl_path] = {
+                        'status': 'error',
+                        'file_created': False
+                    }
+                
+                os.chdir(original_dir)
+                
+        except Exception as e:
+            results[impl_path] = {
+                'status': 'error',
+                'error': str(e)
+            }
+    
+    return results
+
+
 def find_duplicate_functions():
     """Find specific duplicate functions to target"""
     print("\nSearching for duplicate functions in current branch...")
@@ -300,6 +378,9 @@ def main():
     
     # Test 3: Calculations
     validator.validate_against_baseline("calculations", test_calculation_functions)
+    
+    # Test 4: Save Evidence
+    validator.validate_against_baseline("save_evidence", test_save_evidence)
     
     # Find duplicates
     print("\n" + "="*60)

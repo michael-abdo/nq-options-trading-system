@@ -15,6 +15,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(o
 sys.path.insert(0, project_root)
 
 from integration import AnalysisEngine, run_analysis_engine
+from tests.test_utils import save_evidence
 
 
 def validate_analysis_engine():
@@ -323,14 +324,6 @@ def validate_analysis_engine():
     return validation_results
 
 
-def save_evidence(validation_results):
-    """Save validation evidence to evidence_rollup.json"""
-    evidence_path = os.path.join(os.path.dirname(__file__), "evidence_rollup.json")
-    
-    with open(evidence_path, 'w') as f:
-        json.dump(validation_results, f, indent=2)
-    
-    print(f"\nEvidence saved to: {evidence_path}")
 
 
 if __name__ == "__main__":

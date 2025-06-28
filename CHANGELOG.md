@@ -1,5 +1,17 @@
 # Changelog
 
+## [2025-06-28] - Comprehensive Code Deduplication Phase 4
+
+### Removed Duplicate Symbol Generation Methods
+- **REMOVED**: `BarchartAPIComparator.get_eod_contract_symbol()` from `tasks/.../barchart_web_scraper/solution.py`
+- **CANONICALIZED IN**: `BarchartSymbolGenerator` in `tasks/.../barchart_web_scraper/symbol_generator.py`
+- **UPDATED**: Internal references in `solution.py` to use `self.symbol_generator.get_eod_contract_symbol()`
+- **WHY**: Method was already delegating to symbol_generator, creating unnecessary indirection
+- **IMPACT**: 
+  - Removed ~27 lines of duplicate code
+  - All external callers already use BarchartSymbolGenerator directly
+  - No functionality changes - purely structural improvement
+
 ## [2025-06-28] - Comprehensive Code Deduplication Phase 3
 
 ### Consolidated Implementations and Created Common Utilities

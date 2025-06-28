@@ -1,0 +1,39 @@
+{
+  "test_name": "save_evidence",
+  "timestamp": "2025-06-28T15:27:12.263522",
+  "result": {
+    "tasks.options_trading_system.test_integration": {
+      "status": "error",
+      "error": "No module named 'integration'"
+    },
+    "tasks.options_trading_system.output_generation.json_exporter.test_validation": {
+      "status": "error",
+      "error": "No module named 'solution'"
+    },
+    "tasks.options_trading_system.output_generation.report_generator.test_validation": {
+      "status": "error",
+      "error": "No module named 'solution'"
+    },
+    "tasks.options_trading_system.analysis_engine.expected_value_analysis.test_validation": {
+      "status": "error",
+      "error": "No module named 'solution'"
+    },
+    "tasks.options_trading_system.analysis_engine.risk_analysis.test_validation": {
+      "status": "error",
+      "error": "No module named 'solution'"
+    },
+    "tasks.options_trading_system.data_ingestion.barchart_saved_data.test_validation": {
+      "status": "error",
+      "error": "No module named 'solution'"
+    },
+    "tasks.options_trading_system.data_ingestion.tradovate_api_data.test_validation": {
+      "status": "error",
+      "error": "No module named 'solution'"
+    },
+    "tasks.options_trading_system.data_ingestion.data_normalizer.test_validation": {
+      "status": "error",
+      "error": "No module named 'solution'"
+    }
+  },
+  "hash": "58f9e147c4ea6c5d13648a18e1daa92f"
+}

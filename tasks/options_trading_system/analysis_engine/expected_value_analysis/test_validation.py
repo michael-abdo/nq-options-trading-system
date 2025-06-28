@@ -15,6 +15,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(o
 sys.path.insert(0, project_root)
 
 from solution import ExpectedValueAnalyzer, analyze_expected_value
+from tests.test_utils import save_evidence
 
 
 def validate_expected_value_analysis():
@@ -374,14 +375,6 @@ def validate_expected_value_analysis():
     return validation_results
 
 
-def save_evidence(validation_results):
-    """Save validation evidence to evidence.json"""
-    evidence_path = os.path.join(os.path.dirname(__file__), "evidence.json")
-    
-    with open(evidence_path, 'w') as f:
-        json.dump(validation_results, f, indent=2)
-    
-    print(f"\nEvidence saved to: {evidence_path}")
 
 
 if __name__ == "__main__":
