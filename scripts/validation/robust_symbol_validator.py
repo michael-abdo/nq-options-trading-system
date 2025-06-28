@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent.parent / "tasks/options_trading_system/data_ingestion/barchart_web_scraper"))
-from solution import BarchartAPIComparator
+from symbol_generator import BarchartSymbolGenerator
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -22,74 +22,61 @@ class RobustSymbolValidator:
     """Comprehensive validator for symbol generation across all scenarios"""
     
     def __init__(self):
-        self.comparator = BarchartAPIComparator()
+        self.symbol_generator = BarchartSymbolGenerator()
         self.failures = []
         self.edge_cases = []
         self.patterns = defaultdict(Counter)
         
     def generate_symbol_for_date(self, test_date: datetime, option_type: str = "weekly", year_format: str = "2digit") -> tuple:
         """Generate symbol for a specific test date and return symbol + expiry date"""
-        from datetime import timedelta
-        
-        # Get month letter code
-        month_codes = {
-            1: 'F', 2: 'G', 3: 'H', 4: 'J', 5: 'K', 6: 'M',
-            7: 'N', 8: 'Q', 9: 'U', 10: 'V', 11: 'X', 12: 'Z'
-        }
-        
-        if option_type == "weekly":
-            # For weekly options, find the next Tuesday
-            days_ahead = 1 - test_date.weekday()  # Tuesday = 1
-            if days_ahead <= 0:  # Already past Tuesday
-                days_ahead += 7
+        # Save current datetime and mock it for the test date
+        import unittest.mock
+        with unittest.mock.patch('datetime.datetime') as mock_datetime:
+            mock_datetime.now.return_value = test_date
+            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
             
-            next_tuesday = test_date + timedelta(days=days_ahead)
-            week_of_month = (next_tuesday.day - 1) // 7 + 1
+            # Use the canonical implementation
+            symbol = self.symbol_generator.get_eod_contract_symbol(option_type=option_type, year_format=year_format)
             
-            # Use MM prefix with week number
-            next_tuesday_year = str(next_tuesday.year)[-2:] if year_format == "2digit" else str(next_tuesday.year)[-1]
-            symbol = f"MM{week_of_month}{month_codes[next_tuesday.month]}{next_tuesday_year}"
-            return symbol, next_tuesday
+            # Get the expiry date based on the symbol
+            # This is needed for validation - extract from the canonical implementation
+            from datetime import timedelta
             
-        elif option_type == "friday" or option_type == "0dte":
-            # For Friday weekly options (including 0DTE on Fridays)
-            days_ahead = 4 - test_date.weekday()  # Friday = 4
-            if days_ahead < 0:  # Already past Friday
-                days_ahead += 7
-            elif days_ahead == 0 and option_type == "0dte":
-                # Today is Friday, use today for 0DTE
-                days_ahead = 0
+            month_codes = {
+                'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6,
+                'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12
+            }
             
-            next_friday = test_date + timedelta(days=days_ahead)
-            week_of_month = (next_friday.day - 1) // 7 + 1
-            
-            # Use MQ prefix with week number
-            next_friday_year = str(next_friday.year)[-2:] if year_format == "2digit" else str(next_friday.year)[-1]
-            symbol = f"MQ{week_of_month}{month_codes[next_friday.month]}{next_friday_year}"
-            return symbol, next_friday
-            
-        elif option_type == "monthly":
-            # Monthly options expire on 3rd Thursday
-            first_day = test_date.replace(day=1)
-            first_thursday = first_day + timedelta(days=(3 - first_day.weekday()) % 7)
-            third_thursday = first_thursday + timedelta(days=14)
-            
-            # If we're past 3rd Thursday, use next month
-            if test_date > third_thursday:
-                if test_date.month == 12:
-                    next_month = test_date.replace(year=test_date.year + 1, month=1, day=1)
-                else:
-                    next_month = test_date.replace(month=test_date.month + 1, day=1)
+            # Parse the symbol to get expiry info
+            if len(symbol) >= 4:
+                week_num = int(symbol[2])
+                month_code = symbol[3]
+                month = month_codes.get(month_code, test_date.month)
                 
-                first_thursday = next_month + timedelta(days=(3 - next_month.weekday()) % 7)
-                third_thursday = first_thursday + timedelta(days=14)
-            
-            # Calculate which week the 3rd Thursday falls in
-            week_of_month = (third_thursday.day - 1) // 7 + 1
-            
-            third_thursday_year = str(third_thursday.year)[-2:] if year_format == "2digit" else str(third_thursday.year)[-1]
-            symbol = f"MM{week_of_month}{month_codes[third_thursday.month]}{third_thursday_year}"
-            return symbol, third_thursday
+                # Calculate expiry based on type
+                if option_type == "weekly":
+                    # Tuesday expiry
+                    days_ahead = 1 - test_date.weekday()
+                    if days_ahead <= 0:
+                        days_ahead += 7
+                    expiry = test_date + timedelta(days=days_ahead)
+                elif option_type in ["friday", "0dte"]:
+                    # Friday expiry
+                    days_ahead = 4 - test_date.weekday()
+                    if days_ahead < 0:
+                        days_ahead += 7
+                    elif days_ahead == 0 and option_type == "0dte":
+                        days_ahead = 0
+                    expiry = test_date + timedelta(days=days_ahead)
+                else:  # monthly
+                    # 3rd Thursday
+                    first_day = test_date.replace(day=1, month=month)
+                    first_thursday = first_day + timedelta(days=(3 - first_day.weekday()) % 7)
+                    expiry = first_thursday + timedelta(days=14)
+            else:
+                expiry = test_date
+                
+            return symbol, expiry
     
     def validate_symbol_rules(self, test_date: datetime, symbol: str, expiry_date: datetime, option_type: str) -> dict:
         """Validate that symbol follows all business rules"""

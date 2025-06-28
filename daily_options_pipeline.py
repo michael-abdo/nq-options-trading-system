@@ -211,7 +211,8 @@ class DailyOptionsPipeline:
         
         try:
             def _generate():
-                self.symbol_generator = BarchartAPIComparator()
+                from tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator import BarchartSymbolGenerator
+                self.symbol_generator = BarchartSymbolGenerator()
                 symbol = self.symbol_generator.get_eod_contract_symbol(option_type=option_type, year_format=year_format)
                 return symbol
             
@@ -333,7 +334,7 @@ class DailyOptionsPipeline:
                 scraper.cookies = cookies
                 
                 # Initialize API client with cookies
-                from barchart_api_client import BarchartAPIClient
+                from tasks.options_trading_system.data_ingestion.barchart_web_scraper.barchart_api_client import BarchartAPIClient
                 api_client = BarchartAPIClient()
                 api_client.set_cookies(cookies)
                 

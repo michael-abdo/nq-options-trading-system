@@ -47,51 +47,38 @@ Final Results: Top-ranked trading opportunities
 /Users/Mike/trading/algos/EOD/
 ├── CHANGELOG.md                        # Version history
 ├── CLAUDE.md                           # Project instructions
-├── PIPELINE_USAGE.md                   # Pipeline documentation
 ├── README.md                           # This file
-├── daily_options_pipeline.py           # 🚀 MAIN ENTRY POINT
-├── package.json                        # Node.js dependencies
+├── daily_options_pipeline.py           # Main entry point
 ├── nq-monthly                          # Global command for monthly options
+│
+├── docs/                               # Documentation
+│   ├── PIPELINE_USAGE.md               # Pipeline documentation
+│   ├── analysis/                       # Analysis documentation
+│   ├── analysis_reports/               # Analysis reports
+│   └── reports/                        # Test and implementation reports
+│
+├── scripts/                            # Utility scripts
+│   ├── js_validation/                  # JavaScript validation files
+│   ├── testing/                        # Testing utilities
+│   ├── utilities/                      # Python utilities
+│   │   ├── options_metrics_calculator.py
+│   │   ├── options_data_models.py
+│   │   └── file_io_utils.py
+│   └── validation/                     # Validation scripts
+│       ├── robust_symbol_validator.py
+│       └── validate_next_week.py
+│
+│
+├── tasks/options_trading_system/       # Active pipeline framework
+│   ├── analysis_engine/                # Analysis modules
+│   ├── data_ingestion/                 # Data loading modules
+│   │   └── barchart_web_scraper/       # Barchart API integration
+│   └── output_generation/              # Results output modules
+│
+├── tests/                              # Unit tests
 ├── archive/                            # Legacy files (archived)
 ├── cookies/                            # Authentication cookies
-├── data/                               # Market data
-├── docs/                               # Documentation
-│   ├── analysis/                       # Analysis documentation
-│   ├── reports/                        # System reports
-│   └── analysis_reports/               # Validation analysis reports
-├── outputs/                            # 📁 ORGANIZED OUTPUT STRUCTURE
-│   ├── YYYYMMDD/                       # Date-based organization
-│   │   ├── analysis_exports/           # JSON analysis outputs
-│   │   ├── api_data/                   # API response data
-│   │   ├── metrics/                    # Calculated metrics
-│   │   ├── reports/                    # Trading reports
-│   │   └── pipeline_state_*.json      # Pipeline execution logs
-│   ├── validation/                     # Validation results
-│   │   └── results/                    # Validation test results
-│   └── monitoring/                     # System monitoring
-├── scripts/                            # 📂 UTILITY SCRIPTS
-│   ├── validation/                     # Symbol validation tools
-│   │   ├── robust_symbol_validator.py  # Comprehensive validator
-│   │   └── validate_next_week.py       # Next week preview
-│   ├── testing/                        # Test scripts
-│   │   └── test_barchart_expiration.py # Expiration testing
-│   └── utilities/                      # Utility scripts
-│       ├── fetch_nq_live.py            # Live NQ data fetcher
-│       ├── fetch_qqq_proxy.py          # QQQ proxy fetcher
-│       └── options_metrics_calculator.py # Metrics calculator
-├── tests/                              # Unit tests
-└── tasks/options_trading_system/       # Active pipeline framework
-    ├── analysis_engine/                # Analysis modules
-    ├── data_ingestion/                 # Data loading modules
-    │   └── barchart_web_scraper/       # Barchart API integration
-    │       └── outputs/YYYYMMDD/       # Date-organized scraper outputs
-    │           ├── api_data/           # Live API responses
-    │           ├── web_data/           # Web scraped data
-    │           ├── comparisons/        # Data comparison results
-    │           ├── logs/               # Scraper logs
-    │           ├── screenshots/        # Debug screenshots
-    │           └── html_snapshots/     # Debug HTML captures
-    └── output_generation/              # Results output modules
+└── data/                               # Market data
 ```
 
 ## Configuration Strategies

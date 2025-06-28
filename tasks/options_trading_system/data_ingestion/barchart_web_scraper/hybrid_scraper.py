@@ -10,6 +10,7 @@ from typing import Dict, Any, Optional
 
 from solution import BarchartWebScraper
 from barchart_api_client import BarchartAPIClient
+from symbol_generator import BarchartSymbolGenerator
 
 class HybridBarchartScraper:
     """
@@ -22,6 +23,7 @@ class HybridBarchartScraper:
         self.web_scraper = None
         self.api_client = None
         self.cookies = None
+        self.symbol_generator = BarchartSymbolGenerator()
         
     def authenticate(self, futures_symbol: str = "NQM25") -> bool:
         """
@@ -145,14 +147,15 @@ class HybridBarchartScraper:
         Returns:
             EOD options data
         """
-        from solution import BarchartAPIComparator
-        
         # Get today's EOD symbol
-        comparator = BarchartAPIComparator()
-        eod_symbol = comparator.get_eod_contract_symbol()
+        eod_symbol = self.symbol_generator.get_eod_contract_symbol()
         
         self.logger.info(f"Fetching EOD options: {eod_symbol}")
         return self.fetch_options_data(eod_symbol, futures_symbol)
+    
+    def get_eod_contract_symbol(self, option_type: str = "weekly", year_format: str = "2digit") -> str:
+        """Get EOD contract symbol - convenience method"""
+        return self.symbol_generator.get_eod_contract_symbol(option_type=option_type, year_format=year_format)
 
 
 def main():
