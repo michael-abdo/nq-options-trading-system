@@ -1,0 +1,17 @@
+{
+  "test_name": "calculations",
+  "timestamp": "2025-06-28T14:51:13.614562",
+  "result": {
+    "simple_pressure": {
+      "value": 0.0,
+      "total_call": 4500,
+      "total_put": 4500
+    },
+    "weighted_pressure": {
+      "value": -0.1667,
+      "weighted_call": 250000,
+      "weighted_put": 350000
+    }
+  },
+  "hash": "f8b88c368da683f4b4ad5ff5ee810501"
+}

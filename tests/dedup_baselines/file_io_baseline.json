@@ -1,0 +1,17 @@
+{
+  "test_name": "file_io",
+  "timestamp": "2025-06-28T14:51:13.614199",
+  "result": {
+    "direct_json": {
+      "save": "success",
+      "load": "success",
+      "data_intact": true
+    },
+    "FileIOUtils": {
+      "save": "success",
+      "load": "success",
+      "data_intact": true
+    }
+  },
+  "hash": "8ef4e855ae84e107dbd3a9565c851783"
+}

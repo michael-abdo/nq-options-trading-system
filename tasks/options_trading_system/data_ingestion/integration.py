@@ -23,6 +23,7 @@ from data_normalizer.solution import normalize_options_data
 try:
     from barchart_web_scraper.hybrid_scraper import HybridBarchartScraper
     from barchart_web_scraper.solution import BarchartAPIComparator
+    from barchart_web_scraper.symbol_generator import BarchartSymbolGenerator
     LIVE_API_AVAILABLE = True
 except ImportError:
     LIVE_API_AVAILABLE = False
@@ -49,8 +50,8 @@ def load_barchart_live_data(futures_symbol: str = "NQM25", headless: bool = True
             eod_symbol = target_symbol
             print(f"🎯 Using specified target symbol: {eod_symbol}")
         else:
-            comparator = BarchartAPIComparator()
-            eod_symbol = comparator.get_eod_contract_symbol()
+            symbol_generator = BarchartSymbolGenerator()
+            eod_symbol = symbol_generator.get_eod_contract_symbol()
             print(f"📅 Calculated EOD symbol: {eod_symbol}")
         
         # Use hybrid scraper to get live data

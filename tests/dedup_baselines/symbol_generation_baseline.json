@@ -1,0 +1,26 @@
+{
+  "test_name": "symbol_generation",
+  "timestamp": "2025-06-28T15:12:00.000000",
+  "result": {
+    "BarchartSymbolGenerator": [
+      {
+        "input": ["NQ", "weekly", "2digit"],
+        "output": "MM1N25"
+      },
+      {
+        "input": ["NQ", "monthly", "2digit"],
+        "output": "MM6N25"
+      },
+      {
+        "input": ["NQ", "friday", "2digit"],
+        "output": "MQ1N25"
+      },
+      {
+        "input": ["NQ", "daily", "2digit"],
+        "output": "MC5M25"
+      }
+    ]
+  },
+  "hash": "deduplication_complete_only_canonical_remains",
+  "note": "BarchartAPIComparator.get_eod_contract_symbol removed in deduplication"
+}

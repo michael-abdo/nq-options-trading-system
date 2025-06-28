@@ -504,7 +504,7 @@ class BarchartWebScraper:
             self.logger.debug(f"Error parsing options row {cells}: {e}")
             return None
 
-from symbol_generator import BarchartSymbolGenerator
+from .symbol_generator import BarchartSymbolGenerator
 
 class BarchartAPIComparator:
     """
@@ -515,33 +515,6 @@ class BarchartAPIComparator:
         self.logger = logging.getLogger(__name__)
         self.symbol_generator = BarchartSymbolGenerator()
     
-    def get_eod_contract_symbol(self, base_symbol: str = "NQ", option_type: str = "weekly", year_format: str = "2digit") -> str:
-        """
-        Get the EOD (End of Day) options contract symbol for today
-        
-        Barchart options symbols based on observed patterns:
-        - MM1N25 = Tuesday July 1st, 2025 (Weekly - First Tuesday)
-        - MM6N25 = Thursday July 3rd, 2025 (Monthly - Third Thursday)
-        - MC4M25 = Thursday June 27th, 2025 (Daily/Weekly pattern)
-        
-        Symbol Format: {PREFIX}{CODE}{MONTH}{YEAR}
-        - PREFIX: MM (weekly/monthly), MC (daily)
-        - CODE: Complex mapping based on expiration pattern
-        - MONTH: Standard futures month codes (F,G,H,J,K,M,N,Q,U,V,X,Z)
-        - YEAR: Single digit (5 for 2025)
-        
-        Args:
-            base_symbol: Underlying symbol (default "NQ")
-            option_type: "weekly", "monthly", or "daily"
-            year_format: "2digit" for 25, "1digit" for 5
-            
-        Returns:
-            Symbol like "MM1N25" for weekly options (2digit) or "MM1N5" (1digit)
-        """
-        # Delegate to the canonical symbol generator
-        symbol = self.symbol_generator.get_eod_contract_symbol(base_symbol, option_type, year_format)
-        self.logger.info(f"Generated {option_type} contract: {symbol}")
-        return symbol
     
     def get_eod_options_url(self, futures_symbol: str = "NQM25") -> str:
         """
@@ -553,7 +526,7 @@ class BarchartAPIComparator:
         Returns:
             URL like: https://www.barchart.com/futures/quotes/NQM25/options/MC7M25
         """
-        eod_symbol = self.get_eod_contract_symbol()
+        eod_symbol = self.symbol_generator.get_eod_contract_symbol()
         url = f"https://www.barchart.com/futures/quotes/{futures_symbol}/options/{eod_symbol}"
         
         self.logger.info(f"EOD options URL: {url}")
@@ -576,7 +549,7 @@ class BarchartAPIComparator:
         
         # Use EOD contract if no symbol specified
         if symbol is None:
-            symbol = self.get_eod_contract_symbol()
+            symbol = self.symbol_generator.get_eod_contract_symbol()
             self.logger.info(f"Using today's EOD contract: {symbol}")
         
         self.logger.info(f"Loading existing barchart API data for {symbol}")

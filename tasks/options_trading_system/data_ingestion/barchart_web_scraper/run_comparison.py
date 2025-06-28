@@ -178,6 +178,7 @@ def main_runner():
     
     # Import modules
     from solution import BarchartWebScraper, BarchartAPIComparator
+    from symbol_generator import BarchartSymbolGenerator
     import json
     from dataclasses import asdict
     
@@ -198,7 +199,8 @@ def main_runner():
         else:
             # Use today's EOD contract
             url = comparator.get_eod_options_url(args.futures)
-            eod_symbol = comparator.get_eod_contract_symbol()
+            symbol_generator = BarchartSymbolGenerator()
+            eod_symbol = symbol_generator.get_eod_contract_symbol()
             print(f"\n🌐 Starting Data Comparison...")
             print(f"Using today's EOD contract: {eod_symbol}")
     
