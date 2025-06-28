@@ -17,7 +17,7 @@ def test_symbol_expiration(symbol: str):
     import pickle
     
     try:
-        with open('cookies/barchart_cookies_20250627_135620.pkl', 'rb') as f:
+        with open('../../cookies/barchart_cookies_20250627_135620.pkl', 'rb') as f:
             cookies = pickle.load(f)
         
         logger.info(f"Testing symbol: {symbol}")

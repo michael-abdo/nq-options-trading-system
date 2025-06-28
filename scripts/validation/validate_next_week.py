@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent / "tasks/options_trading_system/data_ingestion/barchart_web_scraper"))
+sys.path.append(str(Path(__file__).parent.parent.parent / "tasks/options_trading_system/data_ingestion/barchart_web_scraper"))
 from solution import BarchartAPIComparator
 
 def main():

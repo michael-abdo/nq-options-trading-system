@@ -28,7 +28,7 @@ sys.path.append("tasks/options_trading_system/data_ingestion/barchart_web_scrape
 
 from solution import BarchartAPIComparator
 from hybrid_scraper import HybridBarchartScraper
-from options_metrics_calculator import OptionsMetricsCalculator
+from scripts.utilities.options_metrics_calculator import OptionsMetricsCalculator
 
 @dataclass
 class PipelineState:
