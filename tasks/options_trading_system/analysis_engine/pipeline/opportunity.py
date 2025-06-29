@@ -240,37 +240,40 @@ class OpportunityDataset:
 
 # === EXAMPLE ANALYSIS DATA STRUCTURES ===
 
+from dataclasses import dataclass, field
+
+
+@dataclass
 class RiskAnalysisData:
     """Standard data structure that Risk Analysis adds to opportunities"""
-    def __init__(self):
-        self.call_risk = 0.0              # Dollar risk for call holders
-        self.put_risk = 0.0               # Dollar risk for put holders  
-        self.total_risk = 0.0             # Combined risk exposure
-        self.risk_ratio = 0.0             # Call risk / Put risk
-        self.battle_zone = False          # Is this a battle zone strike?
-        self.dominance = "NEUTRAL"        # "BULL", "BEAR", "NEUTRAL"
-        self.urgency = "LOW"              # "IMMEDIATE", "HIGH", "MODERATE", "LOW"
-        self.institutional_commitment = 0.0  # Strength of institutional positioning
+    call_risk: float = 0.0              # Dollar risk for call holders
+    put_risk: float = 0.0               # Dollar risk for put holders  
+    total_risk: float = 0.0             # Combined risk exposure
+    risk_ratio: float = 0.0             # Call risk / Put risk
+    battle_zone: bool = False           # Is this a battle zone strike?
+    dominance: str = "NEUTRAL"          # "BULL", "BEAR", "NEUTRAL"
+    urgency: str = "LOW"                # "IMMEDIATE", "HIGH", "MODERATE", "LOW"
+    institutional_commitment: float = 0.0  # Strength of institutional positioning
 
 
+@dataclass
 class EVAnalysisData:
     """Standard data structure that EV Analysis adds to opportunities"""
-    def __init__(self):
-        self.probability = 0.0            # Win probability
-        self.expected_value = 0.0         # Expected value in points
-        self.risk_reward_ratio = 0.0      # Reward/Risk ratio
-        self.quality_grade = "C"          # "A", "B", "C", "D", "F"
-        self.trade_direction = None       # "LONG", "SHORT"
-        self.entry_price = 0.0           # Calculated entry price
-        self.target_price = 0.0          # Calculated target
-        self.stop_price = 0.0            # Calculated stop loss
+    probability: float = 0.0            # Win probability
+    expected_value: float = 0.0         # Expected value in points
+    risk_reward_ratio: float = 0.0      # Reward/Risk ratio
+    quality_grade: str = "C"            # "A", "B", "C", "D", "F"
+    trade_direction: str = None         # "LONG", "SHORT"
+    entry_price: float = 0.0            # Calculated entry price
+    target_price: float = 0.0           # Calculated target
+    stop_price: float = 0.0             # Calculated stop loss
 
 
+@dataclass
 class MomentumAnalysisData:
     """Standard data structure that Momentum Analysis adds to opportunities"""
-    def __init__(self):
-        self.momentum_score = 0.0         # Overall momentum strength
-        self.direction_alignment = False  # Does momentum align with trade direction?
-        self.volume_confirmation = False  # Volume supports momentum?
-        self.momentum_duration = 0        # How long momentum has persisted
-        self.momentum_acceleration = 0.0  # Rate of momentum change
+    momentum_score: float = 0.0         # Overall momentum strength
+    direction_alignment: bool = False   # Does momentum align with trade direction?
+    volume_confirmation: bool = False   # Volume supports momentum?
+    momentum_duration: int = 0          # How long momentum has persisted
+    momentum_acceleration: float = 0.0  # Rate of momentum change

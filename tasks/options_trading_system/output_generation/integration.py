@@ -19,19 +19,16 @@ sys.path.insert(0, current_dir)
 # Import child task modules
 from report_generator.solution import generate_trading_report
 from json_exporter.solution import export_analysis_json
+# Import base component
+sys.path.append(os.path.dirname(os.path.dirname(current_dir)))
+from options_trading_system.base_components import ConfigurableComponent
 
 
-class OutputGenerationEngine:
+class OutputGenerationEngine(ConfigurableComponent):
     """Unified output generation engine coordinating reports and JSON exports"""
     
-    def __init__(self, config: Dict[str, Any]):
-        """
-        Initialize the output generation engine
-        
-        Args:
-            config: Configuration containing output settings for each format
-        """
-        self.config = config
+    def _initialize_results(self):
+        """Initialize generation results storage"""
         self.generation_results = {}
         
     def generate_trading_report(self, data_config: Dict[str, Any]) -> Dict[str, Any]:

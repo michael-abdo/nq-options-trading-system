@@ -19,21 +19,25 @@ sys.path.insert(0, current_dir)
 from data_ingestion.integration import run_data_ingestion
 from analysis_engine.integration import run_analysis_engine
 from output_generation.integration import run_output_generation
+# Add parent directory to path
+import sys
+import os
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, parent_dir)
+from options_trading_system.base_components import ConfigurableComponent
 
 
-class NQOptionsTradingSystem:
+class NQOptionsTradingSystem(ConfigurableComponent):
     """Complete NQ Options Trading System with your actual EV algorithm"""
     
     def __init__(self, config: Dict[str, Any]):
-        """
-        Initialize the complete trading system
-        
-        Args:
-            config: Master configuration for all system components
-        """
-        self.config = config
-        self.system_results = {}
+        """Initialize the complete trading system"""
+        super().__init__(config)
         self.version = "1.0"
+    
+    def _initialize_results(self):
+        """Initialize system results storage"""
+        self.system_results = {}
         
     def validate_configuration(self) -> Dict[str, Any]:
         """Validate system configuration"""

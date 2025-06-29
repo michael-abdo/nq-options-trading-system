@@ -14,7 +14,14 @@ from typing import Dict, Any, List, Optional, Tuple
 parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, parent_dir)
 from data_ingestion.integration import run_data_ingestion
-from ..analysis_utils import estimate_underlying_price
+try:
+    from ..analysis_utils import estimate_underlying_price
+except ImportError:
+    # Fallback for direct imports
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from analysis_utils import estimate_underlying_price
 
 
 # Configuration from your actual algorithm

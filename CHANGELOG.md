@@ -1,5 +1,19 @@
 # Changelog
 
+## [2025-06-28] - Comprehensive Code Deduplication Phase 6
+
+### Removed Duplicate Analysis Functions
+- **REMOVED**: `_estimate_underlying_price()` from 2 analysis modules
+- **CANONICALIZED IN**: `tasks/.../analysis_engine/analysis_utils.py`
+- **FILES UPDATED**:
+  - `tasks/.../analysis_engine/expected_value_analysis/solution.py`
+  - `tasks/.../analysis_engine/risk_analysis/solution.py`
+- **WHY**: Identical 5-line function duplicated in both analysis modules
+- **IMPACT**:
+  - Removed ~10 lines of duplicate code
+  - Created common analysis utilities module
+  - Preserved exact behavior including default fallback value (21376.75)
+
 ## [2025-06-28] - Comprehensive Code Deduplication Phase 5
 
 ### Removed Duplicate Test Utility Functions

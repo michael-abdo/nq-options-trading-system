@@ -9,7 +9,14 @@ import sys
 import os
 from datetime import datetime
 from typing import Dict, Any, List, Optional
-from ..analysis_utils import estimate_underlying_price
+try:
+    from ..analysis_utils import estimate_underlying_price
+except ImportError:
+    # Fallback for direct imports
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from analysis_utils import estimate_underlying_price
 
 # Add project root to path for data model imports
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))

@@ -112,6 +112,10 @@ def analyze_duplicates():
             # Check each group of identical functions
             for body_hash, identical_funcs in by_hash.items():
                 if len(identical_funcs) > 1:
+                    # Skip very small functions (likely wrappers)
+                    if all(f['body_lines'] < 3 for f in identical_funcs):
+                        continue
+                        
                     duplicates.append({
                         'signature': signature,
                         'count': len(identical_funcs),

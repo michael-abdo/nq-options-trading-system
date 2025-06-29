@@ -20,19 +20,16 @@ sys.path.insert(0, current_dir)
 # Import child task modules - using your actual NQ EV algorithm
 from expected_value_analysis.solution import analyze_expected_value
 from risk_analysis.solution import run_risk_analysis
+# Import base component
+sys.path.append(os.path.dirname(os.path.dirname(current_dir)))
+from options_trading_system.base_components import ConfigurableComponent
 
 
-class AnalysisEngine:
+class AnalysisEngine(ConfigurableComponent):
     """Unified analysis engine coordinating your NQ EV algorithm with risk analysis"""
     
-    def __init__(self, config: Dict[str, Any]):
-        """
-        Initialize the analysis engine
-        
-        Args:
-            config: Configuration containing analysis settings for each strategy
-        """
-        self.config = config
+    def _initialize_results(self):
+        """Initialize analysis results storage"""
         self.analysis_results = {}
         
     def run_nq_ev_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
