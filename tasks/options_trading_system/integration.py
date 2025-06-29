@@ -30,10 +30,8 @@ from options_trading_system.base_components import ConfigurableComponent
 class NQOptionsTradingSystem(ConfigurableComponent):
     """Complete NQ Options Trading System with your actual EV algorithm"""
     
-    def __init__(self, config: Dict[str, Any]):
-        """Initialize the complete trading system"""
-        super().__init__(config, results_attr_name='system_results')
-        self.version = "1.0"
+    _results_attr_name = 'system_results'
+    version = "1.0"
         
     def validate_configuration(self) -> Dict[str, Any]:
         """Validate system configuration"""
