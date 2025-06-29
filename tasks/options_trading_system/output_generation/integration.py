@@ -27,9 +27,9 @@ from options_trading_system.base_components import ConfigurableComponent
 class OutputGenerationEngine(ConfigurableComponent):
     """Unified output generation engine coordinating reports and JSON exports"""
     
-    def _initialize_results(self):
-        """Initialize generation results storage"""
-        self.generation_results = {}
+    def __init__(self, config: Dict[str, Any]):
+        """Initialize the output generation engine"""
+        super().__init__(config, results_attr_name='generation_results')
         
     def generate_trading_report(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Generate human-readable trading report"""

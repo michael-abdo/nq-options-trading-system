@@ -32,12 +32,8 @@ class NQOptionsTradingSystem(ConfigurableComponent):
     
     def __init__(self, config: Dict[str, Any]):
         """Initialize the complete trading system"""
-        super().__init__(config)
+        super().__init__(config, results_attr_name='system_results')
         self.version = "1.0"
-    
-    def _initialize_results(self):
-        """Initialize system results storage"""
-        self.system_results = {}
         
     def validate_configuration(self) -> Dict[str, Any]:
         """Validate system configuration"""

@@ -1,5 +1,16 @@
 # Changelog
 
+## [2025-06-29] - Comprehensive Semantic Deduplication Phase 2
+
+### Fourth Deduplication
+- **REMOVED**: `_estimate_underlying_price()` wrapper methods
+- **CANONICALIZED IN**: Direct calls to `analysis_utils.estimate_underlying_price()`
+- **FILES UPDATED**:
+  - `tasks/.../analysis_engine/expected_value_analysis/solution.py`
+  - `tasks/.../analysis_engine/risk_analysis/solution.py`
+- **WHY**: Identical private methods that only delegated to utility function
+- **IMPACT**: Removed ~6 lines of unnecessary delegation
+
 ## [2025-06-29] - Comprehensive Semantic Deduplication Phase 1
 
 ### Semantic Duplicate Analysis and Elimination

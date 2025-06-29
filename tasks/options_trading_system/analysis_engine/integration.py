@@ -28,9 +28,9 @@ from options_trading_system.base_components import ConfigurableComponent
 class AnalysisEngine(ConfigurableComponent):
     """Unified analysis engine coordinating your NQ EV algorithm with risk analysis"""
     
-    def _initialize_results(self):
-        """Initialize analysis results storage"""
-        self.analysis_results = {}
+    def __init__(self, config: Dict[str, Any]):
+        """Initialize the analysis engine"""
+        super().__init__(config, results_attr_name='analysis_results')
         
     def run_nq_ev_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Run your actual NQ Options Expected Value analysis"""

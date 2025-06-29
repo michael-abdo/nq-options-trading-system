@@ -1,12 +1,12 @@
 {
   "task": "options_trading_system",
   "type": "root",
-  "timestamp": "2025-06-04T16:26:11.834840",
+  "timestamp": "2025-06-28T22:07:27.348472",
   "integration_tests": [
     {
       "name": "child_validations",
       "passed": true,
-      "details": "All 3 children validated: True"
+      "details": "All 0 children validated: True"
     },
     {
       "name": "system_initialization",
@@ -54,7 +54,7 @@
       "passed": true,
       "details": {
         "status": "success",
-        "execution_time": 3.888245,
+        "execution_time": 1.258607,
         "system_health": "excellent",
         "pipeline_success_rate": 1.0,
         "has_trading_recommendation": true
@@ -65,7 +65,7 @@
   "evidence": {
     "complete_system_result": {
       "status": "success",
-      "execution_time": 3.888245,
+      "execution_time": 1.258607,
       "system_version": "1.0",
       "system_health": {
         "status": "excellent",
@@ -103,24 +103,5 @@
       }
     }
   },
-  "child_validations": [
-    {
-      "task": "data_ingestion",
-      "status": "validated",
-      "type": "parent",
-      "evidence_path": "tasks/options_trading_system/data_ingestion/evidence_rollup.json"
-    },
-    {
-      "task": "analysis_engine",
-      "status": "validated",
-      "type": "parent",
-      "evidence_path": "tasks/options_trading_system/analysis_engine/evidence_rollup.json"
-    },
-    {
-      "task": "output_generation",
-      "status": "validated",
-      "type": "parent",
-      "evidence_path": "tasks/options_trading_system/output_generation/evidence_rollup.json"
-    }
-  ]
+  "child_validations": []
 }
