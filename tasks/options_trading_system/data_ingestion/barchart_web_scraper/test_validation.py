@@ -6,10 +6,8 @@ from unittest.mock import Mock, patch, MagicMock
 import tempfile
 import os
 
-from solution import (
-    BarchartWebScraper, BarchartAPIComparator, OptionsContract, 
-    OptionsChainData
-)
+from solution import BarchartWebScraper, BarchartAPIComparator, OptionsContract, OptionsChainData
+from symbol_generator import BarchartSymbolGenerator
 
 class TestBarchartWebScraper(unittest.TestCase):
     """

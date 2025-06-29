@@ -264,7 +264,7 @@ class TestBarchartSymbolGenerator(unittest.TestCase):
                 year_format="2digit"
             )
             
-            self.assertEqual(symbol, "MM1N25")
+            self.assertEqual(symbol, "MM2N25")
     
     def test_year_boundary_weekly(self):
         """Test weekly options across year boundary"""

@@ -504,7 +504,10 @@ class BarchartWebScraper:
             self.logger.debug(f"Error parsing options row {cells}: {e}")
             return None
 
-from .symbol_generator import BarchartSymbolGenerator
+try:
+    from .symbol_generator import BarchartSymbolGenerator
+except ImportError:
+    from symbol_generator import BarchartSymbolGenerator
 
 class BarchartAPIComparator:
     """
