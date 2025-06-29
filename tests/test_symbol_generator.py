@@ -222,21 +222,19 @@ class TestBarchartSymbolGenerator(unittest.TestCase):
         self.assertEqual(result["month_code"], "N")
         self.assertEqual(result["year"], "25")
     
-    def test_parse_symbol_weekly(self):
-        """Test parsing weekly options symbol"""
-        self._test_parse_symbol_generic("MM2N25", "MM", "weekly", 2)
-    
-    def test_parse_symbol_monthly(self):
-        """Test parsing monthly options symbol"""
-        self._test_parse_symbol_generic("MM6N25", "MM", "monthly", 6)
-    
-    def test_parse_symbol_friday(self):
-        """Test parsing Friday options symbol"""
-        self._test_parse_symbol_generic("MQ1N25", "MQ", "friday", 1)
-    
-    def test_parse_symbol_daily(self):
-        """Test parsing daily options symbol"""
-        self._test_parse_symbol_generic("MC3N25", "MC", "daily", 3)
+    def test_parse_symbol_types(self):
+        """Test parsing various options symbol types"""
+        test_cases = [
+            # (symbol, prefix, option_type, week)
+            ("MM2N25", "MM", "weekly", 2),
+            ("MM6N25", "MM", "monthly", 6),
+            ("MQ1N25", "MQ", "friday", 1),
+            ("MC3N25", "MC", "daily", 3),
+        ]
+        
+        for symbol, prefix, option_type, week in test_cases:
+            with self.subTest(symbol=symbol):
+                self._test_parse_symbol_generic(symbol, prefix, option_type, week)
     
     def test_parse_symbol_invalid_format(self):
         """Test parsing invalid symbol format"""
