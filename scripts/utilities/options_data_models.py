@@ -178,17 +178,19 @@ class OptionsChainData:
                 filtered.append(contract)
         return filtered
     
+    def _aggregate_metric(self, call_field: str, put_field: str) -> Dict[str, int]:
+        """Generic aggregator for call/put metrics"""
+        call_total = sum(getattr(c, call_field) or 0 for c in self.contracts)
+        put_total = sum(getattr(c, put_field) or 0 for c in self.contracts)
+        return {'calls': call_total, 'puts': put_total, 'total': call_total + put_total}
+    
     def get_total_volume(self) -> Dict[str, int]:
         """Calculate total volume for calls and puts"""
-        call_volume = sum(c.call_volume or 0 for c in self.contracts)
-        put_volume = sum(c.put_volume or 0 for c in self.contracts)
-        return {'calls': call_volume, 'puts': put_volume, 'total': call_volume + put_volume}
+        return self._aggregate_metric('call_volume', 'put_volume')
     
     def get_total_open_interest(self) -> Dict[str, int]:
         """Calculate total open interest for calls and puts"""
-        call_oi = sum(c.call_open_interest or 0 for c in self.contracts)
-        put_oi = sum(c.put_open_interest or 0 for c in self.contracts)
-        return {'calls': call_oi, 'puts': put_oi, 'total': call_oi + put_oi}
+        return self._aggregate_metric('call_open_interest', 'put_open_interest')
 
 
 @dataclass
