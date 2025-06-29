@@ -22,14 +22,25 @@ except ImportError as e:
     print(f"Databento API not available: {e}")
     DATABENTO_AVAILABLE = False
 
+# Add tests directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../../tests'))
+from test_base import DataIngestionTestCase
 
-class TestDatabentoAPIConnection(unittest.TestCase):
+
+class TestDatabentoAPIConnection(DataIngestionTestCase):
     """Test cases for Databento API connection functionality."""
     
+    # Configure test fixtures - conditional instantiation
+    solution_classes = []
+    skip_if_api_fails = True  # This will trigger skipTest if instantiation fails
+    
     def setUp(self):
-        """Set up test fixtures."""
+        """Set up test fixtures with conditional API availability."""
         if DATABENTO_AVAILABLE:
-            self.api = DatabentoAPIConnection()
+            self.solution_classes = [
+                ('api', DatabentoAPIConnection, {})
+            ]
+        super().setUp()
     
     @unittest.skipIf(not DATABENTO_AVAILABLE, "Databento API not available")
     def test_api_initialization(self):

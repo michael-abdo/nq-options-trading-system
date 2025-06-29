@@ -3,21 +3,31 @@ import time
 from datetime import datetime, timedelta
 from unittest.mock import Mock, patch
 import statistics
+import sys
+import os
+
+# Add tests directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../../tests'))
+from test_base import OptionsAnalysisTestCase
 
 from solution import (
     ExpirationPressureCalculator, PressureAlert, UrgencyLevel,
     PredictionTracker, CalculationValidator
 )
 
-class TestExpirationPressureCalculator(unittest.TestCase):
+class TestExpirationPressureCalculator(OptionsAnalysisTestCase):
     """
     EXPERIMENTAL VALIDATION: Test pressure calculation algorithm
     with empirical validation of assignment risk formula
     """
     
-    def setUp(self):
-        self.calculator = ExpirationPressureCalculator(validation_mode=True)
-        self.sample_options_data = [
+    # Configure test fixtures using class attributes
+    solution_classes = [
+        ('calculator', ExpirationPressureCalculator, {'validation_mode': True})
+    ]
+    
+    test_data = {
+        'sample_options_data': [
             {
                 'strike': 15000.0,
                 'call_oi': 2500,
@@ -34,6 +44,7 @@ class TestExpirationPressureCalculator(unittest.TestCase):
                 'put_oi': 2100
             }
         ]
+    }
         
     def test_pressure_formula_mathematical_accuracy(self):
         """

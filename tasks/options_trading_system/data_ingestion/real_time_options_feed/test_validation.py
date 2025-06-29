@@ -5,21 +5,32 @@ from unittest.mock import Mock, patch, MagicMock
 from datetime import datetime, timedelta
 import threading
 import queue
+import sys
+import os
+
+# Add tests directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../../tests'))
+from test_base import RealTimeTestCase
 
 from solution import (
     RealTimeOptionsDataFeed, OptionsContract, OptionsChain,
     LatencyTracker, OptionsDataValidator, DataQualityTracker
 )
 
-class TestRealTimeOptionsDataFeed(unittest.TestCase):
+class TestRealTimeOptionsDataFeed(RealTimeTestCase):
     """
     EXPERIMENTAL VALIDATION: Test real-time options data ingestion
     with <100ms latency requirements
     """
     
-    def setUp(self):
-        self.symbols = ['NQ']
-        self.feed = RealTimeOptionsDataFeed(self.symbols)
+    # Configure test fixtures using class attributes
+    solution_classes = [
+        ('feed', RealTimeOptionsDataFeed, {'symbols': ['NQ']})
+    ]
+    
+    test_data = {
+        'symbols': ['NQ']
+    }
         
     def test_connection_latency_requirement(self):
         """

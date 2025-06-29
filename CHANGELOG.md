@@ -1,5 +1,34 @@
 # Changelog
 
+## [2025-06-29] - Comprehensive Semantic Deduplication Phase 2-2
+
+### Seventh Deduplication
+- **REMOVED**: Duplicate `setUp` methods from 4 test files
+- **CANONICALIZED IN**: `tests/test_base.py` with flexible BaseTestCase patterns
+- **FILES UPDATED**:
+  - `tasks/.../expiration_pressure_calculator/test_validation.py`
+  - `tasks/.../real_time_options_feed/test_validation.py`
+  - `tasks/.../interactive_brokers_api/test_validation.py`
+  - `tasks/.../barchart_web_scraper/test_validation.py`
+- **WHY**: All setUp methods followed same pattern of initializing test fixtures
+- **IMPACT**: 
+  - Created reusable test base classes (BaseTestCase, OptionsAnalysisTestCase, DataIngestionTestCase, RealTimeTestCase)
+  - Eliminated ~40 lines of duplicate setUp code
+  - Improved test maintainability with declarative fixture configuration
+
+## [2025-06-29] - Comprehensive Semantic Deduplication Phase 2
+
+### Sixth Deduplication
+- **REMOVED**: `__init__` methods from 3 integration classes
+- **ENHANCED**: `ConfigurableComponent` base class to use class attributes
+- **FILES UPDATED**:
+  - `tasks/.../integration.py` (NQOptionsTradingSystem)
+  - `tasks/.../output_generation/integration.py` (OutputGenerationEngine)  
+  - `tasks/.../analysis_engine/integration.py` (AnalysisEngine)
+  - `tasks/.../base_components.py` (enhanced with _results_attr_name support)
+- **WHY**: All three __init__ methods just called super() with different results_attr_name values
+- **IMPACT**: Removed ~15 lines of boilerplate initialization code
+
 ## [2025-06-29] - Comprehensive Semantic Deduplication Phase 2
 
 ### Fourth Deduplication

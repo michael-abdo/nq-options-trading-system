@@ -5,19 +5,26 @@ from datetime import datetime, timedelta
 from unittest.mock import Mock, patch, MagicMock
 import tempfile
 import os
+import sys
+
+# Add tests directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../../tests'))
+from test_base import DataIngestionTestCase
 
 from solution import BarchartWebScraper, BarchartAPIComparator, OptionsContract, OptionsChainData
 from symbol_generator import BarchartSymbolGenerator
 
-class TestBarchartWebScraper(unittest.TestCase):
+class TestBarchartWebScraper(DataIngestionTestCase):
     """
     EXPERIMENTAL VALIDATION: Test barchart web scraping functionality
     and data comparison accuracy
     """
     
-    def setUp(self):
-        self.scraper = BarchartWebScraper(headless=True)
-        self.comparator = BarchartAPIComparator()
+    # Configure test fixtures using class attributes
+    solution_classes = [
+        ('scraper', BarchartWebScraper, {'headless': True}),
+        ('comparator', BarchartAPIComparator, {})
+    ]
         
     def test_driver_setup(self):
         """
