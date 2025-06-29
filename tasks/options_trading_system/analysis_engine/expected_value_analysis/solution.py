@@ -99,14 +99,11 @@ class ExpectedValueAnalyzer:
             "contracts": pipeline_result["normalized_data"]["contracts"],
             "summary": pipeline_result["normalized_data"]["summary"],
             "quality": pipeline_result["quality_metrics"],
-            "underlying_price": self._estimate_underlying_price(pipeline_result["normalized_data"]["contracts"])
+            "underlying_price": estimate_underlying_price(pipeline_result["normalized_data"]["contracts"])
         }
         
         return self.data
     
-    def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
-        """Estimate current underlying price from contract data"""
-        return estimate_underlying_price(contracts)
     
     def convert_to_options_strikes(self, contracts: List[Dict]) -> List[OptionsStrike]:
         """Convert normalized contract data to OptionsStrike objects"""

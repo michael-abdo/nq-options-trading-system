@@ -69,9 +69,6 @@ class RiskAnalyzer:
         
         return risk_amount * multiplier, urgency
     
-    def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
-        """Estimate current underlying price from contract data"""
-        return estimate_underlying_price(contracts)
     
     def analyze_risk(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -109,7 +106,7 @@ class RiskAnalyzer:
                 # Extract normalized data
                 normalized_data = pipeline_result["normalized_data"]
                 contracts = normalized_data.get("contracts", [])
-                underlying_price = self._estimate_underlying_price(contracts)
+                underlying_price = estimate_underlying_price(contracts)
             
             if not contracts:
                 return {

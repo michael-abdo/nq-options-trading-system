@@ -1,7 +1,7 @@
 {
   "task": "risk_analysis",
   "type": "leaf",
-  "timestamp": "2025-06-04T17:13:58.689775",
+  "timestamp": "2025-06-28T22:03:56.000181",
   "tests": [
     {
       "name": "analyzer_init",
@@ -33,8 +33,8 @@
       "details": {
         "zones_found": 4,
         "urgency_levels": [
-          "IMMEDIATE",
-          "NEAR TERM"
+          "NEAR TERM",
+          "IMMEDIATE"
         ],
         "defense_types": [
           "PUT DEFENSE",

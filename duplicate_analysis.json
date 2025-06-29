@@ -1,0 +1,7251 @@
+{
+  "summary": {
+    "total_functions": 411,
+    "exact_duplicate_groups": 1,
+    "semantic_duplicate_groups": 77,
+    "name_pattern_groups": 29
+  },
+  "exact_duplicates": {
+    "c334ef54": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "ExpectedValueAnalyzer",
+        "name": "_estimate_underlying_price",
+        "line": 107,
+        "args": [
+          "self",
+          "contracts"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093be4d0>",
+        "calls": [
+          "estimate_underlying_price"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "c334ef54"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/risk_analysis/solution.py",
+        "class": "RiskAnalyzer",
+        "name": "_estimate_underlying_price",
+        "line": 72,
+        "args": [
+          "self",
+          "contracts"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108973510>",
+        "calls": [
+          "estimate_underlying_price"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "c334ef54"
+      }
+    ]
+  },
+  "semantic_duplicates": {
+    "efb928f9": [
+      {
+        "file": "tasks/options_trading_system/base_components.py",
+        "class": "ConfigurableComponent",
+        "name": "__init__",
+        "line": 13,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1082477d0>",
+        "calls": [
+          "_initialize_results"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "efb928f9",
+        "body_hash": "a468162b"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "_on_open",
+        "line": 247,
+        "args": [
+          "self",
+          "ws"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b6b010>",
+        "calls": [
+          "info"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "efb928f9",
+        "body_hash": "dca45b05"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/solution.py",
+        "class": "DatabentoAPIConnection",
+        "name": "__init__",
+        "line": 24,
+        "args": [
+          "self",
+          "api_key"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094d8d90>",
+        "calls": [
+          "getenv"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "efb928f9",
+        "body_hash": "af149a95"
+      }
+    ],
+    "9388e1b1": [
+      {
+        "file": "tasks/options_trading_system/integration.py",
+        "class": "NQOptionsTradingSystem",
+        "name": "__init__",
+        "line": 33,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108246d90>",
+        "calls": [
+          "__init__",
+          "super"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "9388e1b1",
+        "body_hash": "0398b314"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "__init__",
+        "line": 56,
+        "args": [
+          "self",
+          "headless"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109729f10>",
+        "calls": [
+          "basicConfig",
+          "getLogger"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 6,
+        "semantic_hash": "9388e1b1",
+        "body_hash": "f3d1a197"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/hybrid_scraper.py",
+        "class": "HybridBarchartScraper",
+        "name": "__init__",
+        "line": 20,
+        "args": [
+          "self",
+          "headless"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1092ce650>",
+        "calls": [
+          "getLogger",
+          "BarchartSymbolGenerator"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 6,
+        "semantic_hash": "9388e1b1",
+        "body_hash": "afdf1268"
+      }
+    ],
+    "6844aca8": [
+      {
+        "file": "tasks/options_trading_system/integration.py",
+        "class": "NQOptionsTradingSystem",
+        "name": "_initialize_results",
+        "line": 38,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108246b10>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6844aca8",
+        "body_hash": "1cbd4294"
+      },
+      {
+        "file": "tasks/options_trading_system/output_generation/integration.py",
+        "class": "OutputGenerationEngine",
+        "name": "_initialize_results",
+        "line": 30,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a82310>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6844aca8",
+        "body_hash": "26abf130"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/integration.py",
+        "class": "AnalysisEngine",
+        "name": "_initialize_results",
+        "line": 31,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c1e590>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6844aca8",
+        "body_hash": "f7f9081c"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "PredictionTracker",
+        "name": "__init__",
+        "line": 493,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10955f3d0>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 1,
+        "semantic_hash": "6844aca8",
+        "body_hash": "45eddeb6"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestPerformanceRequirements",
+        "name": "throughput_callback",
+        "line": 375,
+        "args": [
+          "options_chain"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108cd7210>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6844aca8",
+        "body_hash": "dd12a897"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "LatencyTracker",
+        "name": "__init__",
+        "line": 303,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099e72d0>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "6844aca8",
+        "body_hash": "ad13d66c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "DataQualityTracker",
+        "name": "__init__",
+        "line": 408,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1098ac950>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "6844aca8",
+        "body_hash": "b875554b"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/data_normalizer/solution.py",
+        "class": "DataNormalizer",
+        "name": "__init__",
+        "line": 26,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b883d0>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "6844aca8",
+        "body_hash": "7bea5727"
+      }
+    ],
+    "cb114cd3": [
+      {
+        "file": "tasks/options_trading_system/integration.py",
+        "class": "NQOptionsTradingSystem",
+        "name": "run_data_pipeline",
+        "line": 63,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108287210>",
+        "calls": [
+          "print",
+          "get",
+          "run_data_ingestion",
+          "print",
+          "print",
+          "print",
+          "isoformat",
+          "print",
+          "str",
+          "isoformat",
+          "now",
+          "str",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "cb114cd3",
+        "body_hash": "89f7ee6f"
+      },
+      {
+        "file": "tests/validate_deduplication.py",
+        "class": "DeduplicationValidator",
+        "name": "print_summary",
+        "line": 103,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109f41d90>",
+        "calls": [
+          "print",
+          "print",
+          "print",
+          "sum",
+          "sum",
+          "sum",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "len",
+          "print"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 13,
+        "semantic_hash": "cb114cd3",
+        "body_hash": "144864c5"
+      }
+    ],
+    "2ee6ca6c": [
+      {
+        "file": "tasks/options_trading_system/integration.py",
+        "class": "NQOptionsTradingSystem",
+        "name": "run_analysis_pipeline",
+        "line": 89,
+        "args": [
+          "self",
+          "data_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108279fd0>",
+        "calls": [
+          "print",
+          "get",
+          "run_analysis_engine",
+          "print",
+          "print",
+          "print",
+          "get",
+          "print",
+          "isoformat",
+          "print",
+          "get",
+          "str",
+          "isoformat",
+          "now",
+          "str",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "2ee6ca6c",
+        "body_hash": "294eb50b"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/integration.py",
+        "class": "AnalysisEngine",
+        "name": "run_risk_analysis",
+        "line": 74,
+        "args": [
+          "self",
+          "data_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bc21d0>",
+        "calls": [
+          "print",
+          "get",
+          "run_risk_analysis",
+          "print",
+          "print",
+          "print",
+          "isoformat",
+          "get",
+          "isoformat",
+          "str",
+          "isoformat",
+          "now",
+          "get",
+          "now",
+          "str",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "2ee6ca6c",
+        "body_hash": "f066cd60"
+      }
+    ],
+    "081118f4": [
+      {
+        "file": "tasks/options_trading_system/integration.py",
+        "class": "NQOptionsTradingSystem",
+        "name": "create_system_summary",
+        "line": 152,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108947f10>",
+        "calls": [
+          "isoformat",
+          "len",
+          "len",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "now",
+          "get",
+          "get",
+          "get",
+          "values",
+          "values",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 12,
+        "semantic_hash": "081118f4",
+        "body_hash": "30eeda80"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+        "class": "BarchartSavedDataLoader",
+        "name": "get_data_quality_metrics",
+        "line": 79,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10949fdd0>",
+        "calls": [
+          "get_options_data",
+          "sum",
+          "sum",
+          "sum",
+          "sum",
+          "len",
+          "len",
+          "len",
+          "len",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 10,
+        "semantic_hash": "081118f4",
+        "body_hash": "6c6ab38e"
+      }
+    ],
+    "5074ecd7": [
+      {
+        "file": "tasks/options_trading_system/integration.py",
+        "class": "NQOptionsTradingSystem",
+        "name": "_create_failure_result",
+        "line": 313,
+        "args": [
+          "self",
+          "reason"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108971810>",
+        "calls": [
+          "isoformat",
+          "create_system_summary",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "5074ecd7",
+        "body_hash": "c359ddd3"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/hybrid_scraper.py",
+        "class": "HybridBarchartScraper",
+        "name": "fetch_eod_options",
+        "line": 140,
+        "args": [
+          "self",
+          "futures_symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a73410>",
+        "calls": [
+          "get_eod_contract_symbol",
+          "info",
+          "fetch_options_data"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "5074ecd7",
+        "body_hash": "0feabe97"
+      }
+    ],
+    "b089b2eb": [
+      {
+        "file": "tasks/options_trading_system/integration.py",
+        "class": null,
+        "name": "run_complete_nq_trading_system",
+        "line": 325,
+        "args": [
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10827a190>",
+        "calls": [
+          "NQOptionsTradingSystem",
+          "run_complete_system"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "b089b2eb",
+        "body_hash": "147e54ed"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/integration.py",
+        "class": null,
+        "name": "run_data_ingestion",
+        "line": 276,
+        "args": [
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089b8990>",
+        "calls": [
+          "create_data_ingestion_pipeline",
+          "run_full_pipeline"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "b089b2eb",
+        "body_hash": "62fee2a7"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+        "class": "BarchartSavedDataLoader",
+        "name": "validate_file_exists",
+        "line": 28,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109720f90>",
+        "calls": [
+          "exists",
+          "isfile"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "b089b2eb",
+        "body_hash": "1388959a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "DataQualityTracker",
+        "name": "get_overall_quality_score",
+        "line": 450,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099a0890>",
+        "calls": [
+          "sum",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "b089b2eb",
+        "body_hash": "f5a950cf"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "get_strikes",
+        "line": 160,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109823350>",
+        "calls": [
+          "sorted",
+          "set"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "b089b2eb",
+        "body_hash": "746487e0"
+      }
+    ],
+    "f7a53f13": [
+      {
+        "file": "tasks/options_trading_system/output_generation/integration.py",
+        "class": "OutputGenerationEngine",
+        "name": "generate_trading_report",
+        "line": 34,
+        "args": [
+          "self",
+          "data_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089affd0>",
+        "calls": [
+          "print",
+          "get",
+          "get",
+          "generate_trading_report",
+          "print",
+          "print",
+          "isoformat",
+          "print",
+          "str",
+          "isoformat",
+          "len",
+          "now",
+          "str",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "f7a53f13",
+        "body_hash": "0287efc9"
+      },
+      {
+        "file": "tasks/options_trading_system/output_generation/integration.py",
+        "class": "OutputGenerationEngine",
+        "name": "generate_json_export",
+        "line": 66,
+        "args": [
+          "self",
+          "data_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a82850>",
+        "calls": [
+          "print",
+          "get",
+          "get",
+          "export_analysis_json",
+          "print",
+          "print",
+          "print",
+          "isoformat",
+          "print",
+          "str",
+          "isoformat",
+          "now",
+          "str",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "f7a53f13",
+        "body_hash": "c41b548d"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/integration.py",
+        "class": "AnalysisEngine",
+        "name": "run_nq_ev_analysis",
+        "line": 35,
+        "args": [
+          "self",
+          "data_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bb9310>",
+        "calls": [
+          "print",
+          "get",
+          "analyze_expected_value",
+          "print",
+          "get",
+          "print",
+          "isoformat",
+          "print",
+          "get",
+          "str",
+          "isoformat",
+          "now",
+          "str",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "f7a53f13",
+        "body_hash": "3a253ff8"
+      }
+    ],
+    "a8e1d2cf": [
+      {
+        "file": "tasks/options_trading_system/output_generation/integration.py",
+        "class": "OutputGenerationEngine",
+        "name": "create_output_summary",
+        "line": 195,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a95210>",
+        "calls": [
+          "isoformat",
+          "get",
+          "get",
+          "append",
+          "now",
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "a8e1d2cf",
+        "body_hash": "fc726425"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+        "class": "BarchartSavedDataLoader",
+        "name": "get_strike_range",
+        "line": 111,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109670d10>",
+        "calls": [
+          "get_options_data",
+          "get",
+          "append",
+          "min",
+          "max",
+          "len",
+          "get",
+          "float",
+          "set"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "a8e1d2cf",
+        "body_hash": "a6e83c9d"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "_extract_underlying_info",
+        "line": 281,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097dae50>",
+        "calls": [
+          "debug",
+          "find_element",
+          "replace",
+          "isdigit",
+          "search",
+          "float",
+          "group",
+          "replace",
+          "replace"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "a8e1d2cf",
+        "body_hash": "e6534773"
+      }
+    ],
+    "4c873673": [
+      {
+        "file": "tasks/options_trading_system/output_generation/integration.py",
+        "class": null,
+        "name": "run_output_generation",
+        "line": 306,
+        "args": [
+          "data_config",
+          "output_config",
+          "save_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108278590>",
+        "calls": [
+          "OutputGenerationEngine",
+          "run_full_output_generation"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "4c873673",
+        "body_hash": "700dab0a"
+      },
+      {
+        "file": "tasks/options_trading_system/output_generation/json_exporter/solution.py",
+        "class": null,
+        "name": "export_analysis_json",
+        "line": 250,
+        "args": [
+          "data_config",
+          "export_config",
+          "analysis_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a320d0>",
+        "calls": [
+          "JSONExporter",
+          "export_json"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "4c873673",
+        "body_hash": "c2e66c21"
+      },
+      {
+        "file": "tasks/options_trading_system/output_generation/report_generator/solution.py",
+        "class": null,
+        "name": "generate_trading_report",
+        "line": 261,
+        "args": [
+          "data_config",
+          "report_config",
+          "analysis_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089d0390>",
+        "calls": [
+          "TradingReportGenerator",
+          "generate_report"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "4c873673",
+        "body_hash": "85c51650"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "_calculate_assignment_probability",
+        "line": 207,
+        "args": [
+          "self",
+          "distance",
+          "time_remaining"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1096190d0>",
+        "calls": [
+          "max",
+          "min"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "4c873673",
+        "body_hash": "1c8432c1"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/symbol_generator.py",
+        "class": null,
+        "name": "get_eod_contract_symbol",
+        "line": 159,
+        "args": [
+          "base_symbol",
+          "option_type",
+          "year_format"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109355510>",
+        "calls": [
+          "BarchartSymbolGenerator",
+          "get_eod_contract_symbol"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "4c873673",
+        "body_hash": "6c9ac0af"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "filter_by_moneyness",
+        "line": 172,
+        "args": [
+          "self",
+          "min_moneyness",
+          "max_moneyness"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093ab150>",
+        "calls": [
+          "get_moneyness",
+          "append"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "4c873673",
+        "body_hash": "6753aa42"
+      }
+    ],
+    "9ce10750": [
+      {
+        "file": "tasks/options_trading_system/output_generation/json_exporter/solution.py",
+        "class": "JSONExporter",
+        "name": "__init__",
+        "line": 23,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ba1ed0>",
+        "calls": [
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 6,
+        "semantic_hash": "9ce10750",
+        "body_hash": "7c02d1c7"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/risk_analysis/solution.py",
+        "class": "RiskAnalyzer",
+        "name": "__init__",
+        "line": 29,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094842d0>",
+        "calls": [
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 6,
+        "semantic_hash": "9ce10750",
+        "body_hash": "6864b814"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/integration.py",
+        "class": "DataIngestionPipeline",
+        "name": "__init__",
+        "line": 91,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1095da990>",
+        "calls": [
+          "isoformat",
+          "list",
+          "keys",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "9ce10750",
+        "body_hash": "d08435b0"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "__init__",
+        "line": 18,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c65b50>",
+        "calls": [
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 8,
+        "semantic_hash": "9ce10750",
+        "body_hash": "9b294172"
+      }
+    ],
+    "efc570f8": [
+      {
+        "file": "tasks/options_trading_system/output_generation/json_exporter/solution.py",
+        "class": "JSONExporter",
+        "name": "extract_trading_signals",
+        "line": 51,
+        "args": [
+          "self",
+          "analysis_results"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1082d1bd0>",
+        "calls": [
+          "get",
+          "get",
+          "enumerate",
+          "append",
+          "isoformat",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "len",
+          "round",
+          "strftime",
+          "now",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "efc570f8",
+        "body_hash": "fcbfa9f7"
+      },
+      {
+        "file": "tasks/options_trading_system/output_generation/report_generator/solution.py",
+        "class": "TradingReportGenerator",
+        "name": "generate_supplementary_analyses",
+        "line": 142,
+        "args": [
+          "self",
+          "analysis_results"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bfc7d0>",
+        "calls": [
+          "append",
+          "append",
+          "get",
+          "join",
+          "get",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "get",
+          "get",
+          "append",
+          "enumerate",
+          "get",
+          "append",
+          "enumerate",
+          "append",
+          "append"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "efc570f8",
+        "body_hash": "5f56b41b"
+      }
+    ],
+    "3867774a": [
+      {
+        "file": "tasks/options_trading_system/output_generation/json_exporter/solution.py",
+        "class": "JSONExporter",
+        "name": "extract_market_analysis",
+        "line": 98,
+        "args": [
+          "self",
+          "analysis_results"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089b9850>",
+        "calls": [
+          "get",
+          "get",
+          "get",
+          "isoformat",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "now",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "3867774a",
+        "body_hash": "c6f52bdb"
+      },
+      {
+        "file": "tasks/options_trading_system/output_generation/report_generator/solution.py",
+        "class": "TradingReportGenerator",
+        "name": "generate_executive_summary",
+        "line": 47,
+        "args": [
+          "self",
+          "analysis_results"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c011d0>",
+        "calls": [
+          "append",
+          "append",
+          "get",
+          "get",
+          "get",
+          "join",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "get",
+          "get",
+          "title",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "str",
+          "list",
+          "get",
+          "keys"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 10,
+        "semantic_hash": "3867774a",
+        "body_hash": "ebc0fb15"
+      }
+    ],
+    "b1a246e6": [
+      {
+        "file": "tasks/options_trading_system/output_generation/json_exporter/solution.py",
+        "class": "JSONExporter",
+        "name": "export_json",
+        "line": 218,
+        "args": [
+          "self",
+          "data_config",
+          "analysis_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108be7d10>",
+        "calls": [
+          "create_export_structure",
+          "run_analysis_engine",
+          "dumps",
+          "dumps",
+          "isoformat",
+          "len",
+          "len",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "b1a246e6",
+        "body_hash": "6eb4d07e"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "ExpectedValueAnalyzer",
+        "name": "calculate_ev_combinations",
+        "line": 228,
+        "args": [
+          "self",
+          "current_price",
+          "strikes"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094ba7d0>",
+        "calls": [
+          "sorted",
+          "sort",
+          "calculate_probability",
+          "TradeSetup",
+          "append",
+          "calculate_probability",
+          "TradeSetup",
+          "append"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "b1a246e6",
+        "body_hash": "8479a1d3"
+      }
+    ],
+    "21160e73": [
+      {
+        "file": "tasks/options_trading_system/output_generation/report_generator/solution.py",
+        "class": "TradingReportGenerator",
+        "name": "__init__",
+        "line": 22,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108917f50>",
+        "calls": [
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "21160e73",
+        "body_hash": "54040266"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "__init__",
+        "line": 51,
+        "args": [
+          "self",
+          "validation_mode"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10894e7d0>",
+        "calls": [
+          "PredictionTracker",
+          "ExpirationPressureMetrics",
+          "CalculationValidator"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 10,
+        "semantic_hash": "21160e73",
+        "body_hash": "1fc8be17"
+      }
+    ],
+    "95efee45": [
+      {
+        "file": "tasks/options_trading_system/output_generation/report_generator/solution.py",
+        "class": "TradingReportGenerator",
+        "name": "generate_header",
+        "line": 34,
+        "args": [
+          "self",
+          "analysis_results"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ae2290>",
+        "calls": [
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "join",
+          "strftime",
+          "upper",
+          "get",
+          "get",
+          "now",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "95efee45",
+        "body_hash": "1d56462d"
+      },
+      {
+        "file": "tasks/options_trading_system/output_generation/report_generator/solution.py",
+        "class": "TradingReportGenerator",
+        "name": "generate_footer",
+        "line": 206,
+        "args": [
+          "self",
+          "analysis_results"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1080497d0>",
+        "calls": [
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "append",
+          "join",
+          "get",
+          "isoformat",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 15,
+        "semantic_hash": "95efee45",
+        "body_hash": "a0b2bdc5"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "_extract_options_contracts",
+        "line": 395,
+        "args": [
+          "self",
+          "table_element"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099d1bd0>",
+        "calls": [
+          "get_attribute",
+          "BeautifulSoup",
+          "find_all",
+          "info",
+          "lower",
+          "error",
+          "find_all",
+          "strip",
+          "len",
+          "_parse_options_row",
+          "strip",
+          "find_all",
+          "append",
+          "debug",
+          "get_text",
+          "get_text"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "95efee45",
+        "body_hash": "a3add1b7"
+      }
+    ],
+    "0a666870": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/integration.py",
+        "class": null,
+        "name": "run_analysis_engine",
+        "line": 291,
+        "args": [
+          "data_config",
+          "analysis_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bef710>",
+        "calls": [
+          "AnalysisEngine",
+          "run_full_analysis"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "0a666870",
+        "body_hash": "32e82140"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "sort_by_composite",
+        "line": 200,
+        "args": [
+          "self",
+          "reverse"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089a2290>",
+        "calls": [
+          "sorted",
+          "OpportunityDataset"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "0a666870",
+        "body_hash": "b36339f0"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": null,
+        "name": "analyze_expected_value",
+        "line": 386,
+        "args": [
+          "data_config",
+          "analysis_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10933c7d0>",
+        "calls": [
+          "ExpectedValueAnalyzer",
+          "analyze_expected_value"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "0a666870",
+        "body_hash": "59621935"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/risk_analysis/solution.py",
+        "class": null,
+        "name": "run_risk_analysis",
+        "line": 284,
+        "args": [
+          "data_config",
+          "analysis_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a4ba50>",
+        "calls": [
+          "RiskAnalyzer",
+          "analyze_risk"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "0a666870",
+        "body_hash": "04682401"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartAPIComparator",
+        "name": "get_eod_options_url",
+        "line": 519,
+        "args": [
+          "self",
+          "futures_symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1096397d0>",
+        "calls": [
+          "get_eod_contract_symbol",
+          "info"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "0a666870",
+        "body_hash": "b42048e6"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartAPIComparator",
+        "name": "_safe_int",
+        "line": 738,
+        "args": [
+          "self",
+          "value"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a49910>",
+        "calls": [
+          "int",
+          "float"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "0a666870",
+        "body_hash": "ac400931"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "OptionsDataValidator",
+        "name": "_validate_options_chain",
+        "line": 361,
+        "args": [
+          "self",
+          "data"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b0b410>",
+        "calls": [
+          "get",
+          "_validate_contract"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "0a666870",
+        "body_hash": "25f0826e"
+      }
+    ],
+    "0e160dbc": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/analysis_utils.py",
+        "class": null,
+        "name": "estimate_underlying_price",
+        "line": 10,
+        "args": [
+          "contracts"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ca8950>",
+        "calls": [
+          "get",
+          "float",
+          "sum",
+          "len",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "0e160dbc",
+        "body_hash": "11d00d8c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+        "class": null,
+        "name": "load_barchart_saved_data",
+        "line": 131,
+        "args": [
+          "file_path"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109660590>",
+        "calls": [
+          "BarchartSavedDataLoader",
+          "load_data",
+          "get_options_data",
+          "get_data_quality_metrics",
+          "get_strike_range"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "0e160dbc",
+        "body_hash": "b31eb14f"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "get_data_quality_metrics",
+        "line": 185,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109749510>",
+        "calls": [
+          "get_options_data",
+          "len",
+          "len",
+          "len",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "0e160dbc",
+        "body_hash": "1ccb202a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": null,
+        "name": "load_tradovate_api_data",
+        "line": 231,
+        "args": [
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094da290>",
+        "calls": [
+          "TradovateAPIDataLoader",
+          "load_data",
+          "get_options_data",
+          "get_data_quality_metrics",
+          "get_strike_range"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "0e160dbc",
+        "body_hash": "0e4dc261"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "get_performance_metrics",
+        "line": 266,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099930d0>",
+        "calls": [
+          "max",
+          "get_metrics",
+          "get_overall_quality_score",
+          "sum",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "0e160dbc",
+        "body_hash": "14af365a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/data_normalizer/solution.py",
+        "class": null,
+        "name": "normalize_options_data",
+        "line": 222,
+        "args": [
+          "sources_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109c2a6d0>",
+        "calls": [
+          "DataNormalizer",
+          "normalize_all_sources",
+          "get_quality_metrics",
+          "load_barchart_data",
+          "load_tradovate_data"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "0e160dbc",
+        "body_hash": "aac53493"
+      }
+    ],
+    "71498633": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "TradingOpportunity",
+        "name": "add_analysis_data",
+        "line": 63,
+        "args": [
+          "self",
+          "analysis_name",
+          "data"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108b29550>",
+        "calls": [
+          "append",
+          "isoformat",
+          "lower",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "71498633",
+        "body_hash": "f10c0b67"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "_update_performance_metrics",
+        "line": 368,
+        "args": [
+          "self",
+          "alerts",
+          "calculation_time"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109574f50>",
+        "calls": [
+          "len",
+          "mean",
+          "max",
+          "get"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "71498633",
+        "body_hash": "076ed025"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "__init__",
+        "line": 45,
+        "args": [
+          "self",
+          "symbols",
+          "latency_tracker"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109407ed0>",
+        "calls": [
+          "Queue",
+          "OptionsDataValidator",
+          "DataQualityTracker",
+          "LatencyTracker"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 9,
+        "semantic_hash": "71498633",
+        "body_hash": "3b8c97d3"
+      }
+    ],
+    "dd397a36": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "TradingOpportunity",
+        "name": "get_analysis_data",
+        "line": 75,
+        "args": [
+          "self",
+          "analysis_name"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108aae710>",
+        "calls": [
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "49011f2e"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "TradingOpportunity",
+        "name": "get_score",
+        "line": 79,
+        "args": [
+          "self",
+          "analysis_name"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1082d2e50>",
+        "calls": [
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "c6f4b64d"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "limit",
+        "line": 207,
+        "args": [
+          "self",
+          "max_count"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10939b6d0>",
+        "calls": [
+          "OpportunityDataset"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "392b51c7"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "ExpectedValueAnalyzer",
+        "name": "_estimate_underlying_price",
+        "line": 107,
+        "args": [
+          "self",
+          "contracts"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093be4d0>",
+        "calls": [
+          "estimate_underlying_price"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "c334ef54"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "ExpectedValueAnalyzer",
+        "name": "get_distance_weight",
+        "line": 152,
+        "args": [
+          "self",
+          "distance_pct"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109355210>",
+        "calls": [
+          "abs"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "dd397a36",
+        "body_hash": "7b4a0ab4"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "ExpectedValueAnalyzer",
+        "name": "filter_quality_setups",
+        "line": 271,
+        "args": [
+          "self",
+          "setups"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089da650>",
+        "calls": [
+          "append"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "dd397a36",
+        "body_hash": "c4adff88"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/risk_analysis/solution.py",
+        "class": "RiskAnalyzer",
+        "name": "_estimate_underlying_price",
+        "line": 72,
+        "args": [
+          "self",
+          "contracts"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108973510>",
+        "calls": [
+          "estimate_underlying_price"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "c334ef54"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "PredictionTracker",
+        "name": "get_prediction",
+        "line": 501,
+        "args": [
+          "self",
+          "validation_id"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109527790>",
+        "calls": [
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "4e50dbe8"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartAPIComparator",
+        "name": "_safe_float",
+        "line": 729,
+        "args": [
+          "self",
+          "value"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089c9810>",
+        "calls": [
+          "float"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "dd397a36",
+        "body_hash": "48e73bc8"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "OptionsDataValidator",
+        "name": "validate_message",
+        "line": 346,
+        "args": [
+          "self",
+          "data"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10985f0d0>",
+        "calls": [
+          "_validate_options_chain"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "dd397a36",
+        "body_hash": "0275bcef"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "OptionsDataValidator",
+        "name": "_validate_contract",
+        "line": 382,
+        "args": [
+          "self",
+          "contract"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a9b9d0>",
+        "calls": [
+          "float"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "dd397a36",
+        "body_hash": "4c3a080f"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/data_normalizer/solution.py",
+        "class": "DataNormalizer",
+        "name": "load_barchart_data",
+        "line": 35,
+        "args": [
+          "self",
+          "file_path"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ceb290>",
+        "calls": [
+          "load_barchart_saved_data"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "dd397a36",
+        "body_hash": "c92d7d80"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/data_normalizer/solution.py",
+        "class": "DataNormalizer",
+        "name": "load_tradovate_data",
+        "line": 41,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109843250>",
+        "calls": [
+          "load_tradovate_api_data"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "dd397a36",
+        "body_hash": "5504ba76"
+      },
+      {
+        "file": "scripts/utilities/file_io_utils.py",
+        "class": null,
+        "name": "save_json",
+        "line": 263,
+        "args": [
+          "data",
+          "filepath"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109c58390>",
+        "calls": [
+          "save_json"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "dd397a36",
+        "body_hash": "8cfb0d7c"
+      }
+    ],
+    "682c92a5": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "TradingOpportunity",
+        "name": "from_normalized_contract",
+        "line": 137,
+        "args": [
+          "cls",
+          "contract",
+          "underlying_price"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108926c50>",
+        "calls": [
+          "cls",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "strftime",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "682c92a5",
+        "body_hash": "402f7619"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/barchart_api_client.py",
+        "class": "BarchartAPIClient",
+        "name": "get_options_data",
+        "line": 57,
+        "args": [
+          "self",
+          "symbol",
+          "referer_futures"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094db410>",
+        "calls": [
+          "debug",
+          "copy",
+          "info",
+          "debug",
+          "debug",
+          "unquote",
+          "debug",
+          "get",
+          "raise_for_status",
+          "json",
+          "info",
+          "urlencode",
+          "error",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 16,
+        "semantic_hash": "682c92a5",
+        "body_hash": "64de0660"
+      }
+    ],
+    "831259dc": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "__init__",
+        "line": 163,
+        "args": [
+          "self",
+          "opportunities"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1082a6310>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "831259dc",
+        "body_hash": "7751d46c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+        "class": "BarchartSavedDataLoader",
+        "name": "__init__",
+        "line": 17,
+        "args": [
+          "self",
+          "file_path"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a1d910>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "831259dc",
+        "body_hash": "759781e8"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "DataQualityTracker",
+        "name": "record_invalid_message",
+        "line": 414,
+        "args": [
+          "self",
+          "data"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089405d0>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 1,
+        "semantic_hash": "831259dc",
+        "body_hash": "4418a7d7"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "DataQualityTracker",
+        "name": "record_parsing_error",
+        "line": 417,
+        "args": [
+          "self",
+          "message"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a8b190>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 1,
+        "semantic_hash": "831259dc",
+        "body_hash": "8d0991f5"
+      },
+      {
+        "file": "scripts/utilities/options_metrics_calculator.py",
+        "class": "OptionsMetricsCalculator",
+        "name": "__init__",
+        "line": 20,
+        "args": [
+          "self",
+          "output_base_dir"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109c61790>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 1,
+        "semantic_hash": "831259dc",
+        "body_hash": "50523f8e"
+      }
+    ],
+    "049f8553": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "add_opportunity",
+        "line": 172,
+        "args": [
+          "self",
+          "opportunity"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10897e1d0>",
+        "calls": [
+          "append"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "049f8553",
+        "body_hash": "24ea8f54"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "subscribe",
+        "line": 251,
+        "args": [
+          "self",
+          "callback"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10964b0d0>",
+        "calls": [
+          "append"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "049f8553",
+        "body_hash": "ab42273a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "LatencyTracker",
+        "name": "record_connection_latency",
+        "line": 319,
+        "args": [
+          "self",
+          "latency"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10961b190>",
+        "calls": [
+          "append"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 1,
+        "semantic_hash": "049f8553",
+        "body_hash": "88f4c0fc"
+      }
+    ],
+    "1fa04bc6": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "filter_by_score",
+        "line": 176,
+        "args": [
+          "self",
+          "analysis_name",
+          "min_score"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108accb50>",
+        "calls": [
+          "OpportunityDataset",
+          "len",
+          "len",
+          "get_score"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "1fa04bc6",
+        "body_hash": "d68f5684"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "_aggregate_metric",
+        "line": 181,
+        "args": [
+          "self",
+          "call_field",
+          "put_field"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108b48150>",
+        "calls": [
+          "sum",
+          "sum",
+          "getattr",
+          "getattr"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "1fa04bc6",
+        "body_hash": "fd8e4ae8"
+      }
+    ],
+    "1ff7b8b4": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "filter_by_criteria",
+        "line": 185,
+        "args": [
+          "self",
+          "filter_func"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10932f5d0>",
+        "calls": [
+          "OpportunityDataset",
+          "len",
+          "len",
+          "filter_func"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "1ff7b8b4",
+        "body_hash": "a548b7ff"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "scrape_eod_options",
+        "line": 200,
+        "args": [
+          "self",
+          "futures_symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1096ab490>",
+        "calls": [
+          "BarchartAPIComparator",
+          "get_eod_options_url",
+          "info",
+          "scrape_barchart_options"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "1ff7b8b4",
+        "body_hash": "6512c881"
+      }
+    ],
+    "db310b70": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "sort_by_score",
+        "line": 193,
+        "args": [
+          "self",
+          "analysis_name",
+          "reverse"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108b60590>",
+        "calls": [
+          "sorted",
+          "OpportunityDataset",
+          "get_score"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "db310b70",
+        "body_hash": "6a9dfdef"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "_calculate_minutes_to_expiry",
+        "line": 194,
+        "args": [
+          "self",
+          "current_time",
+          "expiration_date"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10961ba50>",
+        "calls": [
+          "replace",
+          "int",
+          "total_seconds"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "db310b70",
+        "body_hash": "b4bb3a9f"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "_validate_timing_prediction",
+        "line": 441,
+        "args": [
+          "self",
+          "predicted_urgency",
+          "actual_response_time"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10957a450>",
+        "calls": [
+          "get",
+          "max",
+          "max"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "db310b70",
+        "body_hash": "4a797a8f"
+      },
+      {
+        "file": "scripts/utilities/options_metrics_calculator.py",
+        "class": "OptionsMetricsCalculator",
+        "name": "_calculate_option_type_metrics",
+        "line": 101,
+        "args": [
+          "self",
+          "contracts",
+          "option_type"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10952b090>",
+        "calls": [
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "db310b70",
+        "body_hash": "e73806ab"
+      },
+      {
+        "file": "scripts/utilities/options_metrics_calculator.py",
+        "class": "OptionsMetricsCalculator",
+        "name": "calculate_and_save_metrics",
+        "line": 162,
+        "args": [
+          "self",
+          "api_data",
+          "symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097d0190>",
+        "calls": [
+          "calculate_metrics",
+          "save_timestamped_data",
+          "save_timestamped_data"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "db310b70",
+        "body_hash": "76020d57"
+      }
+    ],
+    "e3fb571b": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "size",
+        "line": 211,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109352f90>",
+        "calls": [
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "c9d09785"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "is_empty",
+        "line": 215,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bf2ed0>",
+        "calls": [
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "971a2a28"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "to_dict_list",
+        "line": 223,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108baae50>",
+        "calls": [
+          "to_dict"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "14bb9e8a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/integration.py",
+        "class": null,
+        "name": "create_data_ingestion_pipeline",
+        "line": 263,
+        "args": [
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109671950>",
+        "calls": [
+          "DataIngestionPipeline"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "81529270"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "validate_credentials",
+        "line": 37,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097b7610>",
+        "calls": [
+          "bool"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "3511f85c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "connect_api",
+        "line": 41,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108b48610>",
+        "calls": [
+          "validate_credentials"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "ab6dd994"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "get_options_data",
+        "line": 161,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a963d0>",
+        "calls": [
+          "ValueError"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "9abc0d09"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "get_latest_data",
+        "line": 257,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109663110>",
+        "calls": [
+          "get_nowait"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "9c268348"
+      },
+      {
+        "file": "scripts/utilities/file_io_utils.py",
+        "class": null,
+        "name": "load_json",
+        "line": 268,
+        "args": [
+          "filepath"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c83310>",
+        "calls": [
+          "load_json"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "208b1cdb"
+      },
+      {
+        "file": "scripts/utilities/file_io_utils.py",
+        "class": null,
+        "name": "find_latest_json",
+        "line": 282,
+        "args": [
+          "base_dir"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109843310>",
+        "calls": [
+          "find_latest_file"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "b903cf30"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "get_total_volume",
+        "line": 187,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093ab290>",
+        "calls": [
+          "_aggregate_metric"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "82562726"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "get_total_open_interest",
+        "line": 191,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b8ac90>",
+        "calls": [
+          "_aggregate_metric"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "747e9aec"
+      },
+      {
+        "file": "tests/test_branch_validation.py",
+        "class": "TestEndToEndValidation",
+        "name": "extract_numbers",
+        "line": 331,
+        "args": [
+          "text"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109849350>",
+        "calls": [
+          "findall"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 1,
+        "semantic_hash": "e3fb571b",
+        "body_hash": "af6e4b20"
+      }
+    ],
+    "9e12e878": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "get_top",
+        "line": 219,
+        "args": [
+          "self",
+          "n"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c725d0>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "9e12e878",
+        "body_hash": "4c7d8026"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsContract",
+        "name": "get_moneyness",
+        "line": 86,
+        "args": [
+          "self",
+          "underlying_price"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d02e90>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "9e12e878",
+        "body_hash": "e17e67c0"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsContract",
+        "name": "get_bid_ask_spread",
+        "line": 104,
+        "args": [
+          "self",
+          "option_type"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1095db410>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "9e12e878",
+        "body_hash": "5f9a0bb4"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsContract",
+        "name": "get_mid_price",
+        "line": 114,
+        "args": [
+          "self",
+          "option_type"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10999de50>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "9e12e878",
+        "body_hash": "4d73b5f7"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "get_contract_by_strike",
+        "line": 165,
+        "args": [
+          "self",
+          "strike"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109608ad0>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "9e12e878",
+        "body_hash": "e032e7f3"
+      }
+    ],
+    "4ba34d67": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/pipeline/opportunity.py",
+        "class": "OpportunityDataset",
+        "name": "from_normalized_data",
+        "line": 228,
+        "args": [
+          "cls",
+          "normalized_data"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089daf10>",
+        "calls": [
+          "get",
+          "get",
+          "cls",
+          "from_normalized_contract",
+          "append",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "4ba34d67",
+        "body_hash": "5e28c361"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/symbol_generator.py",
+        "class": "BarchartSymbolGenerator",
+        "name": "parse_symbol",
+        "line": 112,
+        "args": [
+          "self",
+          "symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1098225d0>",
+        "calls": [
+          "get",
+          "get",
+          "len",
+          "ValueError",
+          "isdigit",
+          "int"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "4ba34d67",
+        "body_hash": "e344bd83"
+      }
+    ],
+    "b4abb063": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "OptionsStrike",
+        "name": "__init__",
+        "line": 44,
+        "args": [
+          "self",
+          "price",
+          "call_volume",
+          "call_oi",
+          "call_premium",
+          "put_volume",
+          "put_oi",
+          "put_premium"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ce4410>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 7,
+        "semantic_hash": "b4abb063",
+        "body_hash": "fa561a73"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "TradeSetup",
+        "name": "__init__",
+        "line": 57,
+        "args": [
+          "self",
+          "tp",
+          "sl",
+          "direction",
+          "probability",
+          "reward",
+          "risk",
+          "ev"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089ae3d0>",
+        "calls": [],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 8,
+        "semantic_hash": "b4abb063",
+        "body_hash": "5ccd43a8"
+      }
+    ],
+    "80751dae": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "ExpectedValueAnalyzer",
+        "name": "__init__",
+        "line": 72,
+        "args": [
+          "self",
+          "config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bd6350>",
+        "calls": [
+          "get",
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 9,
+        "semantic_hash": "80751dae",
+        "body_hash": "925f8a85"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "test_simple_connection_test_failure",
+        "line": 189,
+        "args": [
+          "self",
+          "mock_test"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b8b450>",
+        "calls": [
+          "skipIf",
+          "patch",
+          "simple_connection_test",
+          "assertFalse",
+          "assertIsNone"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "80751dae",
+        "body_hash": "de4b25e3"
+      }
+    ],
+    "1681c71a": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
+        "class": "ExpectedValueAnalyzer",
+        "name": "load_normalized_data",
+        "line": 91,
+        "args": [
+          "self",
+          "data_config"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ccdd10>",
+        "calls": [
+          "run_data_ingestion",
+          "ValueError",
+          "_estimate_underlying_price"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "1681c71a",
+        "body_hash": "dc088a46"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "DataQualityTracker",
+        "name": "assess_data_quality",
+        "line": 420,
+        "args": [
+          "self",
+          "options_chain"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b06790>",
+        "calls": [
+          "len",
+          "max",
+          "append"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 8,
+        "semantic_hash": "1681c71a",
+        "body_hash": "c607d516"
+      },
+      {
+        "file": "tests/test_branch_validation.py",
+        "class": "BranchValidationTest",
+        "name": "load_baseline",
+        "line": 61,
+        "args": [
+          "self",
+          "name"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10a030e50>",
+        "calls": [
+          "exists",
+          "open",
+          "load"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "1681c71a",
+        "body_hash": "490f7b47"
+      }
+    ],
+    "db9d5fce": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/risk_analysis/test_validation.py",
+        "class": null,
+        "name": "validate_risk_analysis",
+        "line": 21,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x108c36350>",
+        "calls": [
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "all",
+          "print",
+          "print",
+          "print",
+          "isoformat",
+          "RiskAnalyzer",
+          "append",
+          "print",
+          "analyze_risk",
+          "append",
+          "print",
+          "print",
+          "print",
+          "analyze_risk",
+          "append",
+          "print",
+          "print",
+          "print",
+          "analyze_risk",
+          "get",
+          "append",
+          "print",
+          "print",
+          "run_risk_analysis",
+          "append",
+          "print",
+          "print",
+          "append",
+          "print",
+          "append",
+          "print",
+          "append",
+          "print",
+          "all",
+          "all",
+          "all",
+          "print",
+          "append",
+          "print",
+          "len",
+          "append",
+          "print",
+          "now",
+          "len",
+          "sorted",
+          "len",
+          "sum",
+          "len",
+          "str",
+          "get",
+          "get",
+          "get",
+          "len",
+          "str",
+          "str",
+          "len",
+          "list",
+          "list",
+          "len",
+          "str",
+          "get",
+          "len",
+          "len",
+          "str",
+          "get",
+          "set",
+          "set",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 22,
+        "semantic_hash": "db9d5fce",
+        "body_hash": "15c5c6b9"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/data_normalizer/test_validation.py",
+        "class": null,
+        "name": "validate_data_normalizer",
+        "line": 21,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x109360bd0>",
+        "calls": [
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "all",
+          "print",
+          "print",
+          "print",
+          "isoformat",
+          "DataNormalizer",
+          "append",
+          "print",
+          "load_barchart_data",
+          "append",
+          "print",
+          "load_tradovate_data",
+          "append",
+          "print",
+          "normalize_all_sources",
+          "append",
+          "print",
+          "print",
+          "get_quality_metrics",
+          "append",
+          "print",
+          "print",
+          "items",
+          "normalize_options_data",
+          "append",
+          "print",
+          "print",
+          "join",
+          "hasattr",
+          "append",
+          "print",
+          "append",
+          "print",
+          "append",
+          "print",
+          "append",
+          "print",
+          "all",
+          "append",
+          "print",
+          "print",
+          "append",
+          "print",
+          "print",
+          "append",
+          "print",
+          "append",
+          "print",
+          "now",
+          "len",
+          "len",
+          "len",
+          "sum",
+          "len",
+          "str",
+          "str",
+          "str",
+          "join",
+          "str",
+          "str",
+          "str",
+          "list",
+          "str",
+          "get",
+          "get",
+          "list",
+          "keys",
+          "keys"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 25,
+        "semantic_hash": "db9d5fce",
+        "body_hash": "3a34c238"
+      }
+    ],
+    "c5d7cb56": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/risk_analysis/solution.py",
+        "class": "RiskAnalyzer",
+        "name": "calculate_reinforcement_strength",
+        "line": 42,
+        "args": [
+          "self",
+          "open_interest",
+          "volume"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bc2590>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "c5d7cb56",
+        "body_hash": "caf69334"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/risk_analysis/solution.py",
+        "class": "RiskAnalyzer",
+        "name": "calculate_danger_score",
+        "line": 55,
+        "args": [
+          "self",
+          "risk_amount",
+          "distance"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bf2890>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "c5d7cb56",
+        "body_hash": "e10a6b68"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsContract",
+        "name": "is_itm",
+        "line": 93,
+        "args": [
+          "self",
+          "option_type",
+          "underlying_price"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1095fbc10>",
+        "calls": [],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "c5d7cb56",
+        "body_hash": "44e6ad8f"
+      }
+    ],
+    "6bd5c543": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": "TestExpirationPressureCalculator",
+        "name": "setUp",
+        "line": 18,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094d6d90>",
+        "calls": [
+          "ExpirationPressureCalculator"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6bd5c543",
+        "body_hash": "351d066e"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "setUp",
+        "line": 20,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c43e90>",
+        "calls": [
+          "RealTimeOptionsDataFeed"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6bd5c543",
+        "body_hash": "d2310f05"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "setUp",
+        "line": 29,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099389d0>",
+        "calls": [
+          "DatabentoAPIConnection"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6bd5c543",
+        "body_hash": "de1afafc"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/solution.py",
+        "class": "DatabentoAPIConnection",
+        "name": "disconnect_api",
+        "line": 156,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109869f50>",
+        "calls": [
+          "print"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "6bd5c543",
+        "body_hash": "e92f429c"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "__post_init__",
+        "line": 142,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10981b290>",
+        "calls": [
+          "len"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6bd5c543",
+        "body_hash": "e4e94025"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "setUp",
+        "line": 23,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109cb5750>",
+        "calls": [
+          "BarchartSymbolGenerator"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "6bd5c543",
+        "body_hash": "287de8dc"
+      }
+    ],
+    "58a17a4d": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": "TestExpirationPressureCalculator",
+        "name": "test_pressure_formula_mathematical_accuracy",
+        "line": 38,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094f55d0>",
+        "calls": [
+          "now",
+          "calculate_expiration_pressure",
+          "abs",
+          "max",
+          "next",
+          "assertIsNotNone",
+          "assertAlmostEqual",
+          "timedelta"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 15,
+        "semantic_hash": "58a17a4d",
+        "body_hash": "803fdc04"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "test_data_queue_performance",
+        "line": 197,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108937e50>",
+        "calls": [
+          "range",
+          "assertGreater",
+          "assertEqual",
+          "OptionsChain",
+          "qsize",
+          "put",
+          "now",
+          "fail"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "58a17a4d",
+        "body_hash": "a96c1f23"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_get_moneyness",
+        "line": 134,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097d51d0>",
+        "calls": [
+          "OptionsContract",
+          "get_moneyness",
+          "assertAlmostEqual",
+          "get_moneyness",
+          "assertAlmostEqual",
+          "OptionsContract",
+          "assertIsNone",
+          "get_moneyness"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "58a17a4d",
+        "body_hash": "2d7ff793"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_get_bid_ask_spread",
+        "line": 184,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d06350>",
+        "calls": [
+          "OptionsContract",
+          "get_bid_ask_spread",
+          "assertAlmostEqual",
+          "get_bid_ask_spread",
+          "assertAlmostEqual",
+          "OptionsContract",
+          "assertIsNone",
+          "get_bid_ask_spread"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "58a17a4d",
+        "body_hash": "a6e133fe"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_get_mid_price",
+        "line": 211,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10a0d7950>",
+        "calls": [
+          "OptionsContract",
+          "get_mid_price",
+          "assertAlmostEqual",
+          "get_mid_price",
+          "assertAlmostEqual",
+          "OptionsContract",
+          "assertIsNone",
+          "get_mid_price"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "58a17a4d",
+        "body_hash": "bed01e54"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsChainData",
+        "name": "test_get_total_volume",
+        "line": 373,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109c62d50>",
+        "calls": [
+          "OptionsChainData",
+          "get_total_volume",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "58a17a4d",
+        "body_hash": "62e0d039"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsChainData",
+        "name": "test_get_total_open_interest",
+        "line": 407,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10a1e4b90>",
+        "calls": [
+          "OptionsChainData",
+          "get_total_open_interest",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "58a17a4d",
+        "body_hash": "49a039b6"
+      }
+    ],
+    "70d90c95": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": "TestExpirationPressureCalculator",
+        "name": "test_urgency_classification_accuracy",
+        "line": 73,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109457710>",
+        "calls": [
+          "now",
+          "len",
+          "assertGreater",
+          "calculate_expiration_pressure",
+          "timedelta",
+          "len",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 9,
+        "semantic_hash": "70d90c95",
+        "body_hash": "5995bc0a"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": "TestExpirationPressureCalculator",
+        "name": "test_assignment_probability_calibration",
+        "line": 148,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10948b490>",
+        "calls": [
+          "range",
+          "assertGreater",
+          "assertGreater",
+          "_calculate_assignment_probability",
+          "len",
+          "assertLessEqual",
+          "_calculate_assignment_probability"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 13,
+        "semantic_hash": "70d90c95",
+        "body_hash": "d42424c0"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "test_data_quality_validation",
+        "line": 96,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1098fb010>",
+        "calls": [
+          "OptionsDataValidator",
+          "assertTrue",
+          "int",
+          "validate_message",
+          "assertFalse",
+          "validate_message",
+          "time"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "70d90c95",
+        "body_hash": "a7b13681"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_contract_creation_full",
+        "line": 82,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ccdc50>",
+        "calls": [
+          "OptionGreeks",
+          "OptionsContract",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "70d90c95",
+        "body_hash": "ebd3e469"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_is_itm_put",
+        "line": 171,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10950cb90>",
+        "calls": [
+          "OptionsContract",
+          "assertTrue",
+          "assertTrue",
+          "assertFalse",
+          "is_itm",
+          "is_itm",
+          "is_itm"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "70d90c95",
+        "body_hash": "8ea50e7e"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsChainData",
+        "name": "test_get_strikes",
+        "line": 305,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10972b590>",
+        "calls": [
+          "OptionsChainData",
+          "get_strikes",
+          "assertEqual",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "70d90c95",
+        "body_hash": "2d8a5013"
+      }
+    ],
+    "ff8853d8": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": "TestExpirationPressureCalculator",
+        "name": "test_steering_direction_logic",
+        "line": 122,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094ba6d0>",
+        "calls": [
+          "_determine_steering_direction",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "2f9b96c7"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "tearDown",
+        "line": 35,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1092d2e10>",
+        "calls": [
+          "exists",
+          "rmtree"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "65dd91aa"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_load_json_file_not_found",
+        "line": 73,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097db550>",
+        "calls": [
+          "assertRaises",
+          "load_json"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "f348abde"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_load_pickle_file_not_found",
+        "line": 118,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109af4150>",
+        "calls": [
+          "assertRaises",
+          "load_pickle"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "c612f81a"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_find_latest_file_no_matches",
+        "line": 190,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108940650>",
+        "calls": [
+          "find_latest_file",
+          "assertIsNone"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "b00f4d27"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_find_latest_file_nonexistent_dir",
+        "line": 195,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a4b4d0>",
+        "calls": [
+          "find_latest_file",
+          "assertIsNone"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "82088da7"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_weekly_options_symbol",
+        "line": 41,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10964e5d0>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "80862537"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_weekly_options_from_tuesday",
+        "line": 50,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099b3650>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "63cbc2cf"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_friday_options_symbol",
+        "line": 59,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b22a90>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "d721d1c5"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_friday_options_on_friday",
+        "line": 68,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d029d0>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "cb97816c"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_0dte_options_on_friday",
+        "line": 77,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109eeb010>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "1eebe1ea"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_daily_options_symbol",
+        "line": 86,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109e54d50>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "2900154c"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_daily_options_on_friday",
+        "line": 95,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c4b5d0>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "7dd65fb7"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_monthly_options_symbol",
+        "line": 104,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c3ab10>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "fa5a02e1"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_monthly_options_after_expiry",
+        "line": 114,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10952a990>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "0c09898a"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_year_boundary_weekly",
+        "line": 269,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109e3b1d0>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "3189696e"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_year_boundary_monthly",
+        "line": 278,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109da9550>",
+        "calls": [
+          "_test_symbol_generation_with_date",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "d708ceba"
+      },
+      {
+        "file": "tests/test_branch_validation.py",
+        "class": "TestCalculationValidation",
+        "name": "test_pressure_calculation_consistency",
+        "line": 239,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089cb750>",
+        "calls": [
+          "run_command_and_capture",
+          "assertTrue"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "addff9f0"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestEnums",
+        "name": "test_option_type_enum",
+        "line": 23,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108cee890>",
+        "calls": [
+          "assertEqual",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "ff8853d8",
+        "body_hash": "c21c3f87"
+      }
+    ],
+    "32bd1a79": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": "TestExpirationPressureCalculator",
+        "name": "test_confidence_scoring_accuracy",
+        "line": 221,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a68510>",
+        "calls": [
+          "now",
+          "calculate_expiration_pressure",
+          "timedelta",
+          "assertGreater",
+          "assertLess"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "5df70ea3"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "test_api_initialization",
+        "line": 35,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b81e10>",
+        "calls": [
+          "skipIf",
+          "assertFalse",
+          "assertIsNone",
+          "DatabentoAPIConnection",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "b3f1d492"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "test_connection_without_api_key",
+        "line": 82,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099d2e90>",
+        "calls": [
+          "skipIf",
+          "DatabentoAPIConnection",
+          "connect_api",
+          "assertFalse",
+          "assertFalse"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "51c5c17a"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_load_json_basic",
+        "line": 63,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109e2e150>",
+        "calls": [
+          "save_json",
+          "load_json",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "abf23baf"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_save_pickle_basic",
+        "line": 89,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109bab6d0>",
+        "calls": [
+          "save_pickle",
+          "assertEqual",
+          "assertTrue",
+          "now",
+          "exists"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "bae322ef"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_save_timestamped_pickle",
+        "line": 151,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109c58410>",
+        "calls": [
+          "save_timestamped",
+          "assertTrue",
+          "assertEqual",
+          "assertIn",
+          "exists"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "6ea09e24"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestEnums",
+        "name": "test_contract_type_enum",
+        "line": 28,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bf3410>",
+        "calls": [
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "e2d5b8a3"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_contract_creation_minimal",
+        "line": 70,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109e0fd10>",
+        "calls": [
+          "OptionsContract",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertIsInstance"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "a2bcbb6e"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestNormalizedOptionsData",
+        "name": "test_normalized_data_creation",
+        "line": 445,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10a0094d0>",
+        "calls": [
+          "NormalizedOptionsData",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "32bd1a79",
+        "body_hash": "25e181da"
+      }
+    ],
+    "71033510": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": "TestPredictionValidation",
+        "name": "test_prediction_accuracy_validation",
+        "line": 267,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093f9a10>",
+        "calls": [
+          "ExpirationPressureCalculator",
+          "now",
+          "calculate_expiration_pressure",
+          "assertGreater",
+          "validate_prediction_accuracy",
+          "assertTrue",
+          "assertGreater",
+          "assertGreater",
+          "validate_prediction_accuracy",
+          "assertFalse",
+          "assertLess",
+          "timedelta",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 19,
+        "semantic_hash": "71033510",
+        "body_hash": "174ba87a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/test_validation.py",
+        "class": "TestBarchartWebScraper",
+        "name": "test_options_contract_parsing",
+        "line": 36,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108d05b90>",
+        "calls": [
+          "_parse_options_row",
+          "assertIsNotNone",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 16,
+        "semantic_hash": "71033510",
+        "body_hash": "5100aa8e"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "test_subscriber_notification_system",
+        "line": 159,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109963b10>",
+        "calls": [
+          "subscribe",
+          "OptionsChain",
+          "assertEqual",
+          "assertEqual",
+          "time",
+          "append",
+          "append",
+          "callback",
+          "len",
+          "assertLess",
+          "now",
+          "max",
+          "time"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 10,
+        "semantic_hash": "71033510",
+        "body_hash": "30d9af30"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsChainData",
+        "name": "test_to_dict_conversion",
+        "line": 278,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109978e90>",
+        "calls": [
+          "OptionsChainData",
+          "to_dict",
+          "assertIsInstance",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertIsInstance",
+          "assertEqual",
+          "assertIsInstance",
+          "assertEqual",
+          "OptionsContract",
+          "OptionsContract",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 12,
+        "semantic_hash": "71033510",
+        "body_hash": "f622bee8"
+      }
+    ],
+    "0f675603": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/test_validation.py",
+        "class": null,
+        "name": "run_pressure_calculation_benchmark",
+        "line": 396,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x108917ad0>",
+        "calls": [
+          "print",
+          "ExpirationPressureCalculator",
+          "print",
+          "range",
+          "calculate_stats",
+          "calculate_stats",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "items",
+          "now",
+          "time",
+          "calculate_expiration_pressure",
+          "append",
+          "isoformat",
+          "print",
+          "timedelta",
+          "time",
+          "append",
+          "append",
+          "append",
+          "mean",
+          "median",
+          "min",
+          "max",
+          "count",
+          "all",
+          "all",
+          "range",
+          "max",
+          "stdev",
+          "now",
+          "set",
+          "abs",
+          "max",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 20,
+        "semantic_hash": "0f675603",
+        "body_hash": "37ff76ce"
+      },
+      {
+        "file": "tests/test_databento_live_connection.py",
+        "class": null,
+        "name": "test_databento_connection",
+        "line": 13,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x109e2be90>",
+        "calls": [
+          "print",
+          "print",
+          "print",
+          "print",
+          "getenv",
+          "print",
+          "print",
+          "print",
+          "now",
+          "weekday",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "Historical",
+          "print",
+          "list_datasets",
+          "any",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "str",
+          "hasattr"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 32,
+        "semantic_hash": "0f675603",
+        "body_hash": "6a51edf3"
+      }
+    ],
+    "56fc307b": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "_generate_validation_id",
+        "line": 387,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093b1f10>",
+        "calls": [
+          "int",
+          "len",
+          "time"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "56fc307b",
+        "body_hash": "970c3d7d"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/integration.py",
+        "class": "DataIngestionPipeline",
+        "name": "run_full_pipeline",
+        "line": 242,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10961af90>",
+        "calls": [
+          "load_all_sources",
+          "normalize_pipeline_data",
+          "get_pipeline_summary"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "56fc307b",
+        "body_hash": "d97f7305"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "get_cookies_from_driver",
+        "line": 94,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a9e390>",
+        "calls": [
+          "get_cookies",
+          "info",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "56fc307b",
+        "body_hash": "21c8a87a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "safe_int",
+        "line": 448,
+        "args": [
+          "value"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c65f90>",
+        "calls": [
+          "replace",
+          "int",
+          "float"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 1,
+        "semantic_hash": "56fc307b",
+        "body_hash": "fce99152"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsChainData",
+        "name": "to_dict",
+        "line": 147,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a22d90>",
+        "calls": [
+          "isinstance",
+          "isoformat",
+          "to_dict"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "56fc307b",
+        "body_hash": "033f47c6"
+      }
+    ],
+    "f9b393a1": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "validate_prediction_accuracy",
+        "line": 391,
+        "args": [
+          "self",
+          "validation_id",
+          "actual_outcome"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094d8850>",
+        "calls": [
+          "get_prediction",
+          "get",
+          "abs",
+          "get",
+          "_validate_timing_prediction",
+          "append",
+          "get",
+          "min",
+          "max"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 15,
+        "semantic_hash": "f9b393a1",
+        "body_hash": "fc6ae4e7"
+      },
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "CalculationValidator",
+        "name": "validate_calculation_quality",
+        "line": 510,
+        "args": [
+          "self",
+          "alerts",
+          "options_data"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1095673d0>",
+        "calls": [
+          "len",
+          "len",
+          "max",
+          "min",
+          "len",
+          "max",
+          "max",
+          "abs",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "f9b393a1",
+        "body_hash": "c6cef7c1"
+      }
+    ],
+    "d46506b2": [
+      {
+        "file": "tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/solution.py",
+        "class": "ExpirationPressureCalculator",
+        "name": "get_performance_metrics",
+        "line": 463,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10952ae50>",
+        "calls": [
+          "len",
+          "len",
+          "mean",
+          "median",
+          "min",
+          "max",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "d46506b2",
+        "body_hash": "486d2724"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+        "class": "BarchartSavedDataLoader",
+        "name": "get_options_data",
+        "line": 59,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109360550>",
+        "calls": [
+          "get",
+          "get",
+          "ValueError",
+          "get",
+          "get",
+          "len",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 5,
+        "semantic_hash": "d46506b2",
+        "body_hash": "5935e828"
+      }
+    ],
+    "1a5eb337": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/integration.py",
+        "class": null,
+        "name": "load_barchart_live_data",
+        "line": 32,
+        "args": [
+          "futures_symbol",
+          "headless",
+          "target_symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1095c9550>",
+        "calls": [
+          "ImportError",
+          "HybridBarchartScraper",
+          "fetch_options_data",
+          "print",
+          "BarchartSymbolGenerator",
+          "get_eod_contract_symbol",
+          "print",
+          "authenticate",
+          "Exception",
+          "print",
+          "fetch_options_data",
+          "isoformat",
+          "get",
+          "print",
+          "print",
+          "get",
+          "Exception",
+          "get",
+          "get",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "1a5eb337",
+        "body_hash": "264bfc1a"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "_on_message",
+        "line": 126,
+        "args": [
+          "self",
+          "ws",
+          "message"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10979af50>",
+        "calls": [
+          "time",
+          "loads",
+          "get",
+          "now",
+          "validate_message",
+          "record_invalid_message",
+          "record_network_latency",
+          "get",
+          "_parse_options_chain",
+          "error",
+          "record_parsing_error",
+          "warning",
+          "error",
+          "assess_data_quality",
+          "append",
+          "put",
+          "time",
+          "warning",
+          "callback",
+          "error"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "1a5eb337",
+        "body_hash": "23fc9dbd"
+      }
+    ],
+    "c62f0472": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/integration.py",
+        "class": "DataIngestionPipeline",
+        "name": "get_pipeline_summary",
+        "line": 216,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bf29d0>",
+        "calls": [
+          "items",
+          "ValueError",
+          "len",
+          "len",
+          "isoformat",
+          "now",
+          "values",
+          "values"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "c62f0472",
+        "body_hash": "ad1f2347"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "get_strike_range",
+        "line": 204,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10964ae10>",
+        "calls": [
+          "get_options_data",
+          "get",
+          "append",
+          "min",
+          "max",
+          "len",
+          "float",
+          "set"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "c62f0472",
+        "body_hash": "c5040a5c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "LatencyTracker",
+        "name": "calculate_stats",
+        "line": 323,
+        "args": [
+          "latencies"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c803d0>",
+        "calls": [
+          "sorted",
+          "max",
+          "min",
+          "sum",
+          "len",
+          "len",
+          "int",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "c62f0472",
+        "body_hash": "0275991a"
+      }
+    ],
+    "33636e80": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+        "class": "BarchartSavedDataLoader",
+        "name": "load_data",
+        "line": 32,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bc28d0>",
+        "calls": [
+          "validate_file_exists",
+          "FileNotFoundError",
+          "open",
+          "load",
+          "getsize",
+          "isoformat",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "33636e80",
+        "body_hash": "808717ec"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "load_data",
+        "line": 60,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bf2c10>",
+        "calls": [
+          "update",
+          "connect_api",
+          "ConnectionError",
+          "_generate_mock_data",
+          "isoformat",
+          "_calculate_data_hash",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "33636e80",
+        "body_hash": "0168d4cd"
+      },
+      {
+        "file": "scripts/utilities/file_io_utils.py",
+        "class": "FileIOUtils",
+        "name": "load_pickle",
+        "line": 99,
+        "args": [
+          "filepath"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1096aa8d0>",
+        "calls": [
+          "Path",
+          "exists",
+          "FileNotFoundError",
+          "debug",
+          "open",
+          "load",
+          "error"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "33636e80",
+        "body_hash": "8ef54fe9"
+      }
+    ],
+    "bc9dbeb9": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "_generate_mock_data",
+        "line": 93,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094899d0>",
+        "calls": [
+          "range",
+          "append",
+          "max",
+          "append",
+          "max",
+          "append",
+          "int",
+          "max",
+          "max",
+          "int",
+          "max",
+          "max",
+          "isoformat",
+          "len",
+          "len",
+          "now",
+          "abs",
+          "int",
+          "abs",
+          "int"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "bc9dbeb9",
+        "body_hash": "cb5cf4b2"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "NormalizedOptionsData",
+        "name": "to_options_chain",
+        "line": 206,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10950e710>",
+        "calls": [
+          "get",
+          "get",
+          "get",
+          "OptionsChainData",
+          "OptionsContract",
+          "append",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "bc9dbeb9",
+        "body_hash": "967d4587"
+      }
+    ],
+    "396cad03": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+        "class": "TradovateAPIDataLoader",
+        "name": "_calculate_data_hash",
+        "line": 222,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a6bc50>",
+        "calls": [
+          "dumps",
+          "hexdigest",
+          "md5",
+          "encode"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "396cad03",
+        "body_hash": "e889414c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "safe_float",
+        "line": 439,
+        "args": [
+          "value"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10959f350>",
+        "calls": [
+          "replace",
+          "float",
+          "replace",
+          "replace"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 1,
+        "semantic_hash": "396cad03",
+        "body_hash": "355b457d"
+      },
+      {
+        "file": "scripts/utilities/options_data_models.py",
+        "class": "OptionsContract",
+        "name": "to_dict",
+        "line": 78,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108b57050>",
+        "calls": [
+          "asdict",
+          "isinstance",
+          "get",
+          "isoformat"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "396cad03",
+        "body_hash": "c272fa5d"
+      }
+    ],
+    "dbd176c9": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/test_validation.py",
+        "class": "TestBarchartWebScraper",
+        "name": "setUp",
+        "line": 20,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1094d7c50>",
+        "calls": [
+          "BarchartWebScraper",
+          "BarchartAPIComparator"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "dbd176c9",
+        "body_hash": "82a67384"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/barchart_api_client.py",
+        "class": "BarchartAPIClient",
+        "name": "__init__",
+        "line": 16,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10967f590>",
+        "calls": [
+          "Session",
+          "getLogger"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "dbd176c9",
+        "body_hash": "c13b7ca2"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartAPIComparator",
+        "name": "__init__",
+        "line": 514,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a01d50>",
+        "calls": [
+          "getLogger",
+          "BarchartSymbolGenerator"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "dbd176c9",
+        "body_hash": "648af88c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestPerformanceRequirements",
+        "name": "performance_callback",
+        "line": 312,
+        "args": [
+          "options_chain"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b33350>",
+        "calls": [
+          "time",
+          "set"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "dbd176c9",
+        "body_hash": "a0c0517e"
+      },
+      {
+        "file": "scripts/validation/robust_symbol_validator.py",
+        "class": "RobustSymbolValidator",
+        "name": "__init__",
+        "line": 24,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1098fb490>",
+        "calls": [
+          "BarchartSymbolGenerator",
+          "defaultdict"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "dbd176c9",
+        "body_hash": "0c2cc1fd"
+      },
+      {
+        "file": "tests/validate_deduplication.py",
+        "class": "DeduplicationValidator",
+        "name": "__init__",
+        "line": 21,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093bd750>",
+        "calls": [
+          "Path",
+          "mkdir"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "dbd176c9",
+        "body_hash": "689fd4e2"
+      }
+    ],
+    "3eb0da4a": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/test_validation.py",
+        "class": "TestBarchartWebScraper",
+        "name": "test_driver_setup",
+        "line": 24,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c82d50>",
+        "calls": [
+          "setup_driver",
+          "assertIsNotNone",
+          "quit",
+          "skipTest"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "3eb0da4a",
+        "body_hash": "db6b9a2c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "test_callback",
+        "line": 167,
+        "args": [
+          "options_chain"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108937a10>",
+        "calls": [
+          "time",
+          "append",
+          "append",
+          "time"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "3eb0da4a",
+        "body_hash": "99a20517"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "test_api_key_from_environment",
+        "line": 46,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093ab810>",
+        "calls": [
+          "skipIf",
+          "dict",
+          "DatabentoAPIConnection",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "3eb0da4a",
+        "body_hash": "2566f174"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_invalid_option_type",
+        "line": 202,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d78790>",
+        "calls": [
+          "assertIn",
+          "assertRaises",
+          "get_eod_contract_symbol",
+          "str"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "3eb0da4a",
+        "body_hash": "f8f1ff26"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_parse_symbol_invalid_format",
+        "line": 241,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093aa9d0>",
+        "calls": [
+          "assertIn",
+          "assertRaises",
+          "parse_symbol",
+          "str"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "3eb0da4a",
+        "body_hash": "c2357109"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsChainData",
+        "name": "test_chain_post_init",
+        "line": 263,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099a2ad0>",
+        "calls": [
+          "OptionsChainData",
+          "assertEqual",
+          "OptionsContract",
+          "range"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "3eb0da4a",
+        "body_hash": "67fd007d"
+      }
+    ],
+    "73dd39ef": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/test_validation.py",
+        "class": "TestBarchartWebScraper",
+        "name": "test_invalid_data_handling",
+        "line": 62,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1096af250>",
+        "calls": [
+          "_parse_options_row",
+          "assertIsInstance",
+          "fail"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "73dd39ef",
+        "body_hash": "20c6f4be"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "_subscribe_to_symbols",
+        "line": 109,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1093faad0>",
+        "calls": [
+          "send",
+          "info",
+          "dumps"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "73dd39ef",
+        "body_hash": "04fbe2cb"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_parse_symbol_invalid_month_code",
+        "line": 248,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109f4ae90>",
+        "calls": [
+          "parse_symbol",
+          "assertEqual",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "73dd39ef",
+        "body_hash": "f203b7c6"
+      },
+      {
+        "file": "tests/test_branch_validation.py",
+        "class": "TestFileIOValidation",
+        "name": "test_json_operations_consistency",
+        "line": 190,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bc8610>",
+        "calls": [
+          "run_command_and_capture",
+          "assertTrue",
+          "assertIn"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "73dd39ef",
+        "body_hash": "51bc8aca"
+      }
+    ],
+    "cd84d30d": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/test_validation.py",
+        "class": "TestBarchartWebScraper",
+        "name": "test_quality_metrics_calculation",
+        "line": 140,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109632710>",
+        "calls": [
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsChainData",
+          "OptionsChainData",
+          "compare_data_sources",
+          "assertGreater",
+          "assertGreater",
+          "assertLess",
+          "now",
+          "now",
+          "now",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "cd84d30d",
+        "body_hash": "d586c796"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_cleanup_old_files",
+        "line": 200,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099b3710>",
+        "calls": [
+          "range",
+          "cleanup_old_files",
+          "assertEqual",
+          "list",
+          "assertEqual",
+          "sorted",
+          "assertEqual",
+          "save_json",
+          "sleep",
+          "len",
+          "glob",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 9,
+        "semantic_hash": "cd84d30d",
+        "body_hash": "61724c3d"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_backward_compatibility_functions",
+        "line": 235,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ceb9d0>",
+        "calls": [
+          "save_json",
+          "assertTrue",
+          "load_json",
+          "assertEqual",
+          "save_timestamped_json",
+          "assertTrue",
+          "assertEqual",
+          "find_latest_json",
+          "assertIsNotNone",
+          "assertEqual",
+          "exists",
+          "exists"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 12,
+        "semantic_hash": "cd84d30d",
+        "body_hash": "1d1a55a9"
+      }
+    ],
+    "e8a239c3": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/test_validation.py",
+        "class": "TestDataFormats",
+        "name": "test_options_contract_serialization",
+        "line": 242,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10897f750>",
+        "calls": [
+          "OptionsContract",
+          "asdict",
+          "dumps",
+          "loads",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "now",
+          "fail"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "e8a239c3",
+        "body_hash": "ed7d2a9e"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/test_validation.py",
+        "class": "TestDataFormats",
+        "name": "test_comparison_result_format",
+        "line": 275,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097e5f10>",
+        "calls": [
+          "OptionsContract",
+          "OptionsChainData",
+          "BarchartAPIComparator",
+          "compare_data_sources",
+          "assertIn",
+          "assertIn",
+          "assertIn",
+          "now",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "e8a239c3",
+        "body_hash": "208c69d7"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_find_latest_file",
+        "line": 168,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bd8110>",
+        "calls": [
+          "range",
+          "find_latest_file",
+          "assertIsNotNone",
+          "assertEqual",
+          "save_json",
+          "find_latest_file",
+          "assertEqual",
+          "save_json",
+          "sleep"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "e8a239c3",
+        "body_hash": "6f312e7b"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_cleanup_old_files_dry_run",
+        "line": 221,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c80750>",
+        "calls": [
+          "range",
+          "cleanup_old_files",
+          "assertEqual",
+          "list",
+          "assertEqual",
+          "save_json",
+          "len",
+          "glob",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "e8a239c3",
+        "body_hash": "2b398a05"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsChainData",
+        "name": "test_get_contract_by_strike",
+        "line": 323,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1092ecfd0>",
+        "calls": [
+          "OptionsChainData",
+          "get_contract_by_strike",
+          "assertIsNotNone",
+          "assertEqual",
+          "get_contract_by_strike",
+          "assertIsNone",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "e8a239c3",
+        "body_hash": "c76b353e"
+      }
+    ],
+    "99c94759": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/barchart_api_client.py",
+        "class": "BarchartAPIClient",
+        "name": "set_cookies_from_string",
+        "line": 43,
+        "args": [
+          "self",
+          "cookie_string"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097b6610>",
+        "calls": [
+          "split",
+          "set_cookies",
+          "split"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "99c94759",
+        "body_hash": "bc95d499"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "LatencyTracker",
+        "name": "record_network_latency",
+        "line": 308,
+        "args": [
+          "self",
+          "latency"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a83190>",
+        "calls": [
+          "append",
+          "len",
+          "pop"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "99c94759",
+        "body_hash": "9ca7bfe1"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "LatencyTracker",
+        "name": "record_processing_latency",
+        "line": 314,
+        "args": [
+          "self",
+          "latency"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1097db210>",
+        "calls": [
+          "append",
+          "len",
+          "pop"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "99c94759",
+        "body_hash": "903dbbeb"
+      }
+    ],
+    "d2d2b10a": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "setup_driver",
+        "line": 66,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109843010>",
+        "calls": [
+          "Options",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "Chrome",
+          "implicitly_wait",
+          "error"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 12,
+        "semantic_hash": "d2d2b10a",
+        "body_hash": "38dbfe4c"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/solution.py",
+        "class": "DatabentoAPIConnection",
+        "name": "test_connection",
+        "line": 62,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1082d0590>",
+        "calls": [
+          "date",
+          "get_range",
+          "to_df",
+          "time",
+          "timedelta",
+          "len",
+          "time",
+          "now",
+          "strftime",
+          "strftime",
+          "list",
+          "str",
+          "time"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "d2d2b10a",
+        "body_hash": "43f12225"
+      }
+    ],
+    "c8d487ab": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "scrape_barchart_options",
+        "line": 111,
+        "args": [
+          "self",
+          "url"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109549d50>",
+        "calls": [
+          "info",
+          "setup_driver",
+          "set_page_load_timeout",
+          "info",
+          "sleep",
+          "_save_html_snapshot",
+          "WebDriverWait",
+          "_extract_underlying_info",
+          "_extract_options_contracts",
+          "OptionsChainData",
+          "info",
+          "get",
+          "info",
+          "warning",
+          "_parse_page_source_fallback",
+          "error",
+          "quit",
+          "info",
+          "until",
+          "info",
+          "now",
+          "len",
+          "presence_of_element_located",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "c8d487ab",
+        "body_hash": "87f84d8e"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartWebScraper",
+        "name": "_save_html_snapshot",
+        "line": 328,
+        "args": [
+          "self",
+          "url"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1096a9c90>",
+        "calls": [
+          "search",
+          "dirname",
+          "join",
+          "join",
+          "makedirs",
+          "strftime",
+          "join",
+          "set_window_size",
+          "execute_script",
+          "set_window_size",
+          "save_screenshot",
+          "info",
+          "replace",
+          "set_window_size",
+          "group",
+          "abspath",
+          "strftime",
+          "isoformat",
+          "open",
+          "dump",
+          "error",
+          "now",
+          "now",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "c8d487ab",
+        "body_hash": "71f1e856"
+      }
+    ],
+    "e3099348": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+        "class": "BarchartAPIComparator",
+        "name": "compare_data_sources",
+        "line": 747,
+        "args": [
+          "self",
+          "web_data",
+          "api_data"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c94c50>",
+        "calls": [
+          "list",
+          "list",
+          "_calculate_quality_metrics",
+          "isoformat",
+          "set",
+          "set",
+          "_compare_contracts",
+          "isoformat",
+          "isoformat",
+          "set",
+          "set",
+          "set",
+          "set",
+          "keys",
+          "keys",
+          "append",
+          "now",
+          "keys",
+          "keys",
+          "keys",
+          "keys"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "e3099348",
+        "body_hash": "acb51802"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "_parse_options_chain",
+        "line": 187,
+        "args": [
+          "self",
+          "data",
+          "timestamp"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10985cb90>",
+        "calls": [
+          "get",
+          "get",
+          "get",
+          "OptionsChain",
+          "OptionsContract",
+          "error",
+          "error",
+          "append",
+          "append",
+          "fromtimestamp",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "get",
+          "fromtimestamp"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "e3099348",
+        "body_hash": "278f4140"
+      }
+    ],
+    "bc834c86": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/run_comparison.py",
+        "class": null,
+        "name": "setup_logging",
+        "line": 18,
+        "args": [
+          "verbose"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1096a9790>",
+        "calls": [
+          "strftime",
+          "makedirs",
+          "join",
+          "basicConfig",
+          "info",
+          "now",
+          "strftime",
+          "StreamHandler",
+          "FileHandler",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 9,
+        "semantic_hash": "bc834c86",
+        "body_hash": "689c5aa9"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "test_message_processing_speed",
+        "line": 52,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109363050>",
+        "calls": [
+          "time",
+          "_on_message",
+          "assertLess",
+          "assertEqual",
+          "assertGreater",
+          "int",
+          "dumps",
+          "time",
+          "len",
+          "time"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "bc834c86",
+        "body_hash": "eadb4eab"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "test_latency_tracking_accuracy",
+        "line": 137,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10964b8d0>",
+        "calls": [
+          "LatencyTracker",
+          "get_metrics",
+          "assertAlmostEqual",
+          "assertEqual",
+          "assertEqual",
+          "record_network_latency",
+          "sum",
+          "len",
+          "max",
+          "min"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 10,
+        "semantic_hash": "bc834c86",
+        "body_hash": "031e7625"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_save_timestamped_json",
+        "line": 125,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109ecfa50>",
+        "calls": [
+          "save_timestamped",
+          "assertTrue",
+          "assertEqual",
+          "assertIn",
+          "assertEqual",
+          "load_json",
+          "assertEqual",
+          "exists",
+          "strftime",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 11,
+        "semantic_hash": "bc834c86",
+        "body_hash": "7e69a306"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_is_itm_call",
+        "line": 154,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10a058510>",
+        "calls": [
+          "OptionsContract",
+          "assertTrue",
+          "assertTrue",
+          "assertFalse",
+          "OptionsContract",
+          "assertIsNone",
+          "is_itm",
+          "is_itm",
+          "is_itm",
+          "is_itm"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "bc834c86",
+        "body_hash": "c27446c9"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsChainData",
+        "name": "test_filter_by_moneyness",
+        "line": 346,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10a1d4210>",
+        "calls": [
+          "OptionsChainData",
+          "filter_by_moneyness",
+          "assertEqual",
+          "filter_by_moneyness",
+          "assertEqual",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract",
+          "OptionsContract"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 9,
+        "semantic_hash": "bc834c86",
+        "body_hash": "e41a6eeb"
+      }
+    ],
+    "c4e27b89": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/run_comparison.py",
+        "class": null,
+        "name": "check_dependencies",
+        "line": 43,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x108a33350>",
+        "calls": [
+          "items",
+          "print",
+          "print",
+          "print",
+          "print",
+          "__import__",
+          "print",
+          "append",
+          "join"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 7,
+        "semantic_hash": "c4e27b89",
+        "body_hash": "df59364b"
+      },
+      {
+        "file": "tests/validate_deduplication.py",
+        "class": null,
+        "name": "test_file_io_operations",
+        "line": 173,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x109e57c50>",
+        "calls": [
+          "Path",
+          "unlink",
+          "save_json",
+          "load_json",
+          "unlink",
+          "open",
+          "dump",
+          "open",
+          "load"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 7,
+        "semantic_hash": "c4e27b89",
+        "body_hash": "d6501626"
+      }
+    ],
+    "090d9073": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/run_comparison.py",
+        "class": null,
+        "name": "check_chromedriver",
+        "line": 70,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x109a98190>",
+        "calls": [
+          "Options",
+          "add_argument",
+          "add_argument",
+          "add_argument",
+          "Chrome",
+          "quit",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "090d9073",
+        "body_hash": "365737b7"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/run_comparison.py",
+        "class": null,
+        "name": "run_tests",
+        "line": 93,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x109aa6e50>",
+        "calls": [
+          "print",
+          "run",
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "dirname",
+          "print",
+          "abspath",
+          "print"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "090d9073",
+        "body_hash": "83fc5f0d"
+      },
+      {
+        "file": "scripts/utilities/options_metrics_calculator.py",
+        "class": null,
+        "name": "main",
+        "line": 245,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x109c63750>",
+        "calls": [
+          "ArgumentParser",
+          "add_argument",
+          "add_argument",
+          "parse_args",
+          "exists",
+          "calculate_from_file",
+          "print",
+          "calculate_from_file",
+          "print",
+          "exists",
+          "print"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 10,
+        "semantic_hash": "090d9073",
+        "body_hash": "9124d689"
+      }
+    ],
+    "967a015d": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/hybrid_scraper.py",
+        "class": "HybridBarchartScraper",
+        "name": "get_eod_contract_symbol",
+        "line": 156,
+        "args": [
+          "self",
+          "option_type",
+          "year_format"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1082907d0>",
+        "calls": [
+          "get_eod_contract_symbol"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "967a015d",
+        "body_hash": "992c5f6b"
+      },
+      {
+        "file": "scripts/utilities/file_io_utils.py",
+        "class": null,
+        "name": "save_timestamped_json",
+        "line": 273,
+        "args": [
+          "data",
+          "base_dir",
+          "prefix"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10995acd0>",
+        "calls": [
+          "save_timestamped"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "967a015d",
+        "body_hash": "5da6d2c3"
+      },
+      {
+        "file": "tests/test_branch_validation.py",
+        "class": "BranchValidationTest",
+        "name": "run_command_and_capture",
+        "line": 30,
+        "args": [
+          "self",
+          "command",
+          "timeout"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a82c90>",
+        "calls": [
+          "run"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "967a015d",
+        "body_hash": "08d56bae"
+      }
+    ],
+    "c8610ddf": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/test_validation.py",
+        "class": "TestRealTimeOptionsDataFeed",
+        "name": "test_connection_latency_requirement",
+        "line": 24,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109663410>",
+        "calls": [
+          "patch",
+          "Mock",
+          "Thread",
+          "start",
+          "time",
+          "connect",
+          "join",
+          "assertTrue",
+          "assertLess",
+          "sleep",
+          "time"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "c8610ddf",
+        "body_hash": "807feb9b"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "test_mock_options_data_retrieval",
+        "line": 129,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b4af10>",
+        "calls": [
+          "skipIf",
+          "DatabentoAPIConnection",
+          "Mock",
+          "Mock",
+          "Mock",
+          "Mock",
+          "get_sample_options_data",
+          "assertTrue",
+          "assertEqual",
+          "assertEqual",
+          "assertIn"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 18,
+        "semantic_hash": "c8610ddf",
+        "body_hash": "ee597136"
+      }
+    ],
+    "11c754e8": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "RealTimeOptionsDataFeed",
+        "name": "disconnect",
+        "line": 289,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108b55890>",
+        "calls": [
+          "hasattr",
+          "info",
+          "close"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "11c754e8",
+        "body_hash": "2cf1e338"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "setUp",
+        "line": 24,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109ecf350>",
+        "calls": [
+          "Path",
+          "mkdtemp",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "11c754e8",
+        "body_hash": "c634ea98"
+      }
+    ],
+    "b9a3e96f": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": "LatencyTracker",
+        "name": "get_metrics",
+        "line": 322,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109973910>",
+        "calls": [
+          "sorted",
+          "calculate_stats",
+          "calculate_stats",
+          "calculate_stats",
+          "max",
+          "min",
+          "sum",
+          "len",
+          "len",
+          "int",
+          "len"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "b9a3e96f",
+        "body_hash": "b46193ac"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/data_normalizer/solution.py",
+        "class": "DataNormalizer",
+        "name": "get_quality_metrics",
+        "line": 184,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109783ad0>",
+        "calls": [
+          "len",
+          "sum",
+          "sum",
+          "sum",
+          "ValueError",
+          "len",
+          "list",
+          "keys",
+          "sum",
+          "sum",
+          "sum"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 10,
+        "semantic_hash": "b9a3e96f",
+        "body_hash": "8df657a9"
+      }
+    ],
+    "e40ba88c": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/real_time_options_feed/solution.py",
+        "class": null,
+        "name": "handle_options_update",
+        "line": 466,
+        "args": [
+          "options_chain"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ae3150>",
+        "calls": [
+          "print",
+          "print",
+          "print",
+          "print",
+          "print",
+          "len",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "e40ba88c",
+        "body_hash": "25d19793"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_custom_json_kwargs",
+        "line": 271,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109ad0350>",
+        "calls": [
+          "save_json",
+          "assertLess",
+          "assertIn",
+          "open",
+          "read",
+          "index",
+          "index"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 6,
+        "semantic_hash": "e40ba88c",
+        "body_hash": "f91de624"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_month_codes",
+        "line": 123,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108bfe750>",
+        "calls": [
+          "items",
+          "patch",
+          "MagicMock",
+          "get_eod_contract_symbol",
+          "assertEqual",
+          "datetime",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "e40ba88c",
+        "body_hash": "841a608d"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_year_format_2digit",
+        "line": 145,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109e2bf10>",
+        "calls": [
+          "patch",
+          "MagicMock",
+          "get_eod_contract_symbol",
+          "assertTrue",
+          "datetime",
+          "endswith",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "e40ba88c",
+        "body_hash": "9c96f416"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_year_format_4digit",
+        "line": 160,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109babe90>",
+        "calls": [
+          "patch",
+          "MagicMock",
+          "get_eod_contract_symbol",
+          "assertTrue",
+          "datetime",
+          "endswith",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "e40ba88c",
+        "body_hash": "9334306f"
+      }
+    ],
+    "1b6b0b67": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "test_connection_test_not_connected",
+        "line": 91,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b1c290>",
+        "calls": [
+          "skipIf",
+          "DatabentoAPIConnection",
+          "test_connection",
+          "assertFalse",
+          "assertIn",
+          "assertIn"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "1b6b0b67",
+        "body_hash": "474f4c8d"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_save_json_with_nested_dirs",
+        "line": 54,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109bd4bd0>",
+        "calls": [
+          "save_json",
+          "assertEqual",
+          "assertTrue",
+          "assertTrue",
+          "exists",
+          "exists"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 6,
+        "semantic_hash": "1b6b0b67",
+        "body_hash": "3e990c04"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_load_pickle_basic",
+        "line": 102,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109619d10>",
+        "calls": [
+          "save_pickle",
+          "load_pickle",
+          "assertEqual",
+          "assertEqual",
+          "assertIsInstance",
+          "now"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "1b6b0b67",
+        "body_hash": "5dc05cda"
+      },
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_pathlib_compatibility",
+        "line": 257,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d03750>",
+        "calls": [
+          "save_json",
+          "load_json",
+          "str",
+          "save_json",
+          "load_json",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 8,
+        "semantic_hash": "1b6b0b67",
+        "body_hash": "a5ef49e8"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionGreeks",
+        "name": "test_greeks_creation",
+        "line": 40,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10a03ac50>",
+        "calls": [
+          "OptionGreeks",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "1b6b0b67",
+        "body_hash": "e29a6cc2"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionGreeks",
+        "name": "test_greeks_with_none_values",
+        "line": 56,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d6e190>",
+        "calls": [
+          "OptionGreeks",
+          "assertEqual",
+          "assertIsNone",
+          "assertIsNone",
+          "assertIsNone",
+          "assertIsNone"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "1b6b0b67",
+        "body_hash": "7c1af092"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestOptionsContract",
+        "name": "test_to_dict_conversion",
+        "line": 118,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109327bd0>",
+        "calls": [
+          "OptionsContract",
+          "to_dict",
+          "assertIsInstance",
+          "assertEqual",
+          "assertEqual",
+          "assertIsInstance"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 7,
+        "semantic_hash": "1b6b0b67",
+        "body_hash": "83812483"
+      }
+    ],
+    "8a74ee76": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/test_validation.py",
+        "class": "TestDatabentoAPIConnection",
+        "name": "test_disconnect",
+        "line": 155,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109bab950>",
+        "calls": [
+          "skipIf",
+          "DatabentoAPIConnection",
+          "Mock",
+          "disconnect_api",
+          "assertFalse",
+          "assertIsNone"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 7,
+        "semantic_hash": "8a74ee76",
+        "body_hash": "e6f6f807"
+      },
+      {
+        "file": "tests/test_utils.py",
+        "class": null,
+        "name": "save_evidence",
+        "line": 10,
+        "args": [
+          "validation_results"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d27450>",
+        "calls": [
+          "currentframe",
+          "get",
+          "join",
+          "dirname",
+          "open",
+          "dump"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 7,
+        "semantic_hash": "8a74ee76",
+        "body_hash": "71aba5e8"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_backward_compatibility_function",
+        "line": 255,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108a30490>",
+        "calls": [
+          "patch",
+          "MagicMock",
+          "get_eod_contract_symbol",
+          "assertEqual",
+          "datetime",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 2,
+        "semantic_hash": "8a74ee76",
+        "body_hash": "3eaeadc3"
+      }
+    ],
+    "55f36558": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/solution.py",
+        "class": "DatabentoAPIConnection",
+        "name": "connect_api",
+        "line": 35,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109a8af10>",
+        "calls": [
+          "print",
+          "print",
+          "Historical",
+          "print",
+          "print"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "55f36558",
+        "body_hash": "9de3d397"
+      },
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/solution.py",
+        "class": null,
+        "name": "simple_connection_test",
+        "line": 163,
+        "args": [
+          "api_key"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109b882d0>",
+        "calls": [
+          "print",
+          "DatabentoAPIConnection",
+          "connect_api",
+          "test_connection",
+          "disconnect_api"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "55f36558",
+        "body_hash": "3142d6fd"
+      }
+    ],
+    "80b1bf89": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/interactive_brokers_api/solution.py",
+        "class": "DatabentoAPIConnection",
+        "name": "get_sample_options_data",
+        "line": 111,
+        "args": [
+          "self",
+          "symbol",
+          "limit"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1099908d0>",
+        "calls": [
+          "date",
+          "get_range",
+          "to_df",
+          "timedelta",
+          "len",
+          "now",
+          "strftime",
+          "strftime",
+          "to_dict",
+          "list",
+          "str",
+          "head"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 3,
+        "semantic_hash": "80b1bf89",
+        "body_hash": "43cac5d4"
+      },
+      {
+        "file": "scripts/utilities/options_metrics_calculator.py",
+        "class": "OptionsMetricsCalculator",
+        "name": "calculate_metrics",
+        "line": 23,
+        "args": [
+          "self",
+          "data",
+          "symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ceb250>",
+        "calls": [
+          "info",
+          "_calculate_option_type_metrics",
+          "_calculate_option_type_metrics",
+          "ValueError",
+          "len",
+          "len",
+          "isoformat",
+          "len",
+          "len",
+          "len",
+          "len",
+          "now"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 13,
+        "semantic_hash": "80b1bf89",
+        "body_hash": "324daa32"
+      }
+    ],
+    "17e1e739": [
+      {
+        "file": "tasks/options_trading_system/data_ingestion/data_normalizer/solution.py",
+        "class": "DataNormalizer",
+        "name": "normalize_all_sources",
+        "line": 102,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ad8b50>",
+        "calls": [
+          "items",
+          "len",
+          "len",
+          "isoformat",
+          "ValueError",
+          "append",
+          "isoformat",
+          "get_options_data",
+          "now",
+          "normalize_contract",
+          "normalize_contract",
+          "get_options_data",
+          "now",
+          "append",
+          "append",
+          "normalize_contract",
+          "normalize_contract",
+          "append",
+          "append"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 12,
+        "semantic_hash": "17e1e739",
+        "body_hash": "2a15191d"
+      },
+      {
+        "file": "scripts/testing/test_barchart_expiration.py",
+        "class": null,
+        "name": "test_symbol_expiration",
+        "line": 13,
+        "args": [
+          "symbol"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108ba3910>",
+        "calls": [
+          "info",
+          "Session",
+          "items",
+          "update",
+          "get",
+          "info",
+          "open",
+          "load",
+          "set",
+          "replace",
+          "json",
+          "get",
+          "info",
+          "error",
+          "info",
+          "info",
+          "info",
+          "len",
+          "get"
+        ],
+        "returns": true,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "17e1e739",
+        "body_hash": "476a7d72"
+      }
+    ],
+    "cdb9578e": [
+      {
+        "file": "scripts/utilities/fetch_nq_live.py",
+        "class": null,
+        "name": "main",
+        "line": 66,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x109670610>",
+        "calls": [
+          "info",
+          "get_nq_live_data",
+          "info",
+          "info",
+          "info",
+          "info",
+          "info",
+          "info",
+          "info",
+          "error"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 4,
+        "semantic_hash": "cdb9578e",
+        "body_hash": "75570b6d"
+      },
+      {
+        "file": "tests/validate_deduplication.py",
+        "class": null,
+        "name": "test_calculation_functions",
+        "line": 221,
+        "args": [],
+        "body_ast": "<ast.FunctionDef object at 0x108bc0290>",
+        "calls": [
+          "sum",
+          "sum",
+          "sum",
+          "sum",
+          "round",
+          "round",
+          "abs",
+          "zip",
+          "abs",
+          "zip"
+        ],
+        "returns": true,
+        "side_effects": false,
+        "complexity": 9,
+        "semantic_hash": "cdb9578e",
+        "body_hash": "ccb91c2e"
+      }
+    ],
+    "d08d4d72": [
+      {
+        "file": "scripts/validation/robust_symbol_validator.py",
+        "class": "RobustSymbolValidator",
+        "name": "analyze_patterns",
+        "line": 316,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109deaed0>",
+        "calls": [
+          "info",
+          "info",
+          "info",
+          "sorted",
+          "info",
+          "sorted",
+          "info",
+          "info",
+          "sorted",
+          "items",
+          "info",
+          "items",
+          "info",
+          "get",
+          "info",
+          "items",
+          "info"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 12,
+        "semantic_hash": "d08d4d72",
+        "body_hash": "6e9be654"
+      },
+      {
+        "file": "tests/test_options_data_models.py",
+        "class": "TestNormalizedOptionsData",
+        "name": "test_to_options_chain_conversion",
+        "line": 485,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10952b550>",
+        "calls": [
+          "NormalizedOptionsData",
+          "to_options_chain",
+          "assertIsInstance",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "assertEqual",
+          "len"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 22,
+        "semantic_hash": "d08d4d72",
+        "body_hash": "a541b4d2"
+      }
+    ],
+    "85e00d21": [
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_save_json_basic",
+        "line": 40,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108b83750>",
+        "calls": [
+          "save_json",
+          "assertEqual",
+          "assertTrue",
+          "assertEqual",
+          "assertEqual",
+          "exists",
+          "open",
+          "load"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 8,
+        "semantic_hash": "85e00d21",
+        "body_hash": "b2d2536d"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_all_prefixes",
+        "line": 287,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109e39690>",
+        "calls": [
+          "items",
+          "patch",
+          "MagicMock",
+          "get_eod_contract_symbol",
+          "assertTrue",
+          "datetime",
+          "startswith",
+          "datetime"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 3,
+        "semantic_hash": "85e00d21",
+        "body_hash": "89f8cb15"
+      }
+    ],
+    "08ce1bbb": [
+      {
+        "file": "tests/test_file_io_utils.py",
+        "class": "TestFileIOUtils",
+        "name": "test_load_json_invalid_format",
+        "line": 80,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x10952a910>",
+        "calls": [
+          "open",
+          "write",
+          "assertRaises",
+          "load_json"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 4,
+        "semantic_hash": "08ce1bbb",
+        "body_hash": "eef770b4"
+      },
+      {
+        "file": "tests/test_branch_validation.py",
+        "class": "BranchValidationTest",
+        "name": "setUp",
+        "line": 17,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x1089bc210>",
+        "calls": [
+          "Path",
+          "mkdir",
+          "run",
+          "strip"
+        ],
+        "returns": false,
+        "side_effects": true,
+        "complexity": 5,
+        "semantic_hash": "08ce1bbb",
+        "body_hash": "db840415"
+      }
+    ],
+    "25b35dce": [
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_parse_symbol_weekly",
+        "line": 225,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x108c3aa50>",
+        "calls": [
+          "_test_parse_symbol_generic"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "25b35dce",
+        "body_hash": "8df6fc72"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_parse_symbol_monthly",
+        "line": 229,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109cd28d0>",
+        "calls": [
+          "_test_parse_symbol_generic"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "25b35dce",
+        "body_hash": "28d1e4e3"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_parse_symbol_friday",
+        "line": 233,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109d7aa10>",
+        "calls": [
+          "_test_parse_symbol_generic"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "25b35dce",
+        "body_hash": "f76b5a3e"
+      },
+      {
+        "file": "tests/test_symbol_generator.py",
+        "class": "TestBarchartSymbolGenerator",
+        "name": "test_parse_symbol_daily",
+        "line": 237,
+        "args": [
+          "self"
+        ],
+        "body_ast": "<ast.FunctionDef object at 0x109812950>",
+        "calls": [
+          "_test_parse_symbol_generic"
+        ],
+        "returns": false,
+        "side_effects": false,
+        "complexity": 2,
+        "semantic_hash": "25b35dce",
+        "body_hash": "debe42a5"
+      }
+    ]
+  }
+}
