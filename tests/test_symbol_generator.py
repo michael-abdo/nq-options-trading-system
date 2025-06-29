@@ -24,160 +24,101 @@ class TestBarchartSymbolGenerator(unittest.TestCase):
         """Setup test environment before each test"""
         self.generator = BarchartSymbolGenerator()
     
-    def test_weekly_options_symbol(self):
-        """Test weekly options symbol generation"""
-        # Test for a specific date (Monday)
+    def _test_symbol_generation_with_date(self, mock_date, option_type, expected_symbol):
+        """Helper to test symbol generation with mocked date"""
         with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Configure mock to work like datetime
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 6, 30, 10, 0, 0))  # Monday
+            mock_datetime.now = MagicMock(return_value=mock_date)
             mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
             
             symbol = self.generator.get_eod_contract_symbol(
                 base_symbol="NQ",
-                option_type="weekly",
+                option_type=option_type,
                 year_format="2digit"
             )
             
-            # Should generate symbol for next Tuesday (July 1, 2025)
-            # July = N, week 1, year 25
-            self.assertEqual(symbol, "MM1N25")
+            self.assertEqual(symbol, expected_symbol)
+    
+    def test_weekly_options_symbol(self):
+        """Test weekly options symbol generation"""
+        # Test for a specific date (Monday) - should generate symbol for next Tuesday (July 1, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 6, 30, 10, 0, 0),  # Monday
+            "weekly",
+            "MM1N25"  # July = N, week 1, year 25
+        )
     
     def test_weekly_options_from_tuesday(self):
         """Test weekly options when current day is Tuesday"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock a Tuesday (2025-07-01)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 1, 10, 0, 0))  # Tuesday
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="weekly",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for next Tuesday (July 8, 2025)
-            # July = N, week 2, year 25
-            self.assertEqual(symbol, "MM2N25")
+        # Should generate symbol for next Tuesday (July 8, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 1, 10, 0, 0),  # Tuesday
+            "weekly",
+            "MM2N25"  # July = N, week 2, year 25
+        )
     
     def test_friday_options_symbol(self):
         """Test Friday options symbol generation"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock a Wednesday (2025-07-02)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 2, 10, 0, 0))  # Wednesday
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="friday",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for Friday (July 4, 2025)
-            # July = N, week 1, year 25, MQ prefix
-            self.assertEqual(symbol, "MQ1N25")
+        # Should generate symbol for Friday (July 4, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 2, 10, 0, 0),
+            "friday",
+            "MQ1N25"  # July = N, week 1, year 25, MQ prefix
+        )
     
     def test_friday_options_on_friday(self):
         """Test Friday options when current day is Friday"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock a Friday (2025-07-04)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 4, 10, 0, 0))  # Friday
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="friday",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for next Friday (July 11, 2025)
-            # July = N, week 2, year 25
-            self.assertEqual(symbol, "MQ2N25")
+        # Should generate symbol for next Friday (July 11, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 4, 10, 0, 0),
+            "friday",
+            "MQ2N25"  # July = N, week 2, year 25
+        )
     
     def test_0dte_options_on_friday(self):
         """Test 0DTE options on Friday"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock a Friday (2025-07-04)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 4, 10, 0, 0))  # Friday
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="0dte",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for TODAY (July 4, 2025)
-            # July = N, week 1, year 25
-            self.assertEqual(symbol, "MQ1N25")
+        # Should generate symbol for TODAY (July 4, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 4, 10, 0, 0),
+            "0dte",
+            "MQ1N25"  # July = N, week 1, year 25
+        )
     
     def test_daily_options_symbol(self):
         """Test daily options symbol generation"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock a Thursday (2025-07-03)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 3, 10, 0, 0))  # Thursday
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="daily",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for Friday (July 4, 2025)
-            # July = N, week 1, year 25, MC prefix
-            self.assertEqual(symbol, "MC1N25")
+        # Should generate symbol for Friday (July 4, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 3, 10, 0, 0),
+            "daily",
+            "MC1N25"  # July = N, week 1, year 25, MC prefix
+        )
     
     def test_daily_options_on_friday(self):
         """Test daily options on Friday (should be Monday)"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock a Friday (2025-07-04)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 4, 10, 0, 0))  # Friday
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="daily",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for Monday (July 7, 2025)
-            # July = N, week 2, year 25
-            self.assertEqual(symbol, "MC2N25")
+        # Should generate symbol for Monday (July 7, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 4, 10, 0, 0),
+            "daily",
+            "MC2N25"  # July = N, week 2, year 25
+        )
     
     def test_monthly_options_symbol(self):
         """Test monthly options symbol generation"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock early July (before 3rd Thursday)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 1, 10, 0, 0))
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="monthly",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for July monthly expiry (3rd Thursday)
-            # July = N, week 6 (monthly indicator), year 25
-            self.assertEqual(symbol, "MM6N25")
+        # Should generate symbol for July monthly expiry (3rd Thursday)
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 1, 10, 0, 0),
+            "monthly",
+            "MM6N25"  # July = N, week 6 (monthly indicator), year 25
+        )
     
     @unittest.expectedFailure  # Known bug: monthly options always generate MM6N25
     def test_monthly_options_after_expiry(self):
         """Test monthly options after current month's expiry"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock late July (after 3rd Thursday which is July 17, 2025)
-            mock_datetime.now = MagicMock(return_value=datetime(2025, 7, 20, 10, 0, 0))
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="monthly",
-                year_format="2digit"
-            )
-            
-            # Should generate symbol for August monthly expiry
-            # August = Q, week 6 (monthly indicator), year 25
-            self.assertEqual(symbol, "MM6Q25")  # This will fail due to bug
+        # Should generate symbol for August monthly expiry
+        self._test_symbol_generation_with_date(
+            datetime(2025, 7, 20, 10, 0, 0),
+            "monthly",
+            "MM6Q25"  # August = Q, week 6 (monthly indicator), year 25
+        )  # This will fail due to bug
     
     def test_month_codes(self):
         """Test all month codes are correct"""
@@ -269,53 +210,33 @@ class TestBarchartSymbolGenerator(unittest.TestCase):
         
         self.assertIn("Unknown option type: invalid", str(cm.exception))
     
-    def test_parse_symbol_weekly(self):
-        """Test parsing weekly options symbol"""
-        result = self.generator.parse_symbol("MM2N25")
+    def _test_parse_symbol_generic(self, symbol, expected_prefix, expected_type, expected_week):
+        """Generic test for parsing options symbols"""
+        result = self.generator.parse_symbol(symbol)
         
-        self.assertEqual(result["symbol"], "MM2N25")
-        self.assertEqual(result["prefix"], "MM")
-        self.assertEqual(result["option_type"], "weekly")
-        self.assertEqual(result["week"], 2)
+        self.assertEqual(result["symbol"], symbol)
+        self.assertEqual(result["prefix"], expected_prefix)
+        self.assertEqual(result["option_type"], expected_type)
+        self.assertEqual(result["week"], expected_week)
         self.assertEqual(result["month"], 7)  # N = July
         self.assertEqual(result["month_code"], "N")
         self.assertEqual(result["year"], "25")
     
+    def test_parse_symbol_weekly(self):
+        """Test parsing weekly options symbol"""
+        self._test_parse_symbol_generic("MM2N25", "MM", "weekly", 2)
+    
     def test_parse_symbol_monthly(self):
         """Test parsing monthly options symbol"""
-        result = self.generator.parse_symbol("MM6N25")
-        
-        self.assertEqual(result["symbol"], "MM6N25")
-        self.assertEqual(result["prefix"], "MM")
-        self.assertEqual(result["option_type"], "monthly")  # Week 6 indicates monthly
-        self.assertEqual(result["week"], 6)
-        self.assertEqual(result["month"], 7)
-        self.assertEqual(result["month_code"], "N")
-        self.assertEqual(result["year"], "25")
+        self._test_parse_symbol_generic("MM6N25", "MM", "monthly", 6)
     
     def test_parse_symbol_friday(self):
         """Test parsing Friday options symbol"""
-        result = self.generator.parse_symbol("MQ1N25")
-        
-        self.assertEqual(result["symbol"], "MQ1N25")
-        self.assertEqual(result["prefix"], "MQ")
-        self.assertEqual(result["option_type"], "friday")
-        self.assertEqual(result["week"], 1)
-        self.assertEqual(result["month"], 7)
-        self.assertEqual(result["month_code"], "N")
-        self.assertEqual(result["year"], "25")
+        self._test_parse_symbol_generic("MQ1N25", "MQ", "friday", 1)
     
     def test_parse_symbol_daily(self):
         """Test parsing daily options symbol"""
-        result = self.generator.parse_symbol("MC3N25")
-        
-        self.assertEqual(result["symbol"], "MC3N25")
-        self.assertEqual(result["prefix"], "MC")
-        self.assertEqual(result["option_type"], "daily")
-        self.assertEqual(result["week"], 3)
-        self.assertEqual(result["month"], 7)
-        self.assertEqual(result["month_code"], "N")
-        self.assertEqual(result["year"], "25")
+        self._test_parse_symbol_generic("MC3N25", "MC", "daily", 3)
     
     def test_parse_symbol_invalid_format(self):
         """Test parsing invalid symbol format"""
@@ -347,37 +268,21 @@ class TestBarchartSymbolGenerator(unittest.TestCase):
     
     def test_year_boundary_weekly(self):
         """Test weekly options across year boundary"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock December 31, 2024 (Tuesday)
-            mock_datetime.now = MagicMock(return_value=datetime(2024, 12, 31, 10, 0, 0))
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="weekly",
-                year_format="2digit"
-            )
-            
-            # Should generate for next Tuesday (Jan 7, 2025)
-            # January = F, week 2, year 25
-            self.assertEqual(symbol, "MM2F25")
+        # Should generate for next Tuesday (Jan 7, 2025)
+        self._test_symbol_generation_with_date(
+            datetime(2024, 12, 31, 10, 0, 0),
+            "weekly",
+            "MM2F25"  # January = F, week 2, year 25
+        )
     
     def test_year_boundary_monthly(self):
         """Test monthly options across year boundary"""
-        with patch('tasks.options_trading_system.data_ingestion.barchart_web_scraper.symbol_generator.datetime') as mock_datetime:
-            # Mock late December 2024 (after December monthly expiry)
-            mock_datetime.now = MagicMock(return_value=datetime(2024, 12, 25, 10, 0, 0))
-            mock_datetime.side_effect = lambda *args, **kw: datetime(*args, **kw)
-            
-            symbol = self.generator.get_eod_contract_symbol(
-                base_symbol="NQ",
-                option_type="monthly",
-                year_format="2digit"
-            )
-            
-            # Should generate for January 2025 monthly
-            # But due to bug, will always be MM6N25
-            self.assertEqual(symbol, "MM6N25")  # Bug: always returns same symbol
+        # Should generate for January 2025 monthly
+        self._test_symbol_generation_with_date(
+            datetime(2024, 12, 25, 10, 0, 0),
+            "monthly",
+            "MM6N25"  # But due to bug, will always be MM6N25
+        )  # Bug: always returns same symbol
     
     def test_all_prefixes(self):
         """Test that all option types generate correct prefixes"""
