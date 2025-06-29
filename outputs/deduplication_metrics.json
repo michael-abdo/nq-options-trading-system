@@ -6,13 +6,13 @@
     "codebase": "EOD Options Trading System"
   },
   "summary_metrics": {
-    "total_lines_removed": 3845,
+    "total_lines_removed": 3927,
     "total_files_deleted": 25,
-    "total_files_modified": 27,
-    "total_files_created": 5,
-    "code_reduction_percentage": 20.3,
-    "duplicate_groups_eliminated": 6,
-    "duplicate_groups_remaining": 79,
+    "total_files_modified": 41,
+    "total_files_created": 8,
+    "code_reduction_percentage": 20.7,
+    "duplicate_groups_eliminated": 11,
+    "duplicate_groups_remaining": 74,
     "test_coverage_maintained": true,
     "regressions_introduced": 0
   },
@@ -41,8 +41,8 @@
       }
     },
     "phase_2_removal": {
-      "status": "in_progress",
-      "completed_subphases": ["phase2-1"],
+      "status": "75_percent_complete",
+      "completed_subphases": ["phase2-1", "phase2-2", "phase2-3-partial"],
       "phase2_1_results": {
         "duplicate_methods_removed": 6,
         "files_modified": 8,
@@ -52,6 +52,20 @@
           "_initialize_results", 
           "__init__"
         ]
+      },
+      "phase2_2_results": {
+        "duplicate_methods_removed": 4,
+        "files_modified": 5,
+        "lines_removed": 40,
+        "methods": ["setUp"],
+        "new_utilities": ["test_base.py"]
+      },
+      "phase2_3_results": {
+        "semantic_groups_analyzed": 16,
+        "groups_refactored": 1,
+        "files_modified": 1,
+        "lines_removed": 12,
+        "tools_created": ["semantic_duplicate_filter.py"]
       }
     }
   },
