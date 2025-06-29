@@ -1,6 +1,6 @@
 {
   "task": "data_normalizer",
-  "timestamp": "2025-06-04T14:52:04.547040",
+  "timestamp": "2025-06-28T22:22:11.332378",
   "tests": [
     {
       "name": "normalizer_init",
@@ -115,7 +115,7 @@
     "normalized_summary": {
       "total_contracts": 618,
       "sources_count": 2,
-      "timestamp": "2025-06-04T14:52:04.554951",
+      "timestamp": "2025-06-28T22:22:11.341088",
       "by_source": {
         "barchart": {
           "calls": 288,

@@ -1,6 +1,6 @@
 {
   "task": "report_generator",
-  "timestamp": "2025-06-04T16:08:21.635647",
+  "timestamp": "2025-06-28T22:22:17.577270",
   "tests": [
     {
       "name": "generator_init",
@@ -18,7 +18,7 @@
         "header_valid": true,
         "summary_valid": true,
         "header_length": 398,
-        "summary_length": 351
+        "summary_length": 362
       }
     },
     {
@@ -33,12 +33,12 @@
           "has_execution_priorities": true,
           "has_footer": true
         },
-        "report_length": 3440,
+        "report_length": 3066,
         "metadata": {
-          "generated_at": "2025-06-04T16:08:23.126601",
+          "generated_at": "2025-06-28T22:22:18.765990",
           "report_style": "professional",
           "sections_included": 6,
-          "total_length": 3440
+          "total_length": 3066
         }
       }
     },
@@ -61,15 +61,15 @@
       "passed": true,
       "details": {
         "file_created": true,
-        "file_size": 3485,
-        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/report_generator/test_report_20250604_160823.txt"
+        "file_size": 3108,
+        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/report_generator/test_report_20250628_222218.txt"
       }
     }
   ],
   "status": "VALIDATED",
   "evidence": {
     "sample_report": {
-      "report_length": 3440,
+      "report_length": 3066,
       "sections_included": 6,
       "content_checks": {
         "has_header": true,
@@ -80,9 +80,9 @@
       },
       "first_100_chars": "================================================================================\nNQ OPTIONS TRADING ",
       "analysis_summary": {
-        "successful_analyses": 3,
+        "successful_analyses": 2,
         "primary_recommendations": 1,
-        "execution_time": 1.490686
+        "execution_time": 1.188492
       }
     }
   }

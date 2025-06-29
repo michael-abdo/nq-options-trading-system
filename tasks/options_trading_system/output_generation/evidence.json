@@ -1,7 +1,7 @@
 {
   "task": "output_generation",
   "type": "parent",
-  "timestamp": "2025-06-28T22:07:49.580432",
+  "timestamp": "2025-06-28T22:25:06.120966",
   "integration_tests": [
     {
       "name": "child_validations",
@@ -31,8 +31,8 @@
         "total_size": 6506,
         "errors": [],
         "saved_files": [
-          "nq_trading_report_20250628_220751.txt",
-          "nq_analysis_export_20250628_220751.json"
+          "nq_trading_report_20250628_222508.txt",
+          "nq_analysis_export_20250628_222508.json"
         ]
       }
     },
@@ -43,8 +43,8 @@
         "status": "success",
         "successful_generations": 2,
         "files_saved": 2,
-        "total_output_size": 6504,
-        "execution_time": 2.503198
+        "total_output_size": 6506,
+        "execution_time": 2.660576
       }
     }
   ],
@@ -52,13 +52,13 @@
   "evidence": {
     "full_generation_result": {
       "status": "success",
-      "execution_time": 2.503198,
+      "execution_time": 2.660576,
       "successful_generations": 2,
       "files_saved": 2,
-      "total_output_size": 6504,
+      "total_output_size": 6506,
       "recommended_action": "short",
       "output_summary": {
-        "timestamp": "2025-06-28T22:07:54.481067",
+        "timestamp": "2025-06-28T22:25:11.360425",
         "generation_status": {
           "report": "success",
           "json": "success"
@@ -70,7 +70,7 @@
             "style": "professional"
           },
           "json": {
-            "size_bytes": 3396,
+            "size_bytes": 3398,
             "signals_count": 3,
             "recommended_action": "short"
           }

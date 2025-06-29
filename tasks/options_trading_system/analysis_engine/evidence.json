@@ -1,7 +1,7 @@
 {
   "task": "analysis_engine",
   "type": "parent",
-  "timestamp": "2025-06-28T22:07:38.770610",
+  "timestamp": "2025-06-28T22:21:59.198624",
   "integration_tests": [
     {
       "name": "child_validations",
@@ -30,7 +30,7 @@
         "status": "success",
         "successful_analyses": 2,
         "primary_recommendations": 1,
-        "execution_time": 1.76162
+        "execution_time": 1.638563
       }
     }
   ],
@@ -38,7 +38,7 @@
   "evidence": {
     "full_analysis_result": {
       "status": "success",
-      "execution_time": 1.76162,
+      "execution_time": 1.638563,
       "successful_analyses": 2,
       "primary_recommendations": 1,
       "primary_algorithm": "nq_ev_analysis",
