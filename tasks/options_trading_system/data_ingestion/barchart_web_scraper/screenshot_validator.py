@@ -12,6 +12,11 @@ import time
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional, Tuple
+import sys
+
+# Import centralized datetime utilities
+sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / 'scripts' / 'utilities'))
+from datetime_utils import get_timestamp
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -114,8 +119,8 @@ class BarchartScreenshotValidator:
             time.sleep(2)
             
             # Create timestamped filename
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            date_dir = self.screenshots_dir / datetime.now().strftime('%Y%m%d')
+            timestamp = get_timestamp('file')
+            date_dir = self.screenshots_dir / get_timestamp('date_only')
             date_dir.mkdir(exist_ok=True)
             
             if full_page:

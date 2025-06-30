@@ -23,6 +23,10 @@ from json_exporter.solution import export_analysis_json
 sys.path.append(os.path.dirname(os.path.dirname(current_dir)))
 from options_trading_system.base_components import ConfigurableComponent
 
+# Import centralized datetime utilities
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(current_dir))), 'scripts', 'utilities'))
+from datetime_utils import get_timestamp, format_for_filename
+
 
 class OutputGenerationEngine(ConfigurableComponent):
     """Unified output generation engine coordinating reports and JSON exports"""
@@ -115,8 +119,8 @@ class OutputGenerationEngine(ConfigurableComponent):
             "total_size_bytes": 0
         }
         
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        date_str = datetime.now().strftime('%Y%m%d')
+        timestamp = get_timestamp('file')
+        date_str = get_timestamp('date_only')
         base_output_dir = save_config.get("output_dir", "outputs")
         
         # Create organized output directories
