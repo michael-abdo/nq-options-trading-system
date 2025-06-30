@@ -34,7 +34,7 @@ class OutputGenerationEngine(ConfigurableComponent):
     
     _results_attr_name = 'generation_results'
         
-    @safe_execute("Trading Report Generation", default_return={"status": "failed", "error": "Unknown error", "timestamp": datetime.now().isoformat()})
+    @safe_execute("Trading Report Generation", default_return={"status": "failed", "error": "Unknown error", "timestamp": get_timestamp()})
     def generate_trading_report(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Generate human-readable trading report"""
         print("  Generating Trading Report...")
@@ -55,7 +55,7 @@ class OutputGenerationEngine(ConfigurableComponent):
         
         return create_success_result("Trading Report Generation", result)
     
-    @safe_execute("JSON Export Generation", default_return={"status": "failed", "error": "Unknown error", "timestamp": datetime.now().isoformat()})
+    @safe_execute("JSON Export Generation", default_return={"status": "failed", "error": "Unknown error", "timestamp": get_timestamp()})
     def generate_json_export(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Generate structured JSON export"""
         print("  Generating JSON Export...")
@@ -264,7 +264,7 @@ class OutputGenerationEngine(ConfigurableComponent):
         
         # Final results
         final_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_timestamp(),
             "execution_time_seconds": execution_time,
             "output_config": self.config,
             "generation_results": self.generation_results,
