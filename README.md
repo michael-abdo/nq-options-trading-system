@@ -8,8 +8,11 @@
 # Run monthly options pipeline (recommended)
 python3 daily_options_pipeline.py --option-type monthly
 
-# Run with screenshot validation (OCR verification)
-python3 daily_options_pipeline.py --option-type monthly --screenshot
+# Run with screenshot validation (OCR verification) - now default
+python3 daily_options_pipeline.py --option-type monthly
+
+# Run without screenshot validation (faster)
+python3 daily_options_pipeline.py --option-type monthly --no-screenshot
 
 # Run weekly options pipeline  
 python3 daily_options_pipeline.py --option-type weekly

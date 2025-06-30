@@ -15,7 +15,6 @@ Features:
 import os
 import sys
 import json
-import pickle
 import logging
 import time
 import traceback
