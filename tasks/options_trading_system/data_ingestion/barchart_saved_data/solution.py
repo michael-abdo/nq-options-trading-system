@@ -12,9 +12,10 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 
-# Import centralized file utilities
+# Import centralized utilities
 sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / 'scripts' / 'utilities'))
 from file_io_utils import FileIOUtils
+from datetime_utils import get_timestamp
 
 
 class BarchartSavedDataLoader:
@@ -56,7 +57,7 @@ class BarchartSavedDataLoader:
             "source": "barchart_saved",
             "file_path": self.file_path,
             "file_size": os.path.getsize(self.file_path),
-            "loaded_at": datetime.now().isoformat()
+            "loaded_at": get_timestamp("api")
         }
         
         return self.data

@@ -7,9 +7,15 @@ PURPOSE: Fetch options data from Tradovate API (or simulate for demo)
 
 import json
 import os
+import sys
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 import hashlib
+from pathlib import Path
+
+# Import centralized utilities
+sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / 'scripts' / 'utilities'))
+from datetime_utils import get_timestamp
 
 
 class TradovateAPIDataLoader:
@@ -84,7 +90,7 @@ class TradovateAPIDataLoader:
             "source": "tradovate_api",
             "mode": self.mode,
             "use_mock": self.use_mock,
-            "loaded_at": datetime.now().isoformat(),
+            "loaded_at": get_timestamp("api"),
             "data_hash": self._calculate_data_hash()
         })
         
@@ -145,7 +151,7 @@ class TradovateAPIDataLoader:
             "underlying": {
                 "symbol": "NQ",
                 "price": current_price,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp("api")
             },
             "options": {
                 "calls": calls,
