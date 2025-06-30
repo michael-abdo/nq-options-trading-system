@@ -124,6 +124,14 @@ Uses your actual NQ Options Expected Value algorithm with:
 - **Reorder Pipeline**: Change order in configuration file
 - **ML Optimization**: Tune weights and thresholds via config
 
+### Code Architecture
+
+The codebase follows clean architecture principles with centralized utilities:
+- **Validation**: `scripts/utilities/validation_utils.py` - All data validation logic
+- **File I/O**: `scripts/utilities/file_io_utils.py` - JSON/pickle operations with error handling
+- **DateTime**: `scripts/utilities/datetime_utils.py` - Standardized timestamp formatting
+- **Testing**: `tests/test_utils.py` - Common test utilities and evidence saving
+
 ## Historical Context
 
 This system replaces the previous task-based implementation. All legacy files are preserved in the `archive/` directory for reference.

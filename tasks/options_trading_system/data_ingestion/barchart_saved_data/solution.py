@@ -5,7 +5,6 @@ TYPE: Leaf Task
 PURPOSE: Load saved Barchart API data from JSON file
 """
 
-import json
 import os
 import sys
 from datetime import datetime
@@ -45,7 +44,7 @@ class BarchartSavedDataLoader:
             
         Raises:
             FileNotFoundError: If file doesn't exist
-            json.JSONDecodeError: If file is not valid JSON
+            JSONDecodeError: If file is not valid JSON
         """
         if not self.validate_file_exists():
             raise FileNotFoundError(f"Data file not found: {self.file_path}")
