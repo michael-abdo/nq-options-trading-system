@@ -27,9 +27,23 @@
   - `output_generation/integration.py` - Replaced strftime with get_timestamp()
   - `screenshot_validator.py` - Replaced datetime formatting with utilities
 
+### Additional Consolidations (June 30 - Phase 2)
+- **UPDATED**: 3 data ingestion modules → Use FileIOUtils for JSON operations
+  - `barchart_saved_data/solution.py` - Replaced json.load()
+  - `data_validator.py` - Replaced json.load()
+  - `screenshot_validator.py` - Replaced json.load()
+
+- **UPDATED**: 2 data ingestion modules → Use datetime_utils
+  - `barchart_saved_data/solution.py` - Replaced datetime.now().isoformat()
+  - `tradovate_api_data/solution.py` - Replaced datetime.now().isoformat()
+
+- **UPDATED**: 2 test validation files → Use centralized test_utils
+  - `expiration_pressure_calculator/test_validation.py` - Replaced json.dump()
+  - `real_time_options_feed/test_validation.py` - Replaced json.dump()
+
 ### Impact
-- **Code Reduction**: ~350 lines eliminated across all files
-- **Consistency**: All validation, file I/O, and datetime operations now use standard utilities
+- **Code Reduction**: ~370 lines eliminated across all files
+- **Consistency**: All validation, file I/O, datetime, and test operations now use standard utilities
 - **Maintainability**: Single source of truth for common operations
 - **Testing**: Existing tests continue to pass with refactored code
 
