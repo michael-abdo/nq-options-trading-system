@@ -1,6 +1,6 @@
 {
   "task": "json_exporter",
-  "timestamp": "2025-06-30T17:09:51.133863",
+  "timestamp": "2025-06-30T17:11:20.729093",
   "tests": [
     {
       "name": "exporter_init",
@@ -49,12 +49,12 @@
           "signals_is_list": true,
           "market_analysis_is_dict": true
         },
-        "json_size": 3398,
+        "json_size": 3332,
         "signals_count": 3,
         "metadata": {
-          "export_timestamp": "2025-06-30T17:09:52.375939",
+          "export_timestamp": "20250630_171121",
           "total_signals": 3,
-          "json_size_bytes": 3398,
+          "json_size_bytes": 3332,
           "recommended_action": "short"
         }
       }
@@ -90,16 +90,16 @@
       "passed": true,
       "details": {
         "file_created": true,
-        "file_size": 3398,
+        "file_size": 3332,
         "json_valid": true,
-        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/json_exporter/test_export_20250630_170952.json"
+        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/json_exporter/test_export_20250630_171121.json"
       }
     }
   ],
   "status": "VALIDATED",
   "evidence": {
     "export_sample": {
-      "json_size": 3398,
+      "json_size": 3332,
       "signals_count": 3,
       "structure_checks": {
         "has_metadata": true,
@@ -110,15 +110,15 @@
         "market_analysis_is_dict": true
       },
       "metadata": {
-        "export_timestamp": "2025-06-30T17:09:52.375939",
+        "export_timestamp": "20250630_171121",
         "total_signals": 3,
-        "json_size_bytes": 3398,
+        "json_size_bytes": 3332,
         "recommended_action": "short"
       },
       "recommended_action": "short",
       "sample_signal": {
-        "signal_id": "nq_ev_1_20250630_170952",
-        "timestamp": "2025-06-30T17:09:52.375820",
+        "signal_id": "nq_ev_1_20250630_171121",
+        "timestamp": "20250630_171121",
         "source": "nq_ev_algorithm",
         "priority": "PRIMARY",
         "confidence": "HIGH",
