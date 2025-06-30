@@ -9,6 +9,7 @@ import os
 # Add tests directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../../tests'))
 from test_base import OptionsAnalysisTestCase
+from test_utils import save_evidence
 
 from solution import (
     ExpirationPressureCalculator, PressureAlert, UrgencyLevel,
@@ -510,7 +511,5 @@ if __name__ == '__main__':
     # Run performance benchmark
     benchmark_results = run_pressure_calculation_benchmark()
     
-    # Save results
-    import json
-    with open('/Users/Mike/trading/algos/EOD/tasks/options_trading_system/analysis_engine/expiration_pressure_calculator/performance_evidence.json', 'w') as f:
-        json.dump(benchmark_results, f, indent=2)
+    # Save results using centralized utility
+    save_evidence(benchmark_results)
