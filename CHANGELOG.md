@@ -1,5 +1,38 @@
 # Changelog
 
+## [2025-06-30] - Code Consolidation and Deduplication
+
+### Created Centralized Utilities
+- **CREATED**: `scripts/utilities/validation_utils.py` - Centralized validation logic
+  - ContractValidator, SymbolValidator, DataStructureValidator classes
+  - Consolidated validation rules from multiple modules
+  - Maintains backward compatibility with existing interfaces
+
+- **CREATED**: `scripts/utilities/datetime_utils.py` - Centralized datetime formatting
+  - Standard format constants (ISO, file naming, display)
+  - Utility functions for timestamp generation and parsing
+  - Trading day calculations and market hours
+
+### Refactored to Use Centralized Utilities
+- **UPDATED**: `data_validator.py` → Uses centralized validation_utils
+  - Eliminated duplicate symbol and contract validation
+  - Reduced code by ~100 lines while maintaining functionality
+
+- **UPDATED**: `daily_options_pipeline.py` → Uses FileIOUtils
+  - Replaced direct json.load/dump with FileIOUtils methods
+  - Replaced direct pickle operations with FileIOUtils methods
+  - Improved error handling consistency
+
+- **UPDATED**: Multiple files → Uses datetime_utils
+  - `output_generation/integration.py` - Replaced strftime with get_timestamp()
+  - `screenshot_validator.py` - Replaced datetime formatting with utilities
+
+### Impact
+- **Code Reduction**: ~350 lines eliminated across all files
+- **Consistency**: All validation, file I/O, and datetime operations now use standard utilities
+- **Maintainability**: Single source of truth for common operations
+- **Testing**: Existing tests continue to pass with refactored code
+
 ## [2025-06-29] - Comprehensive Semantic Deduplication Phase 2-3
 
 ### Eighth Deduplication
