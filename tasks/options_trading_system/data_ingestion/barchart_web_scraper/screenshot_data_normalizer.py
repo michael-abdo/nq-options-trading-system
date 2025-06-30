@@ -123,17 +123,13 @@ class ScreenshotDataNormalizer:
     
     def _parse_change(self, change_str: Any) -> float:
         """Parse change string to float"""
-        if not change_str or change_str == "N/A":
-            return 0
+        from .parsing_utils import ParsingUtils
         
         if isinstance(change_str, (int, float)):
             return float(change_str)
-        
-        # Remove + or - and parse
-        try:
-            return float(str(change_str).replace('+', '').replace(',', ''))
-        except:
-            return 0
+            
+        parsed = ParsingUtils.parse_price(str(change_str))
+        return parsed if parsed is not None else 0
     
     def extract_summary_stats(self, normalized_data: Dict[str, Any]) -> Dict[str, Any]:
         """Extract summary statistics from normalized data"""

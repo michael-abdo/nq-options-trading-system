@@ -8,11 +8,14 @@
 # Run monthly options pipeline (recommended)
 python3 daily_options_pipeline.py --option-type monthly
 
+# Run with screenshot validation (OCR verification)
+python3 daily_options_pipeline.py --option-type monthly --screenshot
+
 # Run weekly options pipeline  
 python3 daily_options_pipeline.py --option-type weekly
 
-# Use global command for monthly options
-nq-monthly
+# Use convenient wrapper script
+./run_pipeline.sh --option-type monthly --screenshot
 
 # Show help with all examples
 python3 daily_options_pipeline.py --help
@@ -99,7 +102,8 @@ Edit `tasks/options_trading_system/analysis_engine/pipeline_config.json` to swit
 - **Analysis Results**: `outputs/YYYYMMDD/analysis_exports/` - JSON exports with trade recommendations  
 - **Trading Reports**: `outputs/YYYYMMDD/reports/` - Human-readable trading reports
 - **System Logs**: `outputs/YYYYMMDD/logs/` - Pipeline execution logs
-- **API Data**: `tasks/.../barchart_web_scraper/outputs/YYYYMMDD/api_data/` - Live market data
+- **API Data**: `outputs/YYYYMMDD/api_data/` - Live market data
+- **Validation Data**: `outputs/screenshots/validation/YYYYMMDD/` - OCR validation screenshots
 - **Debug Data**: Screenshots, HTML snapshots, and comparison results organized by date
 
 **No manual file management required** - the system automatically creates organized directories and routes all outputs appropriately.

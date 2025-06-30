@@ -350,31 +350,18 @@ Strike      Open        High        Low         Last        Change      Bid     
     
     def _parse_strike(self, value: str) -> float:
         """Parse strike price, removing commas"""
-        if not value or value == 'N/A':
-            return None
-        return float(value.replace(',', '').replace('C', '').replace('P', ''))
+        from .parsing_utils import ParsingUtils
+        return ParsingUtils.parse_strike(value)
     
     def _parse_price(self, value: str) -> Optional[float]:
         """Parse price value, handling N/A and commas"""
-        if not value or value == 'N/A':
-            return None
-        # Remove 's' suffix if present (settlement indicator)
-        value = value.rstrip('s')
-        # Remove + or - prefix if present
-        value = value.lstrip('+-')
-        try:
-            return float(value.replace(',', ''))
-        except:
-            return None
+        from .parsing_utils import ParsingUtils
+        return ParsingUtils.parse_price(value)
     
     def _parse_volume(self, value: str) -> Optional[int]:
         """Parse volume/OI value"""
-        if not value or value == 'N/A':
-            return None
-        try:
-            return int(value.replace(',', ''))
-        except:
-            return None
+        from .parsing_utils import ParsingUtils
+        return ParsingUtils.parse_volume_or_oi(value)
 
 
 # Module-level convenience function
