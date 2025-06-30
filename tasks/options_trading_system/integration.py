@@ -19,6 +19,11 @@ sys.path.insert(0, current_dir)
 from data_ingestion.integration import run_data_ingestion
 from analysis_engine.integration import run_analysis_engine
 from output_generation.integration import run_output_generation
+
+# Import centralized datetime utilities
+utilities_dir = os.path.join(os.path.dirname(current_dir), 'scripts', 'utilities')
+sys.path.append(utilities_dir)
+from datetime_utils import get_timestamp
 # Add parent directory to path
 import sys
 import os
@@ -70,14 +75,14 @@ class NQOptionsTradingSystem(ConfigurableComponent):
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
         except Exception as e:
             print(f"    ✗ Data Pipeline failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
     
     def run_analysis_pipeline(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -101,14 +106,14 @@ class NQOptionsTradingSystem(ConfigurableComponent):
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
         except Exception as e:
             print(f"    ✗ Analysis Pipeline failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
     
     def run_output_pipeline(self, data_config: Dict[str, Any], analysis_results: Dict[str, Any] = None) -> Dict[str, Any]:
@@ -133,21 +138,21 @@ class NQOptionsTradingSystem(ConfigurableComponent):
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
         except Exception as e:
             print(f"    ✗ Output Pipeline failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
     
     def create_system_summary(self) -> Dict[str, Any]:
         """Create comprehensive system execution summary"""
         
         summary = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_timestamp(),
             "system_version": self.version,
             "execution_status": {
                 "data": self.system_results.get("data", {}).get("status", "not_attempted"),
@@ -244,7 +249,7 @@ class NQOptionsTradingSystem(ConfigurableComponent):
                 "status": "failed",
                 "error": "Invalid configuration",
                 "config_validation": config_validation,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
         
         # Step 2: Data pipeline
@@ -276,7 +281,7 @@ class NQOptionsTradingSystem(ConfigurableComponent):
         
         # Final system results
         final_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_timestamp(),
             "execution_time_seconds": execution_time,
             "system_version": self.version,
             "status": "success",
@@ -309,7 +314,7 @@ class NQOptionsTradingSystem(ConfigurableComponent):
         return {
             "status": "failed",
             "error": reason,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_timestamp(),
             "pipeline_results": self.system_results,
             "system_summary": self.create_system_summary()
         }
