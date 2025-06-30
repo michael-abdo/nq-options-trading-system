@@ -7,8 +7,14 @@ PURPOSE: Load saved Barchart API data from JSON file
 
 import json
 import os
+import sys
 from datetime import datetime
 from typing import Dict, Any, List, Optional
+from pathlib import Path
+
+# Import centralized file utilities
+sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / 'scripts' / 'utilities'))
+from file_io_utils import FileIOUtils
 
 
 class BarchartSavedDataLoader:
@@ -43,8 +49,7 @@ class BarchartSavedDataLoader:
         if not self.validate_file_exists():
             raise FileNotFoundError(f"Data file not found: {self.file_path}")
         
-        with open(self.file_path, 'r') as f:
-            self.data = json.load(f)
+        self.data = FileIOUtils.load_json(self.file_path)
             
         # Extract metadata
         self.metadata = {

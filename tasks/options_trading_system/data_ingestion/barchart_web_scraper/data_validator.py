@@ -17,6 +17,7 @@ from scripts.utilities.validation_utils import (
     ContractValidator, SymbolValidator, DataStructureValidator,
     validate_symbol, validate_contract
 )
+from scripts.utilities.file_io_utils import FileIOUtils
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -152,8 +153,7 @@ class BarchartDataValidator:
     def validate_api_response(self, file_path: str) -> Dict[str, Any]:
         """Validate a saved API response file"""
         try:
-            with open(file_path, 'r') as f:
-                data = json.load(f)
+            data = FileIOUtils.load_json(file_path)
             
             # Extract symbol from filename
             filename = Path(file_path).stem

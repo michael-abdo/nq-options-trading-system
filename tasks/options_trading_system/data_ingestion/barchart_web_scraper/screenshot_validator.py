@@ -14,9 +14,10 @@ from pathlib import Path
 from typing import Dict, Any, Optional, Tuple
 import sys
 
-# Import centralized datetime utilities
+# Import centralized utilities
 sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / 'scripts' / 'utilities'))
 from datetime_utils import get_timestamp
+from file_io_utils import FileIOUtils
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -338,8 +339,7 @@ class BarchartScreenshotValidator:
         """
         try:
             # Load API data
-            with open(api_data_file, 'r') as f:
-                api_data = json.load(f)
+            api_data = FileIOUtils.load_json(api_data_file)
             
             # Extract symbol from filename or data
             filename = Path(api_data_file).stem
