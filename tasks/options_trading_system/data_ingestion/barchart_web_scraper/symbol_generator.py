@@ -61,24 +61,15 @@ class BarchartSymbolGenerator:
             
         elif option_type == "monthly":
             # Monthly options expire on 3rd Thursday
-            # Find the 3rd Thursday of the next month if we're past this month's
+            # For EOD options, we use current month's options until actual expiration
             
-            # Check if we're past the 3rd Thursday of current month
+            # Always use current month for EOD trading
             first_day = now.replace(day=1)
             first_thursday = first_day + timedelta(days=(3 - first_day.weekday()) % 7)
             third_thursday = first_thursday + timedelta(days=14)
             
-            if now.date() > third_thursday.date():
-                # Move to next month
-                if now.month == 12:
-                    first_day = now.replace(year=now.year + 1, month=1, day=1)
-                else:
-                    first_day = now.replace(month=now.month + 1, day=1)
-                first_thursday = first_day + timedelta(days=(3 - first_day.weekday()) % 7)
-                third_thursday = first_thursday + timedelta(days=14)
-                
             expiry_date = third_thursday
-            prefix = "MM"
+            prefix = "MQ"  # Monthly options use MQ prefix
             
         else:
             raise ValueError(f"Unknown option type: {option_type}")
@@ -127,14 +118,15 @@ class BarchartSymbolGenerator:
         month_code = symbol[3]
         year = symbol[4:]
         
-        # Determine option type from prefix
-        option_types = {
-            "MM": "weekly" if week != "6" else "monthly",
-            "MQ": "friday",
-            "MC": "daily"
-        }
-        
-        option_type = option_types.get(prefix, "unknown")
+        # Determine option type from prefix and week
+        if prefix == "MM":
+            option_type = "weekly"
+        elif prefix == "MQ":
+            option_type = "monthly" if week == "6" else "friday"
+        elif prefix == "MC":
+            option_type = "daily"
+        else:
+            option_type = "unknown"
         
         # Month code to number
         month_numbers = {

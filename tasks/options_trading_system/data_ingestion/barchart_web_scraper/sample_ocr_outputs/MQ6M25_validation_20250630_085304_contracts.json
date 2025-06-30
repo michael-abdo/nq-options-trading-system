@@ -1,0 +1,58 @@
+{
+  "source": "MQ6M25_validation_20250630_085304.png",
+  "method": "pytesseract",
+  "contracts": [
+    {
+      "strike": 4500.0,
+      "type": "Call",
+      "open": 4500.0,
+      "high": 6000.0,
+      "low": null,
+      "last": null,
+      "bid": 16745.5,
+      "ask": 18245.0,
+      "premium": 16745.5,
+      "volume": 6,
+      "open_interest": 27
+    },
+    {
+      "strike": 3500.0,
+      "type": "Call",
+      "open": 3500.0,
+      "high": 6500.0,
+      "low": null,
+      "last": null,
+      "bid": 16245.75,
+      "ask": 19244.75,
+      "premium": 19244.75,
+      "volume": 6,
+      "open_interest": 27
+    },
+    {
+      "strike": 4000.0,
+      "type": "Call",
+      "open": 4000.0,
+      "high": 5000.0,
+      "low": null,
+      "last": null,
+      "bid": 17745.25,
+      "ask": 18744.75,
+      "premium": 17745.25,
+      "volume": 6,
+      "open_interest": 27
+    },
+    {
+      "strike": 5500.0,
+      "type": "Call",
+      "open": 5500.0,
+      "high": null,
+      "low": 17245.5,
+      "last": 17245.5,
+      "bid": 17300.0,
+      "ask": 17358.75,
+      "premium": 44910.0,
+      "volume": 6,
+      "open_interest": 27
+    }
+  ]
+}

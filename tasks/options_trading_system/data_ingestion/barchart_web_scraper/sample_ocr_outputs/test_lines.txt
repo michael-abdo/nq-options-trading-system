@@ -1,0 +1,16 @@
+# Sample OCR lines for testing parsing logic
+
+# Standard call with N/A volume and OI
+3,500.00C   N/A         19,244.75   19,244.75   19,244.75   +84.50      19,292.75   19,336.00   N/A         N/A         384,895.00  06/27/25
+
+# Put with actual OI value
+20,000.00P  N/A         51.00       51.00       51.00s      -1.00       48.00       52.75       N/A         360         1.00        06/27/25
+
+# Call with actual volume and OI
+22,800.00C  N/A         630.00      630.00      630.00s     +5.00       628.00      633.00      15          726         1,260.00    06/27/25
+
+# Edge case - very large numbers
+26,500.00C  N/A         329.00      329.00      329.00s     +5.50       323.00      331.00      2           581         6.00        06/27/25
+
+# Edge case - all N/A
+15,000.00P  N/A         N/A         N/A         N/A         N/A         17.00       21.00       N/A         N/A         N/A         06/27/25

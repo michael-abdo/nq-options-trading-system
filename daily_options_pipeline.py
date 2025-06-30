@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Run with: source venv/bin/activate && python3 daily_options_pipeline.py
 """
 Daily Options Data Pipeline
 Orchestrates: Symbol Generation → Authentication → Data Retrieval → Metrics Calculation
@@ -29,6 +30,8 @@ sys.path.append("tasks/options_trading_system/data_ingestion/barchart_web_scrape
 from solution import BarchartAPIComparator
 from hybrid_scraper import HybridBarchartScraper
 from scripts.utilities.options_metrics_calculator import OptionsMetricsCalculator
+from data_validator import BarchartDataValidator
+from screenshot_validator import BarchartScreenshotValidator
 
 @dataclass
 class PipelineState:
@@ -44,21 +47,27 @@ class PipelineState:
     data_file: Optional[str] = None
     metrics_calculated: bool = False
     metrics_file: Optional[str] = None
+    data_validated: bool = False
+    validation_results: Optional[Dict[str, Any]] = None
     total_contracts: int = 0
     errors: list = None
+    warnings: list = None
     
     def __post_init__(self):
         if self.errors is None:
             self.errors = []
+        if self.warnings is None:
+            self.warnings = []
 
 class DailyOptionsPipeline:
     """Orchestrates daily options data collection and analysis"""
     
-    def __init__(self, output_dir: str = "outputs", cookie_dir: str = "cookies"):
+    def __init__(self, output_dir: str = "outputs", cookie_dir: str = "cookies", screenshot_validation: bool = False):
         self.output_dir = Path(output_dir)
         self.cookie_dir = Path(cookie_dir)
         self.date_str = datetime.now().strftime('%Y%m%d')
         self.timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        self.screenshot_validation = screenshot_validation
         
         # Create directories
         self.output_dir.mkdir(exist_ok=True)
@@ -76,6 +85,10 @@ class DailyOptionsPipeline:
         self.symbol_generator = None
         self.scraper = None
         self.calculator = OptionsMetricsCalculator(str(self.output_dir))
+        self.validator = BarchartDataValidator()
+        self.screenshot_validator = None
+        if self.screenshot_validation:
+            self.screenshot_validator = BarchartScreenshotValidator(headless=True, output_dir=str(self.output_dir))
         
         self.logger.info(f"🚀 Daily Options Pipeline initialized")
         self.logger.info(f"   Output: {self.output_dir / self.date_str}")
@@ -316,9 +329,9 @@ class DailyOptionsPipeline:
             return False
     
     def step3_retrieve_data(self) -> bool:
-        """Step 3: Retrieve options data using authenticated session"""
+        """Step 3: Retrieve and validate options data"""
         self.logger.info("\n" + "="*60)
-        self.logger.info("📊 STEP 3: DATA RETRIEVAL")
+        self.logger.info("📊 STEP 3: DATA RETRIEVAL & VALIDATION")
         self.logger.info("="*60)
         
         try:
@@ -365,6 +378,13 @@ class DailyOptionsPipeline:
                 calls = len(data['data'].get('Call', []))
                 puts = len(data['data'].get('Put', []))
                 self.logger.info(f"   Breakdown: {calls} calls, {puts} puts")
+            
+            # Validate data immediately after retrieval
+            self.logger.info("\n🔍 Validating retrieved data...")
+            if not self.validate_retrieved_data():
+                self.logger.error("❌ Data validation failed - stopping pipeline")
+                self.save_state()
+                return False
             
             self.save_state()
             return True
@@ -467,6 +487,88 @@ class DailyOptionsPipeline:
             self.save_state()
             return False
     
+    def validate_retrieved_data(self) -> bool:
+        """Validate retrieved data before processing"""
+        
+        try:
+            if not self.state.data_file:
+                self.logger.error("❌ No data file to validate")
+                return False
+            
+            self.logger.info("🔍 Validating retrieved data...")
+            api_validation = self.validator.validate_api_response(self.state.data_file)
+            
+            if api_validation["valid"]:
+                self.logger.info("✅ Data validation passed")
+                for check, result in api_validation.get("validations", {}).items():
+                    self.logger.info(f"   ✅ {check}: {result['message']}")
+                
+                self.state.data_validated = True
+                self.state.validation_results = {"api_data": api_validation}
+                
+                # Optional screenshot validation
+                if self.screenshot_validation and self.screenshot_validator:
+                    self.logger.info("\n📸 Taking screenshot for visual validation...")
+                    try:
+                        screenshot_result = self.screenshot_validator.take_options_screenshot(
+                            self.state.symbol, 
+                            underlying="NQU25"
+                        )
+                        
+                        if screenshot_result["success"]:
+                            self.logger.info(f"✅ Screenshot saved: {screenshot_result['screenshot_path']}")
+                            self.state.validation_results["screenshot"] = screenshot_result
+                            
+                            # Log OCR results if available
+                            if "ocr_validation" in screenshot_result:
+                                ocr = screenshot_result["ocr_validation"]
+                                if ocr.get("success"):
+                                    self.logger.info(f"✅ OCR extracted {ocr.get('contracts_found', 0)} contracts")
+                                    
+                                    # If OCR comparison available, show match rate
+                                    if "ocr_comparison" in self.state.validation_results.get("screenshot", {}):
+                                        match_rate = (self.state.validation_results["screenshot"]["ocr_comparison"]
+                                                    .get("match_stats", {}).get("overall", {}).get("match_rate", 0))
+                                        self.logger.info(f"   OCR vs API Match Rate: {match_rate:.1%}")
+                                else:
+                                    self.logger.warning(f"⚠️  OCR extraction failed: {ocr.get('error')}")
+                        else:
+                            self.logger.warning(f"⚠️  Screenshot failed: {screenshot_result.get('error')}")
+                            self.state.warnings.append("Screenshot validation failed")
+                    except Exception as e:
+                        self.logger.warning(f"⚠️  Screenshot error: {e}")
+                        self.state.warnings.append(f"Screenshot error: {str(e)}")
+                
+                return True
+            else:
+                self.logger.error("❌ Data validation failed")
+                for check, result in api_validation.get("validations", {}).items():
+                    if not result["valid"]:
+                        self.logger.error(f"   ❌ {check}: {result['message']}")
+                
+                error_msg = "Data validation failed - cannot proceed with metrics calculation"
+                self.state.errors.append(error_msg)
+                self.state.data_validated = False
+                self.state.validation_results = {"api_data": api_validation}
+                
+                self.save_state()
+                return False
+                
+        except Exception as e:
+            error_msg = f"Data validation error: {e}"
+            self.logger.error(f"❌ {error_msg}")
+            self.state.errors.append(error_msg)
+            self.save_state()
+            return False
+    
+    def cleanup(self):
+        """Clean up resources"""
+        if self.screenshot_validator:
+            try:
+                self.screenshot_validator.cleanup()
+            except:
+                pass
+    
     def run_full_pipeline(self, option_type: str = "weekly", force_refresh_cookies: bool = False, year_format: str = "2digit") -> Dict[str, Any]:
         """Execute the complete pipeline"""
         start_time = datetime.now()
@@ -504,12 +606,16 @@ class DailyOptionsPipeline:
                 pipeline_success = False
                 raise Exception("Cannot proceed without data")
             
-            # Step 4: Metrics Calculation
-            if self.step4_calculate_metrics():
-                steps_completed += 1
+            # Step 4: Metrics Calculation (only if data validated)
+            if self.state.data_validated:
+                if self.step4_calculate_metrics():
+                    steps_completed += 1
+                else:
+                    pipeline_success = False
+                    # Don't raise exception - we have data even if metrics failed
             else:
+                self.logger.warning("⚠️  Skipping metrics calculation due to validation failure")
                 pipeline_success = False
-                # Don't raise exception - we have data even if metrics failed
             
         except Exception as e:
             self.logger.error(f"💥 Pipeline stopped: {e}")
@@ -533,11 +639,17 @@ class DailyOptionsPipeline:
         self.logger.info(f"   Total Contracts: {self.state.total_contracts}")
         self.logger.info(f"   Execution Time: {execution_time}")
         self.logger.info(f"   Errors: {len(self.state.errors)}")
+        self.logger.info(f"   Warnings: {len(self.state.warnings)}")
         
         if self.state.errors:
             self.logger.info(f"⚠️  Errors encountered:")
             for i, error in enumerate(self.state.errors, 1):
                 self.logger.info(f"   {i}. {error}")
+        
+        if self.state.warnings:
+            self.logger.info(f"⚠️  Warnings:")
+            for i, warning in enumerate(self.state.warnings, 1):
+                self.logger.info(f"   {i}. {warning}")
         
         # File locations
         if self.state.data_file:
@@ -548,6 +660,24 @@ class DailyOptionsPipeline:
             self.logger.info(f"🍪 Cookie File: {self.state.cookie_file}")
         
         self.logger.info(f"💾 State File: {self.state_file}")
+        
+        # Validation status
+        if self.state.validation_results:
+            self.logger.info(f"🔍 Validation Status: {'✅ PASSED' if self.state.data_validated else '⚠️  WARNINGS'}")
+            
+            # OCR validation details if available
+            screenshot = self.state.validation_results.get("screenshot", {})
+            if "ocr_validation" in screenshot and screenshot["ocr_validation"].get("success"):
+                ocr = screenshot["ocr_validation"]
+                self.logger.info(f"🔤 OCR Status: Extracted {ocr.get('contracts_found', 0)} contracts")
+                
+                # If comparison available
+                if "ocr_comparison" in screenshot:
+                    comparison = screenshot["ocr_comparison"]
+                    if comparison.get("validation_passed"):
+                        self.logger.info(f"   OCR Validation: ✅ PASSED")
+                    else:
+                        self.logger.info(f"   OCR Validation: ⚠️  Low match rate")
         self.save_state()
         
         return {
@@ -578,13 +708,16 @@ def main():
                        help='Directory for cookie storage')
     parser.add_argument('--year-format', choices=['2digit', '1digit'], 
                        default='2digit', help='Year format: 2digit (25) or 1digit (5)')
+    parser.add_argument('--screenshot', action='store_true',
+                       help='Take screenshot of Barchart page for visual validation')
     
     args = parser.parse_args()
     
     # Initialize pipeline
     pipeline = DailyOptionsPipeline(
         output_dir=args.output_dir,
-        cookie_dir=args.cookie_dir
+        cookie_dir=args.cookie_dir,
+        screenshot_validation=args.screenshot
     )
     
     # Run pipeline
@@ -593,6 +726,9 @@ def main():
         force_refresh_cookies=args.force_refresh_cookies,
         year_format=args.year_format
     )
+    
+    # Cleanup
+    pipeline.cleanup()
     
     # Exit code based on success
     return 0 if result['success'] else 1
