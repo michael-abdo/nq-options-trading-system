@@ -18,6 +18,7 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / 'scripts' / 'utilities'))
 from datetime_utils import get_timestamp
 from file_io_utils import FileIOUtils
+from error_handling import safe_execute, create_error_result, create_success_result, ErrorHandler
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -57,6 +58,7 @@ class BarchartScreenshotValidator:
             self.data_normalizer = ScreenshotDataNormalizer()
             self.comparator = ScreenshotComparator(tolerance=0.02)  # 2% tolerance for OCR
         
+    @safe_execute("Chrome Driver Setup", raise_on_error=True)
     def setup_driver(self) -> webdriver.Chrome:
         """Setup Chrome WebDriver with appropriate options"""
         chrome_options = Options()
@@ -74,13 +76,9 @@ class BarchartScreenshotValidator:
         # User agent to avoid detection
         chrome_options.add_argument("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
         
-        try:
-            driver = webdriver.Chrome(options=chrome_options)
-            driver.implicitly_wait(10)
-            return driver
-        except Exception as e:
-            logger.error(f"Failed to setup Chrome driver: {e}")
-            raise
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.implicitly_wait(10)
+        return driver
     
     def take_options_screenshot(self, symbol: str, underlying: str = "NQU25", full_page: bool = True) -> Dict[str, Any]:
         """
@@ -176,44 +174,43 @@ class BarchartScreenshotValidator:
                 "timestamp": datetime.now().isoformat()
             }
     
+    @safe_execute("Page Data Extraction", default_return={})
     def _extract_page_data(self) -> Dict[str, Any]:
         """Extract visible data from the page for validation"""
-        try:
-            data = {
-                "page_title": self.driver.title,
-                "has_options_table": False,
-                "contract_count": 0,
-                "underlying_price": None
-            }
+        data = {
+            "page_title": self.driver.title,
+            "has_options_table": False,
+            "contract_count": 0,
+            "underlying_price": None
+        }
+        
+        # Check for options table
+        @safe_execute("Options Table Detection", log_errors=False, raise_on_error=False)
+        def check_options_table():
+            table = self.driver.find_element(By.CSS_SELECTOR, "table.bc-table-scrollable-inner")
+            data["has_options_table"] = True
             
-            # Check for options table
-            try:
-                table = self.driver.find_element(By.CSS_SELECTOR, "table.bc-table-scrollable-inner")
-                data["has_options_table"] = True
-                
-                # Count rows
-                rows = table.find_elements(By.CSS_SELECTOR, "tbody tr")
-                data["contract_count"] = len(rows)
-                
-            except:
-                pass
-            
-            # Try to get underlying price
-            try:
-                price_elem = self.driver.find_element(By.CSS_SELECTOR, "[data-ng-bind*='lastPrice']")
-                data["underlying_price"] = price_elem.text
-            except:
-                pass
-            
-            return data
-            
-        except Exception as e:
-            logger.warning(f"Could not extract page data: {e}")
-            return {}
+            # Count rows
+            rows = table.find_elements(By.CSS_SELECTOR, "tbody tr")
+            data["contract_count"] = len(rows)
+            return True
+        
+        check_options_table()
+        
+        # Try to get underlying price
+        @safe_execute("Underlying Price Extraction", log_errors=False, raise_on_error=False)
+        def get_underlying_price():
+            price_elem = self.driver.find_element(By.CSS_SELECTOR, "[data-ng-bind*='lastPrice']")
+            data["underlying_price"] = price_elem.text
+            return True
+        
+        get_underlying_price()
+        
+        return data
     
+    @safe_execute("Full Page Screenshot Capture", raise_on_error=False)
     def _capture_full_page_screenshot(self, filepath: str):
         """Capture full page screenshot by scrolling and stitching"""
-        try:
             # Get page dimensions
             total_height = self.driver.execute_script("return document.body.scrollHeight")
             viewport_height = self.driver.execute_script("return window.innerHeight")
@@ -285,47 +282,44 @@ class BarchartScreenshotValidator:
             # Scroll back to top
             self.driver.execute_script("window.scrollTo(0, 0)")
             
-        except Exception as e:
-            logger.error(f"Full page screenshot failed: {e}")
-            # Fallback to regular screenshot
+        # Safe execution handles the error logging
+        # Fallback to regular screenshot on any failure
+        @safe_execute("Fallback Screenshot", log_errors=False, raise_on_error=False)
+        def fallback_screenshot():
             self.driver.save_screenshot(filepath)
+            return True
+        
+        fallback_screenshot()
     
+    @safe_execute("OCR Validation", default_return={"success": False, "error": "OCR validation failed"})
     def _perform_ocr_validation(self, screenshot_path: str, symbol: str) -> Dict[str, Any]:
         """Perform OCR extraction and validation"""
-        try:
-            # Extract text using OCR
-            ocr_result = self.ocr_extractor.extract_text_from_screenshot(screenshot_path)
-            
-            if not ocr_result.get("success"):
-                return {
-                    "success": False,
-                    "error": ocr_result.get("error", "OCR extraction failed")
-                }
-            
-            # Get extracted contracts
-            ocr_contracts = ocr_result.get("contracts", [])
-            
-            # Normalize the data
-            normalized_data = self.data_normalizer.normalize_screenshot_data(ocr_contracts, symbol)
-            
-            # Extract summary statistics
-            summary_stats = self.data_normalizer.extract_summary_stats(normalized_data)
-            
-            return {
-                "success": True,
-                "method": ocr_result.get("method"),
-                "contracts_found": len(ocr_contracts),
-                "normalized_data": normalized_data,
-                "summary_stats": summary_stats,
-                "raw_ocr_result": ocr_result
-            }
-            
-        except Exception as e:
-            logger.error(f"OCR validation error: {e}")
+        # Extract text using OCR
+        ocr_result = self.ocr_extractor.extract_text_from_screenshot(screenshot_path)
+        
+        if not ocr_result.get("success"):
             return {
                 "success": False,
-                "error": str(e)
+                "error": ocr_result.get("error", "OCR extraction failed")
             }
+        
+        # Get extracted contracts
+        ocr_contracts = ocr_result.get("contracts", [])
+        
+        # Normalize the data
+        normalized_data = self.data_normalizer.normalize_screenshot_data(ocr_contracts, symbol)
+        
+        # Extract summary statistics
+        summary_stats = self.data_normalizer.extract_summary_stats(normalized_data)
+        
+        return {
+            "success": True,
+            "method": ocr_result.get("method"),
+            "contracts_found": len(ocr_contracts),
+            "normalized_data": normalized_data,
+            "summary_stats": summary_stats,
+            "raw_ocr_result": ocr_result
+        }
     
     def validate_with_screenshot(self, api_data_file: str) -> Dict[str, Any]:
         """

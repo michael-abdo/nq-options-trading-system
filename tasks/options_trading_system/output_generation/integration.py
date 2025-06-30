@@ -23,9 +23,10 @@ from json_exporter.solution import export_analysis_json
 sys.path.append(os.path.dirname(os.path.dirname(current_dir)))
 from options_trading_system.base_components import ConfigurableComponent
 
-# Import centralized datetime utilities
+# Import centralized utilities
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(current_dir))), 'scripts', 'utilities'))
 from datetime_utils import get_timestamp, format_for_filename
+from error_handling import safe_execute, create_error_result, create_success_result
 
 
 class OutputGenerationEngine(ConfigurableComponent):
@@ -33,6 +34,7 @@ class OutputGenerationEngine(ConfigurableComponent):
     
     _results_attr_name = 'generation_results'
         
+    @safe_execute("Trading Report Generation", default_return={"status": "failed", "error": "Unknown error", "timestamp": datetime.now().isoformat()})
     def generate_trading_report(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Generate human-readable trading report"""
         print("  Generating Trading Report...")
@@ -45,26 +47,15 @@ class OutputGenerationEngine(ConfigurableComponent):
         
         analysis_config = self.config.get("analysis", None)
         
-        try:
-            result = generate_trading_report(data_config, report_config, analysis_config)
-            report_text = result["report_text"]
-            
-            print(f"    ✓ Trading Report: {len(report_text)} characters generated")
-            print(f"    ✓ Sections: {result['metadata']['sections_included']}")
-            
-            return {
-                "status": "success",
-                "result": result,
-                "timestamp": datetime.now().isoformat()
-            }
-        except Exception as e:
-            print(f"    ✗ Trading Report failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": datetime.now().isoformat()
-            }
+        result = generate_trading_report(data_config, report_config, analysis_config)
+        report_text = result["report_text"]
+        
+        print(f"    ✓ Trading Report: {len(report_text)} characters generated")
+        print(f"    ✓ Sections: {result['metadata']['sections_included']}")
+        
+        return create_success_result("Trading Report Generation", result)
     
+    @safe_execute("JSON Export Generation", default_return={"status": "failed", "error": "Unknown error", "timestamp": datetime.now().isoformat()})
     def generate_json_export(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Generate structured JSON export"""
         print("  Generating JSON Export...")
@@ -78,27 +69,15 @@ class OutputGenerationEngine(ConfigurableComponent):
         
         analysis_config = self.config.get("analysis", None)
         
-        try:
-            result = export_analysis_json(data_config, export_config, analysis_config)
-            json_size = result["metadata"]["json_size_bytes"]
-            signals_count = result["metadata"]["total_signals"]
-            
-            print(f"    ✓ JSON Export: {json_size} bytes generated")
-            print(f"    ✓ Trading Signals: {signals_count}")
-            print(f"    ✓ Recommended Action: {result['metadata']['recommended_action']}")
-            
-            return {
-                "status": "success",
-                "result": result,
-                "timestamp": datetime.now().isoformat()
-            }
-        except Exception as e:
-            print(f"    ✗ JSON Export failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": datetime.now().isoformat()
-            }
+        result = export_analysis_json(data_config, export_config, analysis_config)
+        json_size = result["metadata"]["json_size_bytes"]
+        signals_count = result["metadata"]["total_signals"]
+        
+        print(f"    ✓ JSON Export: {json_size} bytes generated")
+        print(f"    ✓ Trading Signals: {signals_count}")
+        print(f"    ✓ Recommended Action: {result['metadata']['recommended_action']}")
+        
+        return create_success_result("JSON Export Generation", result)
     
     def save_outputs(self, save_config: Dict[str, Any] = None) -> Dict[str, Any]:
         """Save generated outputs to files"""
@@ -135,7 +114,8 @@ class OutputGenerationEngine(ConfigurableComponent):
         if save_config.get("save_report", True) and "report" in self.generation_results:
             report_result = self.generation_results["report"]
             if report_result["status"] == "success":
-                try:
+                @safe_execute("Report File Save", log_errors=True, raise_on_error=False)
+                def save_report_file():
                     if save_config.get("timestamp_suffix", True):
                         filename = f"nq_trading_report_{timestamp}.txt"
                     else:
@@ -156,16 +136,19 @@ class OutputGenerationEngine(ConfigurableComponent):
                     save_results["total_size_bytes"] += file_size
                     
                     print(f"    ✓ Report saved: {filename} ({file_size} bytes)")
-                    
-                except Exception as e:
-                    save_results["errors"].append(f"Failed to save report: {str(e)}")
-                    print(f"    ✗ Report save failed: {str(e)}")
+                    return True
+                
+                result = save_report_file()
+                if result is None:
+                    save_results["errors"].append("Failed to save report")
+                    print(f"    ✗ Report save failed")
         
         # Save JSON export
         if save_config.get("save_json", True) and "json" in self.generation_results:
             json_result = self.generation_results["json"]
             if json_result["status"] == "success":
-                try:
+                @safe_execute("JSON File Save", log_errors=True, raise_on_error=False)
+                def save_json_file():
                     if save_config.get("timestamp_suffix", True):
                         filename = f"nq_analysis_export_{timestamp}.json"
                     else:
@@ -186,10 +169,12 @@ class OutputGenerationEngine(ConfigurableComponent):
                     save_results["total_size_bytes"] += file_size
                     
                     print(f"    ✓ JSON saved: {filename} ({file_size} bytes)")
-                    
-                except Exception as e:
-                    save_results["errors"].append(f"Failed to save JSON: {str(e)}")
-                    print(f"    ✗ JSON save failed: {str(e)}")
+                    return True
+                
+                result = save_json_file()
+                if result is None:
+                    save_results["errors"].append("Failed to save JSON")
+                    print(f"    ✗ JSON save failed")
         
         save_results["total_files"] = len(save_results["files_saved"])
         return save_results
@@ -257,17 +242,16 @@ class OutputGenerationEngine(ConfigurableComponent):
             # Collect results as they complete
             for future in as_completed(futures):
                 output_type = futures[future]
-                try:
-                    self.generation_results[output_type] = future.result()
-                    if self.generation_results[output_type]["status"] == "success":
+                @safe_execute(f"{output_type.title()} Generation", 
+                             default_return=create_error_result(f"{output_type.title()} Generation", Exception("Generation failed")),
+                             log_errors=True, raise_on_error=False)
+                def process_generation_result():
+                    result = future.result()
+                    if result["status"] == "success":
                         print(f"    ✓ {output_type.title()} generation completed")
-                except Exception as e:
-                    print(f"    ✗ {output_type} generation failed: {str(e)}")
-                    self.generation_results[output_type] = {
-                        "status": "failed",
-                        "error": str(e),
-                        "timestamp": datetime.now().isoformat()
-                    }
+                    return result
+                
+                self.generation_results[output_type] = process_generation_result()
         
         # Save outputs to files
         save_results = self.save_outputs(save_config)

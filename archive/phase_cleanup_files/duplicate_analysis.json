@@ -1,0 +1,200 @@
+{
+  "duplicate_functionality_inventory": {
+    "data_parsing": {
+      "description": "Functions for parsing price, volume, strike values from strings",
+      "centralized_location": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/parsing_utils.py",
+      "status": "PARTIALLY_CONSOLIDATED",
+      "duplicate_patterns": [
+        {
+          "pattern": "parse_price/parse_strike/parse_volume functions",
+          "locations": [
+            "parsing_utils.py - CENTRALIZED (ParsingUtils class)",
+            "ocr_extractor.py - NOW USES parsing_utils (lines 351-364)"
+          ],
+          "recommendation": "Already consolidated - OCR extractor now delegates to parsing_utils"
+        }
+      ]
+    },
+    
+    "data_validation": {
+      "description": "Functions for validating data quality, contracts, API responses",
+      "patterns": [
+        {
+          "pattern": "validate_* methods",
+          "locations": [
+            "data_validator.py - DataValidator class (validate_symbol, validate_contract_count, etc.)",
+            "screenshot_validator.py - ScreenshotValidator class",
+            "Multiple test_validation.py files with similar validation logic"
+          ],
+          "recommendation": "Consider creating a central validation module with common validation rules"
+        }
+      ]
+    },
+    
+    "data_normalization": {
+      "description": "Functions for normalizing data formats across sources",
+      "patterns": [
+        {
+          "pattern": "normalize_* and format_* methods",
+          "locations": [
+            "data_normalizer/solution.py - DataNormalizer class",
+            "screenshot_data_normalizer.py - ScreenshotDataNormalizer class",
+            "parsing_utils.py - normalize_contract_data method"
+          ],
+          "recommendation": "Partially consolidated in parsing_utils, but normalization logic still scattered"
+        }
+      ]
+    },
+    
+    "logging_setup": {
+      "description": "Logger initialization patterns",
+      "patterns": [
+        {
+          "pattern": "logging.getLogger(__name__)",
+          "locations": [
+            "Used in 10+ modules with identical pattern",
+            "Examples: barchart_api_client.py, data_validator.py, hybrid_scraper.py, ocr_extractor.py"
+          ],
+          "recommendation": "Standard pattern, no consolidation needed"
+        },
+        {
+          "pattern": "setup_logging functions",
+          "locations": [
+            "run_comparison.py - setup_logging function"
+          ],
+          "recommendation": "Consider creating a common logging configuration module if more modules need custom setup"
+        }
+      ]
+    },
+    
+    "test_base_classes": {
+      "description": "Base test classes to reduce test setup duplication",
+      "centralized_location": "tests/test_base.py",
+      "status": "WELL_CONSOLIDATED",
+      "hierarchy": {
+        "BaseTestCase": "Flexible base with configurable setUp patterns",
+        "OptionsAnalysisTestCase": "For analysis component tests",
+        "DataIngestionTestCase": "For data ingestion tests",
+        "RealTimeTestCase": "For real-time components with timing utilities"
+      },
+      "usage": [
+        "expiration_pressure_calculator/test_validation.py uses OptionsAnalysisTestCase",
+        "barchart_web_scraper/test_validation.py uses DataIngestionTestCase",
+        "real_time_options_feed/test_validation.py uses RealTimeTestCase",
+        "interactive_brokers_api/test_validation.py uses DataIngestionTestCase"
+      ]
+    },
+    
+    "api_clients": {
+      "description": "API client classes for external services",
+      "patterns": [
+        {
+          "pattern": "API client classes with similar request/response patterns",
+          "locations": [
+            "barchart_api_client.py - BarchartAPIClient",
+            "tradovate_api_data/solution.py - TradovateAPIData",
+            "interactive_brokers_api/solution.py - InteractiveBrokersAPI"
+          ],
+          "recommendation": "Consider a base APIClient class with common retry logic, error handling"
+        }
+      ]
+    },
+    
+    "date_time_formatting": {
+      "description": "Date and time formatting functions",
+      "patterns": [
+        {
+          "pattern": "Date formatting/parsing in various formats",
+          "locations": [
+            "Found in 42 files with date/time related functions",
+            "Common patterns: timestamp formatting, date parsing, timezone handling"
+          ],
+          "recommendation": "Create a central datetime_utils module for consistent date handling"
+        }
+      ]
+    },
+    
+    "file_operations": {
+      "description": "Common file reading/writing patterns",
+      "patterns": [
+        {
+          "pattern": "JSON file operations",
+          "locations": [
+            "Multiple modules use similar json.dump/json.load patterns",
+            "Evidence files, configuration files, output files"
+          ],
+          "recommendation": "Consider a file_utils module for common file operations"
+        }
+      ]
+    },
+    
+    "configuration_management": {
+      "description": "Configuration handling patterns",
+      "centralized_location": "tasks/options_trading_system/base_components.py",
+      "status": "PARTIALLY_CONSOLIDATED",
+      "patterns": [
+        {
+          "pattern": "ConfigurableComponent base class",
+          "usage": "Provides base for components that accept configuration",
+          "recommendation": "Good pattern, consider expanding usage to more components"
+        }
+      ]
+    },
+    
+    "test_utilities": {
+      "description": "Common test helper functions",
+      "patterns": [
+        {
+          "pattern": "Mock data creation functions",
+          "locations": [
+            "create_sample_contracts in OptionsAnalysisTestCase",
+            "create_mock_response in DataIngestionTestCase",
+            "Similar mock data creation scattered in individual tests"
+          ],
+          "recommendation": "Expand test_base.py with more common test data factories"
+        }
+      ]
+    }
+  },
+  
+  "recommendations_priority": [
+    {
+      "priority": 1,
+      "area": "data_validation",
+      "action": "Create validation_utils.py with common validation rules and patterns"
+    },
+    {
+      "priority": 2,
+      "area": "api_clients",
+      "action": "Create base_api_client.py with common retry, error handling, request patterns"
+    },
+    {
+      "priority": 3,
+      "area": "date_time_formatting",
+      "action": "Create datetime_utils.py for consistent date/time handling across the system"
+    },
+    {
+      "priority": 4,
+      "area": "file_operations",
+      "action": "Create file_utils.py for common JSON and file I/O operations"
+    },
+    {
+      "priority": 5,
+      "area": "test_utilities",
+      "action": "Expand test_base.py with more mock data factories and test utilities"
+    }
+  ],
+  
+  "consolidation_status": {
+    "well_consolidated": [
+      "parsing_utils.py - Successfully centralized parsing functions",
+      "test_base.py - Well-designed test class hierarchy",
+      "base_components.py - Good start for component configuration"
+    ],
+    "needs_work": [
+      "Data validation logic scattered across multiple validators",
+      "API client patterns duplicated across services",
+      "Date/time formatting inconsistent across modules"
+    ]
+  }
+}

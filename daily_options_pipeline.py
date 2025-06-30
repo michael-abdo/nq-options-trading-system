@@ -26,6 +26,7 @@ from dataclasses import dataclass, asdict
 # Import centralized utilities
 sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts', 'utilities'))
 from file_io_utils import FileIOUtils
+from error_handling import safe_execute, create_error_result, create_success_result, ErrorHandler
 
 # Add path to import our modules
 sys.path.append("tasks/options_trading_system/data_ingestion/barchart_web_scraper")
@@ -132,17 +133,15 @@ class DailyOptionsPipeline:
         
         self.logger.info(f"📝 Logging configured: {log_file}")
     
+    @safe_execute("Pipeline State Save", log_errors=True, raise_on_error=False)
     def save_state(self):
         """Save current pipeline state"""
-        try:
-            FileIOUtils.save_json(asdict(self.state), self.state_file)
-            self.logger.debug(f"💾 State saved to {self.state_file}")
-        except Exception as e:
-            self.logger.error(f"Failed to save state: {e}")
+        FileIOUtils.save_json(asdict(self.state), self.state_file)
+        self.logger.debug(f"💾 State saved to {self.state_file}")
     
+    @safe_execute("Cookie Loading", default_return=None)
     def load_cookies(self) -> Optional[Dict[str, str]]:
         """Load persisted cookies from most recent session"""
-        try:
             # Find most recent cookie file
             cookie_files = list(self.cookie_dir.glob("barchart_cookies_*.pkl"))
             if not cookie_files:
@@ -172,13 +171,11 @@ class DailyOptionsPipeline:
             
             return cookies
             
-        except Exception as e:
-            self.logger.error(f"Failed to load cookies: {e}")
-            return None
+        # Error handling managed by decorator
     
+    @safe_execute("Cookie Save", raise_on_error=True)
     def save_cookies(self, cookies: Dict[str, str]) -> str:
         """Save cookies with timestamp"""
-        try:
             cookie_file = self.cookie_dir / f"barchart_cookies_{self.timestamp}.pkl"
             
             FileIOUtils.save_pickle(cookies, cookie_file)
@@ -198,9 +195,7 @@ class DailyOptionsPipeline:
             
             return str(cookie_file)
             
-        except Exception as e:
-            self.logger.error(f"Failed to save cookies: {e}")
-            raise
+        # Error handling managed by decorator
     
     def retry_with_backoff(self, func, max_retries: int = 3, base_delay: float = 1.0):
         """Execute function with exponential backoff retry"""
@@ -486,10 +481,9 @@ class DailyOptionsPipeline:
             self.save_state()
             return False
     
+    @safe_execute("Data Validation", default_return=False)
     def validate_retrieved_data(self) -> bool:
         """Validate retrieved data before processing"""
-        
-        try:
             if not self.state.data_file:
                 self.logger.error("❌ No data file to validate")
                 return False
@@ -553,12 +547,7 @@ class DailyOptionsPipeline:
                 self.save_state()
                 return False
                 
-        except Exception as e:
-            error_msg = f"Data validation error: {e}"
-            self.logger.error(f"❌ {error_msg}")
-            self.state.errors.append(error_msg)
-            self.save_state()
-            return False
+        # Error handling managed by decorator
     
     def cleanup(self):
         """Clean up resources"""

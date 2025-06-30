@@ -14,6 +14,10 @@ from typing import Dict, Any, List, Optional
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
 
+# Import centralized error handling
+sys.path.append(os.path.join(project_root, 'scripts', 'utilities'))
+from error_handling import safe_execute, create_error_result, create_success_result
+
 # Import sibling tasks
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from barchart_saved_data.solution import load_barchart_saved_data
@@ -99,6 +103,7 @@ class DataNormalizer:
         
         return normalized
     
+    @safe_execute("Data Normalization", raise_on_error=True)
     def normalize_all_sources(self) -> Dict[str, Any]:
         """
         Normalize data from all loaded sources
@@ -181,6 +186,7 @@ class DataNormalizer:
         
         return normalized
     
+    @safe_execute("Quality Metrics Calculation", raise_on_error=True)
     def get_quality_metrics(self) -> Dict[str, Any]:
         """Calculate quality metrics for normalized data"""
         if not self.normalized_data:
@@ -219,6 +225,7 @@ class DataNormalizer:
 
 
 # Module-level function for easy integration
+@safe_execute("Options Data Normalization", raise_on_error=True)
 def normalize_options_data(sources_config: Dict[str, Any]) -> Dict[str, Any]:
     """
     Normalize options data from configured sources

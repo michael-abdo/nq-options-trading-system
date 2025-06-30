@@ -1,6 +1,6 @@
 {
   "task": "json_exporter",
-  "timestamp": "2025-06-28T22:22:16.328737",
+  "timestamp": "2025-06-29T13:48:07.720756",
   "tests": [
     {
       "name": "exporter_init",
@@ -52,7 +52,7 @@
         "json_size": 3398,
         "signals_count": 3,
         "metadata": {
-          "export_timestamp": "2025-06-28T22:22:17.469655",
+          "export_timestamp": "2025-06-29T13:48:08.921757",
           "total_signals": 3,
           "json_size_bytes": 3398,
           "recommended_action": "short"
@@ -92,7 +92,7 @@
         "file_created": true,
         "file_size": 3398,
         "json_valid": true,
-        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/json_exporter/test_export_20250628_222217.json"
+        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/json_exporter/test_export_20250629_134808.json"
       }
     }
   ],
@@ -110,15 +110,15 @@
         "market_analysis_is_dict": true
       },
       "metadata": {
-        "export_timestamp": "2025-06-28T22:22:17.469655",
+        "export_timestamp": "2025-06-29T13:48:08.921757",
         "total_signals": 3,
         "json_size_bytes": 3398,
         "recommended_action": "short"
       },
       "recommended_action": "short",
       "sample_signal": {
-        "signal_id": "nq_ev_1_20250628_222217",
-        "timestamp": "2025-06-28T22:22:17.469554",
+        "signal_id": "nq_ev_1_20250629_134808",
+        "timestamp": "2025-06-29T13:48:08.921652",
         "source": "nq_ev_algorithm",
         "priority": "PRIMARY",
         "confidence": "HIGH",

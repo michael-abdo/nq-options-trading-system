@@ -1,0 +1,5117 @@
+{
+  "screenshot": "outputs/screenshots/validation/20250630/MQ6M25_validation_20250630_085304.png",
+  "api_file": "outputs/20250630/api_data/barchart_api_MQ6M25_084411.json",
+  "ocr_result": {
+    "success": true,
+    "text": "Nasdaq 100 E-Mini Sep '25 (NQU25)\n22,836.25 +84.75 (+0.37%)\nOPTIONS PRICES for Mon, Jun 30th, 2025\n\nCalls\nStrike      Open        High        Low         Last        Change      Bid         Ask         Volume      Open Int    Premium     Time\n3,500.00C   N/A         19,244.75   19,244.75   19,244.75   +84.50      19,300.00   19,358.75   N/A         N/A         384,895.00  06/27/25\n4,000.00C   N/A         18,744.75   18,744.75   18,744.75s  +84.25      18,800.00   18,858.75   N/A         N/A         374,895.00  06/27/25\n4,500.00C   N/A         18,245.00   18,245.00   18,245.00s  +84.25      18,300.00   18,358.75   N/A         N/A         364,900.00  06/27/25\n5,000.00C   N/A         17,745.25   17,745.25   17,745.25s  +84.25      17,800.00   17,858.75   N/A         N/A         354,905.00  06/27/25\n5,500.00C   N/A         17,245.50   17,245.50   17,245.50s  +84.25      17,300.00   17,358.75   N/A         N/A         344,910.00  06/27/25\n6,000.00C   N/A         16,745.50   16,745.50   16,745.50s  +84.00      16,800.00   16,858.75   N/A         N/A         334,910.00  06/27/25\n6,500.00C   N/A         16,245.75   16,245.75   16,245.75s  +84.25      16,300.00   16,358.75   N/A         N/A         324,915.00  06/27/25",
+    "method": "mock",
+    "contracts": [
+      {
+        "strike": 3500.0,
+        "type": "Call",
+        "open": null,
+        "high": 19244.75,
+        "low": 19244.75,
+        "last": 19244.75,
+        "change": 84.5,
+        "bid": 19300.0,
+        "ask": 19358.75,
+        "volume": null,
+        "open_interest": null,
+        "premium": 384895.0,
+        "time": "06/27/25"
+      },
+      {
+        "strike": 4000.0,
+        "type": "Call",
+        "open": null,
+        "high": 18744.75,
+        "low": 18744.75,
+        "last": 18744.75,
+        "change": 84.25,
+        "bid": 18800.0,
+        "ask": 18858.75,
+        "volume": null,
+        "open_interest": null,
+        "premium": 374895.0,
+        "time": "06/27/25"
+      },
+      {
+        "strike": 4500.0,
+        "type": "Call",
+        "open": null,
+        "high": 18245.0,
+        "low": 18245.0,
+        "last": 18245.0,
+        "change": 84.25,
+        "bid": 18300.0,
+        "ask": 18358.75,
+        "volume": null,
+        "open_interest": null,
+        "premium": 364900.0,
+        "time": "06/27/25"
+      },
+      {
+        "strike": 5000.0,
+        "type": "Call",
+        "open": null,
+        "high": 17745.25,
+        "low": 17745.25,
+        "last": 17745.25,
+        "change": 84.25,
+        "bid": 17800.0,
+        "ask": 17858.75,
+        "volume": null,
+        "open_interest": null,
+        "premium": 354905.0,
+        "time": "06/27/25"
+      },
+      {
+        "strike": 5500.0,
+        "type": "Call",
+        "open": null,
+        "high": 17245.5,
+        "low": 17245.5,
+        "last": 17245.5,
+        "change": 84.25,
+        "bid": 17300.0,
+        "ask": 17358.75,
+        "volume": null,
+        "open_interest": null,
+        "premium": 344910.0,
+        "time": "06/27/25"
+      },
+      {
+        "strike": 6000.0,
+        "type": "Call",
+        "open": null,
+        "high": 16745.5,
+        "low": 16745.5,
+        "last": 16745.5,
+        "change": 84.0,
+        "bid": 16800.0,
+        "ask": 16858.75,
+        "volume": null,
+        "open_interest": null,
+        "premium": 334910.0,
+        "time": "06/27/25"
+      },
+      {
+        "strike": 6500.0,
+        "type": "Call",
+        "open": null,
+        "high": 16245.75,
+        "low": 16245.75,
+        "last": 16245.75,
+        "change": 84.25,
+        "bid": 16300.0,
+        "ask": 16358.75,
+        "volume": null,
+        "open_interest": null,
+        "premium": 324915.0,
+        "time": "06/27/25"
+      }
+    ],
+    "warning": "Using mock data - install pytesseract for real OCR"
+  },
+  "normalized_data": {
+    "count": 2,
+    "total": 7,
+    "data": {
+      "Call": [
+        {
+          "strike": "3,500.00C",
+          "openPrice": "N/A",
+          "highPrice": "19,244.75",
+          "lowPrice": "19,244.75",
+          "lastPrice": "19,244.75",
+          "priceChange": 84.5,
+          "bidPrice": "19,300.00",
+          "askPrice": "19,358.75",
+          "volume": null,
+          "openInterest": null,
+          "premium": "384,895.00",
+          "tradeTime": "06/27/25",
+          "optionType": "Call",
+          "symbol": "MQ6M5|3500C",
+          "raw": {
+            "strike": 3500.0,
+            "openPrice": 0,
+            "highPrice": 19244.75,
+            "lowPrice": 19244.75,
+            "lastPrice": 19244.75,
+            "priceChange": 84.5,
+            "bidPrice": 19300.0,
+            "askPrice": 19358.75,
+            "volume": null,
+            "openInterest": null,
+            "premium": 384895.0,
+            "optionType": "Call"
+          }
+        },
+        {
+          "strike": "4,000.00C",
+          "openPrice": "N/A",
+          "highPrice": "18,744.75",
+          "lowPrice": "18,744.75",
+          "lastPrice": "18,744.75",
+          "priceChange": 84.25,
+          "bidPrice": "18,800.00",
+          "askPrice": "18,858.75",
+          "volume": null,
+          "openInterest": null,
+          "premium": "374,895.00",
+          "tradeTime": "06/27/25",
+          "optionType": "Call",
+          "symbol": "MQ6M5|4000C",
+          "raw": {
+            "strike": 4000.0,
+            "openPrice": 0,
+            "highPrice": 18744.75,
+            "lowPrice": 18744.75,
+            "lastPrice": 18744.75,
+            "priceChange": 84.25,
+            "bidPrice": 18800.0,
+            "askPrice": 18858.75,
+            "volume": null,
+            "openInterest": null,
+            "premium": 374895.0,
+            "optionType": "Call"
+          }
+        },
+        {
+          "strike": "4,500.00C",
+          "openPrice": "N/A",
+          "highPrice": "18,245.00",
+          "lowPrice": "18,245.00",
+          "lastPrice": "18,245.00",
+          "priceChange": 84.25,
+          "bidPrice": "18,300.00",
+          "askPrice": "18,358.75",
+          "volume": null,
+          "openInterest": null,
+          "premium": "364,900.00",
+          "tradeTime": "06/27/25",
+          "optionType": "Call",
+          "symbol": "MQ6M5|4500C",
+          "raw": {
+            "strike": 4500.0,
+            "openPrice": 0,
+            "highPrice": 18245.0,
+            "lowPrice": 18245.0,
+            "lastPrice": 18245.0,
+            "priceChange": 84.25,
+            "bidPrice": 18300.0,
+            "askPrice": 18358.75,
+            "volume": null,
+            "openInterest": null,
+            "premium": 364900.0,
+            "optionType": "Call"
+          }
+        },
+        {
+          "strike": "5,000.00C",
+          "openPrice": "N/A",
+          "highPrice": "17,745.25",
+          "lowPrice": "17,745.25",
+          "lastPrice": "17,745.25",
+          "priceChange": 84.25,
+          "bidPrice": "17,800.00",
+          "askPrice": "17,858.75",
+          "volume": null,
+          "openInterest": null,
+          "premium": "354,905.00",
+          "tradeTime": "06/27/25",
+          "optionType": "Call",
+          "symbol": "MQ6M5|5000C",
+          "raw": {
+            "strike": 5000.0,
+            "openPrice": 0,
+            "highPrice": 17745.25,
+            "lowPrice": 17745.25,
+            "lastPrice": 17745.25,
+            "priceChange": 84.25,
+            "bidPrice": 17800.0,
+            "askPrice": 17858.75,
+            "volume": null,
+            "openInterest": null,
+            "premium": 354905.0,
+            "optionType": "Call"
+          }
+        },
+        {
+          "strike": "5,500.00C",
+          "openPrice": "N/A",
+          "highPrice": "17,245.50",
+          "lowPrice": "17,245.50",
+          "lastPrice": "17,245.50",
+          "priceChange": 84.25,
+          "bidPrice": "17,300.00",
+          "askPrice": "17,358.75",
+          "volume": null,
+          "openInterest": null,
+          "premium": "344,910.00",
+          "tradeTime": "06/27/25",
+          "optionType": "Call",
+          "symbol": "MQ6M5|5500C",
+          "raw": {
+            "strike": 5500.0,
+            "openPrice": 0,
+            "highPrice": 17245.5,
+            "lowPrice": 17245.5,
+            "lastPrice": 17245.5,
+            "priceChange": 84.25,
+            "bidPrice": 17300.0,
+            "askPrice": 17358.75,
+            "volume": null,
+            "openInterest": null,
+            "premium": 344910.0,
+            "optionType": "Call"
+          }
+        },
+        {
+          "strike": "6,000.00C",
+          "openPrice": "N/A",
+          "highPrice": "16,745.50",
+          "lowPrice": "16,745.50",
+          "lastPrice": "16,745.50",
+          "priceChange": 84.0,
+          "bidPrice": "16,800.00",
+          "askPrice": "16,858.75",
+          "volume": null,
+          "openInterest": null,
+          "premium": "334,910.00",
+          "tradeTime": "06/27/25",
+          "optionType": "Call",
+          "symbol": "MQ6M5|6000C",
+          "raw": {
+            "strike": 6000.0,
+            "openPrice": 0,
+            "highPrice": 16745.5,
+            "lowPrice": 16745.5,
+            "lastPrice": 16745.5,
+            "priceChange": 84.0,
+            "bidPrice": 16800.0,
+            "askPrice": 16858.75,
+            "volume": null,
+            "openInterest": null,
+            "premium": 334910.0,
+            "optionType": "Call"
+          }
+        },
+        {
+          "strike": "6,500.00C",
+          "openPrice": "N/A",
+          "highPrice": "16,245.75",
+          "lowPrice": "16,245.75",
+          "lastPrice": "16,245.75",
+          "priceChange": 84.25,
+          "bidPrice": "16,300.00",
+          "askPrice": "16,358.75",
+          "volume": null,
+          "openInterest": null,
+          "premium": "324,915.00",
+          "tradeTime": "06/27/25",
+          "optionType": "Call",
+          "symbol": "MQ6M5|6500C",
+          "raw": {
+            "strike": 6500.0,
+            "openPrice": 0,
+            "highPrice": 16245.75,
+            "lowPrice": 16245.75,
+            "lastPrice": 16245.75,
+            "priceChange": 84.25,
+            "bidPrice": 16300.0,
+            "askPrice": 16358.75,
+            "volume": null,
+            "openInterest": null,
+            "premium": 324915.0,
+            "optionType": "Call"
+          }
+        }
+      ],
+      "Put": []
+    },
+    "meta": {
+      "symbol": "MQ6M25",
+      "source": "screenshot_ocr",
+      "normalized_at": "2025-06-30T09:14:08.467242"
+    }
+  },
+  "comparison": {
+    "timestamp": "2025-06-30T09:14:08.478169",
+    "success": true,
+    "summary": {
+      "screenshot_total": 7,
+      "api_total": 796,
+      "screenshot_calls": 7,
+      "api_calls": 398,
+      "screenshot_puts": 0,
+      "api_puts": 398,
+      "coverage_ratio": 0.008793969849246231
+    },
+    "discrepancies": [
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 7000,
+        "message": "Call strike 7000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 7500,
+        "message": "Call strike 7500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 8000,
+        "message": "Call strike 8000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 8500,
+        "message": "Call strike 8500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 9000,
+        "message": "Call strike 9000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 9500,
+        "message": "Call strike 9500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 10000,
+        "message": "Call strike 10000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 10500,
+        "message": "Call strike 10500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 10750,
+        "message": "Call strike 10750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 11000,
+        "message": "Call strike 11000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 11250,
+        "message": "Call strike 11250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 11500,
+        "message": "Call strike 11500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 11750,
+        "message": "Call strike 11750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 12000,
+        "message": "Call strike 12000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 12250,
+        "message": "Call strike 12250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 12500,
+        "message": "Call strike 12500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 12750,
+        "message": "Call strike 12750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 13000,
+        "message": "Call strike 13000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 13250,
+        "message": "Call strike 13250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 13500,
+        "message": "Call strike 13500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 13750,
+        "message": "Call strike 13750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 14000,
+        "message": "Call strike 14000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 14250,
+        "message": "Call strike 14250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 14500,
+        "message": "Call strike 14500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 14750,
+        "message": "Call strike 14750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 15000,
+        "message": "Call strike 15000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 15250,
+        "message": "Call strike 15250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 15500,
+        "message": "Call strike 15500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 15750,
+        "message": "Call strike 15750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 16000,
+        "message": "Call strike 16000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 16250,
+        "message": "Call strike 16250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 16500,
+        "message": "Call strike 16500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 16750,
+        "message": "Call strike 16750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17000,
+        "message": "Call strike 17000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17100,
+        "message": "Call strike 17100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17200,
+        "message": "Call strike 17200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17250,
+        "message": "Call strike 17250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17300,
+        "message": "Call strike 17300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17400,
+        "message": "Call strike 17400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17500,
+        "message": "Call strike 17500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17600,
+        "message": "Call strike 17600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17700,
+        "message": "Call strike 17700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17750,
+        "message": "Call strike 17750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17800,
+        "message": "Call strike 17800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 17900,
+        "message": "Call strike 17900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18000,
+        "message": "Call strike 18000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18100,
+        "message": "Call strike 18100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18200,
+        "message": "Call strike 18200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18250,
+        "message": "Call strike 18250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18300,
+        "message": "Call strike 18300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18400,
+        "message": "Call strike 18400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18500,
+        "message": "Call strike 18500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18600,
+        "message": "Call strike 18600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18700,
+        "message": "Call strike 18700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18750,
+        "message": "Call strike 18750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18800,
+        "message": "Call strike 18800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 18900,
+        "message": "Call strike 18900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19000,
+        "message": "Call strike 19000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19100,
+        "message": "Call strike 19100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19200,
+        "message": "Call strike 19200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19250,
+        "message": "Call strike 19250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19300,
+        "message": "Call strike 19300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19400,
+        "message": "Call strike 19400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19500,
+        "message": "Call strike 19500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19600,
+        "message": "Call strike 19600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19700,
+        "message": "Call strike 19700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19750,
+        "message": "Call strike 19750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19800,
+        "message": "Call strike 19800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19850,
+        "message": "Call strike 19850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19900,
+        "message": "Call strike 19900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 19950,
+        "message": "Call strike 19950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20000,
+        "message": "Call strike 20000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20050,
+        "message": "Call strike 20050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20100,
+        "message": "Call strike 20100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20150,
+        "message": "Call strike 20150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20200,
+        "message": "Call strike 20200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20250,
+        "message": "Call strike 20250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20300,
+        "message": "Call strike 20300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20350,
+        "message": "Call strike 20350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20400,
+        "message": "Call strike 20400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20450,
+        "message": "Call strike 20450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20500,
+        "message": "Call strike 20500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20550,
+        "message": "Call strike 20550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20600,
+        "message": "Call strike 20600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20650,
+        "message": "Call strike 20650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20700,
+        "message": "Call strike 20700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20750,
+        "message": "Call strike 20750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20775,
+        "message": "Call strike 20775 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20800,
+        "message": "Call strike 20800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20825,
+        "message": "Call strike 20825 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20850,
+        "message": "Call strike 20850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20875,
+        "message": "Call strike 20875 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20900,
+        "message": "Call strike 20900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20925,
+        "message": "Call strike 20925 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20950,
+        "message": "Call strike 20950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 20975,
+        "message": "Call strike 20975 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21000,
+        "message": "Call strike 21000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21025,
+        "message": "Call strike 21025 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21050,
+        "message": "Call strike 21050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21075,
+        "message": "Call strike 21075 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21100,
+        "message": "Call strike 21100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21125,
+        "message": "Call strike 21125 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21150,
+        "message": "Call strike 21150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21175,
+        "message": "Call strike 21175 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21200,
+        "message": "Call strike 21200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21225,
+        "message": "Call strike 21225 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21250,
+        "message": "Call strike 21250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21275,
+        "message": "Call strike 21275 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21290,
+        "message": "Call strike 21290 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21300,
+        "message": "Call strike 21300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21310,
+        "message": "Call strike 21310 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21320,
+        "message": "Call strike 21320 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21325,
+        "message": "Call strike 21325 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21330,
+        "message": "Call strike 21330 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21340,
+        "message": "Call strike 21340 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21350,
+        "message": "Call strike 21350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21360,
+        "message": "Call strike 21360 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21370,
+        "message": "Call strike 21370 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21375,
+        "message": "Call strike 21375 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21380,
+        "message": "Call strike 21380 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21390,
+        "message": "Call strike 21390 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21400,
+        "message": "Call strike 21400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21410,
+        "message": "Call strike 21410 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21420,
+        "message": "Call strike 21420 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21425,
+        "message": "Call strike 21425 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21430,
+        "message": "Call strike 21430 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21440,
+        "message": "Call strike 21440 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21450,
+        "message": "Call strike 21450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21460,
+        "message": "Call strike 21460 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21470,
+        "message": "Call strike 21470 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21475,
+        "message": "Call strike 21475 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21480,
+        "message": "Call strike 21480 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21490,
+        "message": "Call strike 21490 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21500,
+        "message": "Call strike 21500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21510,
+        "message": "Call strike 21510 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21520,
+        "message": "Call strike 21520 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21525,
+        "message": "Call strike 21525 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21530,
+        "message": "Call strike 21530 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21540,
+        "message": "Call strike 21540 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21550,
+        "message": "Call strike 21550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21560,
+        "message": "Call strike 21560 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21570,
+        "message": "Call strike 21570 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21575,
+        "message": "Call strike 21575 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21580,
+        "message": "Call strike 21580 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21590,
+        "message": "Call strike 21590 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21600,
+        "message": "Call strike 21600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21610,
+        "message": "Call strike 21610 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21620,
+        "message": "Call strike 21620 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21625,
+        "message": "Call strike 21625 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21630,
+        "message": "Call strike 21630 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21640,
+        "message": "Call strike 21640 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21650,
+        "message": "Call strike 21650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21660,
+        "message": "Call strike 21660 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21670,
+        "message": "Call strike 21670 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21675,
+        "message": "Call strike 21675 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21680,
+        "message": "Call strike 21680 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21690,
+        "message": "Call strike 21690 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21700,
+        "message": "Call strike 21700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21710,
+        "message": "Call strike 21710 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21720,
+        "message": "Call strike 21720 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21725,
+        "message": "Call strike 21725 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21730,
+        "message": "Call strike 21730 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21740,
+        "message": "Call strike 21740 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21750,
+        "message": "Call strike 21750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21760,
+        "message": "Call strike 21760 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21770,
+        "message": "Call strike 21770 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21775,
+        "message": "Call strike 21775 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21780,
+        "message": "Call strike 21780 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21790,
+        "message": "Call strike 21790 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21800,
+        "message": "Call strike 21800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21810,
+        "message": "Call strike 21810 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21820,
+        "message": "Call strike 21820 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21825,
+        "message": "Call strike 21825 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21830,
+        "message": "Call strike 21830 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21840,
+        "message": "Call strike 21840 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21850,
+        "message": "Call strike 21850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21860,
+        "message": "Call strike 21860 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21870,
+        "message": "Call strike 21870 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21875,
+        "message": "Call strike 21875 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21880,
+        "message": "Call strike 21880 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21890,
+        "message": "Call strike 21890 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21900,
+        "message": "Call strike 21900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21910,
+        "message": "Call strike 21910 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21920,
+        "message": "Call strike 21920 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21925,
+        "message": "Call strike 21925 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21930,
+        "message": "Call strike 21930 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21940,
+        "message": "Call strike 21940 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21950,
+        "message": "Call strike 21950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21960,
+        "message": "Call strike 21960 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21970,
+        "message": "Call strike 21970 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21975,
+        "message": "Call strike 21975 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21980,
+        "message": "Call strike 21980 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 21990,
+        "message": "Call strike 21990 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22000,
+        "message": "Call strike 22000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22010,
+        "message": "Call strike 22010 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22020,
+        "message": "Call strike 22020 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22025,
+        "message": "Call strike 22025 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22030,
+        "message": "Call strike 22030 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22040,
+        "message": "Call strike 22040 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22050,
+        "message": "Call strike 22050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22060,
+        "message": "Call strike 22060 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22070,
+        "message": "Call strike 22070 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22075,
+        "message": "Call strike 22075 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22080,
+        "message": "Call strike 22080 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22090,
+        "message": "Call strike 22090 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22100,
+        "message": "Call strike 22100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22110,
+        "message": "Call strike 22110 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22120,
+        "message": "Call strike 22120 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22125,
+        "message": "Call strike 22125 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22130,
+        "message": "Call strike 22130 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22140,
+        "message": "Call strike 22140 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22150,
+        "message": "Call strike 22150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22160,
+        "message": "Call strike 22160 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22170,
+        "message": "Call strike 22170 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22175,
+        "message": "Call strike 22175 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22180,
+        "message": "Call strike 22180 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22190,
+        "message": "Call strike 22190 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22200,
+        "message": "Call strike 22200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22210,
+        "message": "Call strike 22210 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22220,
+        "message": "Call strike 22220 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22225,
+        "message": "Call strike 22225 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22230,
+        "message": "Call strike 22230 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22240,
+        "message": "Call strike 22240 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22250,
+        "message": "Call strike 22250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22260,
+        "message": "Call strike 22260 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22270,
+        "message": "Call strike 22270 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22275,
+        "message": "Call strike 22275 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22280,
+        "message": "Call strike 22280 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22290,
+        "message": "Call strike 22290 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22300,
+        "message": "Call strike 22300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22310,
+        "message": "Call strike 22310 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22320,
+        "message": "Call strike 22320 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22325,
+        "message": "Call strike 22325 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22330,
+        "message": "Call strike 22330 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22340,
+        "message": "Call strike 22340 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22350,
+        "message": "Call strike 22350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22360,
+        "message": "Call strike 22360 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22370,
+        "message": "Call strike 22370 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22375,
+        "message": "Call strike 22375 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22380,
+        "message": "Call strike 22380 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22390,
+        "message": "Call strike 22390 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22400,
+        "message": "Call strike 22400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22410,
+        "message": "Call strike 22410 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22420,
+        "message": "Call strike 22420 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22425,
+        "message": "Call strike 22425 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22430,
+        "message": "Call strike 22430 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22440,
+        "message": "Call strike 22440 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22450,
+        "message": "Call strike 22450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22460,
+        "message": "Call strike 22460 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22470,
+        "message": "Call strike 22470 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22475,
+        "message": "Call strike 22475 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22480,
+        "message": "Call strike 22480 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22490,
+        "message": "Call strike 22490 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22500,
+        "message": "Call strike 22500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22510,
+        "message": "Call strike 22510 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22520,
+        "message": "Call strike 22520 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22525,
+        "message": "Call strike 22525 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22530,
+        "message": "Call strike 22530 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22540,
+        "message": "Call strike 22540 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22550,
+        "message": "Call strike 22550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22560,
+        "message": "Call strike 22560 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22570,
+        "message": "Call strike 22570 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22575,
+        "message": "Call strike 22575 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22580,
+        "message": "Call strike 22580 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22590,
+        "message": "Call strike 22590 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22600,
+        "message": "Call strike 22600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22610,
+        "message": "Call strike 22610 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22620,
+        "message": "Call strike 22620 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22625,
+        "message": "Call strike 22625 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22630,
+        "message": "Call strike 22630 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22640,
+        "message": "Call strike 22640 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22650,
+        "message": "Call strike 22650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22660,
+        "message": "Call strike 22660 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22670,
+        "message": "Call strike 22670 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22675,
+        "message": "Call strike 22675 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22680,
+        "message": "Call strike 22680 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22690,
+        "message": "Call strike 22690 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22700,
+        "message": "Call strike 22700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22710,
+        "message": "Call strike 22710 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22720,
+        "message": "Call strike 22720 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22725,
+        "message": "Call strike 22725 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22730,
+        "message": "Call strike 22730 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22740,
+        "message": "Call strike 22740 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22750,
+        "message": "Call strike 22750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22760,
+        "message": "Call strike 22760 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22770,
+        "message": "Call strike 22770 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22775,
+        "message": "Call strike 22775 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22780,
+        "message": "Call strike 22780 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22790,
+        "message": "Call strike 22790 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22800,
+        "message": "Call strike 22800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22810,
+        "message": "Call strike 22810 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22820,
+        "message": "Call strike 22820 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22825,
+        "message": "Call strike 22825 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22830,
+        "message": "Call strike 22830 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22840,
+        "message": "Call strike 22840 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22850,
+        "message": "Call strike 22850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22860,
+        "message": "Call strike 22860 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22870,
+        "message": "Call strike 22870 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22875,
+        "message": "Call strike 22875 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22880,
+        "message": "Call strike 22880 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22890,
+        "message": "Call strike 22890 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22900,
+        "message": "Call strike 22900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22910,
+        "message": "Call strike 22910 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22920,
+        "message": "Call strike 22920 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22925,
+        "message": "Call strike 22925 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22930,
+        "message": "Call strike 22930 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22940,
+        "message": "Call strike 22940 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22950,
+        "message": "Call strike 22950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22960,
+        "message": "Call strike 22960 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22970,
+        "message": "Call strike 22970 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22975,
+        "message": "Call strike 22975 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22980,
+        "message": "Call strike 22980 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 22990,
+        "message": "Call strike 22990 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23000,
+        "message": "Call strike 23000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23010,
+        "message": "Call strike 23010 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23020,
+        "message": "Call strike 23020 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23025,
+        "message": "Call strike 23025 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23030,
+        "message": "Call strike 23030 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23040,
+        "message": "Call strike 23040 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23050,
+        "message": "Call strike 23050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23060,
+        "message": "Call strike 23060 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23070,
+        "message": "Call strike 23070 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23075,
+        "message": "Call strike 23075 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23080,
+        "message": "Call strike 23080 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23090,
+        "message": "Call strike 23090 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23100,
+        "message": "Call strike 23100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23110,
+        "message": "Call strike 23110 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23120,
+        "message": "Call strike 23120 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23125,
+        "message": "Call strike 23125 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23130,
+        "message": "Call strike 23130 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23140,
+        "message": "Call strike 23140 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23150,
+        "message": "Call strike 23150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23160,
+        "message": "Call strike 23160 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23170,
+        "message": "Call strike 23170 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23175,
+        "message": "Call strike 23175 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23180,
+        "message": "Call strike 23180 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23190,
+        "message": "Call strike 23190 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23200,
+        "message": "Call strike 23200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23210,
+        "message": "Call strike 23210 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23220,
+        "message": "Call strike 23220 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23225,
+        "message": "Call strike 23225 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23230,
+        "message": "Call strike 23230 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23240,
+        "message": "Call strike 23240 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23250,
+        "message": "Call strike 23250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23260,
+        "message": "Call strike 23260 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23270,
+        "message": "Call strike 23270 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23275,
+        "message": "Call strike 23275 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23280,
+        "message": "Call strike 23280 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23290,
+        "message": "Call strike 23290 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23300,
+        "message": "Call strike 23300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23310,
+        "message": "Call strike 23310 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23320,
+        "message": "Call strike 23320 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23325,
+        "message": "Call strike 23325 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23330,
+        "message": "Call strike 23330 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23340,
+        "message": "Call strike 23340 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23350,
+        "message": "Call strike 23350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23400,
+        "message": "Call strike 23400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23450,
+        "message": "Call strike 23450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23500,
+        "message": "Call strike 23500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23550,
+        "message": "Call strike 23550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23600,
+        "message": "Call strike 23600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23650,
+        "message": "Call strike 23650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23700,
+        "message": "Call strike 23700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23750,
+        "message": "Call strike 23750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23800,
+        "message": "Call strike 23800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 23900,
+        "message": "Call strike 23900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 24000,
+        "message": "Call strike 24000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 24100,
+        "message": "Call strike 24100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 24200,
+        "message": "Call strike 24200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 24250,
+        "message": "Call strike 24250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 24500,
+        "message": "Call strike 24500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 24750,
+        "message": "Call strike 24750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 25000,
+        "message": "Call strike 25000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 25250,
+        "message": "Call strike 25250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 25500,
+        "message": "Call strike 25500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 25750,
+        "message": "Call strike 25750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 26000,
+        "message": "Call strike 26000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 26250,
+        "message": "Call strike 26250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 26500,
+        "message": "Call strike 26500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 26750,
+        "message": "Call strike 26750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 27000,
+        "message": "Call strike 27000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 27250,
+        "message": "Call strike 27250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 27500,
+        "message": "Call strike 27500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 28000,
+        "message": "Call strike 28000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 28500,
+        "message": "Call strike 28500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 29000,
+        "message": "Call strike 29000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 29500,
+        "message": "Call strike 29500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 30000,
+        "message": "Call strike 30000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 30500,
+        "message": "Call strike 30500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 31000,
+        "message": "Call strike 31000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Call",
+        "strike": 31500,
+        "message": "Call strike 31500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 3500,
+        "message": "Put strike 3500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 4000,
+        "message": "Put strike 4000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 4500,
+        "message": "Put strike 4500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 5000,
+        "message": "Put strike 5000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 5500,
+        "message": "Put strike 5500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 6000,
+        "message": "Put strike 6000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 6500,
+        "message": "Put strike 6500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 7000,
+        "message": "Put strike 7000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 7500,
+        "message": "Put strike 7500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 8000,
+        "message": "Put strike 8000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 8500,
+        "message": "Put strike 8500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 9000,
+        "message": "Put strike 9000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 9500,
+        "message": "Put strike 9500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 10000,
+        "message": "Put strike 10000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 10500,
+        "message": "Put strike 10500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 10750,
+        "message": "Put strike 10750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 11000,
+        "message": "Put strike 11000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 11250,
+        "message": "Put strike 11250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 11500,
+        "message": "Put strike 11500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 11750,
+        "message": "Put strike 11750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 12000,
+        "message": "Put strike 12000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 12250,
+        "message": "Put strike 12250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 12500,
+        "message": "Put strike 12500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 12750,
+        "message": "Put strike 12750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 13000,
+        "message": "Put strike 13000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 13250,
+        "message": "Put strike 13250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 13500,
+        "message": "Put strike 13500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 13750,
+        "message": "Put strike 13750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 14000,
+        "message": "Put strike 14000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 14250,
+        "message": "Put strike 14250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 14500,
+        "message": "Put strike 14500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 14750,
+        "message": "Put strike 14750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 15000,
+        "message": "Put strike 15000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 15250,
+        "message": "Put strike 15250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 15500,
+        "message": "Put strike 15500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 15750,
+        "message": "Put strike 15750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 16000,
+        "message": "Put strike 16000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 16250,
+        "message": "Put strike 16250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 16500,
+        "message": "Put strike 16500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 16750,
+        "message": "Put strike 16750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17000,
+        "message": "Put strike 17000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17100,
+        "message": "Put strike 17100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17200,
+        "message": "Put strike 17200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17250,
+        "message": "Put strike 17250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17300,
+        "message": "Put strike 17300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17400,
+        "message": "Put strike 17400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17500,
+        "message": "Put strike 17500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17600,
+        "message": "Put strike 17600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17700,
+        "message": "Put strike 17700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17750,
+        "message": "Put strike 17750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17800,
+        "message": "Put strike 17800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 17900,
+        "message": "Put strike 17900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18000,
+        "message": "Put strike 18000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18100,
+        "message": "Put strike 18100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18200,
+        "message": "Put strike 18200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18250,
+        "message": "Put strike 18250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18300,
+        "message": "Put strike 18300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18400,
+        "message": "Put strike 18400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18500,
+        "message": "Put strike 18500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18600,
+        "message": "Put strike 18600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18700,
+        "message": "Put strike 18700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18750,
+        "message": "Put strike 18750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18800,
+        "message": "Put strike 18800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 18900,
+        "message": "Put strike 18900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19000,
+        "message": "Put strike 19000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19100,
+        "message": "Put strike 19100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19200,
+        "message": "Put strike 19200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19250,
+        "message": "Put strike 19250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19300,
+        "message": "Put strike 19300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19400,
+        "message": "Put strike 19400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19500,
+        "message": "Put strike 19500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19600,
+        "message": "Put strike 19600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19700,
+        "message": "Put strike 19700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19750,
+        "message": "Put strike 19750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19800,
+        "message": "Put strike 19800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19850,
+        "message": "Put strike 19850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19900,
+        "message": "Put strike 19900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 19950,
+        "message": "Put strike 19950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20000,
+        "message": "Put strike 20000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20050,
+        "message": "Put strike 20050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20100,
+        "message": "Put strike 20100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20150,
+        "message": "Put strike 20150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20200,
+        "message": "Put strike 20200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20250,
+        "message": "Put strike 20250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20300,
+        "message": "Put strike 20300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20350,
+        "message": "Put strike 20350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20400,
+        "message": "Put strike 20400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20450,
+        "message": "Put strike 20450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20500,
+        "message": "Put strike 20500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20550,
+        "message": "Put strike 20550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20600,
+        "message": "Put strike 20600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20650,
+        "message": "Put strike 20650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20700,
+        "message": "Put strike 20700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20750,
+        "message": "Put strike 20750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20775,
+        "message": "Put strike 20775 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20800,
+        "message": "Put strike 20800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20825,
+        "message": "Put strike 20825 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20850,
+        "message": "Put strike 20850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20875,
+        "message": "Put strike 20875 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20900,
+        "message": "Put strike 20900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20925,
+        "message": "Put strike 20925 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20950,
+        "message": "Put strike 20950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 20975,
+        "message": "Put strike 20975 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21000,
+        "message": "Put strike 21000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21025,
+        "message": "Put strike 21025 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21050,
+        "message": "Put strike 21050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21075,
+        "message": "Put strike 21075 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21100,
+        "message": "Put strike 21100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21125,
+        "message": "Put strike 21125 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21150,
+        "message": "Put strike 21150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21175,
+        "message": "Put strike 21175 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21200,
+        "message": "Put strike 21200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21225,
+        "message": "Put strike 21225 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21250,
+        "message": "Put strike 21250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21275,
+        "message": "Put strike 21275 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21290,
+        "message": "Put strike 21290 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21300,
+        "message": "Put strike 21300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21310,
+        "message": "Put strike 21310 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21320,
+        "message": "Put strike 21320 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21325,
+        "message": "Put strike 21325 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21330,
+        "message": "Put strike 21330 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21340,
+        "message": "Put strike 21340 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21350,
+        "message": "Put strike 21350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21360,
+        "message": "Put strike 21360 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21370,
+        "message": "Put strike 21370 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21375,
+        "message": "Put strike 21375 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21380,
+        "message": "Put strike 21380 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21390,
+        "message": "Put strike 21390 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21400,
+        "message": "Put strike 21400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21410,
+        "message": "Put strike 21410 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21420,
+        "message": "Put strike 21420 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21425,
+        "message": "Put strike 21425 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21430,
+        "message": "Put strike 21430 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21440,
+        "message": "Put strike 21440 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21450,
+        "message": "Put strike 21450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21460,
+        "message": "Put strike 21460 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21470,
+        "message": "Put strike 21470 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21475,
+        "message": "Put strike 21475 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21480,
+        "message": "Put strike 21480 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21490,
+        "message": "Put strike 21490 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21500,
+        "message": "Put strike 21500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21510,
+        "message": "Put strike 21510 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21520,
+        "message": "Put strike 21520 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21525,
+        "message": "Put strike 21525 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21530,
+        "message": "Put strike 21530 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21540,
+        "message": "Put strike 21540 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21550,
+        "message": "Put strike 21550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21560,
+        "message": "Put strike 21560 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21570,
+        "message": "Put strike 21570 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21575,
+        "message": "Put strike 21575 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21580,
+        "message": "Put strike 21580 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21590,
+        "message": "Put strike 21590 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21600,
+        "message": "Put strike 21600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21610,
+        "message": "Put strike 21610 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21620,
+        "message": "Put strike 21620 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21625,
+        "message": "Put strike 21625 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21630,
+        "message": "Put strike 21630 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21640,
+        "message": "Put strike 21640 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21650,
+        "message": "Put strike 21650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21660,
+        "message": "Put strike 21660 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21670,
+        "message": "Put strike 21670 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21675,
+        "message": "Put strike 21675 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21680,
+        "message": "Put strike 21680 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21690,
+        "message": "Put strike 21690 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21700,
+        "message": "Put strike 21700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21710,
+        "message": "Put strike 21710 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21720,
+        "message": "Put strike 21720 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21725,
+        "message": "Put strike 21725 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21730,
+        "message": "Put strike 21730 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21740,
+        "message": "Put strike 21740 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21750,
+        "message": "Put strike 21750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21760,
+        "message": "Put strike 21760 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21770,
+        "message": "Put strike 21770 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21775,
+        "message": "Put strike 21775 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21780,
+        "message": "Put strike 21780 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21790,
+        "message": "Put strike 21790 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21800,
+        "message": "Put strike 21800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21810,
+        "message": "Put strike 21810 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21820,
+        "message": "Put strike 21820 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21825,
+        "message": "Put strike 21825 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21830,
+        "message": "Put strike 21830 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21840,
+        "message": "Put strike 21840 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21850,
+        "message": "Put strike 21850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21860,
+        "message": "Put strike 21860 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21870,
+        "message": "Put strike 21870 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21875,
+        "message": "Put strike 21875 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21880,
+        "message": "Put strike 21880 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21890,
+        "message": "Put strike 21890 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21900,
+        "message": "Put strike 21900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21910,
+        "message": "Put strike 21910 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21920,
+        "message": "Put strike 21920 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21925,
+        "message": "Put strike 21925 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21930,
+        "message": "Put strike 21930 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21940,
+        "message": "Put strike 21940 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21950,
+        "message": "Put strike 21950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21960,
+        "message": "Put strike 21960 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21970,
+        "message": "Put strike 21970 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21975,
+        "message": "Put strike 21975 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21980,
+        "message": "Put strike 21980 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 21990,
+        "message": "Put strike 21990 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22000,
+        "message": "Put strike 22000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22010,
+        "message": "Put strike 22010 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22020,
+        "message": "Put strike 22020 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22025,
+        "message": "Put strike 22025 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22030,
+        "message": "Put strike 22030 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22040,
+        "message": "Put strike 22040 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22050,
+        "message": "Put strike 22050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22060,
+        "message": "Put strike 22060 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22070,
+        "message": "Put strike 22070 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22075,
+        "message": "Put strike 22075 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22080,
+        "message": "Put strike 22080 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22090,
+        "message": "Put strike 22090 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22100,
+        "message": "Put strike 22100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22110,
+        "message": "Put strike 22110 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22120,
+        "message": "Put strike 22120 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22125,
+        "message": "Put strike 22125 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22130,
+        "message": "Put strike 22130 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22140,
+        "message": "Put strike 22140 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22150,
+        "message": "Put strike 22150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22160,
+        "message": "Put strike 22160 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22170,
+        "message": "Put strike 22170 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22175,
+        "message": "Put strike 22175 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22180,
+        "message": "Put strike 22180 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22190,
+        "message": "Put strike 22190 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22200,
+        "message": "Put strike 22200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22210,
+        "message": "Put strike 22210 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22220,
+        "message": "Put strike 22220 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22225,
+        "message": "Put strike 22225 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22230,
+        "message": "Put strike 22230 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22240,
+        "message": "Put strike 22240 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22250,
+        "message": "Put strike 22250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22260,
+        "message": "Put strike 22260 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22270,
+        "message": "Put strike 22270 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22275,
+        "message": "Put strike 22275 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22280,
+        "message": "Put strike 22280 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22290,
+        "message": "Put strike 22290 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22300,
+        "message": "Put strike 22300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22310,
+        "message": "Put strike 22310 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22320,
+        "message": "Put strike 22320 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22325,
+        "message": "Put strike 22325 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22330,
+        "message": "Put strike 22330 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22340,
+        "message": "Put strike 22340 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22350,
+        "message": "Put strike 22350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22360,
+        "message": "Put strike 22360 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22370,
+        "message": "Put strike 22370 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22375,
+        "message": "Put strike 22375 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22380,
+        "message": "Put strike 22380 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22390,
+        "message": "Put strike 22390 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22400,
+        "message": "Put strike 22400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22410,
+        "message": "Put strike 22410 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22420,
+        "message": "Put strike 22420 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22425,
+        "message": "Put strike 22425 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22430,
+        "message": "Put strike 22430 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22440,
+        "message": "Put strike 22440 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22450,
+        "message": "Put strike 22450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22460,
+        "message": "Put strike 22460 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22470,
+        "message": "Put strike 22470 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22475,
+        "message": "Put strike 22475 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22480,
+        "message": "Put strike 22480 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22490,
+        "message": "Put strike 22490 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22500,
+        "message": "Put strike 22500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22510,
+        "message": "Put strike 22510 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22520,
+        "message": "Put strike 22520 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22525,
+        "message": "Put strike 22525 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22530,
+        "message": "Put strike 22530 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22540,
+        "message": "Put strike 22540 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22550,
+        "message": "Put strike 22550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22560,
+        "message": "Put strike 22560 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22570,
+        "message": "Put strike 22570 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22575,
+        "message": "Put strike 22575 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22580,
+        "message": "Put strike 22580 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22590,
+        "message": "Put strike 22590 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22600,
+        "message": "Put strike 22600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22610,
+        "message": "Put strike 22610 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22620,
+        "message": "Put strike 22620 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22625,
+        "message": "Put strike 22625 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22630,
+        "message": "Put strike 22630 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22640,
+        "message": "Put strike 22640 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22650,
+        "message": "Put strike 22650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22660,
+        "message": "Put strike 22660 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22670,
+        "message": "Put strike 22670 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22675,
+        "message": "Put strike 22675 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22680,
+        "message": "Put strike 22680 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22690,
+        "message": "Put strike 22690 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22700,
+        "message": "Put strike 22700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22710,
+        "message": "Put strike 22710 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22720,
+        "message": "Put strike 22720 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22725,
+        "message": "Put strike 22725 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22730,
+        "message": "Put strike 22730 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22740,
+        "message": "Put strike 22740 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22750,
+        "message": "Put strike 22750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22760,
+        "message": "Put strike 22760 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22770,
+        "message": "Put strike 22770 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22775,
+        "message": "Put strike 22775 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22780,
+        "message": "Put strike 22780 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22790,
+        "message": "Put strike 22790 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22800,
+        "message": "Put strike 22800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22810,
+        "message": "Put strike 22810 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22820,
+        "message": "Put strike 22820 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22825,
+        "message": "Put strike 22825 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22830,
+        "message": "Put strike 22830 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22840,
+        "message": "Put strike 22840 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22850,
+        "message": "Put strike 22850 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22860,
+        "message": "Put strike 22860 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22870,
+        "message": "Put strike 22870 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22875,
+        "message": "Put strike 22875 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22880,
+        "message": "Put strike 22880 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22890,
+        "message": "Put strike 22890 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22900,
+        "message": "Put strike 22900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22910,
+        "message": "Put strike 22910 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22920,
+        "message": "Put strike 22920 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22925,
+        "message": "Put strike 22925 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22930,
+        "message": "Put strike 22930 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22940,
+        "message": "Put strike 22940 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22950,
+        "message": "Put strike 22950 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22960,
+        "message": "Put strike 22960 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22970,
+        "message": "Put strike 22970 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22975,
+        "message": "Put strike 22975 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22980,
+        "message": "Put strike 22980 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 22990,
+        "message": "Put strike 22990 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23000,
+        "message": "Put strike 23000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23010,
+        "message": "Put strike 23010 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23020,
+        "message": "Put strike 23020 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23025,
+        "message": "Put strike 23025 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23030,
+        "message": "Put strike 23030 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23040,
+        "message": "Put strike 23040 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23050,
+        "message": "Put strike 23050 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23060,
+        "message": "Put strike 23060 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23070,
+        "message": "Put strike 23070 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23075,
+        "message": "Put strike 23075 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23080,
+        "message": "Put strike 23080 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23090,
+        "message": "Put strike 23090 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23100,
+        "message": "Put strike 23100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23110,
+        "message": "Put strike 23110 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23120,
+        "message": "Put strike 23120 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23125,
+        "message": "Put strike 23125 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23130,
+        "message": "Put strike 23130 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23140,
+        "message": "Put strike 23140 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23150,
+        "message": "Put strike 23150 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23160,
+        "message": "Put strike 23160 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23170,
+        "message": "Put strike 23170 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23175,
+        "message": "Put strike 23175 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23180,
+        "message": "Put strike 23180 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23190,
+        "message": "Put strike 23190 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23200,
+        "message": "Put strike 23200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23210,
+        "message": "Put strike 23210 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23220,
+        "message": "Put strike 23220 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23225,
+        "message": "Put strike 23225 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23230,
+        "message": "Put strike 23230 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23240,
+        "message": "Put strike 23240 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23250,
+        "message": "Put strike 23250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23260,
+        "message": "Put strike 23260 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23270,
+        "message": "Put strike 23270 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23275,
+        "message": "Put strike 23275 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23280,
+        "message": "Put strike 23280 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23290,
+        "message": "Put strike 23290 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23300,
+        "message": "Put strike 23300 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23310,
+        "message": "Put strike 23310 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23320,
+        "message": "Put strike 23320 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23325,
+        "message": "Put strike 23325 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23330,
+        "message": "Put strike 23330 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23340,
+        "message": "Put strike 23340 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23350,
+        "message": "Put strike 23350 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23400,
+        "message": "Put strike 23400 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23450,
+        "message": "Put strike 23450 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23500,
+        "message": "Put strike 23500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23550,
+        "message": "Put strike 23550 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23600,
+        "message": "Put strike 23600 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23650,
+        "message": "Put strike 23650 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23700,
+        "message": "Put strike 23700 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23750,
+        "message": "Put strike 23750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23800,
+        "message": "Put strike 23800 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 23900,
+        "message": "Put strike 23900 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 24000,
+        "message": "Put strike 24000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 24100,
+        "message": "Put strike 24100 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 24200,
+        "message": "Put strike 24200 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 24250,
+        "message": "Put strike 24250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 24500,
+        "message": "Put strike 24500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 24750,
+        "message": "Put strike 24750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 25000,
+        "message": "Put strike 25000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 25250,
+        "message": "Put strike 25250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 25500,
+        "message": "Put strike 25500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 25750,
+        "message": "Put strike 25750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 26000,
+        "message": "Put strike 26000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 26250,
+        "message": "Put strike 26250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 26500,
+        "message": "Put strike 26500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 26750,
+        "message": "Put strike 26750 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 27000,
+        "message": "Put strike 27000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 27250,
+        "message": "Put strike 27250 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 27500,
+        "message": "Put strike 27500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 28000,
+        "message": "Put strike 28000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 28500,
+        "message": "Put strike 28500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 29000,
+        "message": "Put strike 29000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 29500,
+        "message": "Put strike 29500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 30000,
+        "message": "Put strike 30000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 30500,
+        "message": "Put strike 30500 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 31000,
+        "message": "Put strike 31000 in API but not found in screenshot"
+      },
+      {
+        "type": "missing_in_screenshot",
+        "option_type": "Put",
+        "strike": 31500,
+        "message": "Put strike 31500 in API but not found in screenshot"
+      }
+    ],
+    "match_stats": {
+      "calls": {
+        "total_screenshot": 7,
+        "total_api": 398,
+        "matches": 7,
+        "match_rate": 0.017587939698492462,
+        "field_match_rate": 1.0
+      },
+      "puts": {
+        "total_screenshot": 0,
+        "total_api": 398,
+        "matches": 0,
+        "match_rate": 0.0,
+        "field_match_rate": 0
+      },
+      "overall": {
+        "total_contracts": 796,
+        "total_matches": 7,
+        "match_rate": 0.008793969849246231,
+        "avg_field_match_rate": 0.5
+      }
+    },
+    "warnings": [
+      "Screenshot shows only 7 of 796 contracts - may be paginated",
+      "Low match rate: 0.9% - check OCR accuracy or data freshness"
+    ],
+    "validation_passed": false
+  }
+}

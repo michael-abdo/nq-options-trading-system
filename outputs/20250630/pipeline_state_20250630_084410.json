@@ -1,0 +1,55 @@
+{
+  "timestamp": "20250630_084410",
+  "symbol_generated": true,
+  "symbol": "MQ6M25",
+  "option_type": "monthly",
+  "authenticated": true,
+  "cookies_saved": true,
+  "cookie_file": null,
+  "data_retrieved": true,
+  "data_file": "outputs/20250630/api_data/barchart_api_MQ6M25_084411.json",
+  "metrics_calculated": true,
+  "metrics_file": "outputs/20250630/metrics/MQ6M25_metrics_084411.json",
+  "data_validated": true,
+  "validation_results": {
+    "api_data": {
+      "file": "outputs/20250630/api_data/barchart_api_MQ6M25_084411.json",
+      "symbol": "MQ6M25",
+      "timestamp": "2025-06-30T08:44:11.381204",
+      "validations": {
+        "symbol": {
+          "valid": true,
+          "message": "Symbol validation passed"
+        },
+        "contract_count": {
+          "valid": true,
+          "message": "Contract count validation passed (796 contracts)"
+        },
+        "data_quality": {
+          "valid": true,
+          "message": "Data quality validation passed"
+        }
+      },
+      "valid": true
+    },
+    "metrics": {
+      "file": "outputs/20250630/metrics/MQ6M25_metrics_084411.json",
+      "symbol": "MQ6M25",
+      "timestamp": "2025-06-30T08:44:11.381872",
+      "validations": {
+        "open_interest": {
+          "valid": true,
+          "message": "OI validation passed (Call: 8581, Put: 12407, Ratio: 1.45)"
+        },
+        "pcr_calculation": {
+          "valid": true,
+          "message": "PCR calculated: 0.162"
+        }
+      },
+      "valid": true
+    }
+  },
+  "total_contracts": 796,
+  "errors": [],
+  "warnings": []
+}
