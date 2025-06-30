@@ -14,9 +14,10 @@ from typing import Dict, Any, List, Optional
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
 
-# Import centralized error handling
+# Import centralized utilities
 sys.path.append(os.path.join(project_root, 'scripts', 'utilities'))
 from error_handling import safe_execute, create_error_result, create_success_result
+from datetime_utils import get_timestamp
 
 # Import sibling tasks
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -72,7 +73,7 @@ class DataNormalizer:
             "bid": None,
             "ask": None,
             "underlying_price": None,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_timestamp()
         }
         
         if source == "barchart":
@@ -120,7 +121,7 @@ class DataNormalizer:
             "summary": {
                 "total_contracts": 0,
                 "sources_count": 0,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_timestamp()
             }
         }
         
@@ -182,7 +183,7 @@ class DataNormalizer:
         normalized["summary"]["by_source"] = by_source
         
         self.normalized_data = normalized
-        self.metadata["normalized_at"] = datetime.now().isoformat()
+        self.metadata["normalized_at"] = get_timestamp()
         
         return normalized
     
