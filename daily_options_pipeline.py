@@ -142,60 +142,56 @@ class DailyOptionsPipeline:
     @safe_execute("Cookie Loading", default_return=None)
     def load_cookies(self) -> Optional[Dict[str, str]]:
         """Load persisted cookies from most recent session"""
-            # Find most recent cookie file
-            cookie_files = list(self.cookie_dir.glob("barchart_cookies_*.pkl"))
-            if not cookie_files:
-                self.logger.info("🍪 No persisted cookies found")
-                return None
-            
-            latest_cookie_file = max(cookie_files, key=os.path.getctime)
-            cookie_age = datetime.now() - datetime.fromtimestamp(os.path.getctime(latest_cookie_file))
-            
-            # Check if cookies are too old (older than 24 hours)
-            if cookie_age > timedelta(hours=24):
-                self.logger.info(f"🍪 Cookies too old ({cookie_age}), will re-authenticate")
-                return None
-            
-            cookies = FileIOUtils.load_pickle(latest_cookie_file)
-            
-            self.logger.info(f"🍪 Loaded {len(cookies)} cookies from {latest_cookie_file.name}")
-            self.logger.info(f"   Age: {cookie_age}")
-            
-            # Validate essential cookies
-            essential_cookies = ['laravel_session', 'XSRF-TOKEN', 'laravel_token']
-            missing = [c for c in essential_cookies if c not in cookies]
-            
-            if missing:
-                self.logger.warning(f"🍪 Missing essential cookies: {missing}")
-                return None
-            
-            return cookies
-            
-        # Error handling managed by decorator
+        # Find most recent cookie file
+        cookie_files = list(self.cookie_dir.glob("barchart_cookies_*.pkl"))
+        if not cookie_files:
+            self.logger.info("🍪 No persisted cookies found")
+            return None
+        
+        latest_cookie_file = max(cookie_files, key=os.path.getctime)
+        cookie_age = datetime.now() - datetime.fromtimestamp(os.path.getctime(latest_cookie_file))
+        
+        # Check if cookies are too old (older than 24 hours)
+        if cookie_age > timedelta(hours=24):
+            self.logger.info(f"🍪 Cookies too old ({cookie_age}), will re-authenticate")
+            return None
+        
+        cookies = FileIOUtils.load_pickle(latest_cookie_file)
+        
+        self.logger.info(f"🍪 Loaded {len(cookies)} cookies from {latest_cookie_file.name}")
+        self.logger.info(f"   Age: {cookie_age}")
+        
+        # Validate essential cookies
+        essential_cookies = ['laravel_session', 'XSRF-TOKEN', 'laravel_token']
+        missing = [c for c in essential_cookies if c not in cookies]
+        
+        if missing:
+            self.logger.warning(f"🍪 Missing essential cookies: {missing}")
+            return None
+        
+        return cookies
     
     @safe_execute("Cookie Save", raise_on_error=True)
     def save_cookies(self, cookies: Dict[str, str]) -> str:
         """Save cookies with timestamp"""
-            cookie_file = self.cookie_dir / f"barchart_cookies_{self.timestamp}.pkl"
-            
-            FileIOUtils.save_pickle(cookies, cookie_file)
-            
-            self.logger.info(f"🍪 Saved {len(cookies)} cookies to {cookie_file.name}")
-            
-            # Clean up old cookie files (keep last 5)
-            cookie_files = sorted(
-                self.cookie_dir.glob("barchart_cookies_*.pkl"),
-                key=os.path.getctime,
-                reverse=True
-            )
-            
-            for old_file in cookie_files[5:]:
-                old_file.unlink()
-                self.logger.debug(f"🗑️  Cleaned up old cookie file: {old_file.name}")
-            
-            return str(cookie_file)
-            
-        # Error handling managed by decorator
+        cookie_file = self.cookie_dir / f"barchart_cookies_{self.timestamp}.pkl"
+        
+        FileIOUtils.save_pickle(cookies, cookie_file)
+        
+        self.logger.info(f"🍪 Saved {len(cookies)} cookies to {cookie_file.name}")
+        
+        # Clean up old cookie files (keep last 5)
+        cookie_files = sorted(
+            self.cookie_dir.glob("barchart_cookies_*.pkl"),
+            key=os.path.getctime,
+            reverse=True
+        )
+        
+        for old_file in cookie_files[5:]:
+            old_file.unlink()
+            self.logger.debug(f"🗑️  Cleaned up old cookie file: {old_file.name}")
+        
+        return str(cookie_file)
     
     def retry_with_backoff(self, func, max_retries: int = 3, base_delay: float = 1.0):
         """Execute function with exponential backoff retry"""
@@ -484,70 +480,68 @@ class DailyOptionsPipeline:
     @safe_execute("Data Validation", default_return=False)
     def validate_retrieved_data(self) -> bool:
         """Validate retrieved data before processing"""
-            if not self.state.data_file:
-                self.logger.error("❌ No data file to validate")
-                return False
+        if not self.state.data_file:
+            self.logger.error("❌ No data file to validate")
+            return False
+        
+        self.logger.info("🔍 Validating retrieved data...")
+        api_validation = self.validator.validate_api_response(self.state.data_file)
+        
+        if api_validation["valid"]:
+            self.logger.info("✅ Data validation passed")
+            for check, result in api_validation.get("validations", {}).items():
+                self.logger.info(f"   ✅ {check}: {result['message']}")
             
-            self.logger.info("🔍 Validating retrieved data...")
-            api_validation = self.validator.validate_api_response(self.state.data_file)
+            self.state.data_validated = True
+            self.state.validation_results = {"api_data": api_validation}
             
-            if api_validation["valid"]:
-                self.logger.info("✅ Data validation passed")
-                for check, result in api_validation.get("validations", {}).items():
-                    self.logger.info(f"   ✅ {check}: {result['message']}")
-                
-                self.state.data_validated = True
-                self.state.validation_results = {"api_data": api_validation}
-                
-                # Optional screenshot validation
-                if self.screenshot_validation and self.screenshot_validator:
-                    self.logger.info("\n📸 Taking screenshot for visual validation...")
-                    try:
-                        screenshot_result = self.screenshot_validator.take_options_screenshot(
-                            self.state.symbol, 
-                            underlying="NQU25"
-                        )
+            # Optional screenshot validation
+            if self.screenshot_validation and self.screenshot_validator:
+                self.logger.info("\n📸 Taking screenshot for visual validation...")
+                try:
+                    screenshot_result = self.screenshot_validator.take_options_screenshot(
+                        self.state.symbol, 
+                        underlying="NQU25"
+                    )
+                    
+                    if screenshot_result["success"]:
+                        self.logger.info(f"✅ Screenshot saved: {screenshot_result['screenshot_path']}")
+                        self.state.validation_results["screenshot"] = screenshot_result
                         
-                        if screenshot_result["success"]:
-                            self.logger.info(f"✅ Screenshot saved: {screenshot_result['screenshot_path']}")
-                            self.state.validation_results["screenshot"] = screenshot_result
-                            
-                            # Log OCR results if available
-                            if "ocr_validation" in screenshot_result:
-                                ocr = screenshot_result["ocr_validation"]
-                                if ocr.get("success"):
-                                    self.logger.info(f"✅ OCR extracted {ocr.get('contracts_found', 0)} contracts")
-                                    
-                                    # If OCR comparison available, show match rate
-                                    if "ocr_comparison" in self.state.validation_results.get("screenshot", {}):
-                                        match_rate = (self.state.validation_results["screenshot"]["ocr_comparison"]
-                                                    .get("match_stats", {}).get("overall", {}).get("match_rate", 0))
-                                        self.logger.info(f"   OCR vs API Match Rate: {match_rate:.1%}")
-                                else:
-                                    self.logger.warning(f"⚠️  OCR extraction failed: {ocr.get('error')}")
-                        else:
-                            self.logger.warning(f"⚠️  Screenshot failed: {screenshot_result.get('error')}")
-                            self.state.warnings.append("Screenshot validation failed")
-                    except Exception as e:
-                        self.logger.warning(f"⚠️  Screenshot error: {e}")
-                        self.state.warnings.append(f"Screenshot error: {str(e)}")
-                
-                return True
-            else:
-                self.logger.error("❌ Data validation failed")
-                for check, result in api_validation.get("validations", {}).items():
-                    if not result["valid"]:
-                        self.logger.error(f"   ❌ {check}: {result['message']}")
-                
-                error_msg = "Data validation failed - cannot proceed with metrics calculation"
-                self.state.errors.append(error_msg)
-                self.state.data_validated = False
-                self.state.validation_results = {"api_data": api_validation}
-                
-                self.save_state()
-                return False
-                
-        # Error handling managed by decorator
+                        # Log OCR results if available
+                        if "ocr_validation" in screenshot_result:
+                            ocr = screenshot_result["ocr_validation"]
+                            if ocr.get("success"):
+                                self.logger.info(f"✅ OCR extracted {ocr.get('contracts_found', 0)} contracts")
+                                
+                                # If OCR comparison available, show match rate
+                                if "ocr_comparison" in self.state.validation_results.get("screenshot", {}):
+                                    match_rate = (self.state.validation_results["screenshot"]["ocr_comparison"]
+                                                .get("match_stats", {}).get("overall", {}).get("match_rate", 0))
+                                    self.logger.info(f"   OCR vs API Match Rate: {match_rate:.1%}")
+                            else:
+                                self.logger.warning(f"⚠️  OCR extraction failed: {ocr.get('error')}")
+                    else:
+                        self.logger.warning(f"⚠️  Screenshot failed: {screenshot_result.get('error')}")
+                        self.state.warnings.append("Screenshot validation failed")
+                except Exception as e:
+                    self.logger.warning(f"⚠️  Screenshot error: {e}")
+                    self.state.warnings.append(f"Screenshot error: {str(e)}")
+            
+            return True
+        else:
+            self.logger.error("❌ Data validation failed")
+            for check, result in api_validation.get("validations", {}).items():
+                if not result["valid"]:
+                    self.logger.error(f"   ❌ {check}: {result['message']}")
+            
+            error_msg = "Data validation failed - cannot proceed with metrics calculation"
+            self.state.errors.append(error_msg)
+            self.state.data_validated = False
+            self.state.validation_results = {"api_data": api_validation}
+            
+            self.save_state()
+            return False
     
     def cleanup(self):
         """Clean up resources"""

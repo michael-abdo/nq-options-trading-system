@@ -1,6 +1,6 @@
 {
   "task": "expected_value_analysis",
-  "timestamp": "2025-06-29T13:47:07.618044",
+  "timestamp": "2025-06-30T16:41:50.174803",
   "tests": [
     {
       "name": "analyzer_init",
@@ -143,7 +143,7 @@
       "strikes_analyzed": 309,
       "quality_setups": 5486,
       "trading_report": {
-        "timestamp": "2025-06-29T13:47:09.791177",
+        "timestamp": "2025-06-30T16:41:52.510421",
         "current_nq_price": 21376.75,
         "total_setups": 5486,
         "top_opportunities": [

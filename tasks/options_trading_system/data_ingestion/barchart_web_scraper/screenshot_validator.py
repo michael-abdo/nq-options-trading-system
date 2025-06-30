@@ -211,85 +211,76 @@ class BarchartScreenshotValidator:
     @safe_execute("Full Page Screenshot Capture", raise_on_error=False)
     def _capture_full_page_screenshot(self, filepath: str):
         """Capture full page screenshot by scrolling and stitching"""
-            # Get page dimensions
-            total_height = self.driver.execute_script("return document.body.scrollHeight")
-            viewport_height = self.driver.execute_script("return window.innerHeight")
-            total_width = self.driver.execute_script("return document.body.scrollWidth")
+        # Get page dimensions
+        total_height = self.driver.execute_script("return document.body.scrollHeight")
+        viewport_height = self.driver.execute_script("return window.innerHeight")
+        total_width = self.driver.execute_script("return document.body.scrollWidth")
+        
+        logger.info(f"📏 Page dimensions: {total_width}x{total_height}px")
+        logger.info(f"📏 Viewport height: {viewport_height}px")
+        
+        # Method 1: Try to set window size to full height (may be limited by OS)
+        try:
+            self.driver.set_window_size(total_width, min(total_height, 8000))  # Limit to 8000px
+            time.sleep(1)
+            self.driver.save_screenshot(filepath)
+            logger.info("✅ Full page captured with single screenshot")
+            return
+        except:
+            logger.info("⚠️  Single screenshot failed, using scroll method")
+        
+        # Method 2: Scroll and capture multiple screenshots
+        from PIL import Image
+        import io
+        
+        screenshots = []
+        scroll_position = 0
+        
+        # Scroll to top
+        self.driver.execute_script("window.scrollTo(0, 0)")
+        time.sleep(0.5)
+        
+        while scroll_position < total_height:
+            # Take screenshot
+            screenshot = self.driver.get_screenshot_as_png()
+            image = Image.open(io.BytesIO(screenshot))
+            screenshots.append({
+                'image': image,
+                'position': scroll_position
+            })
             
-            logger.info(f"📏 Page dimensions: {total_width}x{total_height}px")
-            logger.info(f"📏 Viewport height: {viewport_height}px")
-            
-            # Method 1: Try to set window size to full height (may be limited by OS)
-            try:
-                self.driver.set_window_size(total_width, min(total_height, 8000))  # Limit to 8000px
-                time.sleep(1)
-                self.driver.save_screenshot(filepath)
-                logger.info("✅ Full page captured with single screenshot")
-                return
-            except:
-                logger.info("⚠️  Single screenshot failed, using scroll method")
-            
-            # Method 2: Scroll and capture multiple screenshots
-            from PIL import Image
-            import io
-            
-            screenshots = []
-            scroll_position = 0
-            
-            # Scroll to top
-            self.driver.execute_script("window.scrollTo(0, 0)")
+            # Scroll down
+            scroll_position += viewport_height - 100  # Overlap for continuity
+            self.driver.execute_script(f"window.scrollTo(0, {scroll_position})")
             time.sleep(0.5)
             
-            while scroll_position < total_height:
-                # Take screenshot
-                screenshot = self.driver.get_screenshot_as_png()
-                image = Image.open(io.BytesIO(screenshot))
-                screenshots.append({
-                    'image': image,
-                    'position': scroll_position
-                })
-                
-                # Scroll down
-                scroll_position += viewport_height - 100  # Overlap for continuity
-                self.driver.execute_script(f"window.scrollTo(0, {scroll_position})")
-                time.sleep(0.5)
-                
-                logger.info(f"📸 Captured section at position {scroll_position}/{total_height}")
-            
-            # Stitch screenshots together
-            if len(screenshots) == 1:
-                # Only one screenshot needed
-                screenshots[0]['image'].save(filepath)
-            else:
-                # Create combined image
-                combined_height = total_height
-                combined_width = screenshots[0]['image'].width
-                
-                combined = Image.new('RGB', (combined_width, combined_height))
-                
-                for i, shot in enumerate(screenshots):
-                    y_position = shot['position']
-                    # For last screenshot, adjust position to avoid going beyond total height
-                    if i == len(screenshots) - 1:
-                        y_position = combined_height - shot['image'].height
-                    
-                    combined.paste(shot['image'], (0, y_position))
-                
-                # Save combined image
-                combined.save(filepath)
-                logger.info(f"✅ Stitched {len(screenshots)} screenshots into full page image")
-            
-            # Scroll back to top
-            self.driver.execute_script("window.scrollTo(0, 0)")
-            
-        # Safe execution handles the error logging
-        # Fallback to regular screenshot on any failure
-        @safe_execute("Fallback Screenshot", log_errors=False, raise_on_error=False)
-        def fallback_screenshot():
-            self.driver.save_screenshot(filepath)
-            return True
+            logger.info(f"📸 Captured section at position {scroll_position}/{total_height}")
         
-        fallback_screenshot()
+        # Stitch screenshots together
+        if len(screenshots) == 1:
+            # Only one screenshot needed
+            screenshots[0]['image'].save(filepath)
+        else:
+            # Create combined image
+            combined_height = total_height
+            combined_width = screenshots[0]['image'].width
+            
+            combined = Image.new('RGB', (combined_width, combined_height))
+            
+            for i, shot in enumerate(screenshots):
+                y_position = shot['position']
+                # For last screenshot, adjust position to avoid going beyond total height
+                if i == len(screenshots) - 1:
+                    y_position = combined_height - shot['image'].height
+                
+                combined.paste(shot['image'], (0, y_position))
+            
+            # Save combined image
+            combined.save(filepath)
+            logger.info(f"✅ Stitched {len(screenshots)} screenshots into full page image")
+        
+        # Scroll back to top
+        self.driver.execute_script("window.scrollTo(0, 0)")
     
     @safe_execute("OCR Validation", default_return={"success": False, "error": "OCR validation failed"})
     def _perform_ocr_validation(self, screenshot_path: str, symbol: str) -> Dict[str, Any]:

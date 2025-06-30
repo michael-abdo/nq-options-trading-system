@@ -1,7 +1,7 @@
 {
   "task": "risk_analysis",
   "type": "leaf",
-  "timestamp": "2025-06-29T13:47:17.466791",
+  "timestamp": "2025-06-30T16:41:58.237274",
   "tests": [
     {
       "name": "analyzer_init",
@@ -37,8 +37,8 @@
           "NEAR TERM"
         ],
         "defense_types": [
-          "PUT DEFENSE",
-          "CALL DEFENSE"
+          "CALL DEFENSE",
+          "PUT DEFENSE"
         ]
       }
     },
