@@ -24,6 +24,10 @@ from pathlib import Path
 from typing import Dict, Any, Optional, Tuple
 from dataclasses import dataclass, asdict
 
+# Import centralized utilities
+sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts', 'utilities'))
+from file_io_utils import FileIOUtils
+
 # Add path to import our modules
 sys.path.append("tasks/options_trading_system/data_ingestion/barchart_web_scraper")
 
@@ -132,8 +136,7 @@ class DailyOptionsPipeline:
     def save_state(self):
         """Save current pipeline state"""
         try:
-            with open(self.state_file, 'w') as f:
-                json.dump(asdict(self.state), f, indent=2)
+            FileIOUtils.save_json(asdict(self.state), self.state_file)
             self.logger.debug(f"💾 State saved to {self.state_file}")
         except Exception as e:
             self.logger.error(f"Failed to save state: {e}")
@@ -155,8 +158,7 @@ class DailyOptionsPipeline:
                 self.logger.info(f"🍪 Cookies too old ({cookie_age}), will re-authenticate")
                 return None
             
-            with open(latest_cookie_file, 'rb') as f:
-                cookies = pickle.load(f)
+            cookies = FileIOUtils.load_pickle(latest_cookie_file)
             
             self.logger.info(f"🍪 Loaded {len(cookies)} cookies from {latest_cookie_file.name}")
             self.logger.info(f"   Age: {cookie_age}")
@@ -180,8 +182,7 @@ class DailyOptionsPipeline:
         try:
             cookie_file = self.cookie_dir / f"barchart_cookies_{self.timestamp}.pkl"
             
-            with open(cookie_file, 'wb') as f:
-                pickle.dump(cookies, f)
+            FileIOUtils.save_pickle(cookies, cookie_file)
             
             self.logger.info(f"🍪 Saved {len(cookies)} cookies to {cookie_file.name}")
             
@@ -442,8 +443,7 @@ class DailyOptionsPipeline:
             
             def _calculate_metrics():
                 # Load data
-                with open(self.state.data_file, 'r') as f:
-                    data = json.load(f)
+                data = FileIOUtils.load_json(self.state.data_file)
                 
                 # Calculate metrics
                 metrics, metrics_file = self.calculator.calculate_and_save_metrics(
@@ -708,8 +708,10 @@ def main():
                        help='Directory for cookie storage')
     parser.add_argument('--year-format', choices=['2digit', '1digit'], 
                        default='2digit', help='Year format: 2digit (25) or 1digit (5)')
-    parser.add_argument('--screenshot', action='store_true',
-                       help='Take screenshot of Barchart page for visual validation')
+    parser.add_argument('--screenshot', action='store_true', default=True,
+                       help='Take screenshot of Barchart page for visual validation (default: enabled)')
+    parser.add_argument('--no-screenshot', dest='screenshot', action='store_false',
+                       help='Disable screenshot validation')
     
     args = parser.parse_args()
     
