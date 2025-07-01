@@ -11,6 +11,7 @@ import json
 from datetime import datetime
 from typing import Dict, Any, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 # Add current directory to path for child task imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,6 +28,7 @@ from options_trading_system.base_components import ConfigurableComponent
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(current_dir))), 'scripts', 'utilities'))
 from datetime_utils import get_timestamp, format_for_filename
 from error_handling import safe_execute, create_error_result, create_success_result
+from file_io_utils import FileIOUtils
 
 
 class OutputGenerationEngine(ConfigurableComponent):
@@ -104,11 +106,11 @@ class OutputGenerationEngine(ConfigurableComponent):
         
         # Create organized output directories
         output_dir = base_output_dir  # For backwards compatibility
-        reports_dir = os.path.join(base_output_dir, date_str, "reports")
-        exports_dir = os.path.join(base_output_dir, date_str, "analysis_exports")
+        reports_dir = Path(base_output_dir) / date_str / "reports"
+        exports_dir = Path(base_output_dir) / date_str / "analysis_exports"
         
-        os.makedirs(reports_dir, exist_ok=True)
-        os.makedirs(exports_dir, exist_ok=True)
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        exports_dir.mkdir(parents=True, exist_ok=True)
         
         # Save trading report
         if save_config.get("save_report", True) and "report" in self.generation_results:
@@ -121,12 +123,12 @@ class OutputGenerationEngine(ConfigurableComponent):
                     else:
                         filename = "nq_trading_report.txt"
                     
-                    filepath = os.path.join(reports_dir, filename)
+                    filepath = reports_dir / filename
                     
-                    with open(filepath, 'w', encoding='utf-8') as f:
-                        f.write(report_result["result"]["report_text"])
+                    # Use Path write_text for simple text files
+                    filepath.write_text(report_result["result"]["report_text"], encoding='utf-8')
                     
-                    file_size = os.path.getsize(filepath)
+                    file_size = filepath.stat().st_size
                     save_results["files_saved"].append({
                         "type": "trading_report",
                         "filename": filename,
@@ -154,12 +156,13 @@ class OutputGenerationEngine(ConfigurableComponent):
                     else:
                         filename = "nq_analysis_export.json"
                     
-                    filepath = os.path.join(exports_dir, filename)
+                    filepath = exports_dir / filename
                     
-                    with open(filepath, 'w', encoding='utf-8') as f:
-                        f.write(json_result["result"]["json_string"])
+                    # Use FileIOUtils for JSON save
+                    json_data = json.loads(json_result["result"]["json_string"])
+                    FileIOUtils.save_json(json_data, filepath)
                     
-                    file_size = os.path.getsize(filepath)
+                    file_size = filepath.stat().st_size
                     save_results["files_saved"].append({
                         "type": "json_export",
                         "filename": filename,

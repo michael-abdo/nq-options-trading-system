@@ -1,0 +1,47 @@
+{
+  "old_pattern": {
+    "task": "example_old_pattern",
+    "timestamp": "2025-06-30T20:34:54.610805",
+    "tests": [
+      {
+        "name": "example_test",
+        "passed": true,
+        "details": "Example passed: True"
+      },
+      {
+        "name": "another_test",
+        "passed": true,
+        "details": "Another passed: True"
+      }
+    ],
+    "status": "VALIDATED",
+    "evidence": {
+      "example_data": {
+        "status": "working"
+      }
+    }
+  },
+  "new_pattern": {
+    "task": "example_new_pattern",
+    "timestamp": "2025-06-30T20:34:54.610847",
+    "tests": [
+      {
+        "name": "example_test",
+        "passed": true,
+        "details": "Example passed: True"
+      },
+      {
+        "name": "another_test",
+        "passed": true,
+        "details": "Another passed: True"
+      }
+    ],
+    "status": "VALIDATED",
+    "evidence": {
+      "example_data": {
+        "status": "working"
+      }
+    }
+  },
+  "consolidation_complete": true
+}
