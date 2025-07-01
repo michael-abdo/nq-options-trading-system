@@ -8,6 +8,16 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 
+# Canonical month codes mapping - single source of truth
+MONTH_CODES = {
+    'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6,
+    'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12
+}
+
+# Reverse mapping for month number to code
+MONTH_NUMBERS = {v: k for k, v in MONTH_CODES.items()}
+
+
 class BarchartSymbolGenerator:
     """Generate Barchart options contract symbols for various expiry types"""
     
@@ -81,13 +91,8 @@ class BarchartSymbolGenerator:
         if option_type == "monthly":
             week_of_month = 6
         
-        # Month codes
-        month_codes = {
-            1: 'F', 2: 'G', 3: 'H', 4: 'J', 5: 'K', 6: 'M',
-            7: 'N', 8: 'Q', 9: 'U', 10: 'V', 11: 'X', 12: 'Z'
-        }
-        
-        month_code = month_codes[expiry_date.month]
+        # Use canonical month codes
+        month_code = MONTH_NUMBERS[expiry_date.month]
         
         # Year suffix
         if year_format == "4digit":
@@ -128,13 +133,8 @@ class BarchartSymbolGenerator:
         else:
             option_type = "unknown"
         
-        # Month code to number
-        month_numbers = {
-            'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6,
-            'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12
-        }
-        
-        month = month_numbers.get(month_code, 0)
+        # Use canonical month codes
+        month = MONTH_CODES.get(month_code, 0)
         
         return {
             "symbol": symbol,

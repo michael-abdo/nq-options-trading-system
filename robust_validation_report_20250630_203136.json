@@ -1,0 +1,818 @@
+{
+  "timestamp": "2025-06-30T20:31:36.157617",
+  "summary": {
+    "total_failures": 50,
+    "edge_case_issues": 26,
+    "patterns_analyzed": {
+      "day_of_week": {
+        "Monday": 60,
+        "Tuesday": 60,
+        "Wednesday": 60,
+        "Thursday": 60,
+        "Friday": 60,
+        "Saturday": 60,
+        "Sunday": 60
+      },
+      "symbols": {
+        "MM": 140,
+        "MQ": 280
+      },
+      "years": {
+        "2025": 1148,
+        "2024": 1088,
+        "2026": 1180,
+        "2028": 1148,
+        "2027": 1084,
+        "2029": 1192,
+        "2030": 1160
+      },
+      "months": {
+        "July": 688,
+        "February": 644,
+        "November": 600,
+        "May": 728,
+        "June": 660,
+        "September": 692,
+        "January": 704,
+        "August": 640,
+        "October": 692,
+        "December": 680,
+        "March": 652,
+        "April": 620
+      },
+      "week_numbers": {
+        "1": 6000,
+        "6": 2000
+      }
+    }
+  },
+  "failures": [
+    {
+      "date": "2025-07-04 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-07-04 is not after 2025-07-04"
+      ]
+    },
+    {
+      "date": "2025-07-04 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-07-04",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-07-01 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2024-06-20 is not after 2024-07-01",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-02-04 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-11-21 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2024-06-20 is not after 2024-11-21",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2028-02-10 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-02-06 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2026-02-06 is not after 2026-02-06"
+      ]
+    },
+    {
+      "date": "2026-02-06 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2027-05-05 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-06-23 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2024-06-20 is not after 2024-06-23",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-09-21 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2024-06-20 is not after 2024-09-21",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2029-07-04 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2029-06-21 is not after 2029-07-04",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-05-14 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-01-26 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2024-01-26 is not after 2024-01-26"
+      ]
+    },
+    {
+      "date": "2024-01-26 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-08-22 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-08-22 is not after 2025-08-22"
+      ]
+    },
+    {
+      "date": "2025-08-22 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-08-22",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2027-10-26 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2027-06-17 is not after 2027-10-26",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-11-23 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2026-06-18 is not after 2026-11-23",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2027-05-17 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2030-07-24 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2030-06-20 is not after 2030-07-24",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2029-05-06 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2030-12-25 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2030-06-20 is not after 2030-12-25",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-12-27 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-12-27",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-03-23 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2028-11-04 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2028-06-15 is not after 2028-11-04",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2028-09-17 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2028-06-15 is not after 2028-09-17",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2029-01-12 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2029-01-12 is not after 2029-01-12"
+      ]
+    },
+    {
+      "date": "2029-01-12 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-10-14 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2024-06-20 is not after 2024-10-14",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-05-10 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2024-05-10 is not after 2024-05-10"
+      ]
+    },
+    {
+      "date": "2024-05-10 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2028-10-12 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2028-06-15 is not after 2028-10-12",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2030-02-15 00:00:00",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2030-02-15 is not after 2030-02-15"
+      ]
+    },
+    {
+      "date": "2030-02-15 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-01-27 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-06-04 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2028-01-05 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-03-17 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2029-10-15 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2029-06-21 is not after 2029-10-15",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2027-01-20 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2029-10-11 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2029-06-21 is not after 2029-10-11",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-04-07 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2030-08-01 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2030-06-20 is not after 2030-08-01",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2028-10-01 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2028-06-15 is not after 2028-10-01",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2028-05-25 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-11-25 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-11-25",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2030-03-06 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2026-04-16 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2027-05-16 00:00:00",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    }
+  ],
+  "edge_cases": [
+    {
+      "date": "2024-12-31 00:00:00",
+      "description": "New Year's Eve",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2024-06-20 is not after 2024-12-31",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-01-01 00:00:00",
+      "description": "New Year's Day",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-02-28 00:00:00",
+      "description": "Day before leap day",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-02-29 00:00:00",
+      "description": "Leap day",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2024-03-01 00:00:00",
+      "description": "Day after leap day",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2024-03-01 is not after 2024-03-01"
+      ]
+    },
+    {
+      "date": "2024-03-01 00:00:00",
+      "description": "Day after leap day",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-02-28 00:00:00",
+      "description": "Last day of non-leap February",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-02-28 is not after 2025-02-28"
+      ]
+    },
+    {
+      "date": "2025-02-28 00:00:00",
+      "description": "Last day of non-leap February",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-01-29 00:00:00",
+      "description": "5th Wednesday of January",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-03-29 00:00:00",
+      "description": "5th Saturday of March",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-05-30 00:00:00",
+      "description": "5th Friday of May",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-05-30 is not after 2025-05-30"
+      ]
+    },
+    {
+      "date": "2025-05-30 00:00:00",
+      "description": "5th Friday of May",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-07-04 00:00:00",
+      "description": "Independence Day",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-07-04 is not after 2025-07-04"
+      ]
+    },
+    {
+      "date": "2025-07-04 00:00:00",
+      "description": "Independence Day",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-07-04",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-12-25 00:00:00",
+      "description": "Christmas",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-12-25",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-11-27 00:00:00",
+      "description": "Thanksgiving",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-11-27",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-01-31 00:00:00",
+      "description": "End of January",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-01-31 is not after 2025-01-31"
+      ]
+    },
+    {
+      "date": "2025-01-31 00:00:00",
+      "description": "End of January",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-04-30 00:00:00",
+      "description": "End of April",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-06-30 00:00:00",
+      "description": "End of June",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-06-30",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-01-03 00:00:00",
+      "description": "First Friday of year",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-01-03 is not after 2025-01-03"
+      ]
+    },
+    {
+      "date": "2025-01-03 00:00:00",
+      "description": "First Friday of year",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-12-26 00:00:00",
+      "description": "Friday after Christmas",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-12-26 is not after 2025-12-26"
+      ]
+    },
+    {
+      "date": "2025-12-26 00:00:00",
+      "description": "Friday after Christmas",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-12-26",
+        "Monthly option should start with MM, not MQ"
+      ]
+    },
+    {
+      "date": "2025-11-28 00:00:00",
+      "description": "Black Friday",
+      "option_type": "friday",
+      "symbol": "MQ1N25",
+      "issues": [
+        "Expiry date 2025-11-28 is not after 2025-11-28"
+      ]
+    },
+    {
+      "date": "2025-11-28 00:00:00",
+      "description": "Black Friday",
+      "option_type": "monthly",
+      "symbol": "MQ6M25",
+      "issues": [
+        "Invalid week number: 6",
+        "Expiry date 2025-06-19 is not after 2025-11-28",
+        "Monthly option should start with MM, not MQ"
+      ]
+    }
+  ],
+  "patterns": {
+    "day_of_week": {
+      "Monday": 60,
+      "Tuesday": 60,
+      "Wednesday": 60,
+      "Thursday": 60,
+      "Friday": 60,
+      "Saturday": 60,
+      "Sunday": 60
+    },
+    "symbols": {
+      "MM": 140,
+      "MQ": 280
+    },
+    "years": {
+      "2025": 1148,
+      "2024": 1088,
+      "2026": 1180,
+      "2028": 1148,
+      "2027": 1084,
+      "2029": 1192,
+      "2030": 1160
+    },
+    "months": {
+      "July": 688,
+      "February": 644,
+      "November": 600,
+      "May": 728,
+      "June": 660,
+      "September": 692,
+      "January": 704,
+      "August": 640,
+      "October": 692,
+      "December": 680,
+      "March": 652,
+      "April": 620
+    },
+    "week_numbers": {
+      "1": 6000,
+      "6": 2000
+    }
+  }
+}

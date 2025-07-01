@@ -1,0 +1,423 @@
+{
+  "similar_function_names": [
+    {
+      "pattern": "main",
+      "functions": [
+        {
+          "name": "main",
+          "module": "archive/legacy_scripts/run_trading_system.py",
+          "args": [],
+          "docstring": "Simple interface to run the complete NQ Options Trading System"
+        },
+        {
+          "name": "main",
+          "module": "archive/phase_cleanup_files/enhanced_duplicate_scanner.py",
+          "args": [],
+          "docstring": "Run enhanced duplicate analysis"
+        },
+        {
+          "name": "main",
+          "module": "archive/phase_cleanup_files/find_next_duplicate.py",
+          "args": [],
+          "docstring": null
+        },
+        {
+          "name": "main",
+          "module": "archive/phase_cleanup_files/quick_duplicate_finder.py",
+          "args": [],
+          "docstring": null
+        },
+        {
+          "name": "main",
+          "module": "codebase_inventory_generator.py",
+          "args": [],
+          "docstring": "Generate comprehensive codebase inventory"
+        },
+        {
+          "name": "main",
+          "module": "comprehensive_duplicate_scanner.py",
+          "args": [],
+          "docstring": "Run the comprehensive duplicate scan"
+        },
+        {
+          "name": "main",
+          "module": "daily_options_pipeline.py",
+          "args": [],
+          "docstring": "Main execution with CLI interface"
+        },
+        {
+          "name": "main",
+          "module": "scripts/utilities/fetch_nq_live.py",
+          "args": [],
+          "docstring": "Test the NQ data fetcher"
+        },
+        {
+          "name": "main",
+          "module": "scripts/utilities/options_metrics_calculator.py",
+          "args": [],
+          "docstring": "Example usage and CLI interface"
+        },
+        {
+          "name": "main",
+          "module": "scripts/validation/robust_symbol_validator.py",
+          "args": [],
+          "docstring": "Run comprehensive validation"
+        },
+        {
+          "name": "main",
+          "module": "scripts/validation/validate_next_week.py",
+          "args": [],
+          "docstring": null
+        },
+        {
+          "name": "main",
+          "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/barchart_api_client.py",
+          "args": [],
+          "docstring": "Test the API client"
+        },
+        {
+          "name": "main",
+          "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/hybrid_scraper.py",
+          "args": [],
+          "docstring": "Test the hybrid scraper"
+        },
+        {
+          "name": "main",
+          "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/screenshot_validator.py",
+          "args": [],
+          "docstring": "Example usage and CLI interface"
+        },
+        {
+          "name": "main",
+          "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
+          "args": [],
+          "docstring": "Main execution function for barchart data comparison"
+        },
+        {
+          "name": "main",
+          "module": "tests/validate_deduplication.py",
+          "args": [],
+          "docstring": "Main validation runner"
+        }
+      ]
+    },
+    {
+      "pattern": "analyze_duplicates",
+      "functions": [
+        {
+          "name": "analyze_duplicates",
+          "module": "archive/phase_cleanup_files/duplicate_scanner.py",
+          "args": [],
+          "docstring": "Main analysis function"
+        },
+        {
+          "name": "analyze_duplicates",
+          "module": "archive/phase_cleanup_files/find_next_duplicate.py",
+          "args": [],
+          "docstring": "Find and analyze duplicate functions"
+        },
+        {
+          "name": "analyze_duplicates",
+          "module": "duplicate_analysis_report.py",
+          "args": [],
+          "docstring": "Analyze the duplicate patterns and generate a focused report"
+        }
+      ]
+    },
+    {
+      "pattern": "timestamp",
+      "functions": [
+        {
+          "name": "get_timestamp",
+          "module": "scripts/utilities/datetime_utils.py",
+          "args": [
+            "format_type"
+          ],
+          "docstring": "Get current timestamp in specified format\n\nArgs:\n    format_type: One of 'file', 'api', 'display', 'date_only'\n    \nReturns:\n    Formatted timestamp string"
+        },
+        {
+          "name": "parse_timestamp",
+          "module": "scripts/utilities/datetime_utils.py",
+          "args": [
+            "timestamp",
+            "format_type"
+          ],
+          "docstring": "Parse timestamp string to datetime object\n\nArgs:\n    timestamp: Timestamp string to parse\n    format_type: Expected format type. If None, tries common formats\n    \nReturns:\n    datetime object\n    \nRaises:\n    ValueError: If timestamp cannot be parsed"
+        }
+      ]
+    },
+    {
+      "pattern": "trading_day",
+      "functions": [
+        {
+          "name": "get_trading_day",
+          "module": "scripts/utilities/datetime_utils.py",
+          "args": [
+            "date",
+            "option_type"
+          ],
+          "docstring": "Get the trading day for options expiration\n\nArgs:\n    date: Base date\n    option_type: 'weekly' (Tuesday), 'friday' (Friday), 'monthly' (3rd Friday)\n    \nReturns:\n    datetime of the trading day"
+        },
+        {
+          "name": "is_trading_day",
+          "module": "scripts/utilities/datetime_utils.py",
+          "args": [
+            "date"
+          ],
+          "docstring": "Check if date is a valid trading day\n\nArgs:\n    date: Date to check\n    \nReturns:\n    True if trading day, False otherwise"
+        }
+      ]
+    }
+  ],
+  "similar_class_names": [],
+  "similar_method_names": [],
+  "common_utilities": [
+    {
+      "name": "find_function_dependencies",
+      "module": "archive/phase_cleanup_files/analyze_dependencies.py",
+      "args": [
+        "function_name",
+        "search_dir"
+      ],
+      "docstring": "Find all files that use a specific function"
+    },
+    {
+      "name": "find_duplicates",
+      "module": "archive/phase_cleanup_files/duplicate_scanner.py",
+      "args": [
+        "functions"
+      ],
+      "docstring": "Group functions by similarity"
+    },
+    {
+      "name": "find_safe_duplicates",
+      "module": "archive/phase_cleanup_files/find_next_duplicate.py",
+      "args": [
+        "duplicates"
+      ],
+      "docstring": "Identify safe duplicates to remove"
+    },
+    {
+      "name": "find_symbol_generation_usage",
+      "module": "archive/phase_cleanup_files/find_symbol_generation_imports.py",
+      "args": [],
+      "docstring": "Find all references to symbol generation functions"
+    },
+    {
+      "name": "load_enhanced_results",
+      "module": "archive/phase_cleanup_files/semantic_duplicate_filter.py",
+      "args": [],
+      "docstring": "Load results from duplicate scanner."
+    },
+    {
+      "name": "get_timestamp",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [
+        "format_type"
+      ],
+      "docstring": "Get current timestamp in specified format\n\nArgs:\n    format_type: One of 'file', 'api', 'display', 'date_only'\n    \nReturns:\n    Formatted timestamp string"
+    },
+    {
+      "name": "get_trading_day",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [
+        "date",
+        "option_type"
+      ],
+      "docstring": "Get the trading day for options expiration\n\nArgs:\n    date: Base date\n    option_type: 'weekly' (Tuesday), 'friday' (Friday), 'monthly' (3rd Friday)\n    \nReturns:\n    datetime of the trading day"
+    },
+    {
+      "name": "get_market_hours",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [
+        "date"
+      ],
+      "docstring": "Get market open and close times for a given date\n\nArgs:\n    date: Trading date\n    \nReturns:\n    Tuple of (market_open, market_close) datetime objects"
+    },
+    {
+      "name": "get_current_timestamp",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [],
+      "docstring": "Get current timestamp for filenames - backward compatible"
+    },
+    {
+      "name": "get_iso_timestamp",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [],
+      "docstring": "Get current ISO format timestamp - backward compatible"
+    },
+    {
+      "name": "get_nq_live_data",
+      "module": "scripts/utilities/fetch_nq_live.py",
+      "args": [],
+      "docstring": "Get current NQ futures price and volume from Yahoo Finance"
+    },
+    {
+      "name": "get_qqq_proxy",
+      "module": "scripts/utilities/fetch_qqq_proxy.py",
+      "args": [],
+      "docstring": "Get QQQ as NQ proxy"
+    },
+    {
+      "name": "save_json",
+      "module": "scripts/utilities/file_io_utils.py",
+      "args": [
+        "data",
+        "filepath",
+        "kwargs"
+      ],
+      "docstring": "Save data to JSON file"
+    },
+    {
+      "name": "load_json",
+      "module": "scripts/utilities/file_io_utils.py",
+      "args": [
+        "filepath"
+      ],
+      "docstring": "Load data from JSON file"
+    },
+    {
+      "name": "save_timestamped_json",
+      "module": "scripts/utilities/file_io_utils.py",
+      "args": [
+        "data",
+        "base_dir",
+        "prefix"
+      ],
+      "docstring": "Save JSON data with timestamp"
+    },
+    {
+      "name": "find_latest_json",
+      "module": "scripts/utilities/file_io_utils.py",
+      "args": [
+        "base_dir"
+      ],
+      "docstring": "Find most recent JSON file in directory"
+    },
+    {
+      "name": "load_barchart_saved_data",
+      "module": "tasks/options_trading_system/data_ingestion/barchart_saved_data/solution.py",
+      "args": [
+        "file_path"
+      ],
+      "docstring": "Load Barchart saved data and return summary\n\nArgs:\n    file_path: Path to JSON file\n    \nReturns:\n    Dict with data and quality metrics"
+    },
+    {
+      "name": "setup_logging",
+      "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/run_comparison.py",
+      "args": [
+        "verbose"
+      ],
+      "docstring": "Setup logging configuration"
+    },
+    {
+      "name": "get_eod_contract_symbol",
+      "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/symbol_generator.py",
+      "args": [
+        "base_symbol",
+        "option_type",
+        "year_format"
+      ],
+      "docstring": "Generate EOD contract symbol - convenience function"
+    },
+    {
+      "name": "load_barchart_live_data",
+      "module": "tasks/options_trading_system/data_ingestion/integration.py",
+      "args": [
+        "futures_symbol",
+        "headless",
+        "target_symbol"
+      ],
+      "docstring": "Load live Barchart options data for today's EOD contract\n\nArgs:\n    futures_symbol: Underlying futures symbol\n    headless: Run browser in headless mode\n    target_symbol: Specific contract symbol to fetch (overrides EOD calculation)\n    \nReturns:\n    Dict with Barchart data in same format as saved data"
+    },
+    {
+      "name": "load_tradovate_api_data",
+      "module": "tasks/options_trading_system/data_ingestion/tradovate_api_data/solution.py",
+      "args": [
+        "config"
+      ],
+      "docstring": "Load Tradovate API data and return summary\n\nArgs:\n    config: Configuration dict\n    \nReturns:\n    Dict with data and quality metrics"
+    },
+    {
+      "name": "test_save_evidence",
+      "module": "tests/validate_deduplication.py",
+      "args": [],
+      "docstring": "Test save_evidence function behavior across all implementations"
+    },
+    {
+      "name": "find_duplicate_functions",
+      "module": "tests/validate_deduplication.py",
+      "args": [],
+      "docstring": "Find specific duplicate functions to target"
+    }
+  ],
+  "parsing_functions": [
+    {
+      "name": "extract_json_from_cached",
+      "module": "archive/legacy_scripts/fast_run.py",
+      "args": [
+        "analysis_result"
+      ],
+      "docstring": "Extract JSON data from cached analysis results"
+    },
+    {
+      "name": "parse_timestamp",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [
+        "timestamp",
+        "format_type"
+      ],
+      "docstring": "Parse timestamp string to datetime object\n\nArgs:\n    timestamp: Timestamp string to parse\n    format_type: Expected format type. If None, tries common formats\n    \nReturns:\n    datetime object\n    \nRaises:\n    ValueError: If timestamp cannot be parsed"
+    },
+    {
+      "name": "format_timedelta",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [
+        "td"
+      ],
+      "docstring": "Format timedelta to human-readable string\n\nArgs:\n    td: timedelta object\n    \nReturns:\n    Human-readable duration string"
+    },
+    {
+      "name": "format_for_filename",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [
+        "dt"
+      ],
+      "docstring": "Format datetime for use in filename\n\nArgs:\n    dt: datetime to format (defaults to now)\n    \nReturns:\n    Filename-safe timestamp string"
+    },
+    {
+      "name": "format_for_display",
+      "module": "scripts/utilities/datetime_utils.py",
+      "args": [
+        "dt"
+      ],
+      "docstring": "Format datetime for display to user\n\nArgs:\n    dt: datetime to format (defaults to now)\n    \nReturns:\n    Human-readable datetime string"
+    },
+    {
+      "name": "extract_text_from_screenshot",
+      "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/ocr_extractor.py",
+      "args": [
+        "image_path"
+      ],
+      "docstring": "Extract text from a Barchart screenshot"
+    },
+    {
+      "name": "normalize_screenshot_data",
+      "module": "tasks/options_trading_system/data_ingestion/barchart_web_scraper/screenshot_data_normalizer.py",
+      "args": [
+        "ocr_contracts",
+        "symbol"
+      ],
+      "docstring": "Normalize OCR contracts to API format"
+    },
+    {
+      "name": "normalize_options_data",
+      "module": "tasks/options_trading_system/data_ingestion/data_normalizer/solution.py",
+      "args": [
+        "sources_config"
+      ],
+      "docstring": "Normalize options data from configured sources\n\nArgs:\n    sources_config: Dict with source configurations\n    \nReturns:\n    Dict with normalized data and metrics"
+    }
+  ],
+  "data_transformation_functions": []
+}

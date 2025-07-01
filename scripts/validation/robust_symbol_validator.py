@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent.parent / "tasks/options_trading_system/data_ingestion/barchart_web_scraper"))
-from symbol_generator import BarchartSymbolGenerator
+from symbol_generator import BarchartSymbolGenerator, MONTH_CODES
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -42,16 +42,11 @@ class RobustSymbolValidator:
             # This is needed for validation - extract from the canonical implementation
             from datetime import timedelta
             
-            month_codes = {
-                'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6,
-                'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12
-            }
-            
             # Parse the symbol to get expiry info
             if len(symbol) >= 4:
                 week_num = int(symbol[2])
                 month_code = symbol[3]
-                month = month_codes.get(month_code, test_date.month)
+                month = MONTH_CODES.get(month_code, test_date.month)
                 
                 # Calculate expiry based on type
                 if option_type == "weekly":

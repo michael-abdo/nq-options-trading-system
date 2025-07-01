@@ -6,9 +6,14 @@ Consolidates all validation logic from across the codebase
 
 import re
 import logging
+import sys
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple, Union
 from pathlib import Path
+
+# Import canonical month codes
+sys.path.append(str(Path(__file__).parent.parent.parent / "tasks/options_trading_system/data_ingestion/barchart_web_scraper"))
+from symbol_generator import MONTH_CODES
 
 logger = logging.getLogger(__name__)
 
@@ -82,11 +87,7 @@ class ContractValidator:
 class SymbolValidator:
     """Validates options symbols and their components"""
     
-    # Consolidated from robust_symbol_validator.py
-    MONTH_CODES = {
-        'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6,
-        'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12
-    }
+    # Use canonical month codes from symbol_generator.py
     
     @staticmethod
     def validate_symbol_format(symbol: str) -> Tuple[bool, str]:
@@ -113,7 +114,7 @@ class SymbolValidator:
             year = symbol[4:6]    # 25
             
             # Validate month code
-            if month not in SymbolValidator.MONTH_CODES:
+            if month not in MONTH_CODES:
                 return False, f"Invalid month code: {month}"
             
             # Validate week (1-5 for weekly, 6 for monthly)
