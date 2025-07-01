@@ -1,6 +1,6 @@
 {
   "task": "barchart_saved_data",
-  "timestamp": "2025-06-30T16:42:02.241536",
+  "timestamp": "2025-07-01T08:34:18.668739",
   "tests": [
     {
       "name": "file_exists",
@@ -61,7 +61,7 @@
           "source": "barchart_saved",
           "file_path": "/Users/Mike/trading/algos/EOD/data/api_responses/options_data_20250602_141553.json",
           "file_size": 388374,
-          "loaded_at": "2025-06-30T16:42:02"
+          "loaded_at": "2025-07-01T08:34:18"
         }
       }
     }

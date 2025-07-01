@@ -1,7 +1,7 @@
 {
   "task": "output_generation",
   "type": "parent",
-  "timestamp": "2025-06-29T13:48:55.979440",
+  "timestamp": "2025-07-01T08:34:08.443956",
   "integration_tests": [
     {
       "name": "child_validations",
@@ -15,77 +15,35 @@
     },
     {
       "name": "individual_generation",
-      "passed": true,
+      "passed": false,
       "details": {
-        "report_generation": true,
-        "json_generation": true,
-        "report_length": 3066,
-        "json_size": 3398
+        "report_generation": false,
+        "json_generation": false,
+        "report_length": 0,
+        "json_size": 0
       }
     },
     {
       "name": "file_saving",
-      "passed": true,
+      "passed": false,
       "details": {
-        "files_saved": 2,
-        "total_size": 6506,
-        "errors": [],
-        "saved_files": [
-          "nq_trading_report_20250629_134858.txt",
-          "nq_analysis_export_20250629_134858.json"
-        ]
+        "files_saved": 0,
+        "total_size": 0,
+        "errors": [
+          "Failed to save report",
+          "Failed to save JSON"
+        ],
+        "saved_files": []
       }
     },
     {
       "name": "full_output_generation",
-      "passed": true,
-      "details": {
-        "status": "success",
-        "successful_generations": 2,
-        "files_saved": 2,
-        "total_output_size": 6506,
-        "execution_time": 2.244335
-      }
+      "passed": false,
+      "error": "'result'"
     }
   ],
-  "status": "VALIDATED",
-  "evidence": {
-    "full_generation_result": {
-      "status": "success",
-      "execution_time": 2.244335,
-      "successful_generations": 2,
-      "files_saved": 2,
-      "total_output_size": 6506,
-      "recommended_action": "short",
-      "output_summary": {
-        "timestamp": "2025-06-29T13:49:00.439754",
-        "generation_status": {
-          "report": "success",
-          "json": "success"
-        },
-        "content_summary": {
-          "report": {
-            "length_chars": 3066,
-            "sections": 6,
-            "style": "professional"
-          },
-          "json": {
-            "size_bytes": 3398,
-            "signals_count": 3,
-            "recommended_action": "short"
-          }
-        },
-        "recommendations": [
-          {
-            "priority": "PRIMARY",
-            "direction": "SHORT",
-            "expected_value": 5964.357177141185,
-            "confidence": "HIGH"
-          }
-        ]
-      }
-    }
-  },
+  "status": "FAILED",
+  "evidence": {},
   "child_validations": [
     {
       "task": "report_generator",

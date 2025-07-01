@@ -1,7 +1,7 @@
 {
   "task": "options_trading_system",
   "type": "root",
-  "timestamp": "2025-06-29T13:48:32.761207",
+  "timestamp": "2025-07-01T08:33:49.167786",
   "integration_tests": [
     {
       "name": "child_validations",
@@ -33,18 +33,18 @@
       "details": {
         "data_pipeline": true,
         "analysis_pipeline": true,
-        "output_pipeline": true,
+        "output_pipeline": false,
         "data_status": "success",
         "analysis_status": "success",
-        "output_status": "success"
+        "output_status": "failed"
       }
     },
     {
       "name": "system_summary",
       "passed": true,
       "details": {
-        "system_health": "excellent",
-        "successful_pipelines": 3,
+        "system_health": "good",
+        "successful_pipelines": 2,
         "has_trading_summary": true,
         "has_primary_recommendation": true
       }
@@ -54,9 +54,9 @@
       "passed": true,
       "details": {
         "status": "success",
-        "execution_time": 1.226223,
-        "system_health": "excellent",
-        "pipeline_success_rate": 1.0,
+        "execution_time": 1.296056,
+        "system_health": "good",
+        "pipeline_success_rate": 0.6666666666666666,
         "has_trading_recommendation": true
       }
     }
@@ -65,16 +65,16 @@
   "evidence": {
     "complete_system_result": {
       "status": "success",
-      "execution_time": 1.226223,
+      "execution_time": 1.296056,
       "system_version": "1.0",
       "system_health": {
-        "status": "excellent",
-        "pipeline_success_rate": 1.0,
+        "status": "good",
+        "pipeline_success_rate": 0.6666666666666666,
         "critical_systems_operational": true,
         "data_quality_acceptable": true,
-        "output_generation_operational": true
+        "output_generation_operational": false
       },
-      "pipeline_success_rate": 1.0,
+      "pipeline_success_rate": 0.6666666666666666,
       "trading_summary": {
         "underlying_price": 21376.75,
         "algorithm": "nq_options_ev",

@@ -1,6 +1,6 @@
 {
   "task": "tradovate_api_data",
-  "timestamp": "2025-06-29T13:45:52.971292",
+  "timestamp": "2025-07-01T08:34:51.874212",
   "tests": [
     {
       "name": "credentials_validation",
@@ -74,8 +74,8 @@
           "source": "tradovate_api",
           "mode": "demo",
           "use_mock": true,
-          "loaded_at": "2025-06-29T13:45:52.971731",
-          "data_hash": "2ec7f7272d36d21d6f7793d1b6cfb358"
+          "loaded_at": "2025-07-01T08:34:51",
+          "data_hash": "a263ad70cd6fd2a7f6a89e3259e549e6"
         }
       }
     }
@@ -92,8 +92,8 @@
       "source": "tradovate_api",
       "mode": "demo",
       "use_mock": true,
-      "loaded_at": "2025-06-29T13:45:52.971397",
-      "data_hash": "803e601728d788ce13e301ed5d2612a2"
+      "loaded_at": "2025-07-01T08:34:51",
+      "data_hash": "a263ad70cd6fd2a7f6a89e3259e549e6"
     },
     "options_data": {
       "calls_count": 21,

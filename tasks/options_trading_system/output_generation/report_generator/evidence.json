@@ -1,6 +1,6 @@
 {
   "task": "report_generator",
-  "timestamp": "2025-06-30T17:12:05.033041",
+  "timestamp": "2025-07-01T08:35:15.154594",
   "tests": [
     {
       "name": "generator_init",
@@ -35,7 +35,7 @@
         },
         "report_length": 3066,
         "metadata": {
-          "generated_at": "20250630_171206",
+          "generated_at": "20250701_083516",
           "report_style": "professional",
           "sections_included": 6,
           "total_length": 3066
@@ -62,7 +62,7 @@
       "details": {
         "file_created": true,
         "file_size": 3108,
-        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/report_generator/test_report_20250630_171206.txt"
+        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/report_generator/test_report_20250701_083516.txt"
       }
     }
   ],
@@ -82,7 +82,7 @@
       "analysis_summary": {
         "successful_analyses": 2,
         "primary_recommendations": 1,
-        "execution_time": 1.08799
+        "execution_time": 1.277606
       }
     }
   }
