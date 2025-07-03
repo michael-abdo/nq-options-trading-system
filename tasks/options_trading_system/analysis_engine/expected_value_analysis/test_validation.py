@@ -10,6 +10,7 @@ import os
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
 from datetime import datetime
 
 # Add project root to path
@@ -89,12 +90,7 @@ def validate_expected_value_analysis():
         print(f"   ✓ Using your algorithm's weights: OI={analyzer.weights['oi_factor']}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "analyzer_init",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "analyzer_init", e)
         return validation_results
     
     # Test 2: Load normalized data
@@ -130,12 +126,7 @@ def validate_expected_value_analysis():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "data_loading",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "data_loading", e)
         return validation_results
     
     # Test 3: Convert to OptionsStrike format
@@ -164,12 +155,7 @@ def validate_expected_value_analysis():
             print(f"   ✓ Sample strike: ${strikes[0].price} (Call OI: {strikes[0].call_oi}, Put OI: {strikes[0].put_oi})")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "options_strike_conversion",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "options_strike_conversion", e)
     
     # Test 4: Probability calculation using your algorithm
     print("\n4. Testing probability calculation...")
@@ -208,12 +194,7 @@ def validate_expected_value_analysis():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "probability_calculation",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "probability_calculation", e)
     
     # Test 5: EV combinations calculation using your algorithm
     print("\n5. Testing EV combinations calculation...")
@@ -256,12 +237,7 @@ def validate_expected_value_analysis():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "ev_combinations",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "ev_combinations", e)
     
     # Test 6: Quality filtering using your algorithm's criteria
     print("\n6. Testing quality filtering...")
@@ -300,12 +276,7 @@ def validate_expected_value_analysis():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "quality_filtering",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "quality_filtering", e)
     
     # Test 7: Full analysis using your algorithm
     print("\n7. Testing full NQ EV analysis...")
@@ -356,12 +327,7 @@ def validate_expected_value_analysis():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "full_analysis",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "full_analysis", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
