@@ -1,98 +1,32 @@
 {
   "exact_duplicates": {
-    "['validation_results']:None:9a15d846": [
+    "['contracts', 'self']:float:b41f6ef9": [
       {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/test_integration.py",
-        "line": 389
+        "name": "_estimate_underlying_price",
+        "file": "./tasks/options_trading_system/analysis_engine/integration.py",
+        "line": 350
       },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/output_generation/json_exporter/test_validation.py",
-        "line": 320
-      },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/output_generation/report_generator/test_validation.py",
-        "line": 327
-      },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/analysis_engine/expected_value_analysis/test_validation.py",
-        "line": 377
-      },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/analysis_engine/risk_analysis/test_validation.py",
-        "line": 279
-      },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/data_ingestion/barchart_saved_data/test_validation.py",
-        "line": 230
-      },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/data_ingestion/tradovate_api_data/test_validation.py",
-        "line": 280
-      },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/data_ingestion/data_normalizer/test_validation.py",
-        "line": 278
-      }
-    ],
-    "['validation_results']:None:be48d3ec": [
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/output_generation/test_integration.py",
-        "line": 325
-      },
-      {
-        "name": "save_evidence",
-        "file": "./tasks/options_trading_system/analysis_engine/test_integration.py",
-        "line": 326
-      }
-    ],
-    "['contracts', 'self']:float:a6cfdcf2": [
       {
         "name": "_estimate_underlying_price",
         "file": "./tasks/options_trading_system/analysis_engine/expected_value_analysis/solution.py",
-        "line": 99
+        "line": 104
       },
       {
         "name": "_estimate_underlying_price",
         "file": "./tasks/options_trading_system/analysis_engine/risk_analysis/solution.py",
-        "line": 64
+        "line": 67
       }
     ],
-    "['self']:Dict:0ecbaac3": [
-      {
-        "name": "to_dict",
-        "file": "./tasks/options_trading_system/analysis_engine/volume_spike_dead_simple/baseline_data_manager.py",
-        "line": 26
-      },
-      {
-        "name": "to_dict",
-        "file": "./tasks/options_trading_system/analysis_engine/volume_spike_dead_simple/baseline_data_manager.py",
-        "line": 36
-      },
-      {
-        "name": "to_dict",
-        "file": "./tasks/options_trading_system/analysis_engine/volume_spike_dead_simple/baseline_data_manager.py",
-        "line": 47
-      }
-    ],
-    "['self']:webdriver.Chrome:55a474b8": [
+    "['self']:webdriver.Chrome:fef61e3c": [
       {
         "name": "setup_driver",
         "file": "./tasks/options_trading_system/data_ingestion/barchart_web_scraper/expiration_validator.py",
-        "line": 52
+        "line": 58
       },
       {
         "name": "setup_driver",
         "file": "./tasks/options_trading_system/data_ingestion/barchart_web_scraper/solution.py",
-        "line": 66
+        "line": 71
       }
     ]
   },

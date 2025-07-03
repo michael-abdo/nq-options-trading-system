@@ -28,6 +28,11 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__f
 sys.path.insert(0, parent_dir)
 from data_ingestion.integration import run_data_ingestion
 
+# Add project root for test_utils
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.insert(0, project_root)
+from tasks.test_utils import estimate_underlying_price
+
 class FlowType(Enum):
     """Classification of volume shock patterns"""
     INSTITUTIONAL_SWEEP = "INSTITUTIONAL_SWEEP"
@@ -368,14 +373,8 @@ class VolumeShockDetectionEngine:
     
     def _estimate_underlying_price(self, contracts: List[Dict[str, Any]]) -> float:
         """Estimate underlying price from options data"""
-        # Use first contract's underlying price if available
-        for contract in contracts:
-            underlying = contract.get("underlying_price")
-            if underlying:
-                return underlying
-        
-        # Fallback estimate
-        return 21000.0
+        # Use canonical implementation from test_utils
+        return estimate_underlying_price(contracts)
     
     def _estimate_deltas(self, strike: float, underlying_price: float) -> Tuple[float, float]:
         """
