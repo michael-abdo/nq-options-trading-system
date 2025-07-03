@@ -1,6 +1,6 @@
 {
   "task": "json_exporter",
-  "timestamp": "2025-06-04T16:13:04.445834",
+  "timestamp": "2025-07-03T09:23:51.467917",
   "tests": [
     {
       "name": "exporter_init",
@@ -49,13 +49,13 @@
           "signals_is_list": true,
           "market_analysis_is_dict": true
         },
-        "json_size": 3817,
-        "signals_count": 3,
+        "json_size": 1259,
+        "signals_count": 0,
         "metadata": {
-          "export_timestamp": "2025-06-04T16:13:05.733192",
-          "total_signals": 3,
-          "json_size_bytes": 3817,
-          "recommended_action": "short"
+          "export_timestamp": "2025-07-03T09:24:15.847111",
+          "total_signals": 0,
+          "json_size_bytes": 1259,
+          "recommended_action": "hold"
         }
       }
     },
@@ -63,26 +63,11 @@
       "name": "trading_signals_extraction",
       "passed": true,
       "details": {
-        "signals_count": 3,
+        "signals_count": 0,
         "signal_structure_checks": {
-          "has_signal_id": true,
-          "has_timestamp": true,
-          "has_trade_data": true,
-          "has_direction": true,
-          "has_prices": true,
-          "has_expected_value": true,
-          "has_probability": true
+          "no_signals_found": true
         },
-        "sample_signal_keys": [
-          "signal_id",
-          "timestamp",
-          "source",
-          "priority",
-          "confidence",
-          "trade",
-          "reasoning",
-          "metadata"
-        ]
+        "sample_signal_keys": []
       }
     },
     {
@@ -90,17 +75,17 @@
       "passed": true,
       "details": {
         "file_created": true,
-        "file_size": 3817,
+        "file_size": 1259,
         "json_valid": true,
-        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/json_exporter/test_export_20250604_161305.json"
+        "file_path": "/Users/Mike/trading/algos/EOD/tasks/options_trading_system/output_generation/json_exporter/test_export_20250703_092415.json"
       }
     }
   ],
   "status": "VALIDATED",
   "evidence": {
     "export_sample": {
-      "json_size": 3817,
-      "signals_count": 3,
+      "json_size": 1259,
+      "signals_count": 0,
       "structure_checks": {
         "has_metadata": true,
         "has_trading_signals": true,
@@ -110,34 +95,13 @@
         "market_analysis_is_dict": true
       },
       "metadata": {
-        "export_timestamp": "2025-06-04T16:13:05.733192",
-        "total_signals": 3,
-        "json_size_bytes": 3817,
-        "recommended_action": "short"
+        "export_timestamp": "2025-07-03T09:24:15.847111",
+        "total_signals": 0,
+        "json_size_bytes": 1259,
+        "recommended_action": "hold"
       },
-      "recommended_action": "short",
-      "sample_signal": {
-        "signal_id": "nq_ev_1_20250604_161305",
-        "timestamp": "2025-06-04T16:13:05.733077",
-        "source": "nq_ev_algorithm",
-        "priority": "PRIMARY",
-        "confidence": "HIGH",
-        "trade": {
-          "direction": "SHORT",
-          "entry_price": 21376.75,
-          "target_price": 14000.0,
-          "stop_price": 21380.0,
-          "expected_value": 5964.357177141185,
-          "win_probability": 0.8086188586912175,
-          "position_size": "LARGE (15-20%)",
-          "risk_reward_ratio": 2269.77
-        },
-        "reasoning": "Your NQ EV algorithm found high-quality setup with EV=+5964.4 points",
-        "metadata": {
-          "rank": 1,
-          "total_signals": 3
-        }
-      }
+      "recommended_action": "hold",
+      "sample_signal": {}
     }
   }
 }

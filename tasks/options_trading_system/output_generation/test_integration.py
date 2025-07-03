@@ -8,6 +8,8 @@ PURPOSE: Validate that output generation coordinates all output formats correctl
 import sys
 import os
 import json
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from tasks.test_utils import save_evidence
 from datetime import datetime
 
 # Add project root to path
@@ -322,14 +324,7 @@ def validate_output_generation():
     return validation_results
 
 
-def save_evidence(validation_results):
-    """Save validation evidence to evidence_rollup.json"""
-    evidence_path = os.path.join(os.path.dirname(__file__), "evidence_rollup.json")
-    
-    with open(evidence_path, 'w') as f:
-        json.dump(validation_results, f, indent=2)
-    
-    print(f"\nEvidence saved to: {evidence_path}")
+# Removed duplicate save_evidence - now using canonical implementation from test_utils
 
 
 if __name__ == "__main__":
