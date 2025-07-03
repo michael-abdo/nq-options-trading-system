@@ -12,6 +12,12 @@ from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 from pathlib import Path
 import statistics
+import sys
+import os
+
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import get_logger, log_and_return_false, log_and_return_none
 
 logger = get_logger()
 
@@ -119,6 +125,7 @@ class BaselineDataManager:
             conn.commit()
             logger.info(f"[BASELINE_MANAGER] Database tables created successfully")
     
+    @log_and_return_false(operation="store_daily_snapshot")
     def store_daily_snapshot(self, contract: str, options_data: List[Dict]) -> bool:
         """
         Store daily snapshot of options data for baseline calculations
@@ -174,9 +181,9 @@ class BaselineDataManager:
             return True
             
         except Exception as e:
-            logger.error(f"[BASELINE_MANAGER] Failed to store daily snapshot: {e}")
-            return False
+            raise  # Let decorator handle it
     
+    @log_and_return_none(operation="get_volume_stats")
     def get_volume_stats(self, contract: str, strike: float, option_type: str) -> Optional[VolumeStats]:
         """
         Get volume statistics for a specific strike
@@ -242,8 +249,7 @@ class BaselineDataManager:
                 return stats
                 
         except Exception as e:
-            logger.error(f"[BASELINE_MANAGER] Error calculating volume stats for {strike}{option_type[0]}: {e}")
-            return None
+            raise  # Let decorator handle it
     
     def calculate_relative_volume_ratio(self, current_volume: int, volume_stats: VolumeStats) -> float:
         """
@@ -348,6 +354,7 @@ class BaselineDataManager:
             logger.warning(f"[BASELINE_MANAGER] Error calculating time to expiry for {contract}: {e}")
             return 7
     
+    @log_and_return_false(operation="has_sufficient_baseline_data")
     def has_sufficient_baseline_data(self, contract: str, min_days: int = 5) -> bool:
         """
         Check if we have sufficient baseline data for relative calculations
@@ -380,8 +387,7 @@ class BaselineDataManager:
                 return has_sufficient
                 
         except Exception as e:
-            logger.error(f"[BASELINE_MANAGER] Error checking baseline data: {e}")
-            return False
+            raise  # Let decorator handle it
     
     def get_smart_defaults(self, strike_data: Dict) -> Dict:
         """

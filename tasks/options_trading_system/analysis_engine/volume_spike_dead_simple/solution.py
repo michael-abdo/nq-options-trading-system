@@ -15,6 +15,12 @@ import logging
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict, field
+import sys
+import os
+
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import get_logger, log_and_return_none
 
 logger = get_logger()
 
@@ -814,6 +820,7 @@ class DeadSimpleVolumeSpike:
         else:
             return self._analyze_strike_absolute(strike_data, current_price)
     
+    @log_and_return_none(operation="_analyze_strike_absolute")
     def _analyze_strike_absolute(self, strike_data: Dict, current_price: float) -> Optional[InstitutionalSignal]:
         """
         Traditional absolute threshold analysis (backward compatible)
@@ -902,9 +909,9 @@ class DeadSimpleVolumeSpike:
             return signal
             
         except Exception as e:
-            logger.error(f"[ABSOLUTE_ANALYSIS] Error analyzing strike {strike_data}: {e}")
-            return None
+            raise  # Let decorator handle it
     
+    @log_and_return_none(operation="_analyze_strike_relative")
     def _analyze_strike_relative(self, strike_data: Dict, current_price: float, 
                                contract: str) -> Optional[InstitutionalSignal]:
         """
@@ -1029,8 +1036,7 @@ class DeadSimpleVolumeSpike:
             return signal
             
         except Exception as e:
-            logger.error(f"[RELATIVE_ANALYSIS] Error analyzing strike {strike_data}: {e}")
-            return None
+            raise  # Let decorator handle it
     
     def _calculate_confidence(self, vol_oi_ratio: float) -> str:
         """Calculate confidence level based on volume/OI ratio"""
