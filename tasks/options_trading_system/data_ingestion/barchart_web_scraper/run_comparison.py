@@ -10,8 +10,13 @@ import logging
 import argparse
 from datetime import datetime
 
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import log_and_return_false
+
 # Add current directory to path for imports
-sys.path.append(PathManager.get_project_root())
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
 
 from solution import main
 
@@ -90,6 +95,7 @@ def check_chromedriver():
         print("  Or download from: https://chromedriver.chromium.org/")
         return False
 
+@log_and_return_false(operation="run_tests")
 def run_tests():
     """Run validation tests"""
     print("\n=== Running Validation Tests ===")
@@ -99,7 +105,7 @@ def run_tests():
         result = subprocess.run([
             sys.executable, '-m', 'pytest', 
             'test_validation.py', '-v'
-        ], capture_output=True, text=True, cwd=PathManager.get_project_root())
+        ], capture_output=True, text=True, cwd=current_dir)
         
         if result.returncode == 0:
             print("✅ All tests passed")
@@ -120,8 +126,7 @@ def run_tests():
             print("✅ Basic validation completed")
             return True
         except Exception as e:
-            print(f"❌ Basic validation failed: {e}")
-            return False
+            raise  # Let decorator handle it
 
 def main_runner():
     """Main runner function with command line interface"""

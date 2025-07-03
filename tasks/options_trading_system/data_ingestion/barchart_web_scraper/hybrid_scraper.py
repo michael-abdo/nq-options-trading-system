@@ -10,9 +10,9 @@ import sys
 from datetime import datetime
 from typing import Dict, Any, Optional
 
-# Add tasks directory to path
-sys.path.insert(0, os.path.join(PathManager.get_project_root(), '..', '..', '..'))
-from common_utils import save_json, get_logger
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import save_json, get_logger, log_and_return_false, log_and_return_none
 
 from .solution import BarchartWebScraper
 from .barchart_api_client import BarchartAPIClient
@@ -29,6 +29,7 @@ class HybridBarchartScraper:
         self.api_client = None
         self.cookies = None
         
+    @log_and_return_false(operation="authenticate")
     def authenticate(self, futures_symbol: str = "NQM25") -> bool:
         """
         Use Selenium to visit Barchart and get authentication cookies
@@ -81,9 +82,9 @@ class HybridBarchartScraper:
             return len(found_cookies) > 0
             
         except Exception as e:
-            self.logger.error(f"Authentication failed: {e}")
-            return False
+            raise  # Let decorator handle it
     
+    @log_and_return_none(operation="fetch_options_data")
     def fetch_options_data(self, symbol: str, futures_symbol: str = "NQM25") -> Dict[str, Any]:
         """
         Fetch options data using API with authenticated cookies
@@ -118,8 +119,7 @@ class HybridBarchartScraper:
             return data
             
         except Exception as e:
-            self.logger.error(f"API call failed: {e}")
-            return None
+            raise  # Let decorator handle it
     
     def fetch_eod_options(self, futures_symbol: str = "NQM25") -> Dict[str, Any]:
         """

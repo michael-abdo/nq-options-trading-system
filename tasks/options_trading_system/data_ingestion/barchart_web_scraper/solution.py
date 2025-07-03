@@ -15,11 +15,14 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 import pandas as pd
 from bs4 import BeautifulSoup
 import sys
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import save_json, get_logger, get_utc_timestamp, log_and_return_none
+
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 sys.path.insert(0, project_root)
 from tasks.test_utils import setup_chrome_driver, safe_float, safe_int
-from tasks.common_utils import save_json, get_logger, get_utc_timestamp
 
 @dataclass
 class OptionsContract:
@@ -415,6 +418,7 @@ class BarchartWebScraper:
         
         return contracts
     
+    @log_and_return_none(operation="_parse_options_row")
     def _parse_options_row(self, cells: List[str], headers: List[str], 
                           underlying_price: Optional[float], expiration_date: str) -> Optional[OptionsContract]:
         """
@@ -469,8 +473,7 @@ class BarchartWebScraper:
             return contract
             
         except Exception as e:
-            self.logger.debug(f"Error parsing options row {cells}: {e}")
-            return None
+            raise  # Let decorator handle it
 
 class BarchartAPIComparator:
     """
