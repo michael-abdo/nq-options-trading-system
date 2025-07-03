@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 import sys
 # Add tasks directory to path for common utilities
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
-from common_utils import save_json, get_logger, get_utc_timestamp, log_and_return_none
+from common_utils import save_json, get_logger, get_utc_timestamp, log_and_return_none, PathManager
 
 # Add project root for test_utils
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))

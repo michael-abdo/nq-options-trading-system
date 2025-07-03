@@ -12,8 +12,12 @@ from datetime import datetime
 from typing import Dict, Any, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from common_utils import PathManager
+
 # Add current directory to path for child task imports
-current_dir = PathManager.get_project_root()
+current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
 # Import child task modules

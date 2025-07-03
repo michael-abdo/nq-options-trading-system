@@ -11,12 +11,12 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
 
 # Add parent task to path for data access
-parent_dir = os.path.dirname(os.path.dirname(PathManager.get_project_root()))
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.insert(0, parent_dir)
 from data_ingestion.integration import run_data_ingestion
 
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root())))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
 from tasks.test_utils import estimate_underlying_price
 

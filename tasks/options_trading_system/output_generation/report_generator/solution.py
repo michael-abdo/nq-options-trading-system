@@ -10,8 +10,12 @@ import os
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import PathManager
+
 # Add parent task to path for analysis access
-parent_dir = os.path.dirname(os.path.dirname(PathManager.get_project_root()))
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.insert(0, parent_dir)
 from analysis_engine.integration import run_analysis_engine
 

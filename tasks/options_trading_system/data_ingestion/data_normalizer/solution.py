@@ -11,11 +11,11 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 # Add project root to path
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 sys.path.insert(0, project_root)
 
 # Import sibling tasks
-sys.path.insert(0, os.path.dirname(PathManager.get_project_root()))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from barchart_saved_data.solution import load_barchart_saved_data
 from tradovate_api_data.solution import load_tradovate_api_data
 
