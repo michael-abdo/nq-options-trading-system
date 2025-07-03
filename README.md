@@ -20,6 +20,40 @@ python3 run_pipeline.py --help
 
 This runs the complete Hierarchical Pipeline Analysis Framework with your actual NQ Options EV algorithm using **live market data** when available.
 
+## ⚡ 0DTE (Zero Days to Expiration) Pipeline
+
+**NEW: Enhanced 0DTE validation system for same-day expiring options**:
+
+```bash
+# Run 0DTE pipeline with automatic symbol validation
+python3 -c "
+from tasks.options_trading_system.daily_options_pipeline import run_daily_0dte_pipeline
+result = run_daily_0dte_pipeline()
+print(f'Status: {result[\"status\"]}')
+"
+
+# Test symbol validation only (no data fetching)
+python3 -c "
+from tasks.options_trading_system.daily_options_pipeline import validate_0dte_symbol_only
+result = validate_0dte_symbol_only()
+print(f'Symbol: {result.get(\"symbol\", \"None\")}')
+"
+
+# Force specific symbol with validation
+python3 -c "
+from tasks.options_trading_system.daily_options_pipeline import run_with_forced_symbol
+result = run_with_forced_symbol('MC4N25')
+print(f'Status: {result[\"status\"]}')
+"
+```
+
+### Key 0DTE Features:
+- **Smart Symbol Generation**: Tries MC, MM, MQ prefixes until finding valid 0DTE contract
+- **Expiration Validation**: Confirms symbols actually expire today using live web scraping
+- **Automatic Fallbacks**: Falls back to alternative contract types if primary fails
+- **Pipeline Abort**: Stops execution if no valid 0DTE symbol found
+- **Weekend Handling**: Automatically shifts weekend requests to Monday contracts
+
 ## System Overview
 
 The system uses a **hierarchical pipeline architecture** where each analysis acts as a filter, enricher, and sorter of trading opportunities:
@@ -37,9 +71,32 @@ Final Results: Top-ranked trading opportunities
 ## Core Components
 
 - **Entry Point**: `run_pipeline.py` - Single command to run everything
+- **0DTE Pipeline**: `tasks/options_trading_system/daily_options_pipeline.py` - 0DTE-specific processing
 - **Pipeline System**: `tasks/options_trading_system/` - Modular analysis framework
 - **Configuration**: `tasks/options_trading_system/analysis_engine/pipeline_config.json`
 - **Documentation**: `docs/hierarchical_pipeline_framework.md`
+
+### 0DTE System Components
+
+- **Symbol Generator**: `tasks/options_trading_system/data_ingestion/barchart_web_scraper/symbol_generator.py`
+  - Generates contract symbols with multiple prefix support (MC, MM, MQ)
+  - Handles weekend/holiday date adjustments
+  - Provides legacy compatibility with existing EOD logic
+
+- **Expiration Validator**: `tasks/options_trading_system/data_ingestion/barchart_web_scraper/expiration_validator.py`
+  - Selenium-based validation of actual expiration dates
+  - Scrapes live data from Barchart to confirm 0DTE status
+  - Supports headless browser operation for production
+
+- **Daily Pipeline**: `tasks/options_trading_system/daily_options_pipeline.py`
+  - Orchestrates complete 0DTE workflow
+  - Integrates symbol generation, validation, and main pipeline
+  - Provides abort mechanisms for invalid symbols
+
+- **Test Suite**: `tasks/options_trading_system/test_0dte_pipeline.py`
+  - Comprehensive test coverage for all 0DTE components
+  - Integration tests and validation scenarios
+  - Performance and error handling tests
 
 ## Project Structure
 

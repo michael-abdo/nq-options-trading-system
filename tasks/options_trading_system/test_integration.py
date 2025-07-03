@@ -15,6 +15,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(_
 sys.path.insert(0, project_root)
 
 from integration import NQOptionsTradingSystem, run_complete_nq_trading_system
+from tasks.test_utils import save_evidence
 
 
 def validate_options_trading_system():
@@ -386,14 +387,7 @@ def validate_options_trading_system():
     return validation_results
 
 
-def save_evidence(validation_results):
-    """Save validation evidence to evidence.json"""
-    evidence_path = os.path.join(os.path.dirname(__file__), "evidence.json")
-    
-    with open(evidence_path, 'w') as f:
-        json.dump(validation_results, f, indent=2)
-    
-    print(f"\nEvidence saved to: {evidence_path}")
+# Removed duplicate save_evidence - now using canonical implementation from test_utils
 
 
 if __name__ == "__main__":
