@@ -15,6 +15,11 @@ import json
 from datetime import datetime, timedelta
 from typing import Dict, List, Any
 
+# Add tasks directory to path for common imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
+
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
@@ -101,12 +106,7 @@ def validate_volume_shock_analysis():
         print(f"   ✓ Volume ratio threshold: {detection_engine.VOLUME_RATIO_THRESHOLD}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "detection_engine_init",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "detection_engine_init", e)
         return validation_results
     
     # Test 2: Mock volume shock scenario
@@ -152,12 +152,7 @@ def validate_volume_shock_analysis():
         print(f"   ✓ Alerts detected: {len(volume_alerts)}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "volume_shock_detection",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "volume_shock_detection", e)
     
     # Test 3: Delta exposure calculations
     print("\\n3. Testing delta exposure calculations...")
@@ -202,12 +197,7 @@ def validate_volume_shock_analysis():
         print(f"   ✓ Expected delta: {expected_delta:,.0f}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "delta_exposure_calculation",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "delta_exposure_calculation", e)
     
     # Test 4: Complete analysis engine integration
     print("\\n4. Testing complete volume shock analysis engine...")
@@ -254,12 +244,7 @@ def validate_volume_shock_analysis():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "complete_analysis_engine",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "complete_analysis_engine", e)
     
     # Test 5: Flow type classification accuracy
     print("\\n5. Testing flow type classification...")
@@ -329,12 +314,7 @@ def validate_volume_shock_analysis():
         print(f"   ✓ Scenarios tested: {len(classification_scenarios)}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "flow_type_classification",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "flow_type_classification", e)
     
     # Test 6: Execution timing requirements
     print("\\n6. Testing execution timing requirements...")
@@ -370,12 +350,7 @@ def validate_volume_shock_analysis():
         print(f"   ✓ Detection time: {detection_time:.1f}ms")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "execution_timing_requirements",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "execution_timing_requirements", e)
     
     # Test 7: Trading signal generation
     print("\\n7. Testing trading signal generation...")
@@ -432,12 +407,7 @@ def validate_volume_shock_analysis():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "trading_signal_generation",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "trading_signal_generation", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
@@ -521,14 +491,7 @@ def create_mock_volume_shock_scenario() -> Dict[str, Any]:
     }
 
 
-def save_evidence(validation_results):
-    """Save validation evidence to evidence.json"""
-    evidence_path = os.path.join(os.path.dirname(__file__), "evidence.json")
-    
-    with open(evidence_path, 'w') as f:
-        json.dump(validation_results, f, indent=2, default=str)
-    
-    print(f"\\nEvidence saved to: {evidence_path}")
+# Removed duplicate save_evidence - now using canonical implementation from test_utils
 
 
 if __name__ == "__main__":
