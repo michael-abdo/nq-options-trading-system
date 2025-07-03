@@ -228,12 +228,7 @@ def validate_json_exporter():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "trading_signals_extraction",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "trading_signals_extraction", e)
     
     # Test 5: JSON file saving
     print("\n5. Testing JSON file saving...")
@@ -286,12 +281,7 @@ def validate_json_exporter():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "json_file_saving",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "json_file_saving", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
