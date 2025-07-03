@@ -10,6 +10,7 @@ import os
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
 from datetime import datetime
 
 # Add project root to path
@@ -82,12 +83,7 @@ def validate_json_exporter():
         print(f"   ✓ Pretty format: {exporter.format_pretty}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "exporter_init",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "exporter_init", e)
         return validation_results
     
     # Test 2: Data cleaning and serialization
@@ -130,12 +126,7 @@ def validate_json_exporter():
         print(f"   ✓ JSON length: {len(json_string)} chars")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "data_serialization",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "data_serialization", e)
     
     # Test 3: Export complete JSON using integration function
     print("\n3. Testing complete JSON export...")
@@ -190,12 +181,7 @@ def validate_json_exporter():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "complete_json_export",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "complete_json_export", e)
     
     # Test 4: Trading signals extraction
     print("\n4. Testing trading signals extraction...")
