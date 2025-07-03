@@ -10,6 +10,7 @@ import os
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
 from datetime import datetime
 
 # Add project root to path
@@ -53,12 +54,7 @@ def validate_barchart_data_loading():
         })
         print(f"   ✓ File exists: {file_exists}")
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "file_exists",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "file_exists", e)
         return validation_results
     
     # Test 2: Data loading
@@ -78,12 +74,7 @@ def validate_barchart_data_loading():
         validation_results["evidence"]["data_structure"] = list(raw_data.keys()) if data_loaded else []
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "data_loading",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "data_loading", e)
         return validation_results
     
     # Test 3: Options data extraction
@@ -114,12 +105,7 @@ def validate_barchart_data_loading():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "options_extraction",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "options_extraction", e)
     
     # Test 4: Data quality metrics
     print("\n4. Testing data quality metrics...")
@@ -146,12 +132,7 @@ def validate_barchart_data_loading():
         validation_results["evidence"]["quality_metrics"] = quality
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "quality_metrics",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "quality_metrics", e)
     
     # Test 5: Strike range extraction
     print("\n5. Testing strike range extraction...")
@@ -178,12 +159,7 @@ def validate_barchart_data_loading():
         validation_results["evidence"]["strike_range"] = strike_range
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "strike_range",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "strike_range", e)
     
     # Test 6: Integration function test
     print("\n6. Testing integration function...")
@@ -210,12 +186,7 @@ def validate_barchart_data_loading():
         print(f"   ✓ Metadata captured: {result['metadata']['source']}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "integration_function",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "integration_function", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
