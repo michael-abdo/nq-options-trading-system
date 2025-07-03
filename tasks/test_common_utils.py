@@ -25,7 +25,8 @@ try:
         get_logger, LoggerMixin, setup_structured_logging,
         PathManager,
         add_validation_error, create_failure_response, 
-        log_and_return_false, log_and_return_none
+        log_and_return_false, log_and_return_none,
+        create_status_response, create_success_response
     )
     UTILS_AVAILABLE = True
 except ImportError as e:
@@ -200,6 +201,66 @@ def test_exception_handling():
     
     print("✓ Exception handling tests passed")
 
+def test_status_dict_patterns():
+    """Test status dict pattern utilities."""
+    print("\nTesting status dict patterns...")
+    
+    # Test create_status_response
+    response = create_status_response("pending")
+    assert response == {"status": "pending"}
+    
+    response = create_status_response("error", "Something went wrong")
+    assert response["status"] == "error"
+    assert response["message"] == "Something went wrong"
+    
+    response = create_status_response("custom", data={"value": 42}, code=200)
+    assert response["status"] == "custom"
+    assert response["data"] == {"value": 42}
+    assert response["code"] == 200
+    
+    # Test create_success_response
+    response = create_success_response()
+    assert response["status"] == "success"
+    assert "timestamp" in response
+    
+    response = create_success_response(result={"contracts": 100})
+    assert response["status"] == "success"
+    assert response["result"] == {"contracts": 100}
+    
+    custom_ts = "2025-06-30T10:00:00"
+    response = create_success_response(
+        result=42,
+        message="Operation completed",
+        timestamp=custom_ts
+    )
+    assert response["message"] == "Operation completed"
+    assert response["timestamp"] == custom_ts
+    
+    # Test create_failure_response
+    response = create_failure_response("Database connection failed")
+    assert response["status"] == "failed"
+    assert response["error"] == "Database connection failed"
+    assert "timestamp" in response
+    
+    try:
+        raise ValueError("Invalid input")
+    except ValueError as e:
+        response = create_failure_response(e)
+        assert response["error"] == "Invalid input"
+    
+    response = create_failure_response("API limit exceeded", status="error")
+    assert response["status"] == "error"
+    
+    response = create_failure_response(
+        "Validation failed",
+        field="email",
+        value="invalid@"
+    )
+    assert response["field"] == "email"
+    assert response["value"] == "invalid@"
+    
+    print("✓ Status dict pattern tests passed")
+
 def test_canonical_exception_patterns():
     """Test the new canonical exception handling patterns."""
     print("Testing canonical exception patterns...")
@@ -262,6 +323,7 @@ def run_all_tests():
         test_logger_utilities()
         test_path_manager()
         test_exception_handling()
+        test_status_dict_patterns()
         test_canonical_exception_patterns()
         
         print("\n" + "=" * 60)

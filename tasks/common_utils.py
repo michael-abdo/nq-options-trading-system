@@ -272,6 +272,70 @@ def to_json_string(data: Any, indent: int = None) -> str:
     """
     return json.dumps(data, cls=EnhancedJSONEncoder, indent=indent, ensure_ascii=False)
 
+
+# ============================================================================
+# STATUS DICT PATTERNS
+# ============================================================================
+
+def create_status_response(status: str, message: str = None, **kwargs) -> Dict[str, Any]:
+    """
+    Create a standardized status response dictionary.
+    
+    Args:
+        status: Status value (e.g., 'success', 'failed', 'error', 'pending')
+        message: Optional message to include
+        **kwargs: Additional fields to include in the response
+        
+    Returns:
+        Dict with status and any additional fields
+    """
+    response = {"status": status}
+    if message is not None:
+        response["message"] = message
+    response.update(kwargs)
+    return response
+
+def create_success_response(result: Any = None, message: str = None, **kwargs) -> Dict[str, Any]:
+    """
+    Create a success status response with optional result.
+    
+    Args:
+        result: Optional result data to include
+        message: Optional success message
+        **kwargs: Additional fields to include
+        
+    Returns:
+        Success status dict
+    """
+    response = {"status": "success"}
+    if result is not None:
+        response["result"] = result
+    if message is not None:
+        response["message"] = message
+    if "timestamp" not in kwargs:
+        response["timestamp"] = get_trading_timestamp()
+    response.update(kwargs)
+    return response
+
+def create_failure_response(error: Union[str, Exception], status: str = "failed", **kwargs) -> Dict[str, Any]:
+    """
+    Create a failure status response with error details.
+    
+    Args:
+        error: Error message or exception
+        status: Status value (default: 'failed', can be 'error')
+        **kwargs: Additional fields to include
+        
+    Returns:
+        Failure status dict
+    """
+    error_msg = str(error) if isinstance(error, Exception) else error
+    response = {"status": status, "error": error_msg}
+    if "timestamp" not in kwargs:
+        response["timestamp"] = get_trading_timestamp()
+    response.update(kwargs)
+    return response
+
 # ============================================================================
 # LOGGER UTILITIES
 # ============================================================================
