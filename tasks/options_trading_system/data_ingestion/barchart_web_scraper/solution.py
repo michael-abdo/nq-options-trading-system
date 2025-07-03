@@ -18,7 +18,7 @@ import sys
 # Add project root for test_utils
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
-from tasks.test_utils import setup_chrome_driver
+from tasks.test_utils import setup_chrome_driver, safe_float, safe_int
 
 @dataclass
 class OptionsContract:
@@ -419,24 +419,7 @@ class BarchartWebScraper:
         """
         Parse a single options table row into an OptionsContract
         """
-        
-        def safe_float(value: str) -> Optional[float]:
-            try:
-                clean_value = value.replace('$', '').replace(',', '').replace('%', '')
-                if clean_value in ['-', '--', '', 'N/A']:
-                    return None
-                return float(clean_value)
-            except:
-                return None
-        
-        def safe_int(value: str) -> Optional[int]:
-            try:
-                clean_value = value.replace(',', '')
-                if clean_value in ['-', '--', '', 'N/A']:
-                    return None
-                return int(float(clean_value))
-            except:
-                return None
+        # Use canonical implementations from test_utils
         
         try:
             # Find strike price (usually in middle or first column)
@@ -774,21 +757,13 @@ class BarchartAPIComparator:
     
     def _safe_float(self, value) -> Optional[float]:
         """Safely convert value to float"""
-        if value is None or value == 'N/A' or value == '':
-            return None
-        try:
-            return float(value)
-        except (ValueError, TypeError):
-            return None
+        # Use canonical implementation from test_utils
+        return safe_float(value)
     
     def _safe_int(self, value) -> Optional[int]:
         """Safely convert value to int"""
-        if value is None or value == 'N/A' or value == '':
-            return None
-        try:
-            return int(float(value))
-        except (ValueError, TypeError):
-            return None
+        # Use canonical implementation from test_utils
+        return safe_int(value)
     
     def compare_data_sources(self, web_data: OptionsChainData, api_data: OptionsChainData) -> Dict[str, Any]:
         """

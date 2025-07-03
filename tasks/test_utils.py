@@ -6,7 +6,7 @@ Eliminates duplicated test helper functions across the codebase.
 
 import os
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -89,6 +89,59 @@ def setup_chrome_driver(headless: bool = True) -> webdriver.Chrome:
     driver = webdriver.Chrome(options=chrome_options)
     driver.implicitly_wait(10)
     return driver
+
+
+def safe_float(value: Any) -> Optional[float]:
+    """
+    Safely convert value to float, handling various formats and edge cases.
+    
+    Args:
+        value: Value to convert (string, number, or None)
+        
+    Returns:
+        Float value or None if conversion fails
+    """
+    if value is None or value == '' or value in ['N/A', '-', '--']:
+        return None
+    
+    try:
+        # Handle string values with currency/formatting
+        if isinstance(value, str):
+            clean_value = value.replace('$', '').replace(',', '').replace('%', '')
+            if clean_value in ['-', '--', '', 'N/A']:
+                return None
+            return float(clean_value)
+        else:
+            return float(value)
+    except (ValueError, TypeError):
+        return None
+
+
+def safe_int(value: Any) -> Optional[int]:
+    """
+    Safely convert value to int, handling various formats and edge cases.
+    
+    Args:
+        value: Value to convert (string, number, or None)
+        
+    Returns:
+        Int value or None if conversion fails
+    """
+    if value is None or value == '' or value in ['N/A', '-', '--']:
+        return None
+    
+    try:
+        # Handle string values with formatting
+        if isinstance(value, str):
+            clean_value = value.replace(',', '')
+            if clean_value in ['-', '--', '', 'N/A']:
+                return None
+            # Convert through float to handle decimals
+            return int(float(clean_value))
+        else:
+            return int(float(value))
+    except (ValueError, TypeError):
+        return None
 
 
 class ValidationResults:
