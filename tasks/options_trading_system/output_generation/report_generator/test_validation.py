@@ -10,6 +10,7 @@ import os
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
 from datetime import datetime
 
 # Add project root to path
@@ -80,12 +81,7 @@ def validate_report_generator():
         print(f"   ✓ Report style: {generator.report_style}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "generator_init",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "generator_init", e)
         return validation_results
     
     # Test 2: Generate report sections
@@ -154,12 +150,7 @@ def validate_report_generator():
         print(f"   ✓ Summary length: {len(summary)} chars")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "section_generation",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "section_generation", e)
     
     # Test 3: Generate complete report using integration function
     print("\n3. Testing complete report generation...")
@@ -215,12 +206,7 @@ def validate_report_generator():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "complete_report_generation",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "complete_report_generation", e)
     
     # Test 4: Report formatting and structure
     print("\n4. Testing report formatting...")
@@ -258,12 +244,7 @@ def validate_report_generator():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "report_formatting",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "report_formatting", e)
     
     # Test 5: Save report to file
     print("\n5. Testing report file saving...")
@@ -307,12 +288,7 @@ def validate_report_generator():
             })
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "report_file_saving",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "report_file_saving", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
