@@ -17,9 +17,9 @@ import sys
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 
-# Add tasks directory to path
-sys.path.insert(0, os.path.join(PathManager.get_project_root(), '..', '..', '..'))
-from common_utils import get_logger
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import get_logger, log_and_return_false
 
 from .expiration_validator import ExpirationValidator
 
@@ -264,6 +264,7 @@ class OptionsSymbolGenerator:
         
         return f"{prefix}{day_code}{month_code}{year_code}"
     
+    @log_and_return_false(operation="_validate_symbol_is_0dte")
     def _validate_symbol_is_0dte(self, symbol: str, target_date: datetime) -> bool:
         """
         Validate that symbol actually expires on target date
@@ -279,8 +280,7 @@ class OptionsSymbolGenerator:
             with ExpirationValidator(headless=self.headless) as validator:
                 return validator.validate_is_0dte(symbol, target_date)
         except Exception as e:
-            self.logger.error(f"Validation error for {symbol}: {e}")
-            return False
+            raise  # Let decorator handle it
 
 
 class LegacySymbolGenerator:

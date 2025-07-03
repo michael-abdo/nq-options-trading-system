@@ -21,11 +21,15 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, WebDriverException
 import sys
 import os
+
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+from common_utils import get_logger, log_and_return_false, log_and_return_none
+
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 sys.path.insert(0, project_root)
 from tasks.test_utils import setup_chrome_driver
-from tasks.common_utils import get_logger
 
 class ExpirationValidator:
     """
@@ -170,9 +174,9 @@ class ExpirationValidator:
                 return False
                 
         except Exception as e:
-            self.logger.error(f"Error validating symbol {symbol}: {e}")
-            return False
+            raise  # Let decorator handle it
     
+    @log_and_return_none(operation="_extract_expiration_date")
     def _extract_expiration_date(self) -> Optional[str]:
         """
         Extract expiration date from current Barchart options page
@@ -220,8 +224,7 @@ class ExpirationValidator:
             return self._extract_date_from_text(page_text)
             
         except Exception as e:
-            self.logger.debug(f"Error extracting expiration date: {e}")
-            return None
+            raise  # Let decorator handle it
     
     def _parse_date_string(self, date_text: str) -> Optional[str]:
         """
