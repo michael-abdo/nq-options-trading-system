@@ -10,8 +10,12 @@ import os
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from common_utils import get_utc_timestamp, create_success_response, create_failure_response
+
 # Add project root to path for data model imports
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
 
 # Import canonical estimate_underlying_price
@@ -96,11 +100,7 @@ class RiskAnalyzer:
                 pipeline_result = run_data_ingestion(data_config)
                 
                 if pipeline_result["pipeline_status"] != "success":
-                    return {
-                        "status": "failed",
-                        "error": "Data ingestion pipeline failed for risk analysis",
-                        "timestamp": get_utc_timestamp()
-                    }
+                    return create_failure_response("Data ingestion pipeline failed for risk analysis")
                 
                 # Extract normalized data
                 normalized_data = pipeline_result["normalized_data"]
@@ -108,11 +108,7 @@ class RiskAnalyzer:
                 underlying_price = self._estimate_underlying_price(contracts)
             
             if not contracts:
-                return {
-                    "status": "failed",
-                    "error": "No contract data available for risk analysis",
-                    "timestamp": get_utc_timestamp()
-                }
+                return create_failure_response("No contract data available for risk analysis")
             
             # Initialize risk containers
             calls_at_risk = []
@@ -270,11 +266,7 @@ class RiskAnalyzer:
             }
             
         except Exception as e:
-            return {
-                "status": "failed",
-                "error": f"Risk analysis failed: {str(e)}",
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(f"Risk analysis failed: {str(e)}")
 
 
 def run_risk_analysis(data_config: Dict[str, Any], analysis_config: Dict[str, Any] = None) -> Dict[str, Any]:

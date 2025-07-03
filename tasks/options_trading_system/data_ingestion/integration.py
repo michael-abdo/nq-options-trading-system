@@ -10,8 +10,12 @@ import os
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from common_utils import PathManager, get_utc_timestamp, create_success_response, create_failure_response
+
 # Add child tasks to path
-current_dir = PathManager.get_project_root()
+current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
 # Import validated child solutions
