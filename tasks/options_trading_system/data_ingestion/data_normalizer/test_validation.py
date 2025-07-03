@@ -10,6 +10,7 @@ import os
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
 from datetime import datetime
 
 # Add project root to path
@@ -63,12 +64,7 @@ def validate_data_normalizer():
         })
         print(f"   ✓ Normalizer initialized: {init_valid}")
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "normalizer_init",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "normalizer_init", e)
         return validation_results
     
     # Test 2: Load Barchart data
@@ -92,12 +88,7 @@ def validate_data_normalizer():
         print(f"   ✓ Barchart data loaded: {barchart_result['quality_metrics']['total_contracts']} contracts")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "barchart_loading",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "barchart_loading", e)
     
     # Test 3: Load Tradovate data
     print("\n3. Testing Tradovate data loading...")
@@ -120,12 +111,7 @@ def validate_data_normalizer():
         print(f"   ✓ Tradovate data loaded: {tradovate_result['quality_metrics']['total_contracts']} contracts")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "tradovate_loading",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "tradovate_loading", e)
     
     # Test 4: Normalize all sources
     print("\n4. Testing data normalization...")
@@ -156,12 +142,7 @@ def validate_data_normalizer():
         validation_results["evidence"]["normalized_summary"] = normalized['summary']
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "normalization",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "normalization", e)
     
     # Test 5: Verify normalized contract format
     print("\n5. Testing normalized contract format...")
@@ -189,12 +170,7 @@ def validate_data_normalizer():
             print(f"   ✓ Sample: {sample_contract['source']} {sample_contract['type']} @ ${sample_contract['strike']}")
             
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "contract_format",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "contract_format", e)
     
     # Test 6: Quality metrics
     print("\n6. Testing quality metrics calculation...")
@@ -226,12 +202,7 @@ def validate_data_normalizer():
         validation_results["evidence"]["quality_metrics"] = quality
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "quality_metrics",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "quality_metrics", e)
     
     # Test 7: Integration function
     print("\n7. Testing integration function...")
@@ -258,12 +229,7 @@ def validate_data_normalizer():
         print(f"   ✓ Total normalized: {result['normalized_data']['summary']['total_contracts']} contracts")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "integration_function",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "integration_function", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
