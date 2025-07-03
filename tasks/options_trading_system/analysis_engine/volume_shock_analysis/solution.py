@@ -23,13 +23,17 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import math
 
+# Add tasks directory to path for common utilities
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+from common_utils import create_success_response, create_failure_response, create_status_response, get_utc_timestamp
+
 # Add parent directories to path for data access
-parent_dir = os.path.dirname(os.path.dirname(PathManager.get_project_root()))
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, parent_dir)
 from data_ingestion.integration import run_data_ingestion
 
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root())))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
 from tasks.test_utils import estimate_underlying_price
 
@@ -767,7 +771,7 @@ class VolumeShockAnalysisEngine:
         """Calculate optimal time window for executing trades"""
         
         if not alerts:
-            return {"status": "no_signals", "window": None}
+            return create_status_response("no_signals", window=None)
         
         # Find the earliest and latest response times
         min_response_time = min(alert.response_time_estimate for alert in alerts)
@@ -776,14 +780,14 @@ class VolumeShockAnalysisEngine:
         # Optimal window is before the earliest expected hedging
         optimal_window_end = datetime.now() + timedelta(minutes=min_response_time - 1)
         
-        return {
-            "status": "active_window",
-            "optimal_execution_deadline": optimal_window_end.isoformat(),
-            "minutes_remaining": min_response_time - 1,
-            "hedging_window_start": min_response_time,
-            "hedging_window_end": max_response_time,
-            "execution_priority": "IMMEDIATE" if min_response_time < 3 else "HIGH"
-        }
+        return create_status_response(
+            "active_window",
+            optimal_execution_deadline=optimal_window_end.isoformat(),
+            minutes_remaining=min_response_time - 1,
+            hedging_window_start=min_response_time,
+            hedging_window_end=max_response_time,
+            execution_priority="IMMEDIATE" if min_response_time < 3 else "HIGH"
+        )
 
 
 # Module-level function for easy integration
@@ -838,9 +842,7 @@ def analyze_volume_shocks(data_config: Dict[str, Any],
         return result_dict
         
     except Exception as e:
-        return {
-            "status": "failed",
-            "error": str(e),
-            "timestamp": get_utc_timestamp(),
-            "analysis_type": "volume_shock_analysis"
-        }
+        return create_failure_response(
+            e,
+            analysis_type="volume_shock_analysis"
+        )
