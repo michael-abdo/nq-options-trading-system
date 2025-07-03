@@ -10,6 +10,7 @@ import os
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
 from datetime import datetime
 
 # Add project root to path
@@ -58,12 +59,7 @@ def validate_tradovate_api_data_loading():
         })
         print(f"   ✓ Credentials valid: {creds_valid}")
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "credentials_validation",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "credentials_validation", e)
         return validation_results
     
     # Test 2: API connection
@@ -84,12 +80,7 @@ def validate_tradovate_api_data_loading():
         print(f"   ✓ Mode: {loader.mode}, Mock: {loader.use_mock}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "api_connection",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "api_connection", e)
     
     # Test 3: Data loading
     print("\n3. Testing data loading...")
@@ -110,12 +101,7 @@ def validate_tradovate_api_data_loading():
             validation_results["evidence"]["metadata"] = loader.metadata
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "data_loading",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "data_loading", e)
         return validation_results
     
     # Test 4: Options data extraction
@@ -159,12 +145,7 @@ def validate_tradovate_api_data_loading():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "options_extraction",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "options_extraction", e)
     
     # Test 5: Data quality metrics
     print("\n5. Testing data quality metrics...")
@@ -194,12 +175,7 @@ def validate_tradovate_api_data_loading():
         validation_results["evidence"]["quality_metrics"] = quality
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "quality_metrics",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "quality_metrics", e)
     
     # Test 6: Strike range extraction
     print("\n6. Testing strike range extraction...")
@@ -227,12 +203,7 @@ def validate_tradovate_api_data_loading():
         validation_results["evidence"]["strike_range"] = strike_range
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "strike_range",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "strike_range", e)
     
     # Test 7: Integration function test
     print("\n7. Testing integration function...")
@@ -260,12 +231,7 @@ def validate_tradovate_api_data_loading():
         print(f"   ✓ Using mock: {result['metadata']['use_mock']}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "integration_function",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "integration_function", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])
