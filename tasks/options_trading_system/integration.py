@@ -17,7 +17,7 @@ sys.path.insert(0, current_dir)
 
 # Add tasks directory to path for common utilities
 sys.path.insert(0, os.path.dirname(current_dir))
-from common_utils import get_utc_timestamp, PathManager
+from common_utils import get_utc_timestamp, PathManager, create_success_response, create_failure_response, create_status_response
 
 # Import parent task modules
 from data_ingestion.integration import run_data_ingestion
@@ -54,11 +54,11 @@ class NQOptionsTradingSystem:
         
         print(f"    ✓ Configuration validation: {all_valid}")
         
-        return {
-            "status": "valid" if all_valid else "invalid",
-            "checks": validation,
-            "missing_sections": [k.replace("_config_valid", "") for k, v in validation.items() if not v]
-        }
+        return create_status_response(
+            status="valid" if all_valid else "invalid",
+            checks=validation,
+            missing_sections=[k.replace("_config_valid", "") for k, v in validation.items() if not v]
+        )
     
     def run_data_pipeline(self) -> Dict[str, Any]:
         """Execute data ingestion pipeline"""
@@ -73,18 +73,10 @@ class NQOptionsTradingSystem:
             print(f"    ✓ Total Contracts: {result['summary']['total_contracts']}")
             print(f"    ✓ Data Quality: {result['quality_metrics']['overall_volume_coverage']:.1%} volume coverage")
             
-            return {
-                "status": "success",
-                "result": result,
-                "timestamp": get_utc_timestamp()
-            }
+            return create_success_response(result=result)
         except Exception as e:
             print(f"    ✗ Data Pipeline failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(e)
     
     def run_analysis_pipeline(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Execute analysis engine with your NQ EV algorithm"""
@@ -104,18 +96,10 @@ class NQOptionsTradingSystem:
                 best_rec = result["synthesis"]["trading_recommendations"][0]
                 print(f"    ✓ Best NQ EV Trade: {best_rec['trade_direction']} EV={best_rec['expected_value']:+.1f} points")
             
-            return {
-                "status": "success",
-                "result": result,
-                "timestamp": get_utc_timestamp()
-            }
+            return create_success_response(result=result)
         except Exception as e:
             print(f"    ✗ Analysis Pipeline failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(e)
     
     def run_output_pipeline(self, data_config: Dict[str, Any], analysis_results: Dict[str, Any] = None) -> Dict[str, Any]:
         """Execute output generation pipeline"""
@@ -136,18 +120,10 @@ class NQOptionsTradingSystem:
             print(f"    ✓ Files Saved: {result['summary']['files_saved']}")
             print(f"    ✓ Total Output Size: {result['summary']['total_output_size']} bytes")
             
-            return {
-                "status": "success",
-                "result": result,
-                "timestamp": get_utc_timestamp()
-            }
+            return create_success_response(result=result)
         except Exception as e:
             print(f"    ✗ Output Pipeline failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(e)
     
     def create_system_summary(self) -> Dict[str, Any]:
         """Create comprehensive system execution summary"""
@@ -246,12 +222,10 @@ class NQOptionsTradingSystem:
         # Step 1: Configuration validation
         config_validation = self.validate_configuration()
         if config_validation["status"] != "valid":
-            return {
-                "status": "failed",
-                "error": "Invalid configuration",
-                "config_validation": config_validation,
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(
+                "Invalid configuration",
+                config_validation=config_validation
+            )
         
         # Step 2: Data pipeline
         data_config = self.config.get("data", {})
