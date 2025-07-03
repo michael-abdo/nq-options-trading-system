@@ -20,7 +20,7 @@ sys.path.insert(0, current_dir)
 # Add tasks directory for common utilities
 tasks_dir = os.path.dirname(os.path.dirname(current_dir))
 sys.path.insert(0, tasks_dir)
-from common_utils import PathManager, get_utc_timestamp
+from common_utils import PathManager, get_utc_timestamp, create_success_response, create_failure_response
 
 # Add project root for test_utils  
 project_root = os.path.dirname(tasks_dir)
@@ -77,18 +77,10 @@ class AnalysisEngine:
                 rec = result["trading_report"]["execution_recommendation"]
                 print(f"    ✓ Best trade: {rec['trade_direction']} EV={rec['expected_value']:+.1f} points")
             
-            return {
-                "status": "success",
-                "result": result,
-                "timestamp": get_utc_timestamp()
-            }
+            return create_success_response(result=result)
         except Exception as e:
             print(f"    ✗ NQ EV Analysis failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(e)
     
     def run_risk_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Run risk analysis (institutional positioning)"""
@@ -107,25 +99,13 @@ class AnalysisEngine:
             if result["status"] == "success":
                 print(f"    ✓ Risk Analysis: {result['metrics']['total_positions_at_risk']} positions at risk, "
                       f"bias: {result['summary']['bias']}")
-                return {
-                    "status": "success",
-                    "result": result,
-                    "timestamp": get_utc_timestamp()
-                }
+                return create_success_response(result=result)
             else:
                 print(f"    ✗ Risk Analysis failed: {result.get('error', 'Unknown error')}")
-                return {
-                    "status": "failed",
-                    "error": result.get('error', 'Unknown error'),
-                    "timestamp": get_utc_timestamp()
-                }
+                return create_failure_response(result.get('error', 'Unknown error'))
         except Exception as e:
             print(f"    ✗ Risk Analysis failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(e)
     
     def run_volume_shock_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Run volume shock analysis (The Egg Rush Strategy)"""
@@ -155,25 +135,13 @@ class AnalysisEngine:
                           f"EV={primary_signal['expected_value']:+.1f} points "
                           f"({primary_signal['flow_type']})")
                 
-                return {
-                    "status": "success",
-                    "result": result,
-                    "timestamp": get_utc_timestamp()
-                }
+                return create_success_response(result=result)
             else:
                 print(f"    ✗ Volume Shock Analysis failed: {result.get('error', 'Unknown error')}")
-                return {
-                    "status": "failed",
-                    "error": result.get('error', 'Unknown error'),
-                    "timestamp": get_utc_timestamp()
-                }
+                return create_failure_response(result.get('error', 'Unknown error'))
         except Exception as e:
             print(f"    ✗ Volume Shock Analysis failed: {str(e)}")
-            return {
-                "status": "failed",
-                "error": str(e),
-                "timestamp": get_utc_timestamp()
-            }
+            return create_failure_response(e)
     
     def run_dead_simple_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """Enhanced DEAD Simple institutional flow detection with comprehensive logging"""
@@ -205,22 +173,14 @@ class AnalysisEngine:
             
             if pipeline_result["pipeline_status"] != "success":
                 print("    ✗ Data ingestion pipeline failed")
-                return {
-                    "status": "failed",
-                    "error": "Data ingestion pipeline failed",
-                    "timestamp": get_utc_timestamp()
-                }
+                return create_failure_response("Data ingestion pipeline failed")
             
             # Extract normalized contracts
             contracts = pipeline_result["normalized_data"]["contracts"]
             
             if not contracts:
                 print("    ✗ No options contracts available")
-                return {
-                    "status": "failed",
-                    "error": "No options contracts available",
-                    "timestamp": get_utc_timestamp()
-                }
+                return create_failure_response("No options contracts available")
             
             # Estimate underlying price from contracts
             current_price = self._estimate_underlying_price(contracts)
@@ -334,11 +294,7 @@ class AnalysisEngine:
                 "contract_analyzed": contract
             }
             
-            return {
-                "status": "success",
-                "result": enhanced_result,
-                "timestamp": get_utc_timestamp()
-            }
+            return create_success_response(result=enhanced_result)
             
         except Exception as e:
             import traceback
