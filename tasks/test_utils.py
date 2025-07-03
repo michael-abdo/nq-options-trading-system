@@ -12,6 +12,29 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
+def get_project_root() -> str:
+    """
+    Get the project root directory (EOD).
+    Works from any file location within the project.
+    
+    Returns:
+        Absolute path to project root
+    """
+    current_file = os.path.abspath(__file__)
+    # Navigate up from tasks/test_utils.py to project root
+    return os.path.dirname(os.path.dirname(current_file))
+
+
+def get_timestamp() -> str:
+    """
+    Get current timestamp in ISO format.
+    
+    Returns:
+        ISO formatted timestamp string
+    """
+    return datetime.now().isoformat()
+
+
 def save_evidence(validation_results: Dict[str, Any], evidence_filename: str = "evidence.json") -> None:
     """
     Save validation evidence to JSON file.
