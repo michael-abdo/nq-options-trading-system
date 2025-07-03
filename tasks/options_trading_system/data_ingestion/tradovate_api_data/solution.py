@@ -84,7 +84,7 @@ class TradovateAPIDataLoader:
             "source": "tradovate_api",
             "mode": self.mode,
             "use_mock": self.use_mock,
-            "loaded_at": datetime.now().isoformat(),
+            "loaded_at": get_utc_timestamp(),
             "data_hash": self._calculate_data_hash()
         })
         
@@ -145,7 +145,7 @@ class TradovateAPIDataLoader:
             "underlying": {
                 "symbol": "NQ",
                 "price": current_price,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             },
             "options": {
                 "calls": calls,

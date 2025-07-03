@@ -5,10 +5,16 @@ Barchart API Client - Direct API calls using reverse-engineered endpoints
 
 import requests
 import json
+import os
+import sys
 from datetime import datetime
 from typing import Dict, Any, Optional
 import logging
 from urllib.parse import urlencode
+
+# Add tasks directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
+from common_utils import save_json, get_logger, get_utc_timestamp, PathManager
 
 class BarchartAPIClient:
     """Direct API client for Barchart options data"""
@@ -16,7 +22,7 @@ class BarchartAPIClient:
     def __init__(self):
         self.base_url = "https://www.barchart.com/proxies/core-api/v1"
         self.session = requests.Session()
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger()
         
         # Default headers based on browser requests
         self.headers = {
@@ -148,12 +154,12 @@ class BarchartAPIClient:
         
         # Save data
         with open(filepath, 'w') as f:
-            json.dump(data, f, indent=2)
+            save_json(data, f).result
         
         # Save metadata
         metadata = {
             'symbol': symbol,
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': get_utc_timestamp(),
             'api_endpoint': 'proxies/core-api/v1/quotes/get',
             'contracts_count': data.get('count', 0),
             'total_contracts': data.get('total', 0),
@@ -162,7 +168,7 @@ class BarchartAPIClient:
         
         metadata_file = filepath.replace('.json', '_metadata.json')
         with open(metadata_file, 'w') as f:
-            json.dump(metadata, f, indent=2)
+            save_json(metadata, f).result
         
         self.logger.info(f"API response saved: {filepath}")
         

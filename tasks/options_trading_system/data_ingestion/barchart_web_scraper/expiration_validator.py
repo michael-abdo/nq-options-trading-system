@@ -22,9 +22,10 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 import sys
 import os
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
 sys.path.insert(0, project_root)
 from tasks.test_utils import setup_chrome_driver
+from tasks.common_utils import get_logger
 
 class ExpirationValidator:
     """
@@ -44,7 +45,7 @@ class ExpirationValidator:
         self.headless = headless
         self.driver = None
         self.wait_time = 10  # seconds
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger()
         
         # Contract prefixes to try in order
         self.CONTRACT_PREFIXES = ['MC', 'MM', 'MQ']

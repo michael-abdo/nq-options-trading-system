@@ -17,8 +17,13 @@ import time
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
-# Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add tasks directory for common utilities
+tasks_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.insert(0, tasks_dir)
+from common_utils import PathManager, get_utc_timestamp
+
+# Add project root for test_utils  
+project_root = os.path.dirname(tasks_dir)
 sys.path.insert(0, project_root)
 from tasks.test_utils import estimate_underlying_price
 
@@ -75,14 +80,14 @@ class AnalysisEngine:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
         except Exception as e:
             print(f"    ✗ NQ EV Analysis failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
     
     def run_risk_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -105,21 +110,21 @@ class AnalysisEngine:
                 return {
                     "status": "success",
                     "result": result,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_utc_timestamp()
                 }
             else:
                 print(f"    ✗ Risk Analysis failed: {result.get('error', 'Unknown error')}")
                 return {
                     "status": "failed",
                     "error": result.get('error', 'Unknown error'),
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_utc_timestamp()
                 }
         except Exception as e:
             print(f"    ✗ Risk Analysis failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
     
     def run_volume_shock_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -153,21 +158,21 @@ class AnalysisEngine:
                 return {
                     "status": "success",
                     "result": result,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_utc_timestamp()
                 }
             else:
                 print(f"    ✗ Volume Shock Analysis failed: {result.get('error', 'Unknown error')}")
                 return {
                     "status": "failed",
                     "error": result.get('error', 'Unknown error'),
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_utc_timestamp()
                 }
         except Exception as e:
             print(f"    ✗ Volume Shock Analysis failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
     
     def run_dead_simple_analysis(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -203,7 +208,7 @@ class AnalysisEngine:
                 return {
                     "status": "failed",
                     "error": "Data ingestion pipeline failed",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_utc_timestamp()
                 }
             
             # Extract normalized contracts
@@ -214,7 +219,7 @@ class AnalysisEngine:
                 return {
                     "status": "failed",
                     "error": "No options contracts available",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_utc_timestamp()
                 }
             
             # Estimate underlying price from contracts
@@ -332,7 +337,7 @@ class AnalysisEngine:
             return {
                 "status": "success",
                 "result": enhanced_result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
             
         except Exception as e:
@@ -344,7 +349,7 @@ class AnalysisEngine:
                 "status": "failed",
                 "error": str(e),
                 "error_details": error_details,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
     
     def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
@@ -409,7 +414,7 @@ class AnalysisEngine:
         print("  Synthesizing Analysis Results (NQ EV Algorithm Priority)...")
         
         synthesis = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "primary_algorithm": "nq_ev_analysis",
             "analysis_summary": {},
             "trading_recommendations": [],
@@ -687,7 +692,7 @@ class AnalysisEngine:
                     self.analysis_results[analysis_name] = {
                         "status": "failed",
                         "error": str(e),
-                        "timestamp": datetime.now().isoformat()
+                        "timestamp": get_utc_timestamp()
                     }
         
         print("  All analyses complete. Synthesizing results...")
@@ -700,7 +705,7 @@ class AnalysisEngine:
         
         # Final results
         final_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "execution_time_seconds": execution_time,
             "primary_algorithm": "nq_ev_analysis",
             "analysis_config": self.config,

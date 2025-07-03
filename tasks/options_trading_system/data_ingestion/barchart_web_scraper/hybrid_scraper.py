@@ -5,8 +5,14 @@ Hybrid Barchart Scraper - Uses Selenium for auth, then API for data
 
 import logging
 import json
+import os
+import sys
 from datetime import datetime
 from typing import Dict, Any, Optional
+
+# Add tasks directory to path
+sys.path.insert(0, os.path.join(PathManager.get_project_root(), '..', '..', '..'))
+from common_utils import save_json, get_logger
 
 from .solution import BarchartWebScraper
 from .barchart_api_client import BarchartAPIClient
@@ -17,7 +23,7 @@ class HybridBarchartScraper:
     """
     
     def __init__(self, headless: bool = True):
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger()
         self.headless = headless
         self.web_scraper = None
         self.api_client = None
@@ -192,7 +198,7 @@ def main():
             filepath = os.path.join(output_dir, filename)
             
             with open(filepath, 'w') as f:
-                json.dump(data, f, indent=2)
+                save_json(data, f).result
             print(f"\n💾 Data saved to {filepath}")
     else:
         print("❌ Failed to fetch data")

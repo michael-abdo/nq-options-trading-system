@@ -115,7 +115,7 @@ class PolygonAPIClient:
         contracts = []
         
         if 'results' in response:
-            timestamp = datetime.now().isoformat()
+            timestamp = get_utc_timestamp()
             for contract_data in response['results']:
                 contract = PolygonOptionsContract(
                     ticker=contract_data.get('ticker', ''),
@@ -235,7 +235,7 @@ def load_polygon_api_data(config: Dict[str, Any]) -> Dict[str, Any]:
             'total_contracts': len(all_contracts),
             'underlying_tickers': tickers,
             'data_source': 'polygon.io',
-            'fetch_timestamp': datetime.now().isoformat()
+            'fetch_timestamp': get_utc_timestamp()
         },
         'options_data': options_data,
         'source_summary': source_summary,

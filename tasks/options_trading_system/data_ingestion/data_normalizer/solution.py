@@ -11,11 +11,11 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 # Add project root to path
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
 sys.path.insert(0, project_root)
 
 # Import sibling tasks
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(PathManager.get_project_root()))
 from barchart_saved_data.solution import load_barchart_saved_data
 from tradovate_api_data.solution import load_tradovate_api_data
 
@@ -68,7 +68,7 @@ class DataNormalizer:
             "bid": None,
             "ask": None,
             "underlying_price": None,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_utc_timestamp()
         }
         
         if source == "barchart":
@@ -115,7 +115,7 @@ class DataNormalizer:
             "summary": {
                 "total_contracts": 0,
                 "sources_count": 0,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
         }
         
@@ -177,7 +177,7 @@ class DataNormalizer:
         normalized["summary"]["by_source"] = by_source
         
         self.normalized_data = normalized
-        self.metadata["normalized_at"] = datetime.now().isoformat()
+        self.metadata["normalized_at"] = get_utc_timestamp()
         
         return normalized
     

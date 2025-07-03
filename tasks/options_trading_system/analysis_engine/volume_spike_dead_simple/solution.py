@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict, field
 
-logger = logging.getLogger(__name__)
+logger = get_logger()
 
 # Import baseline data manager for relative calculations
 try:
@@ -485,7 +485,7 @@ class CrossStrikeAnalyzer:
                 call_correlation.get('correlation_strength', 0) > 0.6 or
                 put_correlation.get('correlation_strength', 0) > 0.6
             ),
-            'analysis_timestamp': datetime.now(timezone.utc).isoformat()
+            'analysis_timestamp': get_utc_timestamp()
         }
         
         logger.info(f"[CROSS_STRIKE] Correlation analysis complete: "

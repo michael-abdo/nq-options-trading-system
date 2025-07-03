@@ -24,6 +24,10 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, current_dir)
 sys.path.insert(0, parent_dir)
 
+# Import PathManager after path setup
+sys.path.insert(0, parent_dir)  # For common_utils
+from common_utils import PathManager
+
 # Import existing pipeline components
 from integration import NQOptionsTradingSystem
 from data_ingestion.barchart_web_scraper.symbol_generator import (
@@ -52,7 +56,7 @@ class DailyOptionsPipeline:
         """
         self.config = config or self._get_default_config()
         self.enable_validation = enable_validation
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger()
         
         # Pipeline state
         self.pipeline_state = {
@@ -343,7 +347,7 @@ class DailyOptionsPipeline:
         """
         return {
             'status': 'success',
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': get_utc_timestamp(),
             'pipeline_type': 'daily_0dte',
             'validation_enabled': self.enable_validation,
             'symbol_validation': symbol_result,
@@ -367,7 +371,7 @@ class DailyOptionsPipeline:
         
         return {
             'status': 'aborted',
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': get_utc_timestamp(),
             'pipeline_type': 'daily_0dte',
             'abort_reason': reason,
             'validation_enabled': self.enable_validation,
@@ -388,7 +392,7 @@ class DailyOptionsPipeline:
         """
         return {
             'status': 'error',
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': get_utc_timestamp(),
             'pipeline_type': 'daily_0dte',
             'error': error,
             'validation_enabled': self.enable_validation,

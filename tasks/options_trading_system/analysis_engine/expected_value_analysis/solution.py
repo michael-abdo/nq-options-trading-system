@@ -11,12 +11,12 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
 
 # Add parent task to path for data access
-parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+parent_dir = os.path.dirname(os.path.dirname(PathManager.get_project_root()))
 sys.path.insert(0, parent_dir)
 from data_ingestion.integration import run_data_ingestion
 
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root())))
 sys.path.insert(0, project_root)
 from tasks.test_utils import estimate_underlying_price
 
@@ -284,7 +284,7 @@ class ExpectedValueAnalyzer:
         """Generate trading report (adapted from your algorithm)"""
         
         report_data = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "current_nq_price": current_price,
             "total_setups": len(setups),
             "top_opportunities": [],
@@ -345,7 +345,7 @@ class ExpectedValueAnalyzer:
         
         # Results
         self.analysis_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "underlying_symbol": "NQ",
             "underlying_price": data["underlying_price"],
             "data_quality": data["quality"],

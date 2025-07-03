@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 # Add project root to path for data model imports
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
 sys.path.insert(0, project_root)
 
 # Import canonical estimate_underlying_price
@@ -99,7 +99,7 @@ class RiskAnalyzer:
                     return {
                         "status": "failed",
                         "error": "Data ingestion pipeline failed for risk analysis",
-                        "timestamp": datetime.now().isoformat()
+                        "timestamp": get_utc_timestamp()
                     }
                 
                 # Extract normalized data
@@ -111,7 +111,7 @@ class RiskAnalyzer:
                 return {
                     "status": "failed",
                     "error": "No contract data available for risk analysis",
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": get_utc_timestamp()
                 }
             
             # Initialize risk containers
@@ -266,14 +266,14 @@ class RiskAnalyzer:
                     "immediate_threats": immediate_threats,
                     "total_risk_exposure": total_call_risk + total_put_risk
                 },
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
             
         except Exception as e:
             return {
                 "status": "failed",
                 "error": f"Risk analysis failed: {str(e)}",
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
 
 

@@ -16,9 +16,10 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import sys
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root()))))
 sys.path.insert(0, project_root)
 from tasks.test_utils import setup_chrome_driver, safe_float, safe_int
+from tasks.common_utils import save_json, get_logger, get_utc_timestamp
 
 @dataclass
 class OptionsContract:
@@ -66,7 +67,7 @@ class BarchartWebScraper:
         
         # Setup logging
         logging.basicConfig(level=logging.INFO)
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger()
         
     def setup_driver(self) -> webdriver.Chrome:
         """
@@ -329,7 +330,7 @@ class BarchartWebScraper:
             symbol = symbol_match.group(1) if symbol_match else 'unknown'
             
             # Create directory structure
-            base_dir = os.path.dirname(os.path.abspath(__file__))
+            base_dir = PathManager.get_project_root()
             screenshot_dir = os.path.join(base_dir, 'screenshots')
             date_dir = os.path.join(screenshot_dir, datetime.now().strftime('%Y%m%d'))
             
@@ -357,7 +358,7 @@ class BarchartWebScraper:
             metadata = {
                 'url': url,
                 'symbol': symbol,
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': get_utc_timestamp(),
                 'page_title': self.driver.title,
                 'screenshot_path': filepath,
                 'window_size': {'width': 1920, 'height': total_height}
@@ -365,7 +366,7 @@ class BarchartWebScraper:
             
             metadata_file = filepath.replace('.png', '_metadata.json')
             with open(metadata_file, 'w') as f:
-                json.dump(metadata, f, indent=2)
+                save_json(metadata, f).result
             
             # Reset window size
             self.driver.set_window_size(1920, 1080)
@@ -477,7 +478,7 @@ class BarchartAPIComparator:
     """
     
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger()
     
     def get_eod_contract_symbol(self, base_symbol: str = "NQ") -> str:
         """
@@ -717,7 +718,7 @@ class BarchartAPIComparator:
         """
         try:
             # Create directory structure
-            base_dir = os.path.dirname(os.path.abspath(__file__))
+            base_dir = PathManager.get_project_root()
             api_data_dir = os.path.join(base_dir, 'api_data')
             date_dir = os.path.join(api_data_dir, datetime.now().strftime('%Y%m%d'))
             
@@ -731,14 +732,14 @@ class BarchartAPIComparator:
             
             # Save API response
             with open(filepath, 'w') as f:
-                json.dump(api_response, f, indent=2)
+                save_json(api_response, f).result
             
             self.logger.info(f"API data snapshot saved: {filepath}")
             
             # Also save a metadata file
             metadata = {
                 'symbol': symbol,
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': get_utc_timestamp(),
                 'source_file': '/data/api_responses/options_data_20250602_141553.json',
                 'contracts_count': len(api_response.get('data', {}).get('Call', [])) + 
                                  len(api_response.get('data', {}).get('Put', [])),
@@ -747,7 +748,7 @@ class BarchartAPIComparator:
             
             metadata_file = filepath.replace('.json', '_metadata.json')
             with open(metadata_file, 'w') as f:
-                json.dump(metadata, f, indent=2)
+                save_json(metadata, f).result
             
             return filepath
             
@@ -773,7 +774,7 @@ class BarchartAPIComparator:
         """
         
         comparison = {
-            'comparison_timestamp': datetime.now().isoformat(),
+            'comparison_timestamp': get_utc_timestamp(),
             'web_data_summary': {
                 'source': web_data.source,
                 'contract_count': web_data.total_contracts,
@@ -912,7 +913,7 @@ def main():
     
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger(__name__)
+    logger = get_logger()
     
     # Target URL
     url = "https://www.barchart.com/futures/quotes/NQM25/options/MC7M25?futuresOptionsView=merged"

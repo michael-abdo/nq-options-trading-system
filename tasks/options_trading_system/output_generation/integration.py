@@ -13,7 +13,7 @@ from typing import Dict, Any, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Add current directory to path for child task imports
-current_dir = os.path.dirname(os.path.abspath(__file__))
+current_dir = PathManager.get_project_root()
 sys.path.insert(0, current_dir)
 
 # Import child task modules
@@ -56,14 +56,14 @@ class OutputGenerationEngine:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
         except Exception as e:
             print(f"    ✗ Trading Report failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
     
     def generate_json_export(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -91,14 +91,14 @@ class OutputGenerationEngine:
             return {
                 "status": "success",
                 "result": result,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
         except Exception as e:
             print(f"    ✗ JSON Export failed: {str(e)}")
             return {
                 "status": "failed",
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": get_utc_timestamp()
             }
     
     def save_outputs(self, save_config: Dict[str, Any] = None) -> Dict[str, Any]:
@@ -199,7 +199,7 @@ class OutputGenerationEngine:
         """Create a summary of all generated outputs"""
         
         summary = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "generation_status": {
                 "report": self.generation_results.get("report", {}).get("status", "not_attempted"),
                 "json": self.generation_results.get("json", {}).get("status", "not_attempted")
@@ -267,7 +267,7 @@ class OutputGenerationEngine:
                     self.generation_results[output_type] = {
                         "status": "failed",
                         "error": str(e),
-                        "timestamp": datetime.now().isoformat()
+                        "timestamp": get_utc_timestamp()
                     }
         
         # Save outputs to files
@@ -281,7 +281,7 @@ class OutputGenerationEngine:
         
         # Final results
         final_results = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "execution_time_seconds": execution_time,
             "output_config": self.config,
             "generation_results": self.generation_results,

@@ -10,6 +10,7 @@ import os
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from tasks.test_utils import save_evidence
+from tasks.common_utils import add_validation_error
 from datetime import datetime
 
 # Add project root to path
@@ -106,12 +107,7 @@ def validate_risk_analysis():
         print(f"   ✓ Analyzer initialization: {init_valid}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "analyzer_init",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "analyzer_init", e)
         return validation_results
     
     # Test 2: Risk calculation functionality
@@ -145,12 +141,7 @@ def validate_risk_analysis():
         print(f"   ✓ Put risk: ${result['summary']['total_put_risk']:,.0f}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "risk_calculation",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "risk_calculation", e)
     
     # Test 3: Dominance analysis
     print("\n3. Testing dominance analysis...")
@@ -179,12 +170,7 @@ def validate_risk_analysis():
         print(f"   ✓ Verdict: {result['summary']['verdict']}")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "dominance_analysis",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "dominance_analysis", e)
     
     # Test 4: Battle zone mapping
     print("\n4. Testing battle zone mapping...")
@@ -217,12 +203,7 @@ def validate_risk_analysis():
             print(f"   ✓ Top zone: {battle_zones[0]['strike']} ({battle_zones[0]['urgency']})")
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "battle_zone_mapping",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "battle_zone_mapping", e)
     
     # Test 5: Module-level function
     print("\n5. Testing module-level function...")
@@ -259,12 +240,7 @@ def validate_risk_analysis():
         }
         
     except Exception as e:
-        validation_results["tests"].append({
-            "name": "module_function",
-            "passed": False,
-            "error": str(e)
-        })
-        print(f"   ✗ Error: {e}")
+        add_validation_error(validation_results, "module_function", e)
     
     # Determine overall status
     all_passed = all(test['passed'] for test in validation_results['tests'])

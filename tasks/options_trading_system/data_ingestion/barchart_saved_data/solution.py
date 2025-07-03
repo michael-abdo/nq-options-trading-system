@@ -51,7 +51,7 @@ class BarchartSavedDataLoader:
             "source": "barchart_saved",
             "file_path": self.file_path,
             "file_size": os.path.getsize(self.file_path),
-            "loaded_at": datetime.now().isoformat()
+            "loaded_at": get_utc_timestamp()
         }
         
         return self.data

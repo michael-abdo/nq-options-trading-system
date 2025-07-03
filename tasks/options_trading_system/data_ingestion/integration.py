@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 # Add child tasks to path
-current_dir = os.path.dirname(os.path.abspath(__file__))
+current_dir = PathManager.get_project_root()
 sys.path.insert(0, current_dir)
 
 # Import validated child solutions
@@ -75,7 +75,7 @@ def load_barchart_live_data(futures_symbol: str = "NQM25", headless: bool = True
             "raw_data": api_data,
             "source": "barchart_live_api",
             "symbol": eod_symbol if api_data.get('total', 0) > 0 else "MC6M25",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "total_contracts": api_data.get('total', 0)
         }
         
@@ -100,7 +100,7 @@ class DataIngestionPipeline:
         self.normalized_data = None
         self.pipeline_metadata = {
             "pipeline_version": "1.0",
-            "created_at": datetime.now().isoformat(),
+            "created_at": get_utc_timestamp(),
             "sources_configured": list(config.keys())
         }
     
@@ -245,7 +245,7 @@ class DataIngestionPipeline:
             "sources_failed": len([s for s in self.sources.values() if s["status"] == "failed"]),
             "total_contracts": self.normalized_data["normalized_data"]["summary"]["total_contracts"],
             "data_quality": self.normalized_data["quality_metrics"],
-            "timestamp": datetime.now().isoformat()
+            "timestamp": get_utc_timestamp()
         }
         
         # Add per-source summaries

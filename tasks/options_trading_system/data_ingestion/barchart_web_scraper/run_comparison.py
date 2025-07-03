@@ -11,7 +11,7 @@ import argparse
 from datetime import datetime
 
 # Add current directory to path for imports
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(PathManager.get_project_root())
 
 from solution import main
 
@@ -99,7 +99,7 @@ def run_tests():
         result = subprocess.run([
             sys.executable, '-m', 'pytest', 
             'test_validation.py', '-v'
-        ], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+        ], capture_output=True, text=True, cwd=PathManager.get_project_root())
         
         if result.returncode == 0:
             print("✅ All tests passed")

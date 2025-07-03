@@ -12,8 +12,15 @@ Builds on the existing EOD contract logic but adds validation and robustness.
 """
 
 import logging
+import os
+import sys
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
+
+# Add tasks directory to path
+sys.path.insert(0, os.path.join(PathManager.get_project_root(), '..', '..', '..'))
+from common_utils import get_logger
+
 from .expiration_validator import ExpirationValidator
 
 
@@ -35,7 +42,7 @@ class OptionsSymbolGenerator:
         """
         self.validate_0dte = validate_0dte
         self.headless = headless
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger()
         
         # Contract type prefixes in priority order
         self.CONTRACT_PREFIXES = [

@@ -13,7 +13,7 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 import statistics
 
-logger = logging.getLogger(__name__)
+logger = get_logger()
 
 class BaseDataClass:
     """Base class for dataclasses with common to_dict method"""

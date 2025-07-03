@@ -24,12 +24,12 @@ from enum import Enum
 import math
 
 # Add parent directories to path for data access
-parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+parent_dir = os.path.dirname(os.path.dirname(PathManager.get_project_root()))
 sys.path.insert(0, parent_dir)
 from data_ingestion.integration import run_data_ingestion
 
 # Add project root for test_utils
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(PathManager.get_project_root())))
 sys.path.insert(0, project_root)
 from tasks.test_utils import estimate_underlying_price
 
@@ -486,7 +486,7 @@ class VolumeShockAnalysisEngine:
         return {
             "underlying_symbol": underlying_symbol,
             "underlying_price": underlying_price,
-            "market_timestamp": datetime.now().isoformat(),
+            "market_timestamp": get_utc_timestamp(),
             "total_strikes_analyzed": total_contracts,
             "volume_shock_intensity": {
                 "total_alerts": total_alerts,
@@ -829,7 +829,7 @@ def analyze_volume_shocks(data_config: Dict[str, Any],
         # Add metadata
         result_dict.update({
             "status": "success",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "analysis_type": "volume_shock_analysis",
             "strategy": "front_running_market_maker_hedging",
             "config_used": analysis_config
@@ -841,6 +841,6 @@ def analyze_volume_shocks(data_config: Dict[str, Any],
         return {
             "status": "failed",
             "error": str(e),
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "analysis_type": "volume_shock_analysis"
         }

@@ -55,8 +55,8 @@ class TradingOpportunity:
     confidence_level: str = "UNKNOWN"         # "HIGH", "MEDIUM", "LOW"
     
     # === METADATA ===
-    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
-    last_updated: str = field(default_factory=lambda: datetime.now().isoformat())
+    created_at: str = field(default_factory=lambda: get_utc_timestamp())
+    last_updated: str = field(default_factory=lambda: get_utc_timestamp())
     pipeline_stage: str = "raw"               # Current pipeline stage
     analysis_history: List[str] = field(default_factory=list)  # Track which analyses processed this
     
@@ -64,13 +64,13 @@ class TradingOpportunity:
         """Add analysis-specific data to this opportunity"""
         self.analysis_data[analysis_name] = data
         self.analysis_history.append(analysis_name)
-        self.last_updated = datetime.now().isoformat()
+        self.last_updated = get_utc_timestamp()
         self.pipeline_stage = analysis_name.lower()
     
     def add_score(self, analysis_name: str, score: float):
         """Add analysis-specific score"""
         self.scores[analysis_name] = score
-        self.last_updated = datetime.now().isoformat()
+        self.last_updated = get_utc_timestamp()
     
     def get_analysis_data(self, analysis_name: str) -> Dict[str, Any]:
         """Get analysis-specific data"""

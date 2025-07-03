@@ -12,8 +12,18 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 # Add parent task to path for analysis access
-parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(os.path.dirname(current_dir))
 sys.path.insert(0, parent_dir)
+
+# Add tasks directory for common utilities - work backwards from current location
+# Current: tasks/options_trading_system/output_generation/json_exporter/solution.py  
+# Target: tasks/common_utils.py
+# Go up: json_exporter -> output_generation -> options_trading_system -> tasks
+tasks_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+sys.path.insert(0, tasks_dir)
+from common_utils import PathManager
+
 from analysis_engine.integration import run_analysis_engine
 
 
@@ -58,7 +68,7 @@ class JSONExporter:
         for i, rec in enumerate(trading_recs):
             signal = {
                 "signal_id": f"nq_ev_{i+1}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                "timestamp": datetime.now().isoformat(),
+                "timestamp": get_utc_timestamp(),
                 "source": rec.get("source", "nq_ev_algorithm"),
                 "priority": rec.get("priority", "UNKNOWN"),
                 "confidence": rec.get("confidence", "UNKNOWN"),
@@ -98,7 +108,7 @@ class JSONExporter:
     def extract_market_analysis(self, analysis_results: Dict[str, Any]) -> Dict[str, Any]:
         """Extract market analysis data"""
         market_data = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": get_utc_timestamp(),
             "underlying": {
                 "symbol": "NQ",
                 "price": 0,
@@ -173,7 +183,7 @@ class JSONExporter:
         
         export_data = {
             "metadata": {
-                "export_timestamp": datetime.now().isoformat(),
+                "export_timestamp": get_utc_timestamp(),
                 "export_version": "1.0",
                 "data_source": "nq_options_trading_system",
                 "exporter_config": self.config
@@ -184,7 +194,7 @@ class JSONExporter:
                 "total_signals": 0,
                 "high_priority_signals": 0,
                 "recommended_action": "hold",
-                "next_analysis_recommended": datetime.now().isoformat()
+                "next_analysis_recommended": get_utc_timestamp()
             }
         }
         
@@ -238,7 +248,7 @@ class JSONExporter:
             "json_data": export_data,
             "json_string": json_output,
             "metadata": {
-                "export_timestamp": datetime.now().isoformat(),
+                "export_timestamp": get_utc_timestamp(),
                 "total_signals": len(export_data["trading_signals"]),
                 "json_size_bytes": len(json_output),
                 "recommended_action": export_data["execution_summary"]["recommended_action"]
