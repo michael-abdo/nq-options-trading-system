@@ -14,6 +14,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, WebDriverException
 import pandas as pd
 from bs4 import BeautifulSoup
+import sys
+# Add project root for test_utils
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.insert(0, project_root)
+from tasks.test_utils import setup_chrome_driver
 
 @dataclass
 class OptionsContract:
@@ -67,29 +72,8 @@ class BarchartWebScraper:
         """
         Setup Chrome WebDriver with appropriate options
         """
-        chrome_options = Options()
-        
-        if self.headless:
-            chrome_options.add_argument("--headless")
-            
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--window-size=1920,1080")
-        chrome_options.add_argument("--disable-extensions")
-        chrome_options.add_argument("--disable-plugins")
-        chrome_options.add_argument("--disable-images")  # Speed up loading
-        
-        # User agent to avoid detection
-        chrome_options.add_argument("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-        
-        try:
-            driver = webdriver.Chrome(options=chrome_options)
-            driver.implicitly_wait(10)
-            return driver
-        except Exception as e:
-            self.logger.error(f"Failed to setup Chrome driver: {e}")
-            raise
+        # Use canonical implementation from test_utils
+        return setup_chrome_driver(self.headless)
     
     def get_cookies_from_driver(self) -> Dict[str, str]:
         """
