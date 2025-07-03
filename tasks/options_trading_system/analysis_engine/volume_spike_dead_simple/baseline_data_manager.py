@@ -15,37 +15,33 @@ import statistics
 
 logger = logging.getLogger(__name__)
 
+class BaseDataClass:
+    """Base class for dataclasses with common to_dict method"""
+    def to_dict(self) -> Dict:
+        return asdict(self)
+
 @dataclass
-class VolumeStats:
+class VolumeStats(BaseDataClass):
     """Historical volume statistics for a strike"""
     daily_volume: int
     twenty_day_avg: float
     rolling_std: float
     percentile_rank: float  # Where today's volume ranks vs history
-    
-    def to_dict(self) -> Dict:
-        return asdict(self)
 
 @dataclass 
-class PremiumVelocity:
+class PremiumVelocity(BaseDataClass):
     """Premium velocity tracking for a strike"""
     fifteen_min_change: float
     hourly_baseline: float
     velocity_ratio: float  # 15min change / hourly baseline
-    
-    def to_dict(self) -> Dict:
-        return asdict(self)
 
 @dataclass
-class MarketContext:
+class MarketContext(BaseDataClass):
     """Overall market context for threshold adjustments"""
     vix_level: Optional[float]
     volatility_factor: float  # Market volatility adjustment (1.0 = normal)
     time_to_expiry: int  # Days to expiration
     session_volume_factor: float  # Intraday volume pattern adjustment
-    
-    def to_dict(self) -> Dict:
-        return asdict(self)
 
 class BaselineDataManager:
     """
