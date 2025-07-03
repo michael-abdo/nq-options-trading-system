@@ -17,6 +17,11 @@ import time
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
+# Add project root for test_utils
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, project_root)
+from tasks.test_utils import estimate_underlying_price
+
 # Import child task modules - using your actual NQ EV algorithm
 from expected_value_analysis.solution import analyze_expected_value
 from risk_analysis.solution import run_risk_analysis
@@ -344,20 +349,8 @@ class AnalysisEngine:
     
     def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
         """Estimate underlying price from contracts (following pattern of other analyses)"""
-        if not contracts:
-            return 21376.75  # Default NQ price
-        
-        # Try to get from contract metadata first
-        for contract in contracts[:10]:  # Check first 10 contracts
-            if contract.get('underlying_price'):
-                return float(contract['underlying_price'])
-        
-        # Fallback: estimate from strike distribution
-        strikes = [float(c.get('strike', 0)) for c in contracts if c.get('strike')]
-        if strikes:
-            return sum(strikes) / len(strikes)
-        
-        return 21376.75  # Final fallback
+        # Use canonical implementation from test_utils
+        return estimate_underlying_price(contracts)
     
     def _extract_contract_identifier(self, contracts: List[Dict]) -> str:
         """Extract contract identifier for enhanced analysis"""

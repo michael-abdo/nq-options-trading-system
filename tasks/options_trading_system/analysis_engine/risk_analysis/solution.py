@@ -14,6 +14,9 @@ from typing import Dict, Any, List, Optional
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, project_root)
 
+# Import canonical estimate_underlying_price
+from tasks.test_utils import estimate_underlying_price
+
 
 class RiskAnalyzer:
     """Options Risk Analyzer - 'Who Has More Skin in the Game?'"""
@@ -63,17 +66,8 @@ class RiskAnalyzer:
     
     def _estimate_underlying_price(self, contracts: List[Dict]) -> float:
         """Estimate current underlying price from contract data"""
-        # Look for underlying price in contract metadata
-        for contract in contracts:
-            if contract.get("underlying_price"):
-                return float(contract["underlying_price"])
-        
-        # Fallback: estimate from ATM options
-        strikes = [c["strike"] for c in contracts if c["strike"] and c["strike"] > 0]
-        if strikes:
-            return sum(strikes) / len(strikes)  # Average strike as rough estimate
-        
-        return 21376.75  # Default fallback
+        # Use canonical implementation from test_utils
+        return estimate_underlying_price(contracts)
     
     def analyze_risk(self, data_config: Dict[str, Any]) -> Dict[str, Any]:
         """
