@@ -102,12 +102,61 @@ Tests Performed:
 4. All available schemas (trades, definition, quotes)
 5. Symbology resolution API testing
 6. Multiple dataset testing (GLBX.MDP3, DBEQ.BASIC, OPRA.PILLAR)
+7. **Live API testing per your suggested example**
+
+**Live API Test (Per Your Support Suggestion):**
+Your team suggested testing this minimal Python example:
+
+```python
+import databento as db
+
+client = db.Live()
+
+client.subscribe(
+    dataset=db.Dataset.GLBX_MDP3,
+    schema=db.Schema.BBO_1M,
+    symbols=["ES.OPT"],
+    stype_in=db.SType.PARENT,
+    start=0,
+)
+
+client.add_callback(print)
+client.start()
+client.block_for_close()
+```
+
+**Modified for NQ Options:**
+I tested your exact example but changed symbols=["ES.OPT"] to symbols=["NQ.OPT"] to focus on NQ weekly options:
+
+```python
+import databento as db
+
+client = db.Live(key="db-i4VujYQdiwvJD3rpsEhqV8hanxdxc")
+
+client.subscribe(
+    dataset=db.Dataset.GLBX_MDP3,
+    schema=db.Schema.BBO_1M,
+    symbols=["NQ.OPT"],  # Changed from ES.OPT to NQ.OPT
+    stype_in=db.SType.PARENT,
+    start=0,
+)
+
+client.add_callback(print)
+client.start()
+client.block_for_close()
+```
+
+**Live API Results:**
+- **Error**: "A live data license is required to access GLBX.MDP3"
+- **Status**: Cannot test Live API due to subscription limitations
+- **Note**: Historical API works fine with same API key and parameters
 
 Results:
-- 1,547 total option trades retrieved
-- 2,617 option definitions retrieved
-- 184 unique symbols found
+- 1,547 total option trades retrieved (Historical API)
+- 2,617 option definitions retrieved (Historical API)
+- 212 unique symbols found (Historical API)
 - Zero weekly options matching your documented formats
+- Live API testing blocked by subscription requirements
 
 ---
 
